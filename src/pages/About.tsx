@@ -58,7 +58,7 @@ export default function About() {
       </section>
 
       {/* Our Story */}
-      <section className="py-12 bg-white">
+      <section className="py-12 md:py-16 lg:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row gap-10 items-start">
             <div className="lg:w-1/3">
@@ -81,9 +81,9 @@ export default function About() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-20 bg-white border-t border-gray-100">
+      <section className="py-16 md:py-20 lg:py-24 bg-white border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="text-center mb-10 md:mb-16">
             <motion.h2 
               initial={{ opacity: 0, y: -20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -158,9 +158,9 @@ export default function About() {
       </section>
 
       {/* Philosophy */}
-      <section className="py-12 bg-soft-sand">
+      <section className="py-12 md:py-16 lg:py-20 bg-soft-sand">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-[800px] mx-auto mb-20">
+          <div className="text-center max-w-[800px] mx-auto mb-12 lg:mb-20">
             <h2 className="text-[36px] font-semibold text-deep-teal mb-8 font-heading">What We Believe About How People Change</h2>
             <p className="text-lg text-charcoal-warm leading-relaxed">
                Change happens at the intersection of insight and action. Understanding why you think or behave a certain way is important. But understanding alone doesn't shift anything. What moves people forward is guided practice — small, repeated actions that retrain attention, reshape habits, and gradually change how you relate to yourself and others.
@@ -223,9 +223,9 @@ export default function About() {
       </section>
 
       {/* Meet the Practitioners */}
-      <section className="py-12 bg-white">
+      <section className="py-12 md:py-16 lg:py-20 bg-white">
          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-20">
+            <div className="text-center mb-12 lg:mb-20">
               <h2 className="text-[36px] font-semibold text-deep-teal mb-4 font-heading">Meet the Practitioners</h2>
             </div>
 
@@ -392,7 +392,7 @@ export default function About() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 bg-soft-sand border-t border-gray-200">
+      <section className="py-12 md:py-16 lg:py-20 bg-soft-sand border-t border-gray-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-[36px] font-semibold text-deep-teal mb-4 font-heading">Frequently Asked Questions</h2>

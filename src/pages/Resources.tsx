@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { BrainCircuit, Coffee, Briefcase, HeartHandshake, Waves, ArrowRight, X } from "lucide-react";
+import { BrainCircuit, Coffee, Briefcase, HeartHandshake, Waves, ArrowRight, X, Twitter, Linkedin, Mail, Facebook, Instagram } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { SkeletonLoader } from "../components/SkeletonLoader";
@@ -219,7 +219,7 @@ export default function Resources() {
   return (
     <div className="bg-white">
       {/* Hero */}
-      <section className="bg-soft-sand py-12 text-center border-b border-gray-200">
+      <section className="bg-soft-sand py-12 md:py-16 lg:py-20 text-center border-b border-gray-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.h1 
              initial={{ opacity: 0, y: 20 }}
@@ -241,7 +241,7 @@ export default function Resources() {
       </section>
 
       {/* Blog Categories Grid */}
-      <section className="py-12">
+      <section className="py-12 md:py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
            {isLoading ? (
              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -305,7 +305,7 @@ export default function Resources() {
       </section>
 
       {/* Newsletter Signup Area */}
-      <section id="newsletter" className="py-12 bg-soft-sand border-t border-gray-200">
+      <section id="newsletter" className="py-12 md:py-16 lg:py-20 bg-soft-sand border-t border-gray-200">
          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div 
                whileHover={{ scale: 1.01 }}
@@ -462,6 +462,55 @@ export default function Resources() {
                   <p className="text-charcoal-warm leading-relaxed italic text-lg">
                     {selectedArticle.conclusion || "Taking small, intentional steps with the right tools can fundamentally shift your experience. It's not about being perfect; it's about being equipped."}
                   </p>
+                </div>
+
+                <div className="mb-10 border-t border-gray-100 pt-8 flex items-center justify-between">
+                  <span className="text-sm font-semibold text-deep-teal uppercase tracking-widest">Share this Insight</span>
+                  <div className="flex gap-4">
+                    <a 
+                      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin + '/resources')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:text-[#1877F2] hover:bg-[#1877F2]/10 transition-colors"
+                      aria-label="Share on Facebook"
+                    >
+                      <Facebook className="w-4 h-4" fill="currentColor" />
+                    </a>
+                    <a 
+                      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(selectedArticle.title)}&url=${encodeURIComponent(window.location.origin + '/resources')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:text-[#1DA1F2] hover:bg-[#1DA1F2]/10 transition-colors"
+                      aria-label="Share on Twitter"
+                    >
+                      <Twitter className="w-4 h-4" fill="currentColor" />
+                    </a>
+                    <a 
+                      href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.origin + '/resources')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:text-[#0A66C2] hover:bg-[#0A66C2]/10 transition-colors"
+                      aria-label="Share on LinkedIn"
+                    >
+                      <Linkedin className="w-4 h-4" fill="currentColor" />
+                    </a>
+                    <a 
+                      href="https://www.instagram.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:text-[#E1306C] hover:bg-[#E1306C]/10 transition-colors"
+                      aria-label="Share on Instagram"
+                    >
+                      <Instagram className="w-4 h-4" />
+                    </a>
+                    <a 
+                      href={`mailto:?subject=${encodeURIComponent(selectedArticle.title)}&body=${encodeURIComponent("Check out this insight from Being You Path:\n\n" + window.location.origin + '/resources')}`}
+                      className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:text-terracotta hover:bg-terracotta/10 transition-colors"
+                      aria-label="Share via Email"
+                    >
+                      <Mail className="w-4 h-4" />
+                    </a>
+                  </div>
                 </div>
                 
                 <div className="pt-10 border-t border-gray-100 flex flex-col items-center text-center">

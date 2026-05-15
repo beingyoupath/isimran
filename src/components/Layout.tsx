@@ -211,13 +211,9 @@ function Footer() {
                 <span className="text-[#F4F1E1]/80 flex items-center gap-2">
                   <span>Online</span>
                   {/* Google Meet Icon */}
-                  <svg viewBox="0 0 24 24" className="w-4 h-4 text-emerald-400" fill="currentColor">
-                    <path d="M20.082 8.784L21.464 6.38a1.5 1.5 0 00-.73-2.008l-2.61-1.306a1.5 1.5 0 00-1.782.35L14.786 5H4.5A2.5 2.5 0 002 7.5v9A2.5 2.5 0 004.5 19h10v-3l3.636 3.636a1.5 1.5 0 002.585-1.06V8.784zm-3.082 5.093v1.624h-10v-7h10v1.624L20 8.05v7.9-3.073z"/>
-                  </svg>
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Google_Meet_small_logo_%282020%29.svg/200px-Google_Meet_small_logo_%282020%29.svg.png" alt="Google Meet" className="w-5 h-5 object-contain ml-1" />
                   {/* Zoom Icon */}
-                  <svg viewBox="0 0 24 24" className="w-4 h-4 text-blue-400" fill="currentColor">
-                    <path d="M4.5 5A2.5 2.5 0 002 7.5v9A2.5 2.5 0 004.5 19h11a2.5 2.5 0 002.5-2.5v-2l4 3v-11l-4 3v-2A2.5 2.5 0 0015.5 5h-11z"/>
-                  </svg>
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Zoom_logo_icon.svg/200px-Zoom_logo_icon.svg.png" alt="Zoom" className="w-5 h-5 object-contain ml-1" />
                 </span>
               </div>
               

@@ -56,8 +56,40 @@ export default function Contact() {
     return () => clearInterval(timer);
   }, [testimonials.length]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmitEmail = (e: React.FormEvent) => {
     e.preventDefault();
+    const form = (e.target as HTMLElement).closest('form') as HTMLFormElement;
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    const name = (form.elements.namedItem('name') as HTMLInputElement).value;
+    const contact = (form.elements.namedItem('contact') as HTMLInputElement).value;
+    const heardAbout = (form.elements.namedItem('heard_about') as HTMLSelectElement).value;
+    const messageText = (form.elements.namedItem('message') as HTMLTextAreaElement).value;
+
+    const body = `Name: ${name}%0AContact: ${contact}%0AHeard About: ${heardAbout}%0AMessage: ${messageText}`;
+    window.location.href = `mailto:beingyoupath@gmail.com?subject=New Clarity Request from ${name}&body=${body}`;
+    
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
+  };
+
+  const handleSubmitWhatsApp = (e: React.FormEvent) => {
+    e.preventDefault();
+    const form = (e.target as HTMLElement).closest('form') as HTMLFormElement;
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    const name = (form.elements.namedItem('name') as HTMLInputElement).value;
+    const contact = (form.elements.namedItem('contact') as HTMLInputElement).value;
+    const heardAbout = (form.elements.namedItem('heard_about') as HTMLSelectElement).value;
+    const messageText = (form.elements.namedItem('message') as HTMLTextAreaElement).value;
+
+    const body = `New Clarity Request:%0A%0AName: ${name}%0AContact: ${contact}%0AHeard About: ${heardAbout}%0AMessage: ${messageText}`;
+    window.open(`https://wa.me/917387779238?text=${body}`, '_blank');
+    
     setShowToast(true);
     setTimeout(() => setShowToast(false), 3000);
   };
@@ -81,7 +113,7 @@ export default function Contact() {
       </AnimatePresence>
 
       {/* Hero */}
-      <section className="bg-soft-sand py-12 text-center border-b border-gray-200">
+      <section className="bg-soft-sand py-12 md:py-16 lg:py-20 text-center border-b border-gray-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.h1 
              initial={{ opacity: 0, y: 20 }}
@@ -103,11 +135,11 @@ export default function Contact() {
       </section>
 
       {/* Main Content Area */}
-      <section className="py-12">
+      <section className="py-12 md:py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           {/* Contact Options Row */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-12 lg:mb-20 max-w-5xl mx-auto">
              <a href="tel:+917387772573" className="group bg-soft-sand p-8 rounded-[24px] border border-gray-200 hover-lift text-center flex flex-col items-center">
                 <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-6 shadow-sm icon-scale">
                   <Phone className="w-8 h-8 text-terracotta" strokeWidth={1.5} />
@@ -160,7 +192,7 @@ export default function Contact() {
       </section>
 
       {/* Client Testimonials */}
-      <section className="py-20 bg-soft-sand border-y border-gray-200 overflow-hidden">
+      <section className="py-16 md:py-20 lg:py-24 bg-soft-sand border-y border-gray-200 overflow-hidden">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-[36px] font-semibold text-deep-teal mb-4 font-heading">Real Shifts. Real Lives.</h2>
@@ -211,7 +243,7 @@ export default function Contact() {
         </div>
       </section>
 
-      <section className="py-16">
+      <section className="py-12 md:py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row gap-10 items-start max-w-6xl mx-auto">
             
@@ -220,7 +252,7 @@ export default function Contact() {
               <div className="bg-soft-sand rounded-[32px] p-8 sm:p-12 border border-gray-200 shadow-sm">
                 <h2 className="text-[30px] font-semibold text-deep-teal mb-2 font-heading">Send a Message</h2>
                 <p className="text-charcoal-warm mb-8">Can't find a time that works for you? Drop us a message.</p>
-                <form className="space-y-6" onSubmit={handleSubmit}>
+                <form className="space-y-6">
                    <div>
                      <label htmlFor="name" className="block text-[15px] font-semibold text-deep-teal mb-2">Name</label>
                      <input type="text" id="name" className="w-full px-5 py-4 rounded-[12px] border border-gray-300 focus:border-terracotta focus:ring focus:ring-terracotta/20 bg-white transition-all outline-none text-[15px]" placeholder="What should we call you?" />
@@ -248,9 +280,17 @@ export default function Contact() {
                      <textarea id="message" rows={4} className="w-full px-5 py-4 rounded-[12px] border border-gray-300 focus:border-terracotta focus:ring focus:ring-terracotta/20 bg-white transition-all outline-none resize-none text-[15px]" placeholder="A brief sentence or two is completely fine."></textarea>
                    </div>
 
-                   <button type="submit" className="w-full bg-terracotta text-white font-medium text-[16px] py-5 rounded-[50px] hover:bg-amber-glow transition-colors shadow-sm mt-6 uppercase tracking-wide">
-                      Send &rarr; We'll reply within 24 hours
-                   </button>
+                   <div className="flex flex-col sm:flex-row gap-4 mt-8">
+                     <button type="button" onClick={handleSubmitEmail} className="flex-1 bg-terracotta text-white font-medium text-[15px] py-4 rounded-[50px] hover:bg-amber-glow transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 uppercase tracking-wide flex justify-center items-center gap-2">
+                        <Mail className="w-5 h-5" />
+                        Send via Email
+                     </button>
+                     <button type="button" onClick={handleSubmitWhatsApp} className="flex-1 bg-[#25D366] text-white font-medium text-[15px] py-4 rounded-[50px] hover:bg-[#1DA851] transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 uppercase tracking-wide flex justify-center items-center gap-2">
+                        <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" className="w-5 h-5"><path d="M12.031 0C5.398 0 .016 5.378.016 12.015c0 2.128.553 4.202 1.602 6.03L0 24l6.113-1.604a11.967 11.967 0 005.918 1.564h.005c6.634 0 12.014-5.38 12.014-12.017C24.05 5.378 18.665 0 12.031 0zm0 21.964c-1.802 0-3.567-.485-5.11-1.401l-.367-.217-3.794.996 1.015-3.698-.238-.378a9.98 9.98 0 01-1.521-5.263c0-5.518 4.492-10.013 10.015-10.013 5.517 0 10.014 4.495 10.014 10.013 0 5.517-4.497 10.013-10.014 10.013zm5.494-7.514c-.301-.151-1.782-.879-2.059-.979-.276-.1-.478-.152-.678.151-.2.302-.779.979-.955 1.18-.175.201-.351.226-.652.076-.301-.151-1.272-.469-2.424-1.496-.897-.798-1.503-1.784-1.678-2.086-.176-.302-.019-.465.132-.615.136-.135.301-.351.452-.526.151-.176.201-.301.301-.502.1-.2.051-.377-.025-.527-.076-.151-.678-1.633-.929-2.235-.245-.589-.494-.509-.678-.518-.175-.008-.376-.011-.577-.011-.2 0-.527.075-.802.376-.276.301-1.054 1.029-1.054 2.508s1.079 2.909 1.23 3.11c.151.2 2.122 3.238 5.14 4.542.718.31 1.28.495 1.717.635.72.228 1.376.195 1.894.118.579-.085 1.782-.728 2.033-1.431.251-.703.251-1.306.176-1.432-.075-.125-.276-.2-.577-.35z"/></svg>
+                        Send via WhatsApp
+                     </button>
+                   </div>
+                   <p className="text-center text-[13px] text-charcoal-warm mt-4">We'll reply within 24 hours.</p>
                 </form>
 
                 {/* Trust Badges under form */}

@@ -9,7 +9,9 @@ import {
   Users,
   HeartHandshake,
   GraduationCap,
-  Sprout
+  Sprout,
+  X,
+  Mail
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect } from "react";
@@ -40,42 +42,92 @@ export default function Workshops() {
     {
       title: "Stress & Burnout Prevention",
       desc: "Practical tools for regulation, recovery, and sustainable performance.",
-      icon: <ShieldAlert className="w-8 h-8 text-terracotta mb-4" />
+      icon: <ShieldAlert className="w-8 h-8 text-terracotta mb-4" />,
+      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop"
     },
     {
       title: "Focus & Attention in a Distracted World",
       desc: "Protecting attention in an environment designed to steal it.",
-      icon: <Brain className="w-8 h-8 text-terracotta mb-4" />
+      icon: <Brain className="w-8 h-8 text-terracotta mb-4" />,
+      image: "https://images.unsplash.com/photo-1499728603263-13726abce5fd?q=80&w=800&auto=format&fit=crop"
     },
     {
       title: "Psychological Safety & Communication",
       desc: "Building environments where people speak up without fear.",
-      icon: <MessageCircle className="w-8 h-8 text-terracotta mb-4" />
+      icon: <MessageCircle className="w-8 h-8 text-terracotta mb-4" />,
+      image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=800&auto=format&fit=crop"
     },
     {
       title: "Gen Z in Your Organisation",
       desc: "Grounded in developmental psychology, not stereotypes.",
-      icon: <Users className="w-8 h-8 text-terracotta mb-4" />
+      icon: <Users className="w-8 h-8 text-terracotta mb-4" />,
+      image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop"
     },
     {
       title: "Parenting in the Digital Age",
       desc: "For parent communities, schools, and family programmes.",
-      icon: <HeartHandshake className="w-8 h-8 text-terracotta mb-4" />
+      icon: <HeartHandshake className="w-8 h-8 text-terracotta mb-4" />,
+      image: "https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=800&auto=format&fit=crop"
     },
     {
       title: "Student Resilience & Exam Readiness",
       desc: "For schools and colleges (ages 15-22).",
-      icon: <GraduationCap className="w-8 h-8 text-terracotta mb-4" />
+      icon: <GraduationCap className="w-8 h-8 text-terracotta mb-4" />,
+      image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format&fit=crop"
     },
     {
       title: "Habit Science for Behaviour Change",
       desc: "Applied behavioural psychology for teams or individuals.",
-      icon: <Sprout className="w-8 h-8 text-terracotta mb-4" />
+      icon: <Sprout className="w-8 h-8 text-terracotta mb-4" />,
+      image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=800&auto=format&fit=crop"
     }
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [selectedTheme, setSelectedTheme] = useState<{title: string, desc: string} | null>(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleRegisterEmail = (e: React.FormEvent) => {
+    e.preventDefault();
+    const form = (e.target as HTMLElement).closest('form') as HTMLFormElement;
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    const name = (form.elements.namedItem('name') as HTMLInputElement).value;
+    const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+    const phone = (form.elements.namedItem('phone') as HTMLInputElement).value;
+    const attendees = (form.elements.namedItem('attendees') as HTMLInputElement).value;
+
+    const body = `Workshop: ${selectedTheme?.title}%0A%0AName: ${name}%0AEmail: ${email}%0APhone: ${phone}%0AAttendees: ${attendees}`;
+    window.location.href = `mailto:beingyoupath@gmail.com?subject=Workshop Registration: ${selectedTheme?.title}&body=${body}`;
+    
+    setIsSubmitted(true);
+  };
+
+  const handleRegisterWhatsApp = (e: React.FormEvent) => {
+    e.preventDefault();
+    const form = (e.target as HTMLElement).closest('form') as HTMLFormElement;
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    const name = (form.elements.namedItem('name') as HTMLInputElement).value;
+    const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+    const phone = (form.elements.namedItem('phone') as HTMLInputElement).value;
+    const attendees = (form.elements.namedItem('attendees') as HTMLInputElement).value;
+
+    const body = `Workshop Registration:%0A%0AWorkshop: ${selectedTheme?.title}%0AName: ${name}%0AEmail: ${email}%0APhone: ${phone}%0AAttendees: ${attendees}`;
+    window.open(`https://wa.me/917387779238?text=${body}`, '_blank');
+    
+    setIsSubmitted(true);
+  };
+
+  const closeRegistration = () => {
+    setSelectedTheme(null);
+    setIsSubmitted(false);
+  };
 
   useEffect(() => {
     if (!isHovered) {
@@ -92,7 +144,7 @@ export default function Workshops() {
   return (
     <div className="bg-soft-sand">
       {/* Hero Slider */}
-      <section className="w-full bg-soft-sand pt-12 pb-12 lg:pt-16 lg:pb-16 flex justify-center">
+      <section className="w-full bg-soft-sand py-12 md:py-16 lg:py-20 flex justify-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div 
             className="relative rounded-[32px] overflow-hidden shadow-2xl flex flex-col bg-white"
@@ -174,23 +226,27 @@ export default function Workshops() {
       </section>
 
       {/* Workshop Themes Grid */}
-      <section className="py-12 bg-soft-sand">
+      <section className="py-12 md:py-16 lg:py-20 bg-soft-sand">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-           <div className="text-center mb-16">
+           <div className="text-center mb-10 md:mb-16">
              <h2 className="text-3xl md:text-[44px] font-semibold text-deep-teal mb-4 font-heading">Workshop Themes</h2>
              <p className="text-lg text-charcoal-warm">Tailored, interactive, and grounded in behavioral science.</p>
            </div>
            
            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
              {themes.map((theme, i) => (
-                <div key={i} className="bg-white p-8 rounded-[16px] border-t-4 border-t-terracotta border-x border-b border-gray-200 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group flex flex-col h-full cursor-pointer relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-terracotta/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"></div>
-                  <div className="relative z-10 flex flex-col h-full">
-                    <div className="transform group-hover:scale-105 transition-all duration-300 origin-left">
+                <div key={i} onClick={() => setSelectedTheme(theme)} className="bg-white rounded-[16px] border-t-4 border-t-terracotta border-x border-b border-gray-200 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group flex flex-col h-full cursor-pointer relative overflow-hidden">
+                  <div className="h-40 w-full overflow-hidden relative">
+                    <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-300 z-10"></div>
+                    <img src={theme.image} alt={theme.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                  </div>
+                  <div className="p-8 flex-grow flex flex-col relative z-20">
+                    <div className="absolute inset-0 bg-gradient-to-br from-terracotta/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"></div>
+                    <div className="transform group-hover:scale-105 transition-all duration-300 origin-left relative z-10">
                       {theme.icon}
                     </div>
-                    <h3 className="text-[20px] font-semibold text-deep-teal mb-3 font-heading leading-snug group-hover:text-terracotta transition-colors duration-300 text-pretty">{theme.title}</h3>
-                    <p className="text-charcoal-warm text-[15px] leading-relaxed mt-auto">{theme.desc}</p>
+                    <h3 className="text-[20px] font-semibold text-deep-teal mb-3 font-heading leading-snug group-hover:text-terracotta transition-colors duration-300 text-pretty relative z-10">{theme.title}</h3>
+                    <p className="text-charcoal-warm text-[15px] leading-relaxed mt-auto relative z-10">{theme.desc}</p>
                   </div>
                 </div>
              ))}
@@ -199,7 +255,7 @@ export default function Workshops() {
       </section>
 
       {/* Workshop Formats Marquee & CTA */}
-      <section className="py-24 bg-white border-y border-gray-100">
+      <section className="py-16 md:py-20 lg:py-24 bg-white border-y border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-[40px] font-semibold text-deep-teal font-heading">Workshop Formats</h2>
@@ -258,6 +314,122 @@ export default function Workshops() {
           </Link>
         </div>
       </section>
+
+      {/* Registration Modal */}
+      <AnimatePresence>
+        {selectedTheme && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-[#0B3A42]/80 backdrop-blur-sm"
+              onClick={closeRegistration}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative w-full max-w-lg bg-soft-sand rounded-[24px] shadow-2xl overflow-hidden z-10 flex flex-col max-h-[90vh]"
+            >
+              <div className="flex justify-between items-center p-6 border-b border-gray-200 bg-white">
+                <div>
+                  <h3 className="text-xl font-bold text-deep-teal font-heading">Register for Workshop</h3>
+                  <p className="text-sm text-terracotta font-medium mt-1">{selectedTheme.title}</p>
+                </div>
+                <button
+                  onClick={closeRegistration}
+                  className="text-gray-400 hover:text-terracotta transition-colors p-2 rounded-full hover:bg-gray-100"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="p-6 md:p-8 overflow-y-auto">
+                {isSubmitted ? (
+                  <div className="text-center py-8">
+                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <CheckCircle2 className="w-8 h-8 text-green-600" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-deep-teal font-heading mb-4">Registration Received!</h3>
+                    <p className="text-charcoal-warm mb-8">
+                      Thank you for your interest in the <span className="font-semibold">{selectedTheme.title}</span> workshop. We will be in touch with you shortly to confirm your booking.
+                    </p>
+                    <button
+                      onClick={closeRegistration}
+                      className="px-8 py-3 bg-deep-teal text-white rounded-full font-medium tracking-wide hover:bg-[#07252A] transition-colors"
+                    >
+                      Close
+                    </button>
+                  </div>
+                ) : (
+                  <form className="space-y-5">
+                    <div>
+                      <label htmlFor="name" className="block text-sm font-medium text-deep-teal mb-2">Full Name</label>
+                      <input
+                        type="text"
+                        id="name"
+                        required
+                        className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-terracotta focus:ring focus:ring-terracotta/20 bg-white transition-all outline-none"
+                        placeholder="Your name"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-medium text-deep-teal mb-2">Email Address</label>
+                      <input
+                        type="email"
+                        id="email"
+                        required
+                        className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-terracotta focus:ring focus:ring-terracotta/20 bg-white transition-all outline-none"
+                        placeholder="you@company.com"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="phone" className="block text-sm font-medium text-deep-teal mb-2">Phone Number</label>
+                      <input
+                        type="tel"
+                        id="phone"
+                        required
+                        className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-terracotta focus:ring focus:ring-terracotta/20 bg-white transition-all outline-none"
+                        placeholder="+91"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="attendees" className="block text-sm font-medium text-deep-teal mb-2">Number of Attendees</label>
+                      <input
+                        type="number"
+                        id="attendees"
+                        required
+                        min="1"
+                        className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-terracotta focus:ring focus:ring-terracotta/20 bg-white transition-all outline-none"
+                        placeholder="1"
+                      />
+                    </div>
+                    <div className="pt-2 flex flex-col sm:flex-row gap-4">
+                      <button
+                        type="button"
+                        onClick={handleRegisterEmail}
+                        className="flex-1 py-4 bg-terracotta text-white rounded-xl font-semibold tracking-wide hover:bg-amber-glow transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 whitespace-nowrap px-4 flex justify-center items-center gap-2"
+                      >
+                        <Mail className="w-5 h-5" />
+                        Register via Email
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleRegisterWhatsApp}
+                        className="flex-1 py-4 bg-[#25D366] text-white rounded-xl font-semibold tracking-wide hover:bg-[#1DA851] transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 whitespace-nowrap px-4 flex justify-center items-center gap-2"
+                      >
+                        <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" className="w-5 h-5"><path d="M12.031 0C5.398 0 .016 5.378.016 12.015c0 2.128.553 4.202 1.602 6.03L0 24l6.113-1.604a11.967 11.967 0 005.918 1.564h.005c6.634 0 12.014-5.38 12.014-12.017C24.05 5.378 18.665 0 12.031 0zm0 21.964c-1.802 0-3.567-.485-5.11-1.401l-.367-.217-3.794.996 1.015-3.698-.238-.378a9.98 9.98 0 01-1.521-5.263c0-5.518 4.492-10.013 10.015-10.013 5.517 0 10.014 4.495 10.014 10.013 0 5.517-4.497 10.013-10.014 10.013zm5.494-7.514c-.301-.151-1.782-.879-2.059-.979-.276-.1-.478-.152-.678.151-.2.302-.779.979-.955 1.18-.175.201-.351.226-.652.076-.301-.151-1.272-.469-2.424-1.496-.897-.798-1.503-1.784-1.678-2.086-.176-.302-.019-.465.132-.615.136-.135.301-.351.452-.526.151-.176.201-.301.301-.502.1-.2.051-.377-.025-.527-.076-.151-.678-1.633-.929-2.235-.245-.589-.494-.509-.678-.518-.175-.008-.376-.011-.577-.011-.2 0-.527.075-.802.376-.276.301-1.054 1.029-1.054 2.508s1.079 2.909 1.23 3.11c.151.2 2.122 3.238 5.14 4.542.718.31 1.28.495 1.717.635.72.228 1.376.195 1.894.118.579-.085 1.782-.728 2.033-1.431.251-.703.251-1.306.176-1.432-.075-.125-.276-.2-.577-.35z"/></svg>
+                        Register via WhatsApp
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

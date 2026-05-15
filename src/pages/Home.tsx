@@ -278,9 +278,9 @@ export default function Home() {
 
 
       {/* You're In The Right Place If */}
-      <section className="py-12">
+      <section className="py-12 md:py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="text-center mb-10 md:mb-16">
             <h2 className="text-3xl md:text-[44px] font-semibold text-deep-teal mb-4 font-heading">You're In The Right Place If...</h2>
           </div>
           
@@ -326,7 +326,7 @@ export default function Home() {
       </section>
 
       {/* What Makes Us Different */}
-      <section className="py-12 bg-white">
+      <section className="py-12 md:py-16 lg:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-10 items-center">
           <div className="lg:w-1/2">
             <h2 className="text-3xl md:text-[36px] font-semibold text-deep-teal mb-6 font-heading leading-tight">Not a clinic. Not a coach.<br/>Something more integrated.</h2>
@@ -355,9 +355,9 @@ export default function Home() {
       </section>
 
       {/* Services Snapshot */}
-      <section className="py-12 bg-soft-sand">
+      <section className="py-12 md:py-16 lg:py-20 bg-soft-sand">
          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <div className="text-center mb-10 md:mb-16">
               <h2 className="text-3xl md:text-[44px] font-semibold text-deep-teal mb-4 font-heading">Find Your Path</h2>
             </div>
 
@@ -401,9 +401,9 @@ export default function Home() {
       </section>
 
       {/* Core Path Slider */}
-      <section className="py-12 bg-white border-b border-t border-gray-100" aria-label="Our Core Path">
+      <section className="py-12 md:py-16 lg:py-20 bg-white border-b border-t border-gray-100" aria-label="Our Core Path">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="text-center mb-10 md:mb-16">
             <h2 className="text-3xl md:text-[44px] font-semibold text-deep-teal mb-4 font-heading">The Core Path</h2>
             <p className="text-lg text-charcoal-warm">A holistic well-being practice integrating five essential pillars.</p>
           </div>
@@ -496,7 +496,7 @@ export default function Home() {
       </section>
 
        {/* Resources & Blogs Preview */}
-       <section className="py-20 bg-white border-t border-gray-100">
+       <section className="py-16 md:py-20 lg:py-24 bg-white border-t border-gray-100">
          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
              <div className="max-w-2xl">
@@ -541,7 +541,7 @@ export default function Home() {
        </section>
 
        {/* Client Testimonials */}
-       <section className="py-20 bg-white border-y border-gray-100 overflow-hidden">
+       <section className="py-16 md:py-20 lg:py-24 bg-white border-y border-gray-100 overflow-hidden">
          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
            <div className="text-center mb-12">
              <h2 className="text-3xl md:text-[36px] font-semibold text-deep-teal mb-4 font-heading">Real Shifts. Real Lives.</h2>
@@ -593,7 +593,7 @@ export default function Home() {
        </section>
 
        {/* Micro-Moment Box & Thought of the Day */}
-       <section className="py-20 bg-soft-sand">
+       <section className="py-16 md:py-20 lg:py-24 bg-soft-sand">
          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
            <div className="flex flex-col md:flex-row gap-8 justify-center items-stretch">
              {/* Dynamic Anchor */}

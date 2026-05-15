@@ -146,7 +146,7 @@ export default function Services() {
   return (
     <div className="bg-white">
       {/* Page Header */}
-      <section className="bg-soft-sand py-12 text-center border-b border-gray-200">
+      <section className="bg-soft-sand py-12 md:py-16 lg:py-20 text-center border-b border-gray-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
@@ -176,7 +176,7 @@ export default function Services() {
       </section>
 
       {/* Services Accordion List */}
-      <section className="py-12 bg-white">
+      <section className="py-12 md:py-16 lg:py-20 bg-white">
          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             {isLoading ? (
               <div className="space-y-6">
@@ -265,7 +265,7 @@ export default function Services() {
       </section>
 
       {/* End CTA */}
-      <section className="bg-white py-16 border-b border-gray-200">
+      <section className="bg-white py-12 md:py-16 lg:py-20 border-b border-gray-200">
         <div className="max-w-[800px] mx-auto px-4 text-center bg-soft-sand rounded-[24px] p-12 md:p-16">
            <h2 className="text-[36px] font-semibold text-deep-teal mb-6 font-heading">Still not sure which service fits?</h2>
            <p className="text-lg text-charcoal-warm mb-10">That's completely okay. Book a free clarity call — we'll figure it out together.</p>
