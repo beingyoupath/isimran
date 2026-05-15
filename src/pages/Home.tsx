@@ -1,0 +1,626 @@
+import { Link } from "react-router-dom";
+import { Brain, GraduationCap, Users, Briefcase, CheckCircle2, ChevronRight, Compass, HeartHandshake, Zap, BookOpen, Quote, ChevronLeft, ArrowRight, BrainCircuit, Coffee } from "lucide-react";
+import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
+import { useState, useEffect, useRef } from "react";
+
+export default function Home() {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+
+  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
+  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const textOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
+  const anchors = {
+    0: { // Sunday
+      morning: { emoji: "🌅", title: "Sunday Morning Stillness", body: "Before the week's planning begins, spend 2 minutes in conscious breathing. Let today be about restoration, not just preparation." },
+      afternoon: { emoji: "☕", title: "Sunday Afternoon Pause", body: "Notice if the 'Sunday Scaries' are creeping in. Acknowledge the feeling without trying to fix it immediately. You are here, right now, and you are safe." },
+      evening: { emoji: "🌙", title: "Sunday Evening Transition", body: "Close out the weekend deliberately. Write down one thing you're looking forward to this week. This shifts the brain from avoidance to approach motivation." }
+    },
+    1: { // Monday
+      morning: { emoji: "🌅", title: "Monday Morning Anchor", body: "Before checking your phone, spend 90 seconds in stillness. Set a single intention for how you want to feel today, rather than what you want to achieve." },
+      afternoon: { emoji: "☀️", title: "Monday Afternoon Reset", body: "Step away from the screen. Look at something distant. Take 3 deep breaths. This breaks the sympathetic nervous system's 'tunnel vision'." },
+      evening: { emoji: "🌙", title: "Monday Evening Boundary", body: "Work is done. Physically close your laptop or notebook. Say aloud, 'I am leaving work for today.' This creates a clear psychological boundary." }
+    },
+    2: { // Tuesday
+      morning: { emoji: "🌅", title: "Tuesday Morning Focus", body: "Identify your one 'frog' today—the hardest but most important task. Commit to doing it first, protecting your peak cognitive energy." },
+      afternoon: { emoji: "☕", title: "Tuesday Afternoon Clarity", body: "Notice any tension in your jaw or shoulders. Consciously let it go. Action doesn't require physical tension." },
+      evening: { emoji: "🌙", title: "Tuesday Evening Unwind", body: "Transition into your evening with a sensory shift. Dim the lights, play different music, or change your clothes to signal to your brain that the workday is over." }
+    },
+    3: { // Wednesday
+      morning: { emoji: "🌅", title: "Wednesday Mid-Week Check", body: "You're halfway there. Acknowledge what hasn't gone perfectly this week and practice self-compassion. Adjust your expectations if necessary." },
+      afternoon: { emoji: "☀️", title: "Wednesday Energy Audit", body: "Where is your energy right now? Rate it from 1-10. If it's low, don't push through forcefully. Take a 5-minute break to stretch or hydrate." },
+      evening: { emoji: "🌙", title: "Wednesday Reconnection", body: "Mid-week can feel isolating. Send a quick message of appreciation to someone in your life. Connection is a powerful regulator of the nervous system." }
+    },
+    4: { // Thursday
+      morning: { emoji: "🌅", title: "Thursday Morning Pace", body: "Resist the urge to rush. Move deliberately through your morning routine. Rushing signals danger to the brain; pacing signals safety." },
+      afternoon: { emoji: "☕", title: "Thursday Afternoon Friction", body: "Feeling friction? Ask yourself: 'Am I making this harder than it needs to be?' Look for the path of least resistance for the rest of the day." },
+      evening: { emoji: "🌙", title: "Thursday Gratitude", body: "Reflect on one thing you handled well today. Acknowledging your own competence builds self-efficacy and resilience." }
+    },
+    5: { // Friday
+      morning: { emoji: "🌅", title: "Friday Morning Sprint", body: "Identify what absolutely must be done to close out the week peacefully. Prioritize ruthlessly. The rest can wait." },
+      afternoon: { emoji: "☀️", title: "Friday Brain Dump", body: "Write down all open loops—tasks, ideas, worries. Get them out of your head and onto paper so you don't carry them into the weekend." },
+      evening: { emoji: "🌙", title: "Friday Evening Shift", body: "You made it. Do something that requires absolutely no optimization or productivity. Permit yourself to just 'be'." }
+    },
+    6: { // Saturday
+      morning: { emoji: "🌅", title: "Saturday Morning Freedom", body: "Wake up without an immediate agenda. Let your curiosity guide your first hour today instead of obligation." },
+      afternoon: { emoji: "☕", title: "Saturday Afternoon Play", body: "Engage in an activity just for the joy of it. Play is essential for neuroplasticity and emotional regulation, even for adults." },
+      evening: { emoji: "🌙", title: "Saturday Evening Presence", body: "Notice the people or environment around you. Put down devices and practice undivided attention. It's the highest form of connection." }
+    }
+  };
+
+  const thoughtsOfTheDay = [
+    "Rest is not a reward for the work done; it's the foundation for the work to come.", // Sunday
+    "You don't have to have it all figured out today. Just figure out your next right step.", // Monday
+    "Notice what happens when you stop trying to control the outcome and just focus on the action.", // Tuesday
+    "Self-compassion isn't letting yourself off the hook—it's giving yourself the safety to try again.", // Wednesday
+    "Friction is often a sign that we're pushing against our natural rhythm instead of working with it.", // Thursday
+    "What you leave unfinished today does not diminish what you accomplished this week.", // Friday
+    "The present moment is the only place where your life actually happens." // Saturday
+  ];
+
+  const corePaths = [
+    {
+      title: "Modern Psychology",
+      subtitle: "Grounded in Science",
+      description: "Using evidence-based therapeutic techniques like Cognitive Behavioural Therapy (CBT) and Positive Psychology, we help you understand your mind, rewire unhelpful thought patterns, and build genuine emotional resilience without the heavy jargon."
+    },
+    {
+      title: "Secular Mindfulness",
+      subtitle: "Attention & Regulation",
+      description: "Practical, accessible attention training for the real world. Learn how to regulate your nervous system, pause before reacting, and navigate high-stress environments without needing to retreat to a mountaintop."
+    },
+    {
+      title: "Ancient Wisdom",
+      subtitle: "Meaning & Purpose",
+      description: "We translate timeless, profound historical insights into actionable modern frameworks. Because beyond fixing what's broken, true well-being is about finding deeper connection, purpose, and clarity in your everyday life."
+    },
+    {
+      title: "Somatic Awareness",
+      subtitle: "Body-Mind Connection",
+      description: "Learning to listen to the physical sensations of emotion, understanding how your body stores stress, and using somatic techniques to release tension and actively restore physical and emotional equilibrium."
+    },
+    {
+      title: "Behavioral Integration",
+      subtitle: "Sustainable Habits",
+      description: "Moving beyond insight to action. We focus on creating structured, consistent, and resilient daily habits that reinforce your well-being journey and align your behaviors with your deepest values."
+    }
+  ];
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+
+  const testimonials = [
+    {
+      quote: "I thought I was just unmotivated, but I was fundamentally burned out. The counselling sessions didn't just give me a new perspective; they rewired how I approach my life and boundaries.",
+      author: "Priya S.",
+      role: "Marketing Director",
+    },
+    {
+      quote: "The 'Mindful Leadership' workshop transformed how our management team communicates. It wasn't just another offsite; we walked away with practical tools for emotional regulation that we use daily.",
+      author: "Sarah K.",
+      role: "HR Head",
+    },
+    {
+      quote: "As a student facing intense exam stress, the actionable habit science and emotional regulation tools changed everything. I stopped fighting my brain and learned how to work with it.",
+      author: "Ananya T.",
+      role: "University Student",
+    },
+    {
+      quote: "Our team's productivity and morale have visibly shifted since the well-being retainer program started. The approach is deeply human and incredibly effective.",
+      author: "Amit D.",
+      role: "Founder & CEO",
+    },
+    {
+      quote: "I've been to several therapists before, but the blend of CBT and somatic awareness here finally helped me break free from my chronic anxiety loop. The change has been profound.",
+      author: "Neha V.",
+      role: "Freelance Designer",
+    },
+    {
+      quote: "The mindfulness practices weren't spiritual fluff. They were practical nervous system anchors I could use in the middle of a high-pressure meeting. It's rare to find professionals who understand corporate anxiety so deeply.",
+      author: "Rahul M.",
+      role: "Software Engineer",
+    },
+    {
+      quote: "The student resilience workshop was exactly what our seniors needed before their finals. The facilitators knew how to speak their language and offered genuine support.",
+      author: "Dr. Meera J.",
+      role: "School Principal",
+    },
+    {
+      quote: "My career was stuck because of imposter syndrome. Through our 1-on-1 coaching sessions, I didn't just 'talk' about it; I learned actionable ways to rewire those limiting beliefs.",
+      author: "Jason L.",
+      role: "Product Manager",
+    }
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentDate(new Date()), 60000);
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [testimonials.length]);
+
+  useEffect(() => {
+    if (!isHovered) {
+      const timer = setInterval(() => {
+        setCurrentSlide((prev) => (prev + 1) % corePaths.length);
+      }, 7000);
+      return () => clearInterval(timer);
+    }
+  }, [corePaths.length, isHovered]);
+
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % corePaths.length);
+  const prevSlide = () => setCurrentSlide((prev) => (prev === 0 ? corePaths.length - 1 : prev - 1));
+
+  const dayOfWeek = currentDate.getDay() as keyof typeof anchors;
+  const hour = currentDate.getHours();
+  
+  let timeOfDay: 'morning' | 'afternoon' | 'evening' = 'morning';
+  if (hour >= 12 && hour < 17) {
+    timeOfDay = 'afternoon';
+  } else if (hour >= 17 || hour < 5) {
+    timeOfDay = 'evening';
+  }
+
+  const currentAnchor = anchors[dayOfWeek][timeOfDay];
+  const currentThought = thoughtsOfTheDay[dayOfWeek];
+
+  return (
+    <div className="bg-soft-sand">
+      {/* Hero Section */}
+      <section ref={heroRef} className="w-full bg-soft-sand pt-12 pb-12 lg:pt-16 lg:pb-16 flex justify-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="relative rounded-[32px] overflow-hidden shadow-2xl flex flex-col lg:flex-row bg-white">
+            {/* Image Element */}
+            <div className="w-full lg:w-5/12 h-[40vh] md:h-[50vh] lg:h-auto min-h-[350px] relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0B3A42]/30 via-transparent to-[#0B3A42]/10 z-10 transition-opacity duration-700 ease-in-out"></div>
+              <motion.img 
+                src="https://images.unsplash.com/photo-1528319725582-ddc096101511?q=80&w=2938&auto=format&fit=crop" 
+                alt="Reflective journey back to self in soft light"
+                className="absolute inset-0 w-full h-full object-cover origin-center"
+                style={{ y: imageY, scale: imageScale }}
+                referrerPolicy="no-referrer"
+              />
+            </div>
+            
+            {/* Text Content Area */}
+            <motion.div 
+              style={{ y: textY, opacity: textOpacity }}
+              className="w-full lg:w-7/12 p-8 md:p-12 lg:p-16 flex flex-col items-center lg:items-start text-center lg:text-left justify-center relative z-20 bg-white"
+            >
+              <motion.div 
+                className="w-full max-w-2xl mx-auto lg:mx-0"
+                initial="hidden"
+                animate="show"
+                variants={{
+                  hidden: { opacity: 0 },
+                  show: {
+                    opacity: 1,
+                    transition: {
+                      staggerChildren: 0.2,
+                      delayChildren: 0.1,
+                    }
+                  }
+                }}
+              >
+                <motion.h1 
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+                  }}
+                  className="text-4xl md:text-[48px] lg:text-[52px] xl:text-[56px] leading-tight font-bold text-deep-teal mb-6 font-heading tracking-tight"
+                >
+                  Feel Clearer. Think Better. Live With More Purpose.
+                </motion.h1>
+                
+                <motion.h2 
+                  variants={{
+                    hidden: { opacity: 0, y: 15 },
+                    show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+                  }}
+                  className="text-xl md:text-[28px] md:leading-[36px] text-charcoal-warm mb-8 font-semibold font-heading"
+                >
+                  Evidence-informed well-being support for the way real life actually feels.
+                </motion.h2>
+
+                <motion.p 
+                  variants={{
+                    hidden: { opacity: 0, y: 15 },
+                    show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+                  }}
+                  className="text-lg text-charcoal-warm mb-10 leading-relaxed"
+                >
+                  You don't need to be in crisis to deserve support. Maybe you're tired in ways sleep doesn't fix. Maybe you're doing everything right but feel nothing clicking. Maybe you're good at your job but lost on the inside.<br/><br/>
+                  Being You Path™ blends modern psychology, mindfulness, and practical everyday science into support that's grounded, warm, and built for real people. No jargon. No mysticism. Just clarity, direction, and tools that work.
+                </motion.p>
+                
+                <motion.div 
+                  variants={{
+                    hidden: { opacity: 0, y: 15 },
+                    show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+                  }}
+                  className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4"
+                >
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+                    <Link
+                      to="/contact"
+                      className="inline-flex items-center justify-center px-8 py-4 text-base tracking-wide font-medium rounded-[50px] text-white bg-terracotta hover:bg-amber-glow transition-all uppercase shadow-md hover:shadow-lg w-full sm:w-auto"
+                    >
+                      &rarr; Book Your Free Clarity Call
+                    </Link>
+                  </motion.div>
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+                    <Link
+                      to="/services"
+                      className="inline-flex items-center justify-center px-8 py-4 text-base tracking-wide font-medium rounded-[50px] text-terracotta border-2 border-terracotta hover:bg-terracotta hover:text-white transition-all uppercase shadow-sm hover:shadow-md w-full sm:w-auto"
+                    >
+                      &rarr; Explore What We Do
+                    </Link>
+                  </motion.div>
+                </motion.div>
+              </motion.div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+
+
+      {/* You're In The Right Place If */}
+      <section className="py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-[44px] font-semibold text-deep-teal mb-4 font-heading">You're In The Right Place If...</h2>
+          </div>
+          
+          <motion.div 
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={{
+              hidden: {},
+              show: { transition: { staggerChildren: 0.1 } }
+            }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
+            {[
+              { icon: Briefcase, title: "Working Professional / Businessmen", desc: "Productive on paper but running on empty inside — managing deadlines, businesses, and expectations while quietly wondering if this is it." },
+              { icon: GraduationCap, title: "Student / Young Adult", desc: "Navigating performance pressure, future uncertainty, identity questions, and the gap between who you are and who everyone expects you to be." },
+              { icon: Users, title: "Parent / Bachelor or Single", desc: "Whether navigating the chaos of raising kids or trying to find balance and purpose on your own — realising no one handed you a manual for life." },
+              { icon: HeartHandshake, title: "HR / Team Lead or Manager", desc: "Knows culture and well-being matter, and wants evidence-based, practical solutions for their team — not wellness fluff." }
+            ].map((audience, i) => (
+              <motion.div 
+                key={i}
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] } }
+                }}
+                className="bg-soft-sand rounded-[16px] p-6 border-t-4 border-t-terracotta border-x border-b border-gray-200 shadow-sm hover-lift group"
+              >
+                <div className="mb-4">
+                  <audience.icon className="text-terracotta w-8 h-8 group-hover:scale-110 transition-transform duration-300 ease-out icon-scale" strokeWidth={1.5} />
+                </div>
+                <h3 className="text-xl font-medium text-deep-teal mb-3 font-heading">{audience.title}</h3>
+                <p className="text-charcoal-warm text-[15px]">{audience.desc}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* What Makes Us Different */}
+      <section className="py-12 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-10 items-center">
+          <div className="lg:w-1/2">
+            <h2 className="text-3xl md:text-[36px] font-semibold text-deep-teal mb-6 font-heading leading-tight">Not a clinic. Not a coach.<br/>Something more integrated.</h2>
+          </div>
+          <div className="lg:w-1/2">
+            <p className="text-lg text-charcoal-warm mb-10 leading-relaxed">
+              Most well-being services give you one lens. Therapy looks at the past. Coaching looks at goals. Meditation apps give you breathing exercises. We bring all three together — in a way that's practical, personalised, and grounded in how minds actually work.
+            </p>
+            
+            <div className="space-y-6">
+              <div className="flex items-center gap-4">
+                <Brain className="w-8 h-8 text-terracotta flex-shrink-0" strokeWidth={1.5} />
+                <span className="font-semibold text-charcoal-warm text-lg">Psychology-Grounded (CBT, Positive, Counselling)</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <Compass className="w-8 h-8 text-terracotta flex-shrink-0" strokeWidth={1.5} />
+                <span className="font-semibold text-charcoal-warm text-lg">Mindfulness-Based (Secular, Attention Training)</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <Zap className="w-8 h-8 text-terracotta flex-shrink-0" strokeWidth={1.5} />
+                <span className="font-semibold text-charcoal-warm text-lg">Behavioural Science (Habits, Environment, Friction)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Services Snapshot */}
+      <section className="py-12 bg-soft-sand">
+         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-[44px] font-semibold text-deep-teal mb-4 font-heading">Find Your Path</h2>
+            </div>
+
+            <motion.div 
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={{
+                hidden: {},
+                show: { transition: { staggerChildren: 0.1 } }
+              }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+               {[
+                 { icon: Compass, title: "Career Counselling & Clarity", desc: "For professionals stuck or burning out" },
+                 { icon: Briefcase, title: "Employee Well-Being Workshops", desc: "For organisations that take people seriously" },
+                 { icon: BookOpen, title: "Student Support & Exam Stress", desc: "For young adults navigating pressure" },
+                 { icon: Users, title: "Parenting & Family Well-Being", desc: "Raising humans while being human" },
+                 { icon: Brain, title: "Mindfulness & Habit Science", desc: "Train attention. Change patterns." },
+                 { icon: Zap, title: "Gen Z in the Workplace", desc: "Bridge the generational gap" },
+               ].map((service, i) => (
+                 <motion.div
+                   key={i}
+                   variants={{
+                     hidden: { opacity: 0, y: 30 },
+                     show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] } }
+                   }}
+                 >
+                   <Link to="/services" className="group bg-white p-8 rounded-[16px] border border-gray-100 shadow-sm hover-lift flex flex-col h-full block">
+                      <service.icon className="w-8 h-8 text-terracotta mb-6 icon-scale" strokeWidth={1.5} />
+                      <h3 className="text-[24px] font-medium text-deep-teal mb-3 font-heading group-hover:text-terracotta transition-colors leading-tight">{service.title}</h3>
+                      <p className="text-charcoal-warm mb-8 flex-grow">{service.desc}</p>
+                      <span className="text-terracotta font-medium flex items-center mt-auto uppercase text-sm tracking-wide">
+                        Learn More &rarr; <ChevronRight className="w-4 h-4 ml-1 opacity-0 -translate-x-2 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:translate-x-0" />
+                      </span>
+                   </Link>
+                 </motion.div>
+               ))}
+            </motion.div>
+         </div>
+      </section>
+
+      {/* Core Path Slider */}
+      <section className="py-12 bg-white border-b border-t border-gray-100" aria-label="Our Core Path">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-[44px] font-semibold text-deep-teal mb-4 font-heading">The Core Path</h2>
+            <p className="text-lg text-charcoal-warm">A holistic well-being practice integrating five essential pillars.</p>
+          </div>
+
+          <div 
+            className="relative bg-soft-sand rounded-[32px] p-8 md:p-16 shadow-sm border border-gray-200"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+             <Quote className="absolute top-8 left-8 md:top-12 md:left-12 w-12 h-12 text-terracotta/20" />
+             <div className="relative z-10 min-h-[260px] flex items-center justify-center overflow-hidden">
+               <AnimatePresence mode="wait">
+                 <motion.div
+                   key={currentSlide}
+                   initial="hidden"
+                   animate="visible"
+                   exit="exit"
+                   variants={{
+                     hidden: { opacity: 0 },
+                     visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
+                     exit: { opacity: 0, x: -20, transition: { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] } }
+                   }}
+                   className="text-center w-full"
+                 >
+                   <motion.h3 
+                     variants={{
+                       hidden: { opacity: 0, x: 20 },
+                       visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] } },
+                       exit: { opacity: 0 }
+                     }}
+                     className="text-3xl md:text-4xl text-deep-teal font-heading font-semibold mb-4"
+                   >
+                     {corePaths[currentSlide].title}
+                   </motion.h3>
+                   <motion.div 
+                     variants={{
+                       hidden: { opacity: 0, y: 10 },
+                       visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] } },
+                       exit: { opacity: 0 }
+                     }}
+                     className="text-sm font-bold tracking-wider text-terracotta uppercase mb-6"
+                   >
+                     {corePaths[currentSlide].subtitle}
+                   </motion.div>
+                   <motion.p 
+                     variants={{
+                       hidden: { opacity: 0, x: 20 },
+                       visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] } },
+                       exit: { opacity: 0 }
+                     }}
+                     className="text-lg md:text-xl text-charcoal-warm leading-relaxed mb-8 px-4 md:px-12"
+                   >
+                     {corePaths[currentSlide].description}
+                   </motion.p>
+                 </motion.div>
+               </AnimatePresence>
+             </div>
+
+             {/* Controls */}
+             <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 flex justify-between px-4 md:-mx-6 pointer-events-none z-20">
+               <button
+                 onClick={prevSlide}
+                 aria-label="Previous core path"
+                 className="pointer-events-auto w-12 h-12 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center text-deep-teal hover:text-terracotta hover:scale-105 transition-all outline-none focus:ring-2 focus:ring-terracotta/50"
+               >
+                 <ChevronLeft className="w-6 h-6" />
+               </button>
+               <button
+                 onClick={nextSlide}
+                 aria-label="Next core path"
+                 className="pointer-events-auto w-12 h-12 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center text-deep-teal hover:text-terracotta hover:scale-105 transition-all outline-none focus:ring-2 focus:ring-terracotta/50"
+               >
+                 <ChevronRight className="w-6 h-6" />
+               </button>
+             </div>
+
+             {/* Dots */}
+             <div className="flex justify-center gap-2 mt-12 relative z-20">
+               {corePaths.map((_, idx) => (
+                 <button
+                   key={idx}
+                   onClick={() => setCurrentSlide(idx)}
+                   aria-label={`Go to slide ${idx + 1}`}
+                   className={`h-2.5 rounded-full transition-all duration-300 ${currentSlide === idx ? 'bg-terracotta w-8' : 'bg-gray-300 hover:bg-terracotta/50 w-2.5'}`}
+                 />
+               ))}
+             </div>
+          </div>
+        </div>
+      </section>
+
+       {/* Resources & Blogs Preview */}
+       <section className="py-20 bg-white border-t border-gray-100">
+         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+             <div className="max-w-2xl">
+               <h2 className="text-3xl md:text-[36px] font-semibold text-deep-teal mb-4 font-heading">Insights & Blogs</h2>
+               <p className="text-lg text-charcoal-warm">Practical, evidence-based articles to help you think clearer and live better.</p>
+             </div>
+             <Link 
+               to="/resources" 
+               className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium rounded-full border-2 border-terracotta text-terracotta hover:bg-terracotta hover:text-white transition-all uppercase tracking-wide group whitespace-nowrap"
+             >
+               Explore All Articles <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+             </Link>
+           </div>
+           
+           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+             <div className="bg-soft-sand rounded-[24px] p-8 border border-gray-100 hover:shadow-md transition-all group flex flex-col hover-lift h-full">
+                <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-terracotta flex-shrink-0">
+                   <BrainCircuit className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold font-heading text-deep-teal mb-3 group-hover:text-terracotta transition-colors leading-tight">Why You're Tired in Ways Sleep Can't Fix</h3>
+                <p className="text-charcoal-warm text-[15px] mb-6 flex-grow leading-relaxed">Many of us mistake cognitive fatigue for physical tiredness, leading to a frustrating cycle of resting without actually recovering.</p>
+                <Link to="/resources" className="text-sm font-bold uppercase tracking-wide text-terracotta group-hover:text-amber-glow transition-colors italic flex items-center mt-auto">Read Article <ArrowRight className="w-3 h-3 ml-1" /></Link>
+             </div>
+             <div className="bg-soft-sand rounded-[24px] p-8 border border-gray-100 hover:shadow-md transition-all group flex flex-col hover-lift h-full">
+                <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-terracotta flex-shrink-0">
+                   <Coffee className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold font-heading text-deep-teal mb-3 group-hover:text-terracotta transition-colors leading-tight">The 'Good Enough' Morning Routine</h3>
+                <p className="text-charcoal-warm text-[15px] mb-6 flex-grow leading-relaxed">A realistic approach to starting your day that doesn't involve waking up at 5 AM or meditating for an hour.</p>
+                <Link to="/resources" className="text-sm font-bold uppercase tracking-wide text-terracotta group-hover:text-amber-glow transition-colors italic flex items-center mt-auto">Read Article <ArrowRight className="w-3 h-3 ml-1" /></Link>
+             </div>
+             <div className="bg-soft-sand rounded-[24px] p-8 border border-gray-100 hover:shadow-md transition-all group flex flex-col hover-lift h-full">
+                <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-terracotta flex-shrink-0">
+                   <Briefcase className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold font-heading text-deep-teal mb-3 group-hover:text-terracotta transition-colors leading-tight">Setting Boundaries When You're Ambitious</h3>
+                <p className="text-charcoal-warm text-[15px] mb-6 flex-grow leading-relaxed">A guide for high-achievers on how to protect their time and mental well-being without compromising their professional goals.</p>
+                <Link to="/resources" className="text-sm font-bold uppercase tracking-wide text-terracotta group-hover:text-amber-glow transition-colors italic flex items-center mt-auto">Read Article <ArrowRight className="w-3 h-3 ml-1" /></Link>
+             </div>
+           </div>
+         </div>
+       </section>
+
+       {/* Client Testimonials */}
+       <section className="py-20 bg-white border-y border-gray-100 overflow-hidden">
+         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+           <div className="text-center mb-12">
+             <h2 className="text-3xl md:text-[36px] font-semibold text-deep-teal mb-4 font-heading">Real Shifts. Real Lives.</h2>
+             <p className="text-base text-charcoal-warm max-w-2xl mx-auto">Discover how our psychology-grounded approach translates to everyday clarity and resilience.</p>
+           </div>
+           
+           <div className="relative min-h-[300px] md:min-h-[250px] bg-soft-sand p-8 md:p-12 rounded-[24px] border border-gray-200 shadow-sm">
+             <Quote className="absolute top-8 left-8 w-10 h-10 text-terracotta/20" />
+             <div className="relative z-10 flex flex-col items-center justify-center text-center h-full pt-6">
+               <AnimatePresence mode="wait">
+                 <motion.div
+                   key={currentTestimonial}
+                   initial={{ opacity: 0, y: 15 }}
+                   animate={{ opacity: 1, y: 0 }}
+                   exit={{ opacity: 0, y: -15 }}
+                   transition={{ duration: 0.5, ease: "easeOut" }}
+                   className="w-full"
+                 >
+                   <p className="text-charcoal-warm leading-relaxed mb-8 italic text-[16px] md:text-[18px]">
+                     "{testimonials[currentTestimonial].quote}"
+                   </p>
+                   <div>
+                     <h4 className="text-deep-teal font-heading font-semibold text-lg">
+                       {testimonials[currentTestimonial].author}
+                     </h4>
+                     <span className="text-sm text-terracotta font-medium tracking-wide">
+                       {testimonials[currentTestimonial].role}
+                     </span>
+                   </div>
+                 </motion.div>
+               </AnimatePresence>
+             </div>
+             
+             {/* Dots */}
+             <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-2">
+               {testimonials.map((_, idx) => (
+                 <button
+                   key={idx}
+                   onClick={() => setCurrentTestimonial(idx)}
+                   className={`h-2 rounded-full transition-all duration-300 ${
+                     currentTestimonial === idx ? "bg-terracotta w-6" : "bg-gray-300 hover:bg-terracotta/50 w-2"
+                   }`}
+                   aria-label={`Go to testimonial ${idx + 1}`}
+                 />
+               ))}
+             </div>
+           </div>
+         </div>
+       </section>
+
+       {/* Micro-Moment Box & Thought of the Day */}
+       <section className="py-20 bg-soft-sand">
+         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+           <div className="flex flex-col md:flex-row gap-8 justify-center items-stretch">
+             {/* Dynamic Anchor */}
+             <motion.div 
+               className="bg-amber-glow/15 rounded-[24px] p-8 md:p-10 flex-1 max-w-[500px] border border-amber-glow/20 shadow-sm flex flex-col justify-center text-center hover-lift"
+             >
+               <div className="text-sm font-bold tracking-wider text-terracotta uppercase mb-4">
+                 Your {timeOfDay} Anchor
+               </div>
+               <h3 className="text-[24px] font-medium text-deep-teal mb-4 font-heading">
+                 {currentAnchor.emoji} {currentAnchor.title}
+               </h3>
+               <p className="text-charcoal-warm text-lg leading-relaxed">
+                 {currentAnchor.body}
+               </p>
+             </motion.div>
+
+             {/* Thought of the Day */}
+             <motion.div 
+               className="bg-deep-teal rounded-[24px] p-8 md:p-10 flex-1 max-w-[500px] shadow-sm flex flex-col justify-center text-center border-l-4 border-sage-green hover-lift"
+             >
+               <div className="text-sm font-bold tracking-wider text-sage-green uppercase mb-4">
+                 Thought of the Day
+               </div>
+               <Quote className="w-8 h-8 text-sage-green/40 mx-auto mb-6" />
+               <p className="text-white text-xl md:text-2xl font-heading font-medium leading-relaxed italic px-2">
+                 "{currentThought}"
+               </p>
+             </motion.div>
+           </div>
+         </div>
+       </section>
+
+    </div>
+  );
+}
