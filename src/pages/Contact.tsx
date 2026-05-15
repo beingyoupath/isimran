@@ -136,14 +136,24 @@ export default function Contact() {
                 </div>
                 <h3 className="text-[20px] font-semibold text-deep-teal mb-2 font-heading">In Person</h3>
                 <p className="text-charcoal-warm text-[15px] mb-2">Visit our office by appointment only.</p>
-                <a 
-                   href="https://www.google.com/maps/dir//Being+You+Path,+119%2F17,+Dr.+Sripati+Shastri+Path,+Near,+Prabhat+Rd,+Deccan+Gymkhana,+Pune,+Maharashtra+411004/@18.5201048,73.8771897,15z/data=!3m1!4b1!4m8!4m7!1m0!1m5!1m1!1s0x3bc2bf009a76793f:0xe544b78e3d109854!2m2!1d73.8309474!2d18.5142273?entry=ttu&g_ep=EgoyMDI2MDUxMC4wIKXMDSoASAFQAw%3D%3D" 
-                   target="_blank" 
-                   rel="noopener noreferrer" 
-                   className="text-terracotta hover:text-amber-glow font-medium text-[15px] underline transition-colors"
-                >
-                   Find directions on Google Maps
-                </a>
+                <div className="flex flex-col gap-2 mt-2">
+                  <a 
+                     href="https://share.google/bQZJdmxPTbKo8iwKM" 
+                     target="_blank" 
+                     rel="noopener noreferrer" 
+                     className="text-terracotta hover:text-amber-glow font-medium text-[15px] underline transition-colors"
+                  >
+                     Visit our Google Business Profile
+                  </a>
+                  <a 
+                     href="https://www.google.com/maps/dir//Being+You+Path,+119%2F17,+Dr.+Sripati+Shastri+Path,+Near,+Prabhat+Rd,+Deccan+Gymkhana,+Pune,+Maharashtra+411004/@18.5201048,73.8771897,15z/data=!3m1!4b1!4m8!4m7!1m0!1m5!1m1!1s0x3bc2bf009a76793f:0xe544b78e3d109854!2m2!1d73.8309474!2d18.5142273?entry=ttu&g_ep=EgoyMDI2MDUxMC4wIKXMDSoASAFQAw%3D%3D" 
+                     target="_blank" 
+                     rel="noopener noreferrer" 
+                     className="text-terracotta hover:text-amber-glow font-medium text-[14px] transition-colors"
+                  >
+                     Get directions
+                  </a>
+                </div>
              </div>
           </div>
         </div>

@@ -295,10 +295,10 @@ export default function Home() {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
           >
             {[
-              { icon: Briefcase, title: "Working Professional / Businessmen", desc: "Productive on paper but running on empty inside — managing deadlines, businesses, and expectations while quietly wondering if this is it." },
-              { icon: GraduationCap, title: "Student / Young Adult", desc: "Navigating performance pressure, future uncertainty, identity questions, and the gap between who you are and who everyone expects you to be." },
-              { icon: Users, title: "Parent / Bachelor or Single", desc: "Whether navigating the chaos of raising kids or trying to find balance and purpose on your own — realising no one handed you a manual for life." },
-              { icon: HeartHandshake, title: "HR / Team Lead or Manager", desc: "Knows culture and well-being matter, and wants evidence-based, practical solutions for their team — not wellness fluff." }
+              { icon: Briefcase, title: "Working Professional / Businessmen", desc: "Productive on paper but running on empty inside — managing deadlines, businesses, and expectations while quietly wondering if this is it.", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop" },
+              { icon: GraduationCap, title: "Student / Young Adult", desc: "Navigating performance pressure, future uncertainty, identity questions, and the gap between who you are and who everyone expects you to be.", image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format&fit=crop" },
+              { icon: Users, title: "Parent / Bachelor or Single", desc: "Whether navigating the chaos of raising kids or trying to find balance and purpose on your own — realising no one handed you a manual for life.", image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=800&auto=format&fit=crop" },
+              { icon: HeartHandshake, title: "HR / Team Lead or Manager", desc: "Knows culture and well-being matter, and wants evidence-based, practical solutions for their team — not wellness fluff.", image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=800&auto=format&fit=crop" }
             ].map((audience, i) => (
               <motion.div 
                 key={i}
@@ -306,13 +306,19 @@ export default function Home() {
                   hidden: { opacity: 0, y: 30 },
                   show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] } }
                 }}
-                className="bg-soft-sand rounded-[16px] p-6 border-t-4 border-t-terracotta border-x border-b border-gray-200 shadow-sm hover-lift group"
+                className="bg-soft-sand rounded-[16px] border-t-4 border-t-terracotta border-x border-b border-gray-200 shadow-sm hover-lift group overflow-hidden flex flex-col"
               >
-                <div className="mb-4">
-                  <audience.icon className="text-terracotta w-8 h-8 group-hover:scale-110 transition-transform duration-300 ease-out icon-scale" strokeWidth={1.5} />
+                <div className="h-48 w-full overflow-hidden relative">
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-300 z-10"></div>
+                  <img src={audience.image} alt={audience.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                 </div>
-                <h3 className="text-xl font-medium text-deep-teal mb-3 font-heading">{audience.title}</h3>
-                <p className="text-charcoal-warm text-[15px]">{audience.desc}</p>
+                <div className="p-6 flex-grow flex flex-col">
+                  <div className="mb-4">
+                    <audience.icon className="text-terracotta w-8 h-8 group-hover:scale-110 transition-transform duration-300 ease-out icon-scale" strokeWidth={1.5} />
+                  </div>
+                  <h3 className="text-xl font-medium text-deep-teal mb-3 font-heading">{audience.title}</h3>
+                  <p className="text-charcoal-warm text-[15px]">{audience.desc}</p>
+                </div>
               </motion.div>
             ))}
           </motion.div>

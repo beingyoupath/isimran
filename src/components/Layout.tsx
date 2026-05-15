@@ -32,10 +32,10 @@ function Navbar() {
             </span>
           </div>
           <div className="flex items-center space-x-5">
-            <span className="flex items-center group cursor-pointer">
+            <a href="https://share.google/bQZJdmxPTbKo8iwKM" target="_blank" rel="noopener noreferrer" className="flex items-center group cursor-pointer" aria-label="Visit our Google Business Profile">
               <MapPin className="w-3.5 h-3.5 mr-1.5 text-[#E6A157] group-hover:scale-110 transition-transform duration-300" />
               <span className="group-hover:text-[#E6A157] transition-colors duration-300">Pune & Online</span>
-            </span>
+            </a>
           </div>
         </div>
       </div>
@@ -203,7 +203,7 @@ function Footer() {
               <a href="mailto:info@beingyoupath.com" className="text-[#F4F1E1]/80 hover:text-[#E6A157] transition-colors duration-300">info@beingyoupath.com</a>
               
               <div className="flex items-center justify-start mt-2 pt-4 border-t border-[#FDFBF7]/10 w-full gap-3">
-                <a href="#" className="flex items-center text-[#F4F1E1]/80 hover:text-[#E6A157] transition-colors duration-300 group" aria-label="Google Maps">
+                <a href="https://share.google/bQZJdmxPTbKo8iwKM" target="_blank" rel="noopener noreferrer" className="flex items-center text-[#F4F1E1]/80 hover:text-[#E6A157] transition-colors duration-300 group" aria-label="Google Maps">
                   <MapPin className="w-4 h-4 mr-1 text-[#E6A157] flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />
                   <span>Pune</span>
                 </a>
@@ -223,32 +223,30 @@ function Footer() {
               
               {/* Social Media Icons beneath Reach Out */}
               <div className="flex flex-wrap items-center mt-4 gap-4">
-                <a href="#" className="text-[#F4F1E1]/70 hover:text-[#E6A157] transition-all hover:scale-110 duration-300" aria-label="Facebook">
+                <a href="https://www.facebook.com/share/1EHFBvwf4B/" target="_blank" rel="noopener noreferrer" className="text-[#F4F1E1]/70 hover:text-[#E6A157] transition-all hover:scale-110 duration-300" aria-label="Facebook">
                   <Facebook className="w-5 h-5" strokeWidth={1.5} />
                 </a>
-                <a href="#" className="text-[#F4F1E1]/70 hover:text-[#E6A157] transition-all hover:scale-110 duration-300" aria-label="Instagram">
+                <a href="https://www.instagram.com/beingyoupathoffical?igsh=MWdqejloNXAyank5dQ==" target="_blank" rel="noopener noreferrer" className="text-[#F4F1E1]/70 hover:text-[#E6A157] transition-all hover:scale-110 duration-300" aria-label="Instagram">
                   <Instagram className="w-5 h-5" strokeWidth={1.5} />
                 </a>
-                <a href="#" className="text-[#F4F1E1]/70 hover:text-[#E6A157] transition-all hover:scale-110 duration-300" aria-label="Reddit">
-                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" className="w-5 h-5"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.758.79 1.758 1.761 0 .36-.104.694-.287.974.015.15.022.302.022.457 0 2.806-3.1 5.082-6.93 5.082-3.83 0-6.93-2.276-6.93-5.082 0-.155.008-.307.023-.457a1.71 1.71 0 0 1-.287-.974c0-.972.79-1.76 1.758-1.76.477 0 .899.182 1.207.491 1.194-.856 2.85-1.418 4.674-1.488l.899-4.202c.038-.178.204-.306.388-.282l3.018.635a1.26 1.26 0 0 1 1.249-.933zm-4.706 7.641c-1.373 0-2.483 1.11-2.483 2.484 0 1.374 1.11 2.484 2.483 2.484 1.374 0 2.484-1.11 2.484-2.484 0-1.374-1.11-2.484-2.484-2.484zm-3.328 1.383c-.886 0-1.604.718-1.604 1.604 0 .886.718 1.604 1.604 1.604.886 0 1.604-.718 1.604-1.604 0-.886-.718-1.604-1.604-1.604zm6.656 0c-.886 0-1.604.718-1.604 1.604 0 .886.718 1.604 1.604 1.604.886 0 1.604-.718 1.604-1.604 0-.886-.718-1.604-1.604-1.604zm-3.328 3.513c-1.332 0-2.477.728-2.923 1.745-.084.19-.001.408.188.491.19.084.408-.001.491-.188.32-.73 1.144-1.258 2.244-1.258 1.1 0 1.924.528 2.244 1.258.083.189.301.272.491.188.189-.083.272-.301.188-.491-.446-1.017-1.591-1.745-2.923-1.745z"/></svg>
-                </a>
-                <a href="#" className="text-[#F4F1E1]/70 hover:text-[#E6A157] transition-all hover:scale-110 duration-300" aria-label="LinkedIn">
+                <a href="https://www.linkedin.com/company/beingyou-path-9965b1389/" target="_blank" rel="noopener noreferrer" className="text-[#F4F1E1]/70 hover:text-[#E6A157] transition-all hover:scale-110 duration-300" aria-label="LinkedIn">
                   <Linkedin className="w-5 h-5" strokeWidth={1.5} />
                 </a>
-                <a href="#" className="text-[#F4F1E1]/70 hover:text-[#E6A157] transition-all hover:scale-110 duration-300" aria-label="Google">
-                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" className="w-5 h-5"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>
-                </a>
-                <a href="#" className="text-[#F4F1E1]/70 hover:text-[#E6A157] transition-all hover:scale-110 duration-300" aria-label="X (Twitter)">
-                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" className="w-5 h-5"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
-                </a>
-                <a href="#" className="text-[#F4F1E1]/70 hover:text-[#E6A157] transition-all hover:scale-110 duration-300" aria-label="YouTube">
+                <a href="https://youtube.com/@beingyoupath?si=hEoZdoTSp0Cy7AXf" target="_blank" rel="noopener noreferrer" className="text-[#F4F1E1]/70 hover:text-[#E6A157] transition-all hover:scale-110 duration-300" aria-label="YouTube">
                   <Youtube className="w-5 h-5" strokeWidth={1.5} />
                 </a>
-                <a href="#" className="text-[#F4F1E1]/70 hover:text-[#E6A157] transition-all hover:scale-110 duration-300" aria-label="Quora">
-                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" className="w-5 h-5"><path d="M11.965 0C5.358 0 0 5.358 0 11.965c0 5.253 3.4 9.697 8.163 11.39l.617 1.83a.475.475 0 0 0 .548.31l2.457-.597c.712.13 1.442.197 2.18.197 6.606 0 11.965-5.359 11.965-11.966S17.653 0 12.045 0c-.027 0-.054 0-.08 0zm-1.8 17.514c-3.13 0-5.368-2.618-5.368-5.694 0-3.078 2.24-5.696 5.368-5.696 3.129 0 5.367 2.618 5.367 5.696 0 3.076-2.238 5.694-5.367 5.694zm1.874-1.854l1.107 1.341c.224.271.65.26.86-.02l.623-.834a7.48 7.48 0 0 0 1.706-1.554l-.45-.66a6.113 6.113 0 0 1-1.393 1.265l-.36-.484c.668-1.536.98-3.328.98-5.044 0-4.148-1.802-7.39-6.3-7.39-4.498 0-6.3 3.242-6.3 7.39 0 4.146 1.802 7.39 6.3 7.39a6.626 6.626 0 0 0 3.227-.8z"/></svg>
+                <a href="https://x.com/BeingyouP84126" target="_blank" rel="noopener noreferrer" className="text-[#F4F1E1]/70 hover:text-[#E6A157] transition-all hover:scale-110 duration-300" aria-label="X (Twitter)">
+                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" className="w-5 h-5"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
                 </a>
-                <a href="#" className="text-[#F4F1E1]/70 hover:text-[#E6A157] font-bold transition-all hover:scale-110 duration-300 flex items-center justify-center text-[10px]" aria-label="Justdial">JD</a>
-                <a href="#" className="text-[#F4F1E1]/70 hover:text-[#E6A157] font-bold transition-all hover:scale-110 duration-300 flex items-center justify-center text-[10px]" aria-label="Sulekha">SU</a>
+                <a href="https://www.reddit.com/u/Beingyoupath/s/gZ4xXE2pwq" target="_blank" rel="noopener noreferrer" className="text-[#F4F1E1]/70 hover:text-[#E6A157] transition-all hover:scale-110 duration-300" aria-label="Reddit">
+                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" className="w-5 h-5"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.758.79 1.758 1.761 0 .36-.104.694-.287.974.015.15.022.302.022.457 0 2.806-3.1 5.082-6.93 5.082-3.83 0-6.93-2.276-6.93-5.082 0-.155.008-.307.023-.457a1.71 1.71 0 0 1-.287-.974c0-.972.79-1.76 1.758-1.76.477 0 .899.182 1.207.491 1.194-.856 2.85-1.418 4.674-1.488l.899-4.202c.038-.178.204-.306.388-.282l3.018.635a1.26 1.26 0 0 1 1.249-.933zm-4.706 7.641c-1.373 0-2.483 1.11-2.483 2.484 0 1.374 1.11 2.484 2.483 2.484 1.374 0 2.484-1.11 2.484-2.484 0-1.374-1.11-2.484-2.484-2.484zm-3.328 1.383c-.886 0-1.604.718-1.604 1.604 0 .886.718 1.604 1.604 1.604.886 0 1.604-.718 1.604-1.604 0-.886-.718-1.604-1.604-1.604zm6.656 0c-.886 0-1.604.718-1.604 1.604 0 .886.718 1.604 1.604 1.604.886 0 1.604-.718 1.604-1.604 0-.886-.718-1.604-1.604-1.604zm-3.328 3.513c-1.332 0-2.477.728-2.923 1.745-.084.19-.001.408.188.491.19.084.408-.001.491-.188.32-.73 1.144-1.258 2.244-1.258 1.1 0 1.924.528 2.244 1.258.083.189.301.272.491.188.189-.083.272-.301.188-.491-.446-1.017-1.591-1.745-2.923-1.745z"/></svg>
+                </a>
+                <a href="https://pin.it/67TibrvMg" target="_blank" rel="noopener noreferrer" className="text-[#F4F1E1]/70 hover:text-[#E6A157] font-bold transition-all hover:scale-110 duration-300 flex items-center justify-center text-[10px]" aria-label="Pinterest">
+                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" className="w-5 h-5"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345l-.288 1.17c-.038.159-.128.184-.288.11-1.087-.512-1.764-2.126-1.764-3.424 0-2.787 2.025-5.348 5.84-5.348 3.073 0 5.467 2.191 5.467 5.116 0 3.054-1.923 5.508-4.595 5.508-1.05 0-2.035-.546-2.37-1.192l-.645 2.457c-.234.896-.867 2.016-1.293 2.702 1.336.41 2.756.632 4.225.632 6.621 0 11.988-5.367 11.988-11.987C24.004 5.367 18.638 0 12.017 0z"/></svg>
+                </a>
+                <a href="https://share.google/bQZJdmxPTbKo8iwKM" target="_blank" rel="noopener noreferrer" className="text-[#F4F1E1]/70 hover:text-[#E6A157] transition-all hover:scale-110 duration-300" aria-label="Google">
+                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" className="w-5 h-5"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>
+                </a>
               </div>
             </div>
           </div>
