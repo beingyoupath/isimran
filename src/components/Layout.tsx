@@ -23,7 +23,7 @@ function Navbar() {
   return (
     <div className="sticky top-0 z-50 flex flex-col w-full shadow-sm">
       {/* Top Utility Bar */}
-      <div className="bg-[#0B3A42] text-[#FDFBF7] w-full py-2.5">
+      <div className="hidden md:block bg-[#0B3A42] text-[#FDFBF7] w-full py-2.5">
         <div className="w-full max-w-[1400px] mx-auto px-6 md:px-12 lg:px-[60px] flex justify-between items-center text-[11px] sm:text-[12px] tracking-wide font-medium opacity-90">
           <div className="flex items-center space-x-6">
             <span className="flex items-center hover:text-[#E6A157] transition-colors duration-300 cursor-pointer"><Phone className="w-3.5 h-3.5 mr-1.5 text-[#E6A157]" /> +91 7387772573, +91 7387779238</span>
@@ -42,57 +42,94 @@ function Navbar() {
       
       {/* Main Navbar */}
       <nav className="bg-[#FDFBF7] shadow-[0_4px_30px_-10px_rgba(11,58,66,0.08)] border-b border-[#0B3A42]/5 relative z-40">
-        <div className="w-full max-w-[1400px] mx-auto px-6 md:px-12 lg:px-[60px]">
-          <div className="flex flex-col lg:flex-row justify-between items-center min-h-[90px] py-4 lg:py-0 gap-y-4 lg:gap-y-0">
+        <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 lg:px-[60px]">
+          <div className="flex justify-between items-center min-h-[60px] md:min-h-[70px] lg:min-h-[90px] py-1.5 lg:py-0">
             <div className="flex-shrink-0 flex items-center">
-              <Link to="/" className="flex flex-col sm:flex-row items-center sm:items-start gap-4 hover:opacity-80 transition-opacity">
+              <Link to="/" className="flex flex-row items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity">
                 {/* Logo Placeholder */}
-                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gray-200 rounded-full flex items-center justify-center text-gray-400 border border-gray-300 flex-shrink-0">
-                  <span className="text-xs font-semibold tracking-wider">LOGO</span>
+                <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-14 lg:h-14 bg-gray-200 rounded-full flex items-center justify-center text-gray-400 border border-gray-300 flex-shrink-0">
+                  <span className="text-[8px] lg:text-xs font-semibold tracking-wider">LOGO</span>
                 </div>
-                <div className="flex flex-col justify-center items-center sm:items-start text-center sm:text-left">
-                  <span className="text-[28px] font-bold font-heading text-[#0B3A42] tracking-tight leading-tight">
+                <div className="flex flex-col justify-center items-start text-left">
+                  <span className="text-[16px] sm:text-[20px] lg:text-[28px] font-bold font-heading text-[#0B3A42] tracking-tight leading-tight">
                     Being You Path™
                   </span>
-                  <span className="text-[11px] uppercase tracking-[0.22em] text-[#FF5F1F] drop-shadow-[0_0_8px_rgba(255,95,31,0.8)] font-bold mt-0.5">
+                  <span className="text-[7px] sm:text-[9px] lg:text-[11px] uppercase tracking-[0.22em] text-[#FF5F1F] drop-shadow-[0_0_8px_rgba(255,95,31,0.8)] font-bold mt-0.5 whitespace-nowrap">
                     Where you meet your real self™
                   </span>
                 </div>
               </Link>
             </div>
             
-            <div className="flex items-center flex-wrap justify-center lg:justify-end gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-3">
-              {links.map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.path}
-                  className={`group relative py-2 whitespace-nowrap font-medium tracking-[0.05em] text-[13px] md:text-[14px] transition-all duration-500 ease-out ${
-                    location.pathname === link.path ? "text-[#E6A157]" : "text-[#0B3A42] hover:text-[#0B3A42]/70"
-                  }`}
-                >
-                  {link.name}
-                  <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[1px] bg-[#E6A157] shadow-[0_0_8px_rgba(230,161,87,0.6)] transition-all duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] ${
-                    location.pathname === link.path ? "w-full opacity-100" : "w-0 opacity-0 group-hover:w-full group-hover:opacity-100"
-                  }`} />
-                </Link>
-              ))}
-              <motion.div
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                className="ml-2 md:ml-6 mt-2 md:mt-0"
+            {/* Mobile Menu Toggle */}
+            <div className="lg:hidden flex items-center">
+              <button 
+                onClick={() => setIsOpen(!isOpen)}
+                className="text-[#0B3A42] hover:text-[#E6A157] transition-colors p-2 focus:outline-none"
               >
-                <Link
-                  to="/contact"
-                  className="bg-[#0B3A42] text-[#FDFBF7] px-6 py-2.5 md:px-8 md:py-3.5 rounded-full font-medium hover:bg-[#07252A] transition-colors duration-500 uppercase text-[11px] md:text-[12px] tracking-[0.15em] shadow-[0_4px_15px_-5px_rgba(11,58,66,0.3)] hover:shadow-[0_8px_25px_-8px_rgba(11,58,66,0.5)] flex items-center justify-center relative overflow-hidden group"
-                >
-                  <span className="relative z-10 whitespace-nowrap">Book Consultation</span>
-                  <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-[#E6A157]/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
-                </Link>
-              </motion.div>
+                {isOpen ? <X size={26} /> : <Menu size={26} />}
+              </button>
+            </div>
+
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center space-x-6 lg:space-x-8">
+              <div className="flex items-center space-x-6 lg:space-x-8">
+                {links.map((link) => (
+                  <Link
+                    key={link.name}
+                    to={link.path}
+                    className={`group relative py-2 whitespace-nowrap font-medium tracking-[0.05em] text-[13px] hover:text-[#0B3A42]/70 transition-all duration-300 ${
+                      location.pathname === link.path ? "text-[#E6A157]" : "text-[#0B3A42]"
+                    }`}
+                  >
+                    {link.name}
+                    <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[1px] bg-[#E6A157] transition-all duration-300 ${
+                      location.pathname === link.path ? "w-full opacity-100" : "w-0 opacity-0 group-hover:w-full group-hover:opacity-100"
+                    }`} />
+                  </Link>
+                ))}
+              </div>
+              
+              <Link
+                to="/contact"
+                className="bg-[#0B3A42] text-[#FDFBF7] px-6 py-2.5 rounded-full font-medium hover:bg-[#07252A] transition-colors uppercase text-[11px] tracking-[0.15em] shadow-sm hover:shadow-md flex items-center justify-center relative overflow-hidden group"
+              >
+                <span className="relative z-10 whitespace-nowrap">Book Consultation</span>
+                <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-[#E6A157]/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+              </Link>
             </div>
           </div>
         </div>
+
+        {/* Mobile Navigation Menu */}
+        {isOpen && (
+          <div className="lg:hidden absolute top-full left-0 w-full bg-[#FDFBF7] border-t border-[#0B3A42]/10 shadow-lg flex flex-col items-center py-6 px-4 space-y-4">
+            {links.map((link) => (
+              <Link
+                key={link.name}
+                to={link.path}
+                className={`py-2 text-[15px] font-bold uppercase tracking-[0.1em] ${
+                  location.pathname === link.path ? "text-[#E6A157]" : "text-[#0B3A42]"
+                }`}
+                onClick={() => setIsOpen(false)}
+              >
+                {link.name}
+              </Link>
+            ))}
+            <Link
+              to="/contact"
+              onClick={() => setIsOpen(false)}
+              className="mt-4 bg-[#0B3A42] text-[#FDFBF7] px-8 py-3 rounded-full font-medium uppercase text-[12px] tracking-[0.15em] shadow-sm flex items-center justify-center w-full max-w-sm"
+            >
+              Book Consultation
+            </Link>
+            
+            <div className="mt-6 flex flex-col items-center space-y-4 pt-6 border-t border-gray-200 w-full mb-2">
+              <span className="flex items-center text-[13px] text-[#0B3A42]"><Phone className="w-4 h-4 mr-2" /> +91 7387772573</span>
+              <span className="flex items-center text-[13px] text-[#0B3A42]"><Mail className="w-4 h-4 mr-2" /> hello@beingyoupath.com</span>
+            </div>
+          </div>
+        )}
       </nav>
     </div>
   );

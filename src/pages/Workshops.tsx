@@ -95,7 +95,7 @@ export default function Workshops() {
       <section className="w-full bg-soft-sand pt-12 pb-12 lg:pt-16 lg:pb-16 flex justify-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div 
-            className="relative rounded-[32px] overflow-hidden shadow-2xl flex flex-col bg-white"
+            className="relative rounded-[32px] overflow-hidden shadow-2xl flex flex-col bg-white lg:h-[550px] min-h-[600px] lg:min-h-[auto]"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
@@ -106,10 +106,10 @@ export default function Workshops() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="flex flex-col lg:flex-row w-full h-full"
+                className="flex flex-col lg:flex-row w-full h-full absolute inset-0"
               >
                 {/* Image Element */}
-                <div className="w-full lg:w-5/12 h-[40vh] md:h-[50vh] lg:h-auto min-h-[400px] relative">
+                <div className="w-full lg:w-5/12 h-[250px] sm:h-[300px] lg:h-full relative shrink-0">
                   <img 
                     src={heroSlides[currentSlide].image} 
                     alt={heroSlides[currentSlide].title}
@@ -119,7 +119,7 @@ export default function Workshops() {
                 </div>
                 
                 {/* Text Content Area */}
-                <div className="w-full lg:w-7/12 p-8 md:p-12 lg:p-16 flex flex-col items-center lg:items-start text-center lg:text-left justify-center relative z-20">
+                <div className="w-full lg:w-7/12 p-8 md:p-12 lg:p-16 flex flex-col items-center lg:items-start text-center lg:text-left justify-center relative z-20 h-full overflow-y-auto">
                   <div className="w-full max-w-2xl mx-auto lg:mx-0">
                     <h1 className="text-3xl md:text-[40px] lg:text-[48px] leading-tight font-bold text-deep-teal mb-6 font-heading tracking-tight">
                       {heroSlides[currentSlide].title}
@@ -182,16 +182,18 @@ export default function Workshops() {
            </div>
            
            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-             {themes.map((theme, i) => {
-               const isSpanning = i === 0 || i === 3;
-               return (
-                <div key={i} className={`bg-white p-8 rounded-[16px] border-t-4 border-t-terracotta border-x border-b border-gray-200 transition-all hover:shadow-md group flex flex-col ${isSpanning ? 'lg:col-span-2 xl:col-span-2' : ''}`}>
-                  {theme.icon}
-                  <h3 className="text-[20px] font-semibold text-deep-teal mb-3 font-heading leading-snug">{theme.title}</h3>
-                  <p className="text-charcoal-warm text-[15px] leading-relaxed mt-auto">{theme.desc}</p>
+             {themes.map((theme, i) => (
+                <div key={i} className="bg-white p-8 rounded-[16px] border-t-4 border-t-terracotta border-x border-b border-gray-200 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 group flex flex-col h-full cursor-pointer relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-terracotta/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"></div>
+                  <div className="relative z-10 flex flex-col h-full">
+                    <div className="transform group-hover:scale-110 group-hover:text-amber-glow transition-all duration-300 origin-left">
+                      {theme.icon}
+                    </div>
+                    <h3 className="text-[20px] font-semibold text-deep-teal mb-3 font-heading leading-snug group-hover:text-terracotta transition-colors duration-300 text-pretty">{theme.title}</h3>
+                    <p className="text-charcoal-warm text-[15px] leading-relaxed mt-auto">{theme.desc}</p>
+                  </div>
                 </div>
-               )
-             })}
+             ))}
            </div>
         </div>
       </section>
