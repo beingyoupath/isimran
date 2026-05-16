@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { GoogleGenAI } from '@google/genai';
-import { MessageCircle, X, Send, User, Bot, Loader2, Maximize2, Minimize2 } from 'lucide-react';
+import { MessageCircle, X, Send, User, Bot, Loader2, Maximize2, Minimize2, RotateCcw } from 'lucide-react';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
@@ -15,13 +15,28 @@ export default function GeminiChatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [hasManuallyToggled, setHasManuallyToggled] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    { id: 'welcome', role: 'model', text: "Warm greetings! I'm your guide here at Being You Path. Whether you're feeling a bit overwhelmed, curious about our services, or just exploring, take a breath—you're in the right place. How are you doing today?" }
-  ]);
+  const [messages, setMessages] = useState<Message[]>(() => {
+    const saved = localStorage.getItem('being_you_chat_history');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch (e) {
+        console.error("Could not parse saved chat history", e);
+      }
+    }
+    return [
+      { id: 'welcome', role: 'model', text: "Warm greetings! I'm your guide here at Being You Path. Whether you're feeling a bit overwhelmed, curious about our services, or just exploring, take a breath—you're in the right place. How are you doing today?" }
+    ];
+  });
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [chat, setChat] = useState<any>(null);
+
+  useEffect(() => {
+    localStorage.setItem('being_you_chat_history', JSON.stringify(messages));
+  }, [messages]);
 
   useEffect(() => {
     if (messages.length > 4 && !isExpanded && !hasManuallyToggled) {
@@ -32,17 +47,46 @@ export default function GeminiChatbot() {
   useEffect(() => {
     // Initialize the chat session
     try {
+      // Create history array from existing messages, filtering out system welcome and errors
+      const historyList = messages
+        .filter(m => m.id !== 'welcome' && !m.text.includes('trouble connecting') && !m.text.includes('conversation limit'))
+        .map(m => ({
+          role: m.role,
+          parts: [{ text: m.text }]
+        }));
+
       const initChat = ai.chats.create({
         model: "gemini-3-flash-preview",
         config: {
           systemInstruction: "You are a deeply warm, empathetic, and highly human-like wellness concierge for Being You Path. Be extremely conversational, validating, and kind, as if speaking to a dear friend seeking support or clarity. Avoid robotic phrases completely. Maintain a soothing, inviting, and grounded tone. Always prioritize the user's feelings and experience, offering a space of warmth and deep understanding. IF ANY USER ASKS TO BOOK A SESSION, register for a workshop, or inquire about working together, warmly invite them to connect with us directly on WhatsApp at +91 7387772573 or +91 7387779238, or email us at beingyoupath@gmail.com. Keep your responses highly conversational, thoughtful, and full of warmth.",
         },
+        // Only set history if there's actual conversation
+        ...(historyList.length > 0 && { history: historyList })
       });
       setChat(initChat);
     } catch (error) {
       console.error("Chat initialization error:", error);
     }
-  }, []);
+  }, []); // Initialize once on mount with the local storage state.
+
+  const handleClearHistory = () => {
+    localStorage.removeItem('being_you_chat_history');
+    setMessages([
+      { id: 'welcome', role: 'model', text: "Warm greetings! I'm your guide here at Being You Path. Whether you're feeling a bit overwhelmed, curious about our services, or just exploring, take a breath—you're in the right place. How are you doing today?" }
+    ]);
+    if (chat) {
+       // re-init chat
+       try {
+         const newChat = ai.chats.create({
+          model: "gemini-3-flash-preview",
+          config: {
+             systemInstruction: "You are a deeply warm, empathetic, and highly human-like wellness concierge for Being You Path. Be extremely conversational, validating, and kind, as if speaking to a dear friend seeking support or clarity. Avoid robotic phrases completely. Maintain a soothing, inviting, and grounded tone. Always prioritize the user's feelings and experience, offering a space of warmth and deep understanding. IF ANY USER ASKS TO BOOK A SESSION, register for a workshop, or inquire about working together, warmly invite them to connect with us directly on WhatsApp at +91 7387772573 or +91 7387779238, or email us at beingyoupath@gmail.com. Keep your responses highly conversational, thoughtful, and full of warmth.",
+          }
+         });
+         setChat(newChat);
+       } catch (e) {}
+    }
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -87,11 +131,7 @@ export default function GeminiChatbot() {
     } catch (error: any) {
       console.error("Chat Error:", error);
       
-      let errorMessage = "I'm so sorry, but I seem to be having a little trouble connecting right now. To make sure you get the support you need, please feel free to reach out to us directly on WhatsApp at +91 7387772573 or +91 7387779238 to connect with our human team.";
-      
-      if (error?.status === 429 || error?.message?.includes("RESOURCE_EXHAUSTED") || error?.message?.includes("quota")) {
-        errorMessage = "Oh! We've had such a wonderful chat that I've reached my current conversation limit. I'd love to continue supporting you—please connect with our human team directly on WhatsApp at +91 7387772573 or +91 7387779238 so we don't drop the thread.";
-      }
+      let errorMessage = "I'm so sorry, but I'm having a little trouble connecting right now due to a temporary service pause. To make sure you get the support you need without interruption, please feel free to reach out to us directly on WhatsApp at +91 7387772573 or +91 7387779238 to connect with our human team.";
 
       setMessages(prev => [...prev, { id: Date.now().toString() + Math.random(), role: 'model', text: errorMessage }]);
     } finally {
@@ -154,6 +194,13 @@ export default function GeminiChatbot() {
                 </div>
               </div>
               <div className="flex items-center gap-2 relative z-10">
+                <button 
+                  onClick={handleClearHistory}
+                  className="text-white/80 hover:text-white transition-colors p-1.5 rounded-full hover:bg-white/10"
+                  title="Reset Chat"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                </button>
                 <button 
                   onClick={() => {
                     setIsExpanded(!isExpanded);
