@@ -31,13 +31,17 @@ export default function GeminiChatbot() {
 
   useEffect(() => {
     // Initialize the chat session
-    const initChat = ai.chats.create({
-      model: "gemini-3-flash-preview",
-      config: {
-        systemInstruction: "You are a warm, empathetic, and highly professional wellness concierge for Being You Path. Be highly conversational, validating, and professional, providing users with a great, supportive experience. Answer questions precisely and simply, using common language, without unnecessary explanations. Avoid robotic phrases. Maintain a soothing, warm, and grounded professional tone. IF ANY USER ASKS TO BOOK A SESSION, register for a workshop, or inquire about working together, warmly and professionally invite them to email us directly at beingyoupath@gmail.com to schedule, or gently refer them to the Contact page. Keep your responses concise, conversational, and meaningful.",
-      },
-    });
-    setChat(initChat);
+    try {
+      const initChat = ai.chats.create({
+        model: "gemini-3-flash-preview",
+        config: {
+          systemInstruction: "You are a deeply warm, empathetic, and highly human-like wellness concierge for Being You Path. Be extremely conversational, validating, and kind, as if speaking to a dear friend seeking support or clarity. Avoid robotic phrases completely. Maintain a soothing, inviting, and grounded tone. Always prioritize the user's feelings and experience, offering a space of warmth and deep understanding. IF ANY USER ASKS TO BOOK A SESSION, register for a workshop, or inquire about working together, warmly invite them to email us directly at beingyoupath@gmail.com to schedule, or gently refer them to the Contact page. Keep your responses highly conversational, thoughtful, and full of warmth.",
+        },
+      });
+      setChat(initChat);
+    } catch (error) {
+      console.error("Chat initialization error:", error);
+    }
   }, []);
 
   const scrollToBottom = () => {
@@ -64,7 +68,12 @@ export default function GeminiChatbot() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || isLoading || !chat) return;
+    if (!input.trim() || isLoading) return;
+
+    if (!chat) {
+       setMessages(prev => [...prev, { id: Date.now().toString() + Math.random(), role: 'model', text: "I'm having a little trouble connecting right now. Could you try refreshing the page?" }]);
+       return;
+    }
 
     const userMessage: Message = { id: Date.now().toString() + Math.random(), role: 'user', text: input };
     setMessages(prev => [...prev, userMessage]);
@@ -73,11 +82,20 @@ export default function GeminiChatbot() {
 
     try {
       const response = await chat.sendMessage({ message: userMessage.text });
-      const modelMessage: Message = { id: Date.now().toString() + Math.random(), role: 'model', text: response.text || 'I could not generate a response.' };
+      const modelMessage: Message = { id: Date.now().toString() + Math.random(), role: 'model', text: response.text || 'I could not generate a response at this moment.' };
       setMessages(prev => [...prev, modelMessage]);
-    } catch (error) {
-      console.error(error);
-      setMessages(prev => [...prev, { id: Date.now().toString() + Math.random(), role: 'model', text: 'Sorry, I encountered an error. Please try again later.' }]);
+    } catch (error: any) {
+      console.error("Chat Error:", error);
+      
+      let errorMessage = "I'm so sorry, but I encountered a little hiccup and couldn't process your message. Let's take a breath and try again in a moment.";
+      
+      if (error?.status === 403 || error?.message?.includes("PERMISSION") || error?.message?.includes("authentication")) {
+        errorMessage = "Oh, it looks like my API Key isn't quite set up correctly. To help me connect with you, please check the 'Settings > Secrets' panel and ensure a valid Gemini API Key is there. We'll be chatting in no time once that's fixed!";
+      } else if (error?.status === 429 || error?.message?.includes("RESOURCE_EXHAUSTED") || error?.message?.includes("quota")) {
+        errorMessage = "It seems we've had a lot of wonderful chats and reached our free connection limit for now. If you'd like to continue without interruption, please consider upgrading to a paid API Key in 'Settings > Secrets'.";
+      }
+
+      setMessages(prev => [...prev, { id: Date.now().toString() + Math.random(), role: 'model', text: errorMessage }]);
     } finally {
       setIsLoading(false);
     }
