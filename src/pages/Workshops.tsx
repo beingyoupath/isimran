@@ -1,3 +1,4 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import { 
   CheckCircle2, 
@@ -243,7 +244,7 @@ export default function Workshops() {
                 <div key={i} onClick={() => setSelectedTheme(theme)} className="bg-white rounded-[16px] border-t-4 border-t-terracotta border-x border-b border-gray-200 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group flex flex-col h-full cursor-pointer relative overflow-hidden">
                   <div className="h-40 w-full overflow-hidden relative">
                     <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-300 z-10"></div>
-                    <img src={theme.image} alt={theme.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                    <img src={theme.image} alt={theme.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" loading="lazy" referrerPolicy="no-referrer" />
                   </div>
                   <div className="p-8 flex-grow flex flex-col relative z-20">
                     <div className="absolute inset-0 bg-gradient-to-br from-terracotta/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"></div>

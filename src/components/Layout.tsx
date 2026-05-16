@@ -1,5 +1,5 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { Menu, X, Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Youtube, Twitter } from "lucide-react";
+import { Menu, X, Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Youtube, Twitter, Video } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 
@@ -210,10 +210,7 @@ function Footer() {
                 <span className="text-[#FDFBF7]/30">|</span>
                 <span className="text-[#F4F1E1]/80 flex items-center gap-2">
                   <span>Online</span>
-                  {/* Google Meet Icon */}
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Google_Meet_small_logo_%282020%29.svg/200px-Google_Meet_small_logo_%282020%29.svg.png" alt="Google Meet" className="w-5 h-5 object-contain ml-1" />
-                  {/* Zoom Icon */}
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Zoom_logo_icon.svg/200px-Zoom_logo_icon.svg.png" alt="Zoom" className="w-5 h-5 object-contain ml-1" />
+                  <Video className="w-5 h-5 ml-1 text-[#E6A157]" />
                 </span>
               </div>
               

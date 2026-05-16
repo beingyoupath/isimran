@@ -316,7 +316,7 @@ export default function Home() {
               >
                 <div className="h-48 w-full overflow-hidden relative">
                   <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-300 z-10"></div>
-                  <img src={audience.image} alt={audience.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                  <img src={audience.image} alt={audience.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" loading="lazy" referrerPolicy="no-referrer" />
                 </div>
                 <div className="p-6 flex-grow flex flex-col">
                   <div className="mb-4">

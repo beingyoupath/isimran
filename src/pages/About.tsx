@@ -376,7 +376,7 @@ export default function About() {
                        {/* Book 1 */}
                        <div className="flex flex-col sm:flex-row gap-4 bg-white p-4 rounded-[16px] border border-gray-100 shadow-sm items-start hover:shadow-md transition-all duration-300 ease-out hover:-translate-y-1">
                            <div className="w-full sm:w-24 h-40 sm:h-32 bg-gray-50 rounded-[10px] flex-shrink-0 flex items-center justify-center overflow-hidden border border-gray-100 group">
-                            <img src="https://images.unsplash.com/photo-1600618528240-fb9fc964b853?auto=format&fit=crop&q=80&w=200&h=300" alt="Healing Journey through chakras" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" />
+                            <img src="https://images.unsplash.com/photo-1600618528240-fb9fc964b853?auto=format&fit=crop&q=80&w=200&h=300" alt="Healing Journey through chakras" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" referrerPolicy="no-referrer" />
                           </div>
                           <div className="flex-1 flex flex-col h-full w-full">
                              <h5 className="font-heading font-semibold text-deep-teal leading-tight mb-2">1. Healing Journey through chakras</h5>
@@ -404,7 +404,7 @@ export default function About() {
                        {/* Book 2 */}
                        <div className="flex flex-col sm:flex-row gap-4 bg-white p-4 rounded-[16px] border border-gray-100 shadow-sm items-start hover:shadow-md transition-all duration-300 ease-out hover:-translate-y-1">
                           <div className="w-full sm:w-24 h-40 sm:h-32 bg-gray-50 rounded-[10px] flex-shrink-0 flex items-center justify-center overflow-hidden border border-gray-100 group">
-                             <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=200&h=300" alt="The essence of Wellness" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" />
+                             <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=200&h=300" alt="The essence of Wellness" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" referrerPolicy="no-referrer" />
                           </div>
                           <div className="flex-1 flex flex-col h-full w-full">
                              <h5 className="font-heading font-semibold text-deep-teal leading-tight mb-2">2. The essence of Wellness (Mind, Body, Spirit)</h5>
@@ -432,7 +432,7 @@ export default function About() {
                        {/* Book 3 */}
                        <div className="flex flex-col sm:flex-row gap-4 bg-white p-4 rounded-[16px] border border-gray-100 shadow-sm items-start hover:shadow-md transition-all duration-300 ease-out hover:-translate-y-1">
                           <div className="w-full sm:w-24 h-40 sm:h-32 bg-gray-50 rounded-[10px] flex-shrink-0 flex items-center justify-center overflow-hidden border border-gray-100 group">
-                            <img src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?auto=format&fit=crop&q=80&w=200&h=300" alt="The power of mindful thoughts" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" />
+                            <img src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?auto=format&fit=crop&q=80&w=200&h=300" alt="The power of mindful thoughts" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" referrerPolicy="no-referrer" />
                           </div>
                           <div className="flex-1 flex flex-col h-full w-full">
                              <h5 className="font-heading font-semibold text-deep-teal leading-tight mb-2">3. The power of mindful thoughts</h5>
