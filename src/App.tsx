@@ -12,6 +12,7 @@ import Services from "./pages/Services";
 import Workshops from "./pages/Workshops";
 import Resources from "./pages/Resources";
 import Contact from "./pages/Contact";
+import LoadingScreen from "./components/LoadingScreen";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -30,6 +31,7 @@ export default function App() {
     <HelmetProvider>
       <BrowserRouter>
         <ScrollToTop />
+        <LoadingScreen />
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
