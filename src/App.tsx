@@ -6,15 +6,16 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import Layout from "./components/Layout";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Services from "./pages/Services";
-import Workshops from "./pages/Workshops";
-import Resources from "./pages/Resources";
-import Contact from "./pages/Contact";
 import LoadingScreen from "./components/LoadingScreen";
-import { useEffect } from "react";
+import { useEffect, Suspense, lazy } from "react";
 import { useLocation } from "react-router-dom";
+
+const Home = lazy(() => import("./pages/Home"));
+const About = lazy(() => import("./pages/About"));
+const Services = lazy(() => import("./pages/Services"));
+const Workshops = lazy(() => import("./pages/Workshops"));
+const Resources = lazy(() => import("./pages/Resources"));
+const Contact = lazy(() => import("./pages/Contact"));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -31,17 +32,18 @@ export default function App() {
     <HelmetProvider>
       <BrowserRouter>
         <ScrollToTop />
-        <LoadingScreen />
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="about" element={<About />} />
-            <Route path="services" element={<Services />} />
-            <Route path="workshops" element={<Workshops />} />
-            <Route path="resources" element={<Resources />} />
-            <Route path="contact" element={<Contact />} />
-          </Route>
-        </Routes>
+        <Suspense fallback={<LoadingScreen />}>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="about" element={<About />} />
+              <Route path="services" element={<Services />} />
+              <Route path="workshops" element={<Workshops />} />
+              <Route path="resources" element={<Resources />} />
+              <Route path="contact" element={<Contact />} />
+            </Route>
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </HelmetProvider>
   );

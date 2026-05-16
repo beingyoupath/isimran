@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { useLocation } from 'react-router-dom';
 
 const quotes = [
   "The present moment is the only time over which we have dominion. — Thích Nhất Hạnh",
@@ -15,82 +14,64 @@ const quotes = [
 ];
 
 export default function LoadingScreen() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
-  const location = useLocation();
+  const [currentQuoteIndex, setCurrentQuoteIndex] = useState(() => Math.floor(Math.random() * quotes.length));
 
   useEffect(() => {
-    // Show loading screen on route change
-    setIsLoading(true);
-    
-    // Pick a random starting quote
-    setCurrentQuoteIndex(Math.floor(Math.random() * quotes.length));
-
-    // Change quote every 1.5 seconds if loading takes longer
+    // Change quote every 2.5 seconds
     const quoteInterval = setInterval(() => {
       setCurrentQuoteIndex((prev) => (prev + 1) % quotes.length);
-    }, 1500);
-
-    // Stop loading after 2.5 seconds to ensure quotes are read and transition is smooth
-    const timer = setTimeout(() => {
-      setIsLoading(false);
     }, 2500);
 
     return () => {
-      clearTimeout(timer);
       clearInterval(quoteInterval);
     };
-  }, [location.pathname]);
+  }, []);
 
   return (
-    <AnimatePresence>
-      {isLoading && (
-        <motion.div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+      className="fixed inset-0 z-[100] bg-[#FDFBF7] flex flex-col items-center justify-center p-6"
+    >
+      <div className="max-w-2xl text-center flex flex-col items-center">
+        {/* Elegant spinner */}
+        <div className="relative w-16 h-16 mb-8">
+          <motion.div 
+            className="absolute inset-0 border-t-2 border-[#1A5F5F] rounded-full"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+          />
+          <motion.div 
+            className="absolute inset-2 border-r-2 border-[#C85C3E] rounded-full"
+            animate={{ rotate: -360 }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+          />
+        </div>
+        
+        <AnimatePresence mode="wait">
+          <motion.p
+            key={currentQuoteIndex}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.5 }}
+            className="text-xl md:text-2xl font-heading text-[#1A5F5F] italic mb-4"
+          >
+            {quotes[currentQuoteIndex]}
+          </motion.p>
+        </AnimatePresence>
+        
+        <motion.p 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="fixed inset-0 z-[100] bg-[#FDFBF7] flex flex-col items-center justify-center p-6"
+          transition={{ delay: 0.5, duration: 1 }}
+          className="text-[#4A4A4A] tracking-wider uppercase text-sm font-medium mt-6"
         >
-          <div className="max-w-2xl text-center flex flex-col items-center">
-            {/* Elegant spinner */}
-            <div className="relative w-16 h-16 mb-8">
-              <motion.div 
-                className="absolute inset-0 border-t-2 border-[#1A5F5F] rounded-full"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-              />
-              <motion.div 
-                className="absolute inset-2 border-r-2 border-[#C85C3E] rounded-full"
-                animate={{ rotate: -360 }}
-                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-              />
-            </div>
-            
-            <AnimatePresence mode="wait">
-              <motion.p
-                key={currentQuoteIndex}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.5 }}
-                className="text-xl md:text-2xl font-heading text-[#1A5F5F] italic mb-4"
-              >
-                {quotes[currentQuoteIndex]}
-              </motion.p>
-            </AnimatePresence>
-            
-            <motion.p 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 1 }}
-              className="text-[#4A4A4A] tracking-wider uppercase text-sm font-medium mt-6"
-            >
-              Taking a breath...
-            </motion.p>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+          Taking a breath...
+        </motion.p>
+      </div>
+    </motion.div>
   );
 }
