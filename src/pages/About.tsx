@@ -71,8 +71,9 @@ export default function About() {
   return (
     <div className="bg-soft-sand">
       <SEO 
-        title="About Us"
-        description="Learn about our philosophy, practitioners, and how Behavioral Science combined with Modern Psychology can help you live better."
+        title="About Our Therapists & Approach | Being You Path Pune"
+        description="Learn about our philosophy, top psychologists, and how Behavioral Science combined with Modern Psychology can help you live better in Pune."
+        keywords="about psychologists pune, team of therapists pune, behavioral science counselling, mental health experts pune, online counselling practitioners"
       />
       {/* Hero Slider */}
       <section className="w-full bg-soft-sand py-12 md:py-16 lg:py-20 flex justify-center">

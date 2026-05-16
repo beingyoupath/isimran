@@ -273,8 +273,9 @@ export default function Resources() {
   return (
     <div className="bg-white">
       <SEO 
-        title="Resources & Insights"
-        description="Practical well-being articles, guides, and tools written for the way people actually live. Move from 'just getting by' to intentional living."
+        title="Mental Health Articles & Resources | Being You Path Blog"
+        description="Practical well-being articles, psychology guides, and mental health tools written for the way people actually live. Read top counselling tips from Pune experts."
+        keywords="mental health blog, psychology articles online, therapy resources, mindfulness tips, anxiety management guide, depression help reading, self-care articles"
       />
       {/* Hero Slider */}
       <section className="w-full bg-soft-sand py-12 md:py-16 lg:py-20 flex justify-center border-b border-gray-200">

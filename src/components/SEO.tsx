@@ -11,6 +11,25 @@ export function SEO({ title, description, keywords, url }: SEOProps) {
   const siteName = "Being You Path™";
   const fullTitle = `${title} | ${siteName}`;
 
+  const schemaOrgJSONLD = {
+    "@context": "http://schema.org",
+    "@type": "HealthAndBeautyBusiness",
+    "name": "Being You Path™",
+    "description": "Holistic well-being practice blending psychology, secular mindfulness, and ancient wisdom.",
+    "url": "https://www.beingyoupath.com",
+    "telephone": "+919876543210", 
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Pune",
+      "addressRegion": "Maharashtra",
+      "addressCountry": "IN"
+    },
+    "sameAs": [
+      "https://www.instagram.com/beingyoupath",
+      "https://www.linkedin.com/company/beingyoupath"
+    ]
+  };
+
   return (
     <Helmet>
       {/* Basic HTML Meta Tags */}
@@ -31,6 +50,11 @@ export function SEO({ title, description, keywords, url }: SEOProps) {
       <meta name="twitter:url" content={url || window.location.href} />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
+      
+      {/* Schema.org for SEO */}
+      <script type="application/ld+json">
+        {JSON.stringify(schemaOrgJSONLD)}
+      </script>
     </Helmet>
   );
 }

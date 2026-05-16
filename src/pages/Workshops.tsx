@@ -146,8 +146,9 @@ export default function Workshops() {
   return (
     <div className="bg-soft-sand">
       <SEO 
-        title="Workshops & Training"
-        description="Structured, facilitated learning experiences built around real psychological frameworks, tested tools, and honest conversation. Customised for your organisation, school, or community."
+        title="Mental Health & Corporate Workshops Pune | Being You Path"
+        description="Structured, facilitated workshop experiences built around real psychological frameworks. Customised corporate mental health training for your organisation, school, or community in Pune."
+        keywords="corporate wellness workshops pune, mental health training pune, student resilience workshops, employee wellbeing training india, team building psychology, mindfulness seminars"
       />
       {/* Hero Slider */}
       <section className="w-full bg-soft-sand py-12 md:py-16 lg:py-20 flex justify-center">

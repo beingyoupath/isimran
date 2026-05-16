@@ -181,8 +181,9 @@ export default function Services() {
   return (
     <div className="bg-white">
       <SEO 
-        title="Our Services"
-        description="Explore our specialized services including Adult Counseling, Performance Coaching, Child & Adolescent Therapy, and Corporate Wellness programs."
+        title="Psychological Services & Therapy Options Pune | Being You Path"
+        description="Explore our specialized services including Adult Counseling, Performance Coaching, Child & Adolescent Therapy, and Corporate Wellness programs in Pune."
+        keywords="counselling services pune, therapy options online, adult counselling, child therapy pune, adolescent psychology pune, corporate wellness programs india, relationship coaching pune"
       />
       {/* Hero Slider */}
       <section className="w-full bg-soft-sand py-12 md:py-16 lg:py-20 flex justify-center border-b border-gray-200">

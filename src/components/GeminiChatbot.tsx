@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { GoogleGenAI } from '@google/genai';
-import { MessageCircle, X, Send, User, Bot, Loader2 } from 'lucide-react';
+import { MessageCircle, X, Send, User, Bot, Loader2, Maximize2, Minimize2 } from 'lucide-react';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
@@ -13,6 +13,8 @@ type Message = {
 
 export default function GeminiChatbot() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [hasManuallyToggled, setHasManuallyToggled] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { id: 'welcome', role: 'model', text: "Warm greetings! I'm your guide here at Being You Path. Whether you're feeling a bit overwhelmed, curious about our services, or just exploring, take a breath—you're in the right place. How are you doing today?" }
   ]);
@@ -20,6 +22,12 @@ export default function GeminiChatbot() {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [chat, setChat] = useState<any>(null);
+
+  useEffect(() => {
+    if (messages.length > 4 && !isExpanded && !hasManuallyToggled) {
+      setIsExpanded(true);
+    }
+  }, [messages.length]);
 
   useEffect(() => {
     // Initialize the chat session
@@ -111,7 +119,11 @@ export default function GeminiChatbot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-[100px] right-6 z-50 w-[350px] sm:w-[400px] h-[500px] max-h-[80vh] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-gray-100"
+            className={`fixed z-50 bg-white shadow-2xl flex flex-col overflow-hidden border border-gray-100 transition-all duration-300 ${
+              isExpanded 
+                ? "inset-0 md:inset-4 md:rounded-2xl rounded-none w-auto h-auto max-h-none" 
+                : "bottom-[100px] right-6 w-[350px] sm:w-[400px] h-[500px] max-h-[80vh] rounded-2xl"
+            }`}
           >
             {/* Header */}
             <div className="bg-[#1A5F5F] text-white p-4 flex justify-between items-center relative overflow-hidden">
@@ -125,12 +137,24 @@ export default function GeminiChatbot() {
                   <p className="text-[11px] opacity-80 flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-green-400 inline-block"></span> Online</p>
                 </div>
               </div>
-              <button 
-                onClick={() => setIsOpen(false)} 
-                className="text-white/80 hover:text-white transition-colors p-1 rounded-full hover:bg-white/10 relative z-10"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <div className="flex items-center gap-2 relative z-10">
+                <button 
+                  onClick={() => {
+                    setIsExpanded(!isExpanded);
+                    setHasManuallyToggled(true);
+                  }} 
+                  className="text-white/80 hover:text-white transition-colors p-1.5 rounded-full hover:bg-white/10"
+                  title={isExpanded ? "Minimize" : "Expand"}
+                >
+                  {isExpanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+                </button>
+                <button 
+                  onClick={() => setIsOpen(false)} 
+                  className="text-white/80 hover:text-white transition-colors p-1.5 rounded-full hover:bg-white/10"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
             </div>
 
             {/* Messages */}

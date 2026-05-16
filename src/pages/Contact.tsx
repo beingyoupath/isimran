@@ -132,8 +132,9 @@ export default function Contact() {
   return (
     <div className="bg-white">
       <SEO 
-        title="Contact Us"
-        description="Book a free clarity call, send an email, or reach out on WhatsApp. Let's start a conversation about your well-being."
+        title="Contact Best Psychologist in Pune | Book Appointment"
+        description="Book a free clarity call, send an email, or reach out on WhatsApp to Being You Path. Start a conversation about your well-being with our Pune therapists today."
+        keywords="contact psychologist pune, book therapy session pune, online therapy consultation, find a therapist pune, mental health appointment"
       />
       {/* Toast Notification */}
       <AnimatePresence>

@@ -180,9 +180,9 @@ export default function Home() {
   return (
     <div className="bg-soft-sand">
       <SEO 
-        title="Home"
-        description="Practical, evidence-based counselling, psychology, and holistic wellbeing services in Pune and online."
-        keywords="counselling, psychology, well-being, mental health, Pune therapist, online therapy, psychotherapy"
+        title="Best Psychologist & Counselling in Pune | Online Therapy & Workshops"
+        description="Experience transformative online and offline therapy, holistic well-being counselling, and corporate workshops in Pune with Being You Path. Book a session with top psychologists today."
+        keywords="best psychologist in pune, online counselling, stress management workshops, child counselling, corporate well-being, mindfulness therapy, CBT pune, mental health professional pune"
       />
       {/* Hero Section */}
       <section ref={heroRef} className="w-full bg-soft-sand pt-12 pb-12 lg:pt-16 lg:pb-16 flex justify-center">
