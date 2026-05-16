@@ -2,6 +2,7 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import { Menu, X, Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Youtube, Twitter, Video } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
+import GeminiChatbot from "./GeminiChatbot";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -313,6 +314,8 @@ export default function Layout() {
           </svg>
         </motion.div>
       </motion.a>
+      
+      <GeminiChatbot />
     </div>
   );
 }
