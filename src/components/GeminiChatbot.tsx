@@ -14,7 +14,7 @@ type Message = {
 export default function GeminiChatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { id: 'welcome', role: 'model', text: 'Hello! I am here to help you understand more about our holistic well-being practice.' }
+    { id: 'welcome', role: 'model', text: "Warm greetings! I'm your guide here at Being You Path. Whether you're feeling a bit overwhelmed, curious about our services, or just exploring, take a breath—you're in the right place. How are you doing today?" }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +26,7 @@ export default function GeminiChatbot() {
     const initChat = ai.chats.create({
       model: "gemini-3-flash-preview",
       config: {
-        systemInstruction: "You are a helpful assistant for Being You Path, a holistic well-being practice blending modern psychology, secular mindfulness, and explainable ancient wisdom. Answer questions warmly, using a positive tone. IF ANY USER ASKS TO BOOK A SESSION, register for a workshop, or inquire about services, politely tell them to email us directly at hello@beingyoupath.com to schedule their session, or refer them to the Contact page.",
+        systemInstruction: "You are a warm, empathetic, and highly human-like wellness concierge for Being You Path. Be highly conversational, validating, and kind, as if speaking to a friend who might be seeking support or clarity. Answer questions precisely and simply, using common language, without unnecessary explanations. Avoid robotic phrases. Maintain a soothing and grounded tone. IF ANY USER ASKS TO BOOK A SESSION, register for a workshop, or inquire about working together, warmly invite them to email us directly at hello@beingyoupath.com to schedule, or gently refer them to the Contact page. Keep your responses concise, conversational, and meaningful.",
       },
     });
     setChat(initChat);
@@ -81,7 +81,7 @@ export default function GeminiChatbot() {
       <motion.button
         onClick={() => setIsOpen(true)}
         className={`fixed bottom-[160px] right-6 z-50 flex items-center justify-center group ${isOpen ? 'hidden' : 'block'}`}
-        aria-label="Open AI Assistant"
+        aria-label="Open Wellness Guide"
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.6 }}
@@ -91,7 +91,7 @@ export default function GeminiChatbot() {
         {/* Call to action tooltip */}
         <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-white text-[#1A5F5F] font-medium text-[13px] px-4 py-2.5 rounded-2xl rounded-br-sm shadow-[0_4px_12px_rgba(0,0,0,0.08)] whitespace-nowrap border border-gray-100 flex items-center gap-2 opacity-0 group-hover:opacity-100 md:opacity-100 transition-opacity duration-300 pointer-events-none origin-right">
           <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-          Have a question? Ask our AI
+          Here to listen & help ✨
         </div>
 
         <motion.div 
@@ -121,7 +121,7 @@ export default function GeminiChatbot() {
                    <Bot className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-heading font-bold tracking-wide">Being You Assistant</h3>
+                  <h3 className="font-heading font-bold tracking-wide">Being You Guide</h3>
                   <p className="text-[11px] opacity-80 flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-green-400 inline-block"></span> Online</p>
                 </div>
               </div>
@@ -175,7 +175,7 @@ export default function GeminiChatbot() {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask me anything..."
+                  placeholder="Type a message..."
                   className="flex-1 bg-gray-50 border border-gray-200 rounded-full px-4 text-[14px] text-gray-800 focus:outline-none focus:border-[#1A5F5F] focus:ring-1 focus:ring-[#1A5F5F] transition-all duration-300 placeholder:text-gray-400"
                   disabled={isLoading}
                 />

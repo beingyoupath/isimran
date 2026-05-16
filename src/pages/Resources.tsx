@@ -251,6 +251,25 @@ export default function Resources() {
     }
   ];
 
+  const allArticles = blogCategories.flatMap(category => category.articles);
+  const selectedArticleIndex = selectedArticle ? allArticles.findIndex(a => a.title === selectedArticle.title) : -1;
+
+  const handlePrevArticle = () => {
+    if (selectedArticleIndex > 0) {
+      setSelectedArticle(allArticles[selectedArticleIndex - 1]);
+    } else {
+      setSelectedArticle(allArticles[allArticles.length - 1]);
+    }
+  };
+
+  const handleNextArticle = () => {
+    if (selectedArticleIndex !== -1 && selectedArticleIndex < allArticles.length - 1) {
+      setSelectedArticle(allArticles[selectedArticleIndex + 1]);
+    } else {
+      setSelectedArticle(allArticles[0]);
+    }
+  };
+
   return (
     <div className="bg-white">
       <SEO 
@@ -568,6 +587,17 @@ export default function Resources() {
                 </div>
 
                 <div className="mb-10 border-t border-gray-100 pt-8 flex items-center justify-between">
+                  <button onClick={handlePrevArticle} className="text-terracotta hover:text-amber-glow font-medium text-[14px] flex items-center uppercase tracking-wide transition-colors group">
+                    <ChevronLeft className="w-5 h-5 mr-1 group-hover:-translate-x-1 transition-transform" />
+                    Previous Article
+                  </button>
+                  <button onClick={handleNextArticle} className="text-terracotta hover:text-amber-glow font-medium text-[14px] flex items-center uppercase tracking-wide transition-colors group">
+                    Next Article
+                    <ChevronRight className="w-5 h-5 ml-1 group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+
+                <div className="mb-10 border-t border-gray-100 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <span className="text-sm font-semibold text-deep-teal uppercase tracking-widest">Share this Insight</span>
                   <div className="flex gap-4">
                     <a 
