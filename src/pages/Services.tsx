@@ -185,6 +185,9 @@ export default function Services() {
         description="Explore our specialized services including Adult Counseling, Performance Coaching, Child & Adolescent Therapy, and Corporate Wellness programs in Pune."
         keywords="counselling services pune, therapy options online, adult counselling, child therapy pune, adolescent psychology pune, corporate wellness programs india, relationship coaching pune"
       />
+      <h1 className="sr-only">Comprehensive Psychological Services, Online Therapy, and Counselling in Pune</h1>
+      <p className="sr-only">Being You Path provides an array of mental health services including CBT, child therapy, adolescent counseling, relationship and couples therapy, anxiety management, and corporate psychological wellness programs.</p>
+      
       {/* Hero Slider */}
       <section className="w-full bg-soft-sand py-12 md:py-16 lg:py-20 flex justify-center border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">

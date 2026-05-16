@@ -184,6 +184,9 @@ export default function Home() {
         description="Experience transformative online and offline therapy, holistic well-being counselling, and corporate workshops in Pune with Being You Path. Book a session with top psychologists today."
         keywords="best psychologist in pune, online counselling, stress management workshops, child counselling, corporate well-being, mindfulness therapy, CBT pune, mental health professional pune"
       />
+      <h1 className="sr-only">Top Rated Psychologist in Pune - Being You Path Online Therapy & Corporate Workshops</h1>
+      <p className="sr-only">Find the best psychologist in Pune at Being You Path. We provide advanced psychological counselling, online therapy sessions, CBT, child and adolescent support, relationship counselling, and professional corporate mental health workshops.</p>
+      
       {/* Hero Section */}
       <section ref={heroRef} className="w-full bg-soft-sand pt-12 pb-12 lg:pt-16 lg:pb-16 flex justify-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">

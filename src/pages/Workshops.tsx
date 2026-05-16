@@ -150,6 +150,9 @@ export default function Workshops() {
         description="Structured, facilitated workshop experiences built around real psychological frameworks. Customised corporate mental health training for your organisation, school, or community in Pune."
         keywords="corporate wellness workshops pune, mental health training pune, student resilience workshops, employee wellbeing training india, team building psychology, mindfulness seminars"
       />
+      <h1 className="sr-only">Corporate Mental Health & Wellness Workshops in Pune and Online</h1>
+      <p className="sr-only">Join our expert-led psychological and mental health workshops tailored for corporate teams, educational institutions, and communities. From stress management and mindfulness seminars to student resilience and team well-being training.</p>
+      
       {/* Hero Slider */}
       <section className="w-full bg-soft-sand py-12 md:py-16 lg:py-20 flex justify-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">

@@ -246,10 +246,17 @@ function Footer() {
           </div>
         </div>
 
+        {/* SEO Information Content */}
+        <div className="border-t border-[#FDFBF7]/10 pt-8 mt-4">
+          <p className="text-[11px] text-[#F4F1E1]/40 text-center leading-relaxed max-w-5xl mx-auto mb-4">
+            Being You Path™ offers top-rated counselling and psychological services in Pune, providing expert online therapy, child counselling, couples therapy, and corporate wellness workshops across India. Whether you are looking for stress management, anxiety treatment, depression therapy, mindfulness seminars, or specialized student resilience programs, our top-rated therapists and behavioral science experts are here to support your mental health journey. We bridge the gap between clinical psychology and holistic well-being to ensure you find the best psychologist near you for true, lasting change.
+          </p>
+        </div>
+
         {/* Bottom Bar: Copyright */}
-        <div className="border-t border-[#FDFBF7]/10 pt-4 flex justify-center items-center">
+        <div className="border-t border-[#FDFBF7]/10 pt-6 flex justify-center items-center">
           <p className="text-[13px] text-[#F4F1E1]/50 font-medium tracking-wide text-center">
-            © 2026 Being You Path™. All rights reserved.
+            © {new Date().getFullYear()} Being You Path™. All rights reserved.
           </p>
         </div>
       </div>

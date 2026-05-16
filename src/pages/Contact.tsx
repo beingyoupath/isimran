@@ -136,6 +136,9 @@ export default function Contact() {
         description="Book a free clarity call, send an email, or reach out on WhatsApp to Being You Path. Start a conversation about your well-being with our Pune therapists today."
         keywords="contact psychologist pune, book therapy session pune, online therapy consultation, find a therapist pune, mental health appointment"
       />
+      <h1 className="sr-only">Contact Being You Path - Book Therapy & Counselling in Pune</h1>
+      <p className="sr-only">Get in touch with the best psychologists and counselling experts in Pune. Schedule your online therapy session, inquire about corporate workshops, or book a free mental health clarity call at Being You Path today.</p>
+      
       {/* Toast Notification */}
       <AnimatePresence>
         {showToast && (

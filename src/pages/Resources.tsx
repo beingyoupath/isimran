@@ -277,6 +277,9 @@ export default function Resources() {
         description="Practical well-being articles, psychology guides, and mental health tools written for the way people actually live. Read top counselling tips from Pune experts."
         keywords="mental health blog, psychology articles online, therapy resources, mindfulness tips, anxiety management guide, depression help reading, self-care articles"
       />
+      <h1 className="sr-only">Top Mental Health Blog, Psychological Resources, and Counselling Articles</h1>
+      <p className="sr-only">Read expert psychological insights, mental health support guides, and wellness tips from the best counseling professionals at Being You Path Pune. Discover articles on stress relief, cognitive behavioral practices, mindfulness, and authentic living.</p>
+      
       {/* Hero Slider */}
       <section className="w-full bg-soft-sand py-12 md:py-16 lg:py-20 flex justify-center border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">

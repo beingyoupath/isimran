@@ -75,6 +75,9 @@ export default function About() {
         description="Learn about our philosophy, top psychologists, and how Behavioral Science combined with Modern Psychology can help you live better in Pune."
         keywords="about psychologists pune, team of therapists pune, behavioral science counselling, mental health experts pune, online counselling practitioners"
       />
+      <h1 className="sr-only">About The Best Psychologists in Pune | Expert Counselling Therapists</h1>
+      <p className="sr-only">Meet the experienced therapists and leading mental health professionals at Being You Path, serving Pune and beyond. Discover our evidence-based psychological approach combining modern therapy and behavioral science.</p>
+      
       {/* Hero Slider */}
       <section className="w-full bg-soft-sand py-12 md:py-16 lg:py-20 flex justify-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
