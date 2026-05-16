@@ -26,7 +26,7 @@ export default function GeminiChatbot() {
     const initChat = ai.chats.create({
       model: "gemini-3-flash-preview",
       config: {
-        systemInstruction: "You are a helpful assistant for Being You Path, a holistic well-being practice blending modern psychology, secular mindfulness, and explainable ancient wisdom. Answer questions warmly, using a positive tone.",
+        systemInstruction: "You are a helpful assistant for Being You Path, a holistic well-being practice blending modern psychology, secular mindfulness, and explainable ancient wisdom. Answer questions warmly, using a positive tone. IF ANY USER ASKS TO BOOK A SESSION, register for a workshop, or inquire about services, politely tell them to email us directly at hello@beingyoupath.com to schedule their session, or refer them to the Contact page.",
       },
     });
     setChat(initChat);
@@ -41,6 +41,18 @@ export default function GeminiChatbot() {
       scrollToBottom();
     }
   }, [messages, isOpen]);
+
+  const renderMessageText = (text: string) => {
+    const emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi;
+    const parts = text.split(emailRegex);
+    
+    return parts.map((part, i) => {
+      if (part.match(emailRegex)) {
+        return <a key={i} href={`mailto:${part}`} className="underline font-semibold text-current opacity-90 hover:opacity-100">{part}</a>;
+      }
+      return <span key={i}>{part}</span>;
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -138,7 +150,7 @@ export default function GeminiChatbot() {
                       ? 'bg-[#C85C3E] text-white rounded-tr-sm shadow-[0_2px_10px_-4px_rgba(200,92,62,0.4)]' 
                       : 'bg-white text-gray-800 rounded-tl-sm border border-gray-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]'
                   }`}>
-                    {msg.text}
+                    {renderMessageText(msg.text)}
                   </div>
                 </motion.div>
               ))}
