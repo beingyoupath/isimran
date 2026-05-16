@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Brain, GraduationCap, Users, Briefcase, CheckCircle2, ChevronRight, Compass, HeartHandshake, Zap, BookOpen, Quote, ChevronLeft, ArrowRight, BrainCircuit, Coffee } from "lucide-react";
 import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
 import { useState, useEffect, useRef } from "react";
+import { SEO } from "../components/SEO";
 
 export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -178,6 +179,11 @@ export default function Home() {
 
   return (
     <div className="bg-soft-sand">
+      <SEO 
+        title="Home"
+        description="Practical, evidence-based counselling, psychology, and holistic wellbeing services in Pune and online."
+        keywords="counselling, psychology, well-being, mental health, Pune therapist, online therapy, psychotherapy"
+      />
       {/* Hero Section */}
       <section ref={heroRef} className="w-full bg-soft-sand pt-12 pb-12 lg:pt-16 lg:pb-16 flex justify-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -495,50 +501,74 @@ export default function Home() {
         </div>
       </section>
 
-       {/* Resources & Blogs Preview */}
-       <section className="py-16 md:py-20 lg:py-24 bg-white border-t border-gray-100">
-         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-             <div className="max-w-2xl">
-               <h2 className="text-3xl md:text-[36px] font-semibold text-deep-teal mb-4 font-heading">Insights & Blogs</h2>
-               <p className="text-lg text-charcoal-warm">Practical, evidence-based articles to help you think clearer and live better.</p>
-             </div>
-             <Link 
-               to="/resources" 
-               className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium rounded-full border-2 border-terracotta text-terracotta hover:bg-terracotta hover:text-white transition-all uppercase tracking-wide group whitespace-nowrap"
-             >
-               Explore All Articles <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-             </Link>
-           </div>
-           
-           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-             <div className="bg-soft-sand rounded-[24px] p-8 border border-gray-100 hover:shadow-md transition-all group flex flex-col hover-lift h-full">
-                <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-terracotta flex-shrink-0">
-                   <BrainCircuit className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-bold font-heading text-deep-teal mb-3 group-hover:text-terracotta transition-colors leading-tight">Why You're Tired in Ways Sleep Can't Fix</h3>
-                <p className="text-charcoal-warm text-[15px] mb-6 flex-grow leading-relaxed">Many of us mistake cognitive fatigue for physical tiredness, leading to a frustrating cycle of resting without actually recovering.</p>
-                <Link to="/resources" className="text-sm font-bold uppercase tracking-wide text-terracotta group-hover:text-amber-glow transition-colors italic flex items-center mt-auto">Read Article <ArrowRight className="w-3 h-3 ml-1" /></Link>
-             </div>
-             <div className="bg-soft-sand rounded-[24px] p-8 border border-gray-100 hover:shadow-md transition-all group flex flex-col hover-lift h-full">
-                <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-terracotta flex-shrink-0">
-                   <Coffee className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-bold font-heading text-deep-teal mb-3 group-hover:text-terracotta transition-colors leading-tight">The 'Good Enough' Morning Routine</h3>
-                <p className="text-charcoal-warm text-[15px] mb-6 flex-grow leading-relaxed">A realistic approach to starting your day that doesn't involve waking up at 5 AM or meditating for an hour.</p>
-                <Link to="/resources" className="text-sm font-bold uppercase tracking-wide text-terracotta group-hover:text-amber-glow transition-colors italic flex items-center mt-auto">Read Article <ArrowRight className="w-3 h-3 ml-1" /></Link>
-             </div>
-             <div className="bg-soft-sand rounded-[24px] p-8 border border-gray-100 hover:shadow-md transition-all group flex flex-col hover-lift h-full">
-                <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-terracotta flex-shrink-0">
-                   <Briefcase className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-bold font-heading text-deep-teal mb-3 group-hover:text-terracotta transition-colors leading-tight">Setting Boundaries When You're Ambitious</h3>
-                <p className="text-charcoal-warm text-[15px] mb-6 flex-grow leading-relaxed">A guide for high-achievers on how to protect their time and mental well-being without compromising their professional goals.</p>
-                <Link to="/resources" className="text-sm font-bold uppercase tracking-wide text-terracotta group-hover:text-amber-glow transition-colors italic flex items-center mt-auto">Read Article <ArrowRight className="w-3 h-3 ml-1" /></Link>
-             </div>
-           </div>
-         </div>
-       </section>
+      {/* Resources & Blogs Preview */}
+      <section className="py-16 md:py-20 lg:py-24 bg-white border-t border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6"
+          >
+            <div className="max-w-2xl">
+              <h2 className="text-3xl md:text-[36px] font-semibold text-deep-teal mb-4 font-heading">Insights & Blogs</h2>
+              <p className="text-lg text-charcoal-warm">Practical, evidence-based articles to help you think clearer and live better.</p>
+            </div>
+            <Link 
+              to="/resources" 
+              className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium rounded-full border-2 border-terracotta text-terracotta hover:bg-terracotta hover:text-white transition-all uppercase tracking-wide group whitespace-nowrap"
+            >
+              Explore All Articles <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </motion.div>
+          
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={{
+              visible: { transition: { staggerChildren: 0.15 } },
+              hidden: {}
+            }}
+          >
+            <motion.div 
+              variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } }}
+              className="bg-soft-sand rounded-[24px] p-8 border border-gray-100 hover:shadow-md transition-all group flex flex-col hover-lift h-full"
+            >
+               <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-terracotta flex-shrink-0">
+                  <BrainCircuit className="w-6 h-6" />
+               </div>
+               <h3 className="text-xl font-bold font-heading text-deep-teal mb-3 group-hover:text-terracotta transition-colors leading-tight">Why You're Tired in Ways Sleep Can't Fix</h3>
+               <p className="text-charcoal-warm text-[15px] mb-6 flex-grow leading-relaxed">Many of us mistake cognitive fatigue for physical tiredness, leading to a frustrating cycle of resting without actually recovering.</p>
+               <Link to="/resources" className="text-sm font-bold uppercase tracking-wide text-terracotta group-hover:text-amber-glow transition-colors italic flex items-center mt-auto">Read Article <ArrowRight className="w-3 h-3 ml-1" /></Link>
+            </motion.div>
+            <motion.div 
+              variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } }}
+              className="bg-soft-sand rounded-[24px] p-8 border border-gray-100 hover:shadow-md transition-all group flex flex-col hover-lift h-full"
+            >
+               <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-terracotta flex-shrink-0">
+                  <Coffee className="w-6 h-6" />
+               </div>
+               <h3 className="text-xl font-bold font-heading text-deep-teal mb-3 group-hover:text-terracotta transition-colors leading-tight">The 'Good Enough' Morning Routine</h3>
+               <p className="text-charcoal-warm text-[15px] mb-6 flex-grow leading-relaxed">A realistic approach to starting your day that doesn't involve waking up at 5 AM or meditating for an hour.</p>
+               <Link to="/resources" className="text-sm font-bold uppercase tracking-wide text-terracotta group-hover:text-amber-glow transition-colors italic flex items-center mt-auto">Read Article <ArrowRight className="w-3 h-3 ml-1" /></Link>
+            </motion.div>
+            <motion.div 
+              variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } }}
+              className="bg-soft-sand rounded-[24px] p-8 border border-gray-100 hover:shadow-md transition-all group flex flex-col hover-lift h-full"
+            >
+               <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-terracotta flex-shrink-0">
+                  <Briefcase className="w-6 h-6" />
+               </div>
+               <h3 className="text-xl font-bold font-heading text-deep-teal mb-3 group-hover:text-terracotta transition-colors leading-tight">Setting Boundaries When You're Ambitious</h3>
+               <p className="text-charcoal-warm text-[15px] mb-6 flex-grow leading-relaxed">A guide for high-achievers on how to protect their time and mental well-being without compromising their professional goals.</p>
+               <Link to="/resources" className="text-sm font-bold uppercase tracking-wide text-terracotta group-hover:text-amber-glow transition-colors italic flex items-center mt-auto">Read Article <ArrowRight className="w-3 h-3 ml-1" /></Link>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
 
        {/* Client Testimonials */}
        <section className="py-16 md:py-20 lg:py-24 bg-white border-y border-gray-100 overflow-hidden">

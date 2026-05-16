@@ -1,10 +1,45 @@
-import { Phone, Mail, MapPin, ShieldCheck, UserCheck, Clock, CheckCircle2, Quote } from "lucide-react";
+import { Phone, Mail, MapPin, ShieldCheck, UserCheck, Clock, CheckCircle2, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import React, { useState, useEffect } from "react";
+import { SEO } from "../components/SEO";
 
 export default function Contact() {
   const [showToast, setShowToast] = useState(false);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const heroSlides = [
+    {
+      title: "Let's Start With a Conversation",
+      subtitle: "Your free clarity call.",
+      desc: "No commitment, no pressure, no clinical intake forms. Just a 15-minute chat to understand your context and see if we're the right fit for your journey.",
+      image: "https://images.unsplash.com/photo-1543269664-7eef42226a21?q=80&w=2940&auto=format&fit=crop"
+    },
+    {
+      title: "Here to Listen, Ready to Guide",
+      subtitle: "Professional support in Pune and online.",
+      desc: "Whether you prefer face-to-face interactions or the comfort of your own space, we offer flexible session formats designed to fit seamlessly into your life.",
+      image: "https://images.unsplash.com/photo-1573164574572-cb89e39749b4?q=80&w=2938&auto=format&fit=crop"
+    },
+    {
+      title: "Reach Out Today",
+      subtitle: "Taking the first step is often the hardest part.",
+      desc: "But it doesn't have to be complicated. Drop us a message on WhatsApp, send an email, or book a call directly. We make the process simple and human.",
+      image: "https://images.unsplash.com/photo-1516387938699-a93567ec168e?q=80&w=2942&auto=format&fit=crop"
+    }
+  ];
+
+  useEffect(() => {
+    if (isHovered) return;
+    const sliderTimer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 6000);
+    return () => clearInterval(sliderTimer);
+  }, [heroSlides.length, isHovered]);
+
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+  const prevSlide = () => setCurrentSlide((prev) => (prev === 0 ? heroSlides.length - 1 : prev - 1));
 
   const testimonials = [
     {
@@ -96,6 +131,10 @@ export default function Contact() {
 
   return (
     <div className="bg-white">
+      <SEO 
+        title="Contact Us"
+        description="Book a free clarity call, send an email, or reach out on WhatsApp. Let's start a conversation about your well-being."
+      />
       {/* Toast Notification */}
       <AnimatePresence>
         {showToast && (
@@ -112,25 +151,89 @@ export default function Contact() {
         )}
       </AnimatePresence>
 
-      {/* Hero */}
-      <section className="bg-soft-sand py-12 md:py-16 lg:py-20 text-center border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.h1 
-             initial={{ opacity: 0, y: 20 }}
-             animate={{ opacity: 1, y: 0 }}
-             transition={{ duration: 0.6 }}
-             className="text-5xl md:text-[52px] lg:text-[64px] leading-tight font-bold text-deep-teal mb-8 font-heading tracking-tight"
+      {/* Hero Slider */}
+      <section className="w-full bg-soft-sand py-12 md:py-16 lg:py-20 flex justify-center border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div 
+            className="relative rounded-[32px] overflow-hidden shadow-2xl flex flex-col bg-white"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
           >
-            Let's Start With a Conversation
-          </motion.h1>
-          <motion.p 
-             initial={{ opacity: 0, y: 20 }}
-             animate={{ opacity: 1, y: 0 }}
-             transition={{ duration: 0.6, delay: 0.1 }}
-             className="text-xl md:text-[24px] md:leading-[36px] text-charcoal-warm font-medium font-heading leading-relaxed max-w-3xl mx-auto"
-          >
-            Your free 15-minute clarity call — no commitment, no pressure, no clinical intake forms. Just a chat to see if we're the right fit.
-          </motion.p>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentSlide}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+                className="flex flex-col lg:flex-row w-full min-h-[600px] lg:min-h-[550px]"
+              >
+                {/* Image Element */}
+                <div className="w-full lg:w-5/12 h-[35vh] md:h-[45vh] lg:h-auto relative shrink-0">
+                  <img 
+                    src={heroSlides[currentSlide].image} 
+                    alt={heroSlides[currentSlide].title}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
+                
+                {/* Text Content Area */}
+                <div className="w-full lg:w-7/12 p-8 md:p-12 lg:p-16 pb-20 md:pb-24 lg:pb-16 flex flex-col items-center lg:items-start text-center lg:text-left justify-center relative z-20">
+                  <div className="w-full max-w-2xl mx-auto lg:mx-0">
+                    <h1 className="text-3xl md:text-[40px] lg:text-[48px] leading-tight font-bold text-deep-teal mb-6 font-heading tracking-tight">
+                      {heroSlides[currentSlide].title}
+                    </h1>
+                    
+                    <h2 className="text-xl md:text-[24px] md:leading-[32px] text-terracotta mb-6 font-semibold font-heading">
+                      {heroSlides[currentSlide].subtitle}
+                    </h2>
+
+                    <p className="text-lg text-charcoal-warm mb-10 leading-relaxed">
+                      {heroSlides[currentSlide].desc}
+                    </p>
+                    
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Controls */}
+            <div className="absolute top-1/2 -translate-y-1/2 left-4 md:left-6 z-30">
+              <button
+                onClick={prevSlide}
+                className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/80 hover:bg-white shadow-md text-deep-teal hover:text-terracotta backdrop-blur-md flex items-center justify-center transition-all border border-gray-100"
+                aria-label="Previous slide"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+            </div>
+            <div className="absolute top-1/2 -translate-y-1/2 right-4 md:right-6 z-30">
+              <button
+                onClick={nextSlide}
+                className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/80 hover:bg-white shadow-md text-deep-teal hover:text-terracotta backdrop-blur-md flex items-center justify-center transition-all border border-gray-100"
+                aria-label="Next slide"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </div>
+
+            {/* Indicators */}
+            <div className="absolute bottom-6 md:bottom-8 lg:bottom-12 right-0 left-0 lg:left-auto lg:right-[29%] z-30 flex justify-center gap-3">
+              {heroSlides.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentSlide(idx)}
+                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                    currentSlide === idx 
+                      ? "bg-terracotta w-8" 
+                      : "bg-gray-300 hover:bg-terracotta/60"
+                  }`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 

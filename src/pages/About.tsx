@@ -1,10 +1,45 @@
-import { useState } from "react";
-import { CheckCircle2, Quote, ChevronDown, ChevronUp, MessageCircleHeart, Target, Fingerprint, Network } from "lucide-react";
+import { useState, useEffect } from "react";
+import { CheckCircle2, Quote, ChevronDown, ChevronUp, MessageCircleHeart, Target, Fingerprint, Network, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
+import { SEO } from "../components/SEO";
 
 export default function About() {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const heroSlides = [
+    {
+      title: "We Help People Understand Themselves — And Build Lives That Actually Work",
+      subtitle: "Meet the people behind Being You Path™ — counselling psychologists and well-being facilitators blending modern psychology, mindfulness, and practical wisdom.",
+      desc: "Our approach integrates evidence-based behavioral science with deep empathy. We focus on real-world challenges, helping you unlock actionable insights that foster long-term resilience and emotional growth.",
+      image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=2620&auto=format&fit=crop"
+    },
+    {
+      title: "Guided by Empathy, Grounded in Science",
+      subtitle: "A philosophy built on understanding the human experience.",
+      desc: "We don't just offer advice; we provide tools. Our practitioners combine academic rigor with compassionate listening to create a safe space where meaningful, sustainable change can occur.",
+      image: "https://images.unsplash.com/photo-1573497019940-1ddbb59518d8?q=80&w=2669&auto=format&fit=crop"
+    },
+    {
+      title: "Your Journey to Intentional Living",
+      subtitle: "Moving from 'just getting by' to thriving.",
+      desc: "We believe in the power of intention and self-awareness. Together, we'll navigate the complexities of your life, developing strategies that align your daily actions with your core values.",
+      image: "https://images.unsplash.com/photo-1620689913164-9fc2fb61266b?q=80&w=2940&auto=format&fit=crop"
+    }
+  ];
+
+  useEffect(() => {
+    if (isHovered) return;
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [heroSlides.length, isHovered]);
+
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+  const prevSlide = () => setCurrentSlide((prev) => (prev === 0 ? heroSlides.length - 1 : prev - 1));
 
   const toggleFaq = (index: number) => {
     setExpandedFaq(expandedFaq === index ? null : index);
@@ -35,25 +70,93 @@ export default function About() {
 
   return (
     <div className="bg-soft-sand">
-      {/* Hero Section */}
-      <section className="pt-12 pb-20 lg:pt-16 lg:pb-12 text-center">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-5xl md:text-[52px] lg:text-[64px] leading-tight font-bold text-deep-teal mb-8 font-heading tracking-tight"
+      <SEO 
+        title="About Us"
+        description="Learn about our philosophy, practitioners, and how Behavioral Science combined with Modern Psychology can help you live better."
+      />
+      {/* Hero Slider */}
+      <section className="w-full bg-soft-sand py-12 md:py-16 lg:py-20 flex justify-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div 
+            className="relative rounded-[32px] overflow-hidden shadow-2xl flex flex-col bg-white"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
           >
-            We Help People Understand Themselves — And Build Lives That Actually Work
-          </motion.h1>
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-xl md:text-[24px] md:leading-[36px] text-charcoal-warm font-medium font-heading"
-          >
-            Meet the people behind Being You Path™ — counselling psychologists and well-being facilitators blending modern psychology, mindfulness, and practical wisdom.
-          </motion.h2>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentSlide}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+                className="flex flex-col lg:flex-row w-full min-h-[600px] lg:min-h-[550px]"
+              >
+                {/* Image Element */}
+                <div className="w-full lg:w-5/12 h-[35vh] md:h-[45vh] lg:h-auto relative shrink-0">
+                  <img 
+                    src={heroSlides[currentSlide].image} 
+                    alt={heroSlides[currentSlide].title}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
+                
+                {/* Text Content Area */}
+                <div className="w-full lg:w-7/12 p-8 md:p-12 lg:p-16 pb-20 md:pb-24 lg:pb-16 flex flex-col items-center lg:items-start text-center lg:text-left justify-center relative z-20">
+                  <div className="w-full max-w-2xl mx-auto lg:mx-0">
+                    <h1 className="text-3xl md:text-[40px] lg:text-[48px] leading-tight font-bold text-deep-teal mb-6 font-heading tracking-tight">
+                      {heroSlides[currentSlide].title}
+                    </h1>
+                    
+                    <h2 className="text-xl md:text-[24px] md:leading-[32px] text-terracotta mb-6 font-semibold font-heading">
+                      {heroSlides[currentSlide].subtitle}
+                    </h2>
+
+                    <p className="text-lg text-charcoal-warm mb-10 leading-relaxed">
+                      {heroSlides[currentSlide].desc}
+                    </p>
+                    
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Controls */}
+            <div className="absolute top-1/2 -translate-y-1/2 left-4 md:left-6 z-30">
+              <button
+                onClick={prevSlide}
+                className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/80 hover:bg-white shadow-md text-deep-teal hover:text-terracotta backdrop-blur-md flex items-center justify-center transition-all border border-gray-100"
+                aria-label="Previous slide"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+            </div>
+            <div className="absolute top-1/2 -translate-y-1/2 right-4 md:right-6 z-30">
+              <button
+                onClick={nextSlide}
+                className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/80 hover:bg-white shadow-md text-deep-teal hover:text-terracotta backdrop-blur-md flex items-center justify-center transition-all border border-gray-100"
+                aria-label="Next slide"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </div>
+
+            {/* Indicators */}
+            <div className="absolute bottom-6 md:bottom-8 lg:bottom-12 right-0 left-0 lg:left-auto lg:right-[29%] z-30 flex justify-center gap-3">
+              {heroSlides.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentSlide(idx)}
+                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                    currentSlide === idx 
+                      ? "bg-terracotta w-8" 
+                      : "bg-gray-300 hover:bg-terracotta/60"
+                  }`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -280,14 +383,20 @@ export default function About() {
                              <p className="text-[13px] text-charcoal-warm mb-3 line-clamp-3">Explore the ancient system of energy centers. This guide provides practical methods to balance and unblock your chakras for emotional stability, grounding, and inner peace in daily life.</p>
                              <div className="mt-auto flex items-center justify-between pt-2 border-t border-gray-50">
                                <span className="font-bold text-terracotta">₹499</span>
-                               <a 
-                                 href={`https://wa.me/917387772573?text=${encodeURIComponent('Hello, I am interested in purchasing the book "Healing Journey through chakras".\n\nPlease find my details below:\nName: \nPhone Number: \nDelivery Address: \nCity/State/Pincode: \n\nThank you!')}`}
-                                 target="_blank"
-                                 rel="noopener noreferrer"
-                                 className="text-[11px] font-bold uppercase tracking-wider bg-deep-teal text-white px-4 py-2 rounded-full hover:bg-terracotta transition-colors shadow-sm inline-block hover:-translate-y-0.5 duration-300 ease-out"
-                               >
-                                 Buy Now
-                               </a>
+                              <div className="relative flex items-center justify-center group">
+                                 <span className="absolute inline-flex h-full w-full rounded-full bg-terracotta opacity-40 animate-ping" style={{ animationDuration: '2s' }}></span>
+                                 <motion.a 
+                                   href={`https://wa.me/917387772573?text=${encodeURIComponent('Hello, I am interested in purchasing the book "Healing Journey through chakras".\n\nPlease find my details below:\nName: \nPhone Number: \nDelivery Address: \nCity/State/Pincode: \n\nThank you!')}`}
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   className="relative text-[11px] font-bold uppercase tracking-wider bg-deep-teal text-white px-5 py-2 rounded-full hover:bg-terracotta transition-colors shadow-md inline-block z-10 cursor-pointer"
+                                   whileHover={{ scale: 1.05, rotate: [-2, 2, -2, 0] }}
+                                   whileTap={{ scale: 0.95 }}
+                                   transition={{ rotate: { duration: 0.4 } }}
+                                 >
+                                   Buy Now
+                                 </motion.a>
+                              </div>
                              </div>
                           </div>
                        </div>
@@ -302,14 +411,20 @@ export default function About() {
                              <p className="text-[13px] text-charcoal-warm mb-3 line-clamp-3">A comprehensive roadmap to integrative health. Discover how simple, daily habits can align your physical vitality with mental clarity and profound spiritual depth.</p>
                              <div className="mt-auto flex items-center justify-between pt-2 border-t border-gray-50">
                                <span className="font-bold text-terracotta">₹499</span>
-                               <a 
-                                 href={`https://wa.me/917387772573?text=${encodeURIComponent('Hello, I am interested in purchasing the book "The essence of Wellness (Mind, Body, Spirit)".\n\nPlease find my details below:\nName: \nPhone Number: \nDelivery Address: \nCity/State/Pincode: \n\nThank you!')}`}
-                                 target="_blank"
-                                 rel="noopener noreferrer"
-                                 className="text-[11px] font-bold uppercase tracking-wider bg-deep-teal text-white px-4 py-2 rounded-full hover:bg-terracotta transition-colors shadow-sm inline-block hover:-translate-y-0.5 duration-300 ease-out"
-                               >
-                                 Buy Now
-                               </a>
+                              <div className="relative flex items-center justify-center group">
+                                 <span className="absolute inline-flex h-full w-full rounded-full bg-terracotta opacity-40 animate-ping" style={{ animationDuration: '2s' }}></span>
+                                 <motion.a 
+                                   href={`https://wa.me/917387772573?text=${encodeURIComponent('Hello, I am interested in purchasing the book "The essence of Wellness (Mind, Body, Spirit)".\n\nPlease find my details below:\nName: \nPhone Number: \nDelivery Address: \nCity/State/Pincode: \n\nThank you!')}`}
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   className="relative text-[11px] font-bold uppercase tracking-wider bg-deep-teal text-white px-5 py-2 rounded-full hover:bg-terracotta transition-colors shadow-md inline-block z-10 cursor-pointer"
+                                   whileHover={{ scale: 1.05, rotate: [-2, 2, -2, 0] }}
+                                   whileTap={{ scale: 0.95 }}
+                                   transition={{ rotate: { duration: 0.4 } }}
+                                 >
+                                   Buy Now
+                                 </motion.a>
+                              </div>
                              </div>
                           </div>
                        </div>
@@ -324,14 +439,20 @@ export default function About() {
                              <p className="text-[13px] text-charcoal-warm mb-3 line-clamp-3">Learn to harness the space between your thoughts. Break free from anxiety loops and overthinking with proven cognitive restructuring and mindfulness exercises.</p>
                              <div className="mt-auto flex items-center justify-between pt-2 border-t border-gray-50">
                                <span className="font-bold text-terracotta">₹499</span>
-                               <a 
-                                 href={`https://wa.me/917387772573?text=${encodeURIComponent('Hello, I am interested in purchasing the book "The power of mindful thoughts".\n\nPlease find my details below:\nName: \nPhone Number: \nDelivery Address: \nCity/State/Pincode: \n\nThank you!')}`}
-                                 target="_blank"
-                                 rel="noopener noreferrer"
-                                 className="text-[11px] font-bold uppercase tracking-wider bg-deep-teal text-white px-4 py-2 rounded-full hover:bg-terracotta transition-colors shadow-sm inline-block hover:-translate-y-0.5 duration-300 ease-out"
-                               >
-                                 Buy Now
-                               </a>
+                              <div className="relative flex items-center justify-center group">
+                                 <span className="absolute inline-flex h-full w-full rounded-full bg-terracotta opacity-40 animate-ping" style={{ animationDuration: '2s' }}></span>
+                                 <motion.a 
+                                   href={`https://wa.me/917387772573?text=${encodeURIComponent('Hello, I am interested in purchasing the book "The power of mindful thoughts".\n\nPlease find my details below:\nName: \nPhone Number: \nDelivery Address: \nCity/State/Pincode: \n\nThank you!')}`}
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   className="relative text-[11px] font-bold uppercase tracking-wider bg-deep-teal text-white px-5 py-2 rounded-full hover:bg-terracotta transition-colors shadow-md inline-block z-10 cursor-pointer"
+                                   whileHover={{ scale: 1.05, rotate: [-2, 2, -2, 0] }}
+                                   whileTap={{ scale: 0.95 }}
+                                   transition={{ rotate: { duration: 0.4 } }}
+                                 >
+                                   Buy Now
+                                 </motion.a>
+                              </div>
                              </div>
                           </div>
                        </div>
@@ -403,33 +524,41 @@ export default function About() {
             {faqs.map((faq, index) => (
               <div 
                 key={index}
-                className="bg-white rounded-[16px] shadow-sm border border-gray-100 overflow-hidden"
+                className="bg-white rounded-[16px] shadow-sm border border-gray-100 overflow-hidden transition-all duration-300"
               >
                 <button
                   onClick={() => toggleFaq(index)}
-                  className="w-full px-6 py-6 text-left flex justify-between items-center focus:outline-none hover:bg-gray-50/50 transition-colors"
+                  className="w-full px-6 py-6 text-left flex justify-between items-center focus:outline-none hover:bg-gray-50/80 transition-colors"
+                  aria-expanded={expandedFaq === index}
                 >
                   <h3 className="text-xl font-semibold text-deep-teal font-heading pr-8">{faq.question}</h3>
-                  <div className="flex-shrink-0 text-terracotta">
-                    {expandedFaq === index ? (
-                      <ChevronUp className="w-5 h-5" />
-                    ) : (
-                      <ChevronDown className="w-5 h-5" />
-                    )}
-                  </div>
+                  <motion.div 
+                    className="flex-shrink-0 text-terracotta"
+                    animate={{ rotate: expandedFaq === index ? 180 : 0 }}
+                    transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+                  >
+                    <ChevronDown className="w-6 h-6" />
+                  </motion.div>
                 </button>
-                <AnimatePresence>
+                <AnimatePresence initial={false}>
                   {expandedFaq === index && (
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+                      style={{ overflow: "hidden" }}
                     >
                       <div className="px-6 pb-6 text-charcoal-warm leading-relaxed">
-                        <div className="pt-2 border-t border-gray-50">
+                        <motion.div 
+                          className="pt-2 border-t border-gray-100"
+                          initial={{ opacity: 0, y: -8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -8 }}
+                          transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+                        >
                           {faq.answer}
-                        </div>
+                        </motion.div>
                       </div>
                     </motion.div>
                   )}

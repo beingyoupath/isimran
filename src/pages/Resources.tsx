@@ -1,14 +1,49 @@
 import { useState, useEffect } from "react";
-import { BrainCircuit, Coffee, Briefcase, HeartHandshake, Waves, ArrowRight, X, Twitter, Linkedin, Mail, Facebook, Instagram } from "lucide-react";
+import { BrainCircuit, Coffee, Briefcase, HeartHandshake, Waves, ArrowRight, X, Twitter, Linkedin, Mail, Facebook, Instagram, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { SkeletonLoader } from "../components/SkeletonLoader";
+import { SEO } from "../components/SEO";
 
 export default function Resources() {
   const [selectedArticle, setSelectedArticle] = useState<any>(null);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const heroSlides = [
+    {
+      title: "Practical Well-Being — Written for the Way People Actually Live",
+      subtitle: "No jargon. No generic advice. Just honest, research-informed writing to help you think clearer.",
+      desc: "Dive into actionable psychological insights to overcome overthinking, manage burnout, and navigate the realities of modern professional and personal life.",
+      image: "https://images.unsplash.com/photo-1544928147-79a2dbc1f389?q=80&w=2787&auto=format&fit=crop"
+    },
+    {
+      title: "Insights That Spark Action",
+      subtitle: "Move from 'just getting by' to intentional living.",
+      desc: "Our resources distill complex behavioral science into simple, actionable tools you can use immediately to improve focus, emotional regulation, and relationships.",
+      image: "https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?q=80&w=2874&auto=format&fit=crop"
+    },
+    {
+      title: "Tools for the Thinking Mind",
+      subtitle: "Equip yourself with evidence-based strategies.",
+      desc: "From understanding cognitive fatigue to mastering habit design, explore mental frameworks that help you build resilience in a demanding world.",
+      image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2942&auto=format&fit=crop"
+    }
+  ];
+
+  useEffect(() => {
+    if (isHovered) return;
+    const sliderTimer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 6000);
+    return () => clearInterval(sliderTimer);
+  }, [heroSlides.length, isHovered]);
+
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+  const prevSlide = () => setCurrentSlide((prev) => (prev === 0 ? heroSlides.length - 1 : prev - 1));
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -218,25 +253,93 @@ export default function Resources() {
 
   return (
     <div className="bg-white">
-      {/* Hero */}
-      <section className="bg-soft-sand py-12 md:py-16 lg:py-20 text-center border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.h1 
-             initial={{ opacity: 0, y: 20 }}
-             animate={{ opacity: 1, y: 0 }}
-             transition={{ duration: 0.6 }}
-             className="text-5xl md:text-[52px] lg:text-[64px] leading-tight font-bold text-deep-teal mb-8 font-heading tracking-tight"
+      <SEO 
+        title="Resources & Insights"
+        description="Practical well-being articles, guides, and tools written for the way people actually live. Move from 'just getting by' to intentional living."
+      />
+      {/* Hero Slider */}
+      <section className="w-full bg-soft-sand py-12 md:py-16 lg:py-20 flex justify-center border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div 
+            className="relative rounded-[32px] overflow-hidden shadow-2xl flex flex-col bg-white"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
           >
-            Practical Well-Being — Written for the Way People Actually Live
-          </motion.h1>
-          <motion.p 
-             initial={{ opacity: 0, y: 20 }}
-             animate={{ opacity: 1, y: 0 }}
-             transition={{ duration: 0.6, delay: 0.1 }}
-             className="text-xl md:text-[24px] md:leading-[36px] text-charcoal-warm font-medium font-heading leading-relaxed max-w-3xl mx-auto"
-          >
-            No jargon. No generic advice. Just honest, research-informed writing to help you think clearer and live better.
-          </motion.p>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentSlide}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+                className="flex flex-col lg:flex-row w-full min-h-[600px] lg:min-h-[550px]"
+              >
+                {/* Image Element */}
+                <div className="w-full lg:w-5/12 h-[35vh] md:h-[45vh] lg:h-auto relative shrink-0">
+                  <img 
+                    src={heroSlides[currentSlide].image} 
+                    alt={heroSlides[currentSlide].title}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
+                
+                {/* Text Content Area */}
+                <div className="w-full lg:w-7/12 p-8 md:p-12 lg:p-16 pb-20 md:pb-24 lg:pb-16 flex flex-col items-center lg:items-start text-center lg:text-left justify-center relative z-20">
+                  <div className="w-full max-w-2xl mx-auto lg:mx-0">
+                    <h1 className="text-3xl md:text-[40px] lg:text-[48px] leading-tight font-bold text-deep-teal mb-6 font-heading tracking-tight">
+                      {heroSlides[currentSlide].title}
+                    </h1>
+                    
+                    <h2 className="text-xl md:text-[24px] md:leading-[32px] text-terracotta mb-6 font-semibold font-heading">
+                      {heroSlides[currentSlide].subtitle}
+                    </h2>
+
+                    <p className="text-lg text-charcoal-warm mb-10 leading-relaxed">
+                      {heroSlides[currentSlide].desc}
+                    </p>
+                    
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Controls */}
+            <div className="absolute top-1/2 -translate-y-1/2 left-4 md:left-6 z-30">
+              <button
+                onClick={prevSlide}
+                className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/80 hover:bg-white shadow-md text-deep-teal hover:text-terracotta backdrop-blur-md flex items-center justify-center transition-all border border-gray-100"
+                aria-label="Previous slide"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+            </div>
+            <div className="absolute top-1/2 -translate-y-1/2 right-4 md:right-6 z-30">
+              <button
+                onClick={nextSlide}
+                className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/80 hover:bg-white shadow-md text-deep-teal hover:text-terracotta backdrop-blur-md flex items-center justify-center transition-all border border-gray-100"
+                aria-label="Next slide"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </div>
+
+            {/* Indicators */}
+            <div className="absolute bottom-6 md:bottom-8 lg:bottom-12 right-0 left-0 lg:left-auto lg:right-[29%] z-30 flex justify-center gap-3">
+              {heroSlides.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentSlide(idx)}
+                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                    currentSlide === idx 
+                      ? "bg-terracotta w-8" 
+                      : "bg-gray-300 hover:bg-terracotta/60"
+                  }`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 

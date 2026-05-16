@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect } from "react";
+import { SEO } from "../components/SEO";
 
 export default function Workshops() {
   const heroSlides = [
@@ -143,6 +144,10 @@ export default function Workshops() {
 
   return (
     <div className="bg-soft-sand">
+      <SEO 
+        title="Workshops & Training"
+        description="Structured, facilitated learning experiences built around real psychological frameworks, tested tools, and honest conversation. Customised for your organisation, school, or community."
+      />
       {/* Hero Slider */}
       <section className="w-full bg-soft-sand py-12 md:py-16 lg:py-20 flex justify-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
