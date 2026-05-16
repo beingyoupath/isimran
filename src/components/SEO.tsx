@@ -17,7 +17,7 @@ export function SEO({ title, description, keywords, url }: SEOProps) {
     "name": "Being You Path™",
     "description": "Holistic well-being practice blending psychology, secular mindfulness, and ancient wisdom.",
     "url": "https://www.beingyoupath.com",
-    "telephone": "+919876543210", 
+    "telephone": "+917387772573", 
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Pune",
