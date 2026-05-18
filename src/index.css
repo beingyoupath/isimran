@@ -49,6 +49,19 @@
   .animate-marquee:hover {
     animation-play-state: paused;
   }
+
+  .animate-wave {
+    animation: wave-animation 15s linear infinite;
+  }
+  
+  .animate-wave-slow {
+    animation: wave-animation 25s linear infinite reverse;
+  }
+}
+
+@keyframes wave-animation {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 @keyframes marquee {

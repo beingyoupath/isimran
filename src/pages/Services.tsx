@@ -274,8 +274,30 @@ export default function Services() {
         </div>
       </section>
 
+      {/* Multi-layered Liquid Wave Transition */}
+      <div className="w-full relative bg-white leading-[0] h-[60px] md:h-[120px] overflow-hidden -mt-[1px]">
+        {/* Slow Wave (Layer 1) */}
+        <div className="absolute top-0 left-0 w-[200%] h-full flex animate-wave-slow opacity-60">
+           <svg className="w-1/2 h-full" viewBox="0 0 1440 320" preserveAspectRatio="none" fill="var(--color-soft-sand)" xmlns="http://www.w3.org/2000/svg">
+             <path d="M0,0L48,42.7C96,85,192,171,288,213.3C384,256,480,256,576,213.3C672,171,768,85,864,69.3C960,53,1056,107,1152,133.3C1248,160,1344,160,1392,160L1440,160L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path>
+           </svg>
+           <svg className="w-1/2 h-full" viewBox="0 0 1440 320" preserveAspectRatio="none" fill="var(--color-soft-sand)" xmlns="http://www.w3.org/2000/svg">
+             <path d="M0,0L48,42.7C96,85,192,171,288,213.3C384,256,480,256,576,213.3C672,171,768,85,864,69.3C960,53,1056,107,1152,133.3C1248,160,1344,160,1392,160L1440,160L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path>
+           </svg>
+        </div>
+        {/* Fast Wave (Layer 2) */}
+        <div className="absolute top-0 left-0 w-[200%] h-[80%] flex animate-wave">
+           <svg className="w-1/2 h-full" viewBox="0 0 1440 320" preserveAspectRatio="none" fill="var(--color-soft-sand)" xmlns="http://www.w3.org/2000/svg">
+             <path d="M0,0L48,21.3C96,43,192,85,288,101.3C384,117,480,107,576,106.7C672,107,768,117,864,133.3C960,149,1056,171,1152,160C1248,149,1344,107,1392,85.3L1440,64L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path>
+           </svg>
+           <svg className="w-1/2 h-full" viewBox="0 0 1440 320" preserveAspectRatio="none" fill="var(--color-soft-sand)" xmlns="http://www.w3.org/2000/svg">
+             <path d="M0,0L48,21.3C96,43,192,85,288,101.3C384,117,480,107,576,106.7C672,107,768,117,864,133.3C960,149,1056,171,1152,160C1248,149,1344,107,1392,85.3L1440,64L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path>
+           </svg>
+        </div>
+      </div>
+
       {/* Services Accordion List */}
-      <section className="py-12 md:py-16 lg:py-20 bg-white">
+      <section className="pt-4 pb-12 md:pb-16 lg:pb-20 bg-white">
          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             {isLoading ? (
               <div className="space-y-6">
