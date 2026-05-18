@@ -354,9 +354,11 @@ export default function About() {
                 }}
                 className="bg-soft-sand rounded-[24px] overflow-hidden shadow-sm flex flex-col transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-md"
               >
-                 <div className="h-80 bg-gray-200 border-b border-white relative overflow-hidden group">
-                   <div className="absolute inset-0 flex items-center justify-center text-gray-400 group-hover:scale-105 transition-transform duration-500 ease-out">
-                     <span className="font-heading font-medium">Imran's Photo</span>
+                 <div className="pt-10 px-6 mx-auto w-full max-w-sm relative">
+                   <div className="aspect-[4/5] w-full rounded-[24px] bg-white p-3 shadow-md border border-gray-100/50 group relative">
+                     <div className="w-full h-full rounded-[14px] overflow-hidden relative bg-gray-100">
+                       <img src="https://drive.google.com/thumbnail?id=1iTW_XmU7hqQSNtJIKRC3ApQjW2yyZnne&sz=w1000" alt="Imran" className="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out" referrerPolicy="no-referrer" />
+                     </div>
                    </div>
                  </div>
                  <div className="p-10 flex-grow flex flex-col">
@@ -378,9 +380,9 @@ export default function About() {
                      <h4 className="text-[20px] font-bold text-deep-teal mb-4 font-heading">Books by Imran</h4>
                      <div className="space-y-4">
                        {/* Book 1 */}
-                       <div className="flex flex-col sm:flex-row gap-4 bg-white p-4 rounded-[16px] border border-gray-100 shadow-sm items-start hover:shadow-md transition-all duration-300 ease-out hover:-translate-y-1">
-                           <div className="w-full sm:w-24 h-40 sm:h-32 bg-gray-50 rounded-[10px] flex-shrink-0 flex items-center justify-center overflow-hidden border border-gray-100 group">
-                            <img src="https://images.unsplash.com/photo-1600618528240-fb9fc964b853?auto=format&fit=crop&q=80&w=200&h=300" alt="Healing Journey through chakras" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" referrerPolicy="no-referrer" />
+                       <div className="flex flex-col sm:flex-row gap-4 bg-white p-4 rounded-[16px] border border-gray-100 shadow-sm items-center sm:items-start hover:shadow-md transition-all duration-300 ease-out hover:-translate-y-1">
+                          <div className="w-24 sm:w-24 h-32 sm:h-32 bg-gray-50 rounded-[10px] flex-shrink-0 flex items-center justify-center overflow-hidden border border-gray-100 p-1 group">
+                            <img src="https://drive.google.com/thumbnail?id=14Na8ysaUXG8UnlS9X48Mcvq3PMh5mTj2&sz=w400" alt="Healing Journey through chakras" className="w-full h-full object-contain drop-shadow-sm group-hover:scale-105 transition-transform duration-500 ease-out" referrerPolicy="no-referrer" />
                           </div>
                           <div className="flex-1 flex flex-col h-full w-full">
                              <h5 className="font-heading font-semibold text-deep-teal leading-tight mb-2">1. Healing Journey through chakras</h5>
@@ -406,9 +408,9 @@ export default function About() {
                        </div>
 
                        {/* Book 2 */}
-                       <div className="flex flex-col sm:flex-row gap-4 bg-white p-4 rounded-[16px] border border-gray-100 shadow-sm items-start hover:shadow-md transition-all duration-300 ease-out hover:-translate-y-1">
-                          <div className="w-full sm:w-24 h-40 sm:h-32 bg-gray-50 rounded-[10px] flex-shrink-0 flex items-center justify-center overflow-hidden border border-gray-100 group">
-                             <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=200&h=300" alt="The essence of Wellness" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" referrerPolicy="no-referrer" />
+                       <div className="flex flex-col sm:flex-row gap-4 bg-white p-4 rounded-[16px] border border-gray-100 shadow-sm items-center sm:items-start hover:shadow-md transition-all duration-300 ease-out hover:-translate-y-1">
+                          <div className="w-24 sm:w-24 h-32 sm:h-32 bg-gray-50 rounded-[10px] flex-shrink-0 flex items-center justify-center overflow-hidden border border-gray-100 p-1 group">
+                             <img src="https://drive.google.com/thumbnail?id=1jrQuEeXPUkF1LsxgO46CCr1uqrGKzVCm&sz=w400" alt="The essence of Wellness" className="w-full h-full object-contain drop-shadow-sm group-hover:scale-105 transition-transform duration-500 ease-out" referrerPolicy="no-referrer" />
                           </div>
                           <div className="flex-1 flex flex-col h-full w-full">
                              <h5 className="font-heading font-semibold text-deep-teal leading-tight mb-2">2. The essence of Wellness (Mind, Body, Spirit)</h5>
@@ -434,9 +436,9 @@ export default function About() {
                        </div>
 
                        {/* Book 3 */}
-                       <div className="flex flex-col sm:flex-row gap-4 bg-white p-4 rounded-[16px] border border-gray-100 shadow-sm items-start hover:shadow-md transition-all duration-300 ease-out hover:-translate-y-1">
-                          <div className="w-full sm:w-24 h-40 sm:h-32 bg-gray-50 rounded-[10px] flex-shrink-0 flex items-center justify-center overflow-hidden border border-gray-100 group">
-                            <img src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?auto=format&fit=crop&q=80&w=200&h=300" alt="The power of mindful thoughts" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" referrerPolicy="no-referrer" />
+                       <div className="flex flex-col sm:flex-row gap-4 bg-white p-4 rounded-[16px] border border-gray-100 shadow-sm items-center sm:items-start hover:shadow-md transition-all duration-300 ease-out hover:-translate-y-1">
+                          <div className="w-24 sm:w-24 h-32 sm:h-32 bg-gray-50 rounded-[10px] flex-shrink-0 flex items-center justify-center overflow-hidden border border-gray-100 p-1 group">
+                            <img src="https://drive.google.com/thumbnail?id=160i1TW3o7ZDaUTxzesxuu-FE5T9KT1p8&sz=w400" alt="The power of mindful thoughts" className="w-full h-full object-contain drop-shadow-sm group-hover:scale-105 transition-transform duration-500 ease-out" referrerPolicy="no-referrer" />
                           </div>
                           <div className="flex-1 flex flex-col h-full w-full">
                              <h5 className="font-heading font-semibold text-deep-teal leading-tight mb-2">3. The power of mindful thoughts</h5>
@@ -473,9 +475,11 @@ export default function About() {
                 }}
                 className="bg-soft-sand rounded-[24px] overflow-hidden shadow-sm flex flex-col transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-md"
               >
-                 <div className="h-80 bg-gray-200 border-b border-white relative overflow-hidden group">
-                   <div className="absolute inset-0 flex items-center justify-center text-gray-400 group-hover:scale-105 transition-transform duration-500 ease-out">
-                     <span className="font-heading font-medium">Tejaswini's Photo</span>
+                 <div className="pt-10 px-6 mx-auto w-full max-w-sm relative">
+                   <div className="aspect-[4/5] w-full rounded-[24px] bg-white p-3 shadow-md border border-gray-100/50 group relative">
+                     <div className="w-full h-full rounded-[14px] overflow-hidden relative bg-gray-100">
+                       <img src="https://drive.google.com/thumbnail?id=1gmpGHtsb2iJ0tP-_yuMI-PnArP-KnZV2&sz=w1000" alt="Tejaswini Joshi" className="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out" referrerPolicy="no-referrer" />
+                     </div>
                    </div>
                  </div>
                  <div className="p-10 flex-grow flex flex-col">

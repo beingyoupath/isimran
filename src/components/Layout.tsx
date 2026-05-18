@@ -87,8 +87,8 @@ function Navbar() {
             <div className="flex-shrink-0 flex items-center">
               <Link to="/" className="flex flex-row items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity">
                 {/* Logo Placeholder */}
-                <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-14 lg:h-14 bg-gray-200 rounded-full flex items-center justify-center text-gray-400 border border-gray-300 flex-shrink-0">
-                  <span className="text-[8px] lg:text-xs font-semibold tracking-wider">LOGO</span>
+                <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-14 lg:h-14 bg-white rounded-full flex items-center justify-center border border-gray-300 flex-shrink-0 overflow-hidden p-[2px] lg:p-1">
+                  <img src="https://drive.google.com/thumbnail?id=13oT9VPQursUn3OmZPH2zdzO3Z5vm9VnM&sz=w800" alt="Being You Path Logo" className="w-full h-full object-contain" referrerPolicy="no-referrer" />
                 </div>
                 <div className="flex flex-col justify-center items-start text-left">
                   <span className="text-[16px] sm:text-[20px] lg:text-[28px] font-bold font-heading text-[#0B3A42] tracking-tight leading-tight">
@@ -188,8 +188,8 @@ function Footer() {
           <div className="flex flex-col items-start text-left">
             <div className="flex items-center gap-4 border-b border-[#FDFBF7]/20 pb-4 mb-4">
               {/* Logo Placeholder */}
-              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/10 rounded-full flex items-center justify-center text-[#F4F1E1]/50 border border-white/20 flex-shrink-0">
-                <span className="text-xs font-semibold tracking-wider">LOGO</span>
+              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#FDFBF7] rounded-full flex items-center justify-center border border-white/20 flex-shrink-0 overflow-hidden p-1">
+                <img src="https://drive.google.com/thumbnail?id=13oT9VPQursUn3OmZPH2zdzO3Z5vm9VnM&sz=w800" alt="Being You Path Logo" className="w-full h-full object-contain" referrerPolicy="no-referrer" />
               </div>
               <div className="flex flex-col">
                 <h3 className="text-3xl font-bold font-heading mb-1 tracking-tight text-[#FDFBF7]">
