@@ -20,13 +20,13 @@ export default function About() {
       title: "Guided by Empathy, Grounded in Science",
       subtitle: "A philosophy built on understanding the human experience.",
       desc: "We don't just offer advice; we provide tools. Our practitioners combine academic rigor with compassionate listening to create a safe space where meaningful, sustainable change can occur.",
-      image: "https://images.unsplash.com/photo-1573497019940-1ddbb59518d8?q=80&w=2669&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=2000&auto=format&fit=crop"
     },
     {
       title: "Your Journey to Intentional Living",
       subtitle: "Moving from 'just getting by' to thriving.",
       desc: "We believe in the power of intention and self-awareness. Together, we'll navigate the complexities of your life, developing strategies that align your daily actions with your core values.",
-      image: "https://images.unsplash.com/photo-1620689913164-9fc2fb61266b?q=80&w=2940&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2000&auto=format&fit=crop"
     }
   ];
 

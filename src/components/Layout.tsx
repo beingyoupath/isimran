@@ -67,6 +67,7 @@ function Navbar() {
               <button 
                 onClick={() => setIsOpen(!isOpen)}
                 className="text-[#0B3A42] hover:text-[#E6A157] transition-colors p-2 focus:outline-none"
+                aria-label="Toggle Navigation Menu"
               >
                 {isOpen ? <X size={26} /> : <Menu size={26} />}
               </button>

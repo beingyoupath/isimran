@@ -16,6 +16,7 @@ const Services = lazy(() => import("./pages/Services"));
 const Workshops = lazy(() => import("./pages/Workshops"));
 const Resources = lazy(() => import("./pages/Resources"));
 const Contact = lazy(() => import("./pages/Contact"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -41,6 +42,7 @@ export default function App() {
               <Route path="workshops" element={<Workshops />} />
               <Route path="resources" element={<Resources />} />
               <Route path="contact" element={<Contact />} />
+              <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
         </Suspense>
