@@ -13,7 +13,7 @@ export function SEO({ title, description, keywords, url, noindex }: SEOProps) {
   const fullTitle = `${title} | ${siteName}`;
 
   const schemaOrgJSONLD = {
-    "@context": "http://schema.org",
+    "@context": "https://schema.org",
     "@type": "HealthAndBeautyBusiness",
     "name": "Being You Path™",
     "description": "Holistic well-being practice blending psychology, secular mindfulness, and ancient wisdom.",

@@ -1,12 +1,47 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { Menu, X, Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Youtube, Twitter, Video } from "lucide-react";
 import { useState, useEffect } from "react";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import GeminiChatbot from "./GeminiChatbot";
+
+const getSpecialDayInfo = () => {
+  const today = new Date();
+  const month = today.getMonth() + 1; // 1-12
+  const date = today.getDate();
+
+  // Festivals & Global Days
+  if (month === 1 && date === 1) return { message: "Embrace new beginnings. Wishing you a year of peace and profound self-discovery.", color: "bg-[#1C3A50]" };
+  if (month === 2 && date === 14) return { message: "Celebrate the greatest journey—the journey of loving yourself and those around you.", color: "bg-[#7A2836]" };
+  if (month === 3 && date === 8) return { message: "Honoring the strength, resilience, and wisdom of women everywhere.", color: "bg-[#4B2956]" };
+  if (month === 3 && date === 20) return { message: "True joy blossoms from within. May your day be filled with peace and light.", color: "bg-[#9A6A1E]" };
+  if (month === 4 && date === 7) return { message: "Nurturing your mind, body, and spirit. May health and harmony guide your path.", color: "bg-[#27533E]" };
+  if (month === 4 && date === 22) return { message: "Grounded and connected. Let us honor the earth that sustains us all.", color: "bg-[#2F523C]" };
+  if (month === 5 && date >= 1 && date <= 31) return { message: "Mental Health Awareness Month: Your well-being matters. Breathe, heal, and grow.", color: "bg-[#094A3D]" };
+  if (month === 6 && date === 21) return { message: "Harmony of mind, body, and universe. Wishing you peace on this day.", color: "bg-[#A35926]" };
+  if (month === 9 && date === 21) return { message: "International Day of Peace: May humanity embrace harmony and collective well-being.", color: "bg-[#335B74]" };
+  if (month === 10 && date === 10) return { message: "World Mental Health Day: You are seen, you are heard, and your journey is honored.", color: "bg-[#00604A]" };
+  if (month === 10 && date === 31) return { message: "Embrace the shadows and the light within. Wishing you a season of transformation.", color: "bg-[#B05B29]" };
+  if (month === 12 && date === 25) return { message: "Wishing you a season of warmth, joy, and deep inner peace.", color: "bg-[#782329]" };
+  if (month === 12 && date === 31) return { message: "Reflecting on the past with gratitude and welcoming the future with hope.", color: "bg-[#1C3A50]" };
+
+  const dayOfWeek = today.getDay(); // 0 is Sunday
+  const defaults = [
+    { message: "Take a deep breath and pause. Wishing you a peaceful and restorative Sunday.", color: "bg-[#0B3A42]" }, // Sun
+    { message: "A new week, a new beginning. Approach today with mindfulness and intention.", color: "bg-[#0B3A42]" }, // Mon
+    { message: "May you find balance and joy in the small moments of today.", color: "bg-[#0B3A42]" }, // Tue
+    { message: "Allow yourself grace and kindness as you navigate through the week.", color: "bg-[#0B3A42]" }, // Wed
+    { message: "Embrace the present moment. Your inner strength is your greatest guide.", color: "bg-[#0B3A42]" }, // Thu
+    { message: "Release the week's tensions. Step into the weekend with a light heart.", color: "bg-[#0B3A42]" }, // Fri
+    { message: "Reconnect with your true self. May this weekend bring you tranquility.", color: "bg-[#0B3A42]" }  // Sat
+  ];
+
+  return defaults[dayOfWeek];
+};
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const specialDay = getSpecialDayInfo();
 
   useEffect(() => {
     setIsOpen(false);
@@ -23,16 +58,20 @@ function Navbar() {
 
   return (
     <div className="sticky top-0 z-50 flex flex-col w-full shadow-sm">
-      {/* Top Utility Bar */}
-      <div className="hidden md:block bg-[#0B3A42] text-[#FDFBF7] w-full py-2.5">
-        <div className="w-full max-w-[1400px] mx-auto px-6 md:px-12 lg:px-[60px] flex justify-between items-center text-[11px] sm:text-[12px] tracking-wide font-medium opacity-90">
-          <div className="flex items-center space-x-6">
-            <span className="flex items-center hover:text-[#E6A157] transition-colors duration-300 cursor-pointer"><Phone className="w-3.5 h-3.5 mr-1.5 text-[#E6A157]" /> +91 7387772573, +91 7387779238</span>
-            <span className="hidden sm:flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-3">
-              <span className="flex items-center hover:text-[#E6A157] transition-colors duration-300 cursor-pointer"><Mail className="w-3.5 h-3.5 mr-1.5 text-[#E6A157]" /> hello@beingyoupath.com</span>
-            </span>
+      {/* Top Utility Bar & Global Banner */}
+      <div className={`${specialDay.color} text-[#FDFBF7] w-full transition-colors duration-500`}>
+        <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 lg:px-[60px] py-2 flex flex-col md:flex-row justify-between items-center text-[10.5px] sm:text-[11px] lg:text-[12px] tracking-wide font-medium opacity-95 gap-2 md:gap-0">
+          
+          <div className="hidden md:flex items-center space-x-4 lg:space-x-6 shrink-0">
+            <span className="flex items-center hover:text-[#E6A157] transition-colors duration-300 cursor-pointer"><Phone className="w-3.5 h-3.5 mr-1.5 text-[#E6A157]" /> +91 7387772573</span>
+            <span className="hidden lg:flex items-center hover:text-[#E6A157] transition-colors duration-300 cursor-pointer"><Mail className="w-3.5 h-3.5 mr-1.5 text-[#E6A157]" /> hello@beingyoupath.com</span>
           </div>
-          <div className="flex items-center space-x-5">
+
+          <div className="text-center italic opacity-100 font-heading md:px-4 text-[11px] md:text-[12.5px] lg:text-[13px] tracking-normal md:tracking-wide">
+             {specialDay.message}
+          </div>
+
+          <div className="hidden md:flex items-center space-x-5 shrink-0">
             <a href="https://share.google/bQZJdmxPTbKo8iwKM" target="_blank" rel="noopener noreferrer" className="flex items-center group cursor-pointer" aria-label="Visit our Google Business Profile">
               <MapPin className="w-3.5 h-3.5 mr-1.5 text-[#E6A157] group-hover:scale-110 transition-transform duration-300" />
               <span className="group-hover:text-[#E6A157] transition-colors duration-300">Pune & Online</span>
