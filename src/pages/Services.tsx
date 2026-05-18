@@ -283,35 +283,63 @@ export default function Services() {
                  <SkeletonLoader />
               </div>
             ) : (
-              <div className="space-y-6">
+              <motion.div 
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+                variants={{
+                  visible: { transition: { staggerChildren: 0.1 } },
+                  hidden: {}
+                }}
+                className="space-y-6"
+              >
                  {servicesList.map((service, index) => (
-                    <div key={index} className="bg-soft-sand rounded-[24px] shadow-sm border border-gray-200/50 overflow-hidden hover-lift">
+                    <motion.div 
+                      key={index} 
+                      variants={{
+                        hidden: { opacity: 0, y: 30 },
+                        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+                      }}
+                      className="bg-soft-sand rounded-[24px] shadow-sm border border-gray-200/50 overflow-hidden hover-lift transition-all duration-300"
+                    >
                       <button 
                         onClick={() => toggleExpand(index)}
                       className="w-full p-6 md:p-8 flex items-center justify-between text-left hover:bg-gray-50/50 transition-colors focus:outline-none"
                     >
                       <div>
-                        <h2 className="text-[28px] md:text-[32px] font-semibold text-deep-teal font-heading leading-tight mb-2">{service.title}</h2>
+                        <h2 className="text-[28px] md:text-[32px] font-semibold text-deep-teal font-heading leading-tight mb-2 transition-colors duration-300">{service.title}</h2>
                         <h3 className="text-[16px] md:text-[18px] font-medium text-terracotta font-heading">{service.audience}</h3>
                       </div>
-                      <div className="flex-shrink-0 ml-4 text-terracotta bg-white p-2 rounded-full shadow-sm">
-                        {expandedServices.includes(index) ? (
-                          <ChevronUp className="w-6 h-6" />
-                        ) : (
-                          <ChevronDown className="w-6 h-6" />
-                        )}
-                      </div>
+                      <motion.div 
+                        className="flex-shrink-0 ml-4 text-terracotta bg-white p-2 rounded-full shadow-sm border border-gray-100"
+                        animate={{ rotate: expandedServices.includes(index) ? 180 : 0 }}
+                        transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+                      >
+                        <ChevronDown className="w-6 h-6" />
+                      </motion.div>
                     </button>
 
-                    <AnimatePresence>
+                    <AnimatePresence initial={false}>
                       {expandedServices.includes(index) && (
                         <motion.div 
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.3, ease: "easeInOut" }}
+                          initial="collapsed"
+                          animate="open"
+                          exit="collapsed"
+                          variants={{
+                            open: { opacity: 1, height: "auto" },
+                            collapsed: { opacity: 0, height: 0 }
+                          }}
+                          transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+                          className="overflow-hidden"
                         >
-                          <div className="px-6 md:px-8 pb-8 pt-4 border-t border-gray-200/50 flex flex-col md:flex-row gap-8">
+                          <motion.div 
+                            variants={{
+                              collapsed: { opacity: 0, y: -10 },
+                              open: { opacity: 1, y: 0 }
+                            }}
+                            transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
+                            className="px-6 md:px-8 pb-8 pt-4 border-t border-gray-200/50 flex flex-col md:flex-row gap-8"
+                          >
                             <div className="md:w-1/3 flex-shrink-0">
                                <div className="h-48 md:h-full min-h-[200px] bg-gray-200 rounded-[16px] overflow-hidden">
                                  <img 
@@ -347,18 +375,18 @@ export default function Services() {
 
                               <Link
                                 to="/contact"
-                                className="inline-flex items-center justify-center px-8 py-3 bg-terracotta text-white font-medium rounded-[50px] hover:bg-amber-glow transition-colors uppercase text-sm tracking-wide self-start shadow-sm"
+                                className="inline-flex items-center justify-center px-8 py-3 bg-terracotta text-white font-medium rounded-[50px] hover:bg-amber-glow transition-all uppercase text-sm tracking-wide self-start shadow-sm hover:shadow-md hover:-translate-y-0.5"
                               >
                                 {service.cta} &rarr;
                               </Link>
                             </div>
-                          </div>
+                          </motion.div>
                         </motion.div>
                       )}
                     </AnimatePresence>
-                  </div>
+                  </motion.div>
                ))}
-              </div>
+              </motion.div>
             )}
          </div>
       </section>

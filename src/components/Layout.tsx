@@ -350,7 +350,7 @@ export default function Layout() {
           transition={{ rotate: { duration: 0.4 } }}
         >
           <svg
-            xmlns="http://www.w3.org/200.svg"
+            xmlns="http://www.w3.org/2000/svg"
             width="28"
             height="28"
             viewBox="0 0 24 24"

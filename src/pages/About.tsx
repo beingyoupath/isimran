@@ -381,8 +381,8 @@ export default function About() {
                      <div className="space-y-4">
                        {/* Book 1 */}
                        <div className="flex flex-col sm:flex-row gap-4 bg-white p-4 rounded-[16px] border border-gray-100 shadow-sm items-center sm:items-start hover:shadow-md transition-all duration-300 ease-out hover:-translate-y-1">
-                          <div className="w-24 sm:w-24 h-32 sm:h-32 bg-gray-50 rounded-[10px] flex-shrink-0 flex items-center justify-center overflow-hidden border border-gray-100 p-1 group">
-                            <img src="https://drive.google.com/thumbnail?id=14Na8ysaUXG8UnlS9X48Mcvq3PMh5mTj2&sz=w400" alt="Healing Journey through chakras" className="w-full h-full object-contain drop-shadow-sm group-hover:scale-105 transition-transform duration-500 ease-out" referrerPolicy="no-referrer" />
+                          <div className="w-28 sm:w-32 aspect-[3/4] bg-[#FDFBF7] rounded-[10px] flex-shrink-0 flex items-center justify-center border border-gray-200/60 shadow-sm p-1.5 group">
+                            <img src="https://drive.google.com/thumbnail?id=14Na8ysaUXG8UnlS9X48Mcvq3PMh5mTj2&sz=w600" alt="Healing Journey through chakras" className="w-full h-full object-cover rounded-[5px] drop-shadow-sm group-hover:scale-[1.03] transition-transform duration-500 ease-out" referrerPolicy="no-referrer" />
                           </div>
                           <div className="flex-1 flex flex-col h-full w-full">
                              <h5 className="font-heading font-semibold text-deep-teal leading-tight mb-2">1. Healing Journey through chakras</h5>
@@ -409,8 +409,8 @@ export default function About() {
 
                        {/* Book 2 */}
                        <div className="flex flex-col sm:flex-row gap-4 bg-white p-4 rounded-[16px] border border-gray-100 shadow-sm items-center sm:items-start hover:shadow-md transition-all duration-300 ease-out hover:-translate-y-1">
-                          <div className="w-24 sm:w-24 h-32 sm:h-32 bg-gray-50 rounded-[10px] flex-shrink-0 flex items-center justify-center overflow-hidden border border-gray-100 p-1 group">
-                             <img src="https://drive.google.com/thumbnail?id=1jrQuEeXPUkF1LsxgO46CCr1uqrGKzVCm&sz=w400" alt="The essence of Wellness" className="w-full h-full object-contain drop-shadow-sm group-hover:scale-105 transition-transform duration-500 ease-out" referrerPolicy="no-referrer" />
+                          <div className="w-28 sm:w-32 aspect-[3/4] bg-[#FDFBF7] rounded-[10px] flex-shrink-0 flex items-center justify-center border border-gray-200/60 shadow-sm p-1.5 group">
+                             <img src="https://drive.google.com/thumbnail?id=1jrQuEeXPUkF1LsxgO46CCr1uqrGKzVCm&sz=w600" alt="The essence of Wellness" className="w-full h-full object-cover rounded-[5px] drop-shadow-sm group-hover:scale-[1.03] transition-transform duration-500 ease-out" referrerPolicy="no-referrer" />
                           </div>
                           <div className="flex-1 flex flex-col h-full w-full">
                              <h5 className="font-heading font-semibold text-deep-teal leading-tight mb-2">2. The essence of Wellness (Mind, Body, Spirit)</h5>
@@ -437,8 +437,8 @@ export default function About() {
 
                        {/* Book 3 */}
                        <div className="flex flex-col sm:flex-row gap-4 bg-white p-4 rounded-[16px] border border-gray-100 shadow-sm items-center sm:items-start hover:shadow-md transition-all duration-300 ease-out hover:-translate-y-1">
-                          <div className="w-24 sm:w-24 h-32 sm:h-32 bg-gray-50 rounded-[10px] flex-shrink-0 flex items-center justify-center overflow-hidden border border-gray-100 p-1 group">
-                            <img src="https://drive.google.com/thumbnail?id=160i1TW3o7ZDaUTxzesxuu-FE5T9KT1p8&sz=w400" alt="The power of mindful thoughts" className="w-full h-full object-contain drop-shadow-sm group-hover:scale-105 transition-transform duration-500 ease-out" referrerPolicy="no-referrer" />
+                          <div className="w-28 sm:w-32 aspect-[3/4] bg-[#FDFBF7] rounded-[10px] flex-shrink-0 flex items-center justify-center border border-gray-200/60 shadow-sm p-1.5 group">
+                            <img src="https://drive.google.com/thumbnail?id=160i1TW3o7ZDaUTxzesxuu-FE5T9KT1p8&sz=w600" alt="The power of mindful thoughts" className="w-full h-full object-cover rounded-[5px] drop-shadow-sm group-hover:scale-[1.03] transition-transform duration-500 ease-out" referrerPolicy="no-referrer" />
                           </div>
                           <div className="flex-1 flex flex-col h-full w-full">
                              <h5 className="font-heading font-semibold text-deep-teal leading-tight mb-2">3. The power of mindful thoughts</h5>
