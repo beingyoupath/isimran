@@ -1,6 +1,8 @@
 {
   "name": "Being You Path",
-  "description": "A psychology-grounded well-being practice website",
+  "description": "Being You Path - Best Counselling Centre in India. A psychology-grounded well-being practice offering online counselling, therapy, and corporate workshops across India and Pune.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

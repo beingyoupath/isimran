@@ -146,12 +146,12 @@ export default function Workshops() {
   return (
     <div className="bg-soft-sand">
       <SEO 
-        title="Mental Health & Corporate Workshops Pune | Being You Path"
-        description="Structured, facilitated workshop experiences built around real psychological frameworks. Customised corporate mental health training for your organisation, school, or community in Pune."
-        keywords="corporate wellness workshops pune, mental health training pune, student resilience workshops, employee wellbeing training india, team building psychology, mindfulness seminars"
+        title="Mental Health & Corporate Workshops | Best Counselling Centre in India"
+        description="Corporate mental health, student resilience, and leadership workshops from Being You Path, the best counselling centre in India. Customised training for companies and educational institutions across India."
+        keywords="corporate wellness workshops india, student resilience training, best counselling centre in india workshops, employee mental health programs india, workplace wellness seminars"
       />
-      <h1 className="sr-only">Corporate Mental Health & Wellness Workshops in Pune and Online</h1>
-      <p className="sr-only">Join our expert-led psychological and mental health workshops tailored for corporate teams, educational institutions, and communities. From stress management and mindfulness seminars to student resilience and team well-being training.</p>
+      <h1 className="sr-only">Workshops at Being You Path - Best Counselling Centre in India | Corporate & Student Training</h1>
+      <p className="sr-only">Join expert psychological and mental health workshops conducted by Being You Path, the best counselling centre in India. Tailored for corporate teams, colleges, schools, and communities across India and Pune.</p>
       
       {/* Hero Slider */}
       <section className="w-full bg-soft-sand py-12 md:py-16 lg:py-20 flex justify-center">

@@ -7,27 +7,55 @@ interface SEOProps {
   url?: string;
   noindex?: boolean;
 }
-
 export function SEO({ title, description, keywords, url, noindex }: SEOProps) {
-  const siteName = "Being You Path™";
-  const fullTitle = `${title} | ${siteName}`;
+  const siteName = "Being You Path™ - Best Counselling Centre in India";
+  const fullTitle = title.includes("Being You Path") ? title : `${title} | ${siteName}`;
+
+  const defaultKeywords = "Being You Path best counselling centre in India, best counselling centre in India, best counselling centre India, top counselling centre in India, best psychologist in Pune, online counselling India, mental health support India, psychological counselling, CBT therapy, relationship counselling, anxiety counselling, corporate wellness";
+  const finalKeywords = keywords ? `${keywords}, ${defaultKeywords}` : defaultKeywords;
 
   const schemaOrgJSONLD = {
     "@context": "https://schema.org",
-    "@type": "HealthAndBeautyBusiness",
-    "name": "Being You Path™",
-    "description": "Holistic well-being practice blending psychology, secular mindfulness, and ancient wisdom.",
+    "@type": ["CounselingService", "MedicalBusiness", "HealthAndBeautyBusiness"],
+    "name": "Being You Path™ - Best Counselling Centre in India",
+    "alternateName": ["Being You Path Counselling Centre", "Being You Path Pune"],
+    "slogan": "Best Counselling Centre in India",
+    "description": description || "Being You Path is recognized as the best counselling centre in India, blending modern psychology, CBT, secular mindfulness, and holistic well-being.",
     "url": "https://www.beingyoupath.com",
     "telephone": "+917387772573", 
+    "priceRange": "₹₹",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Pune",
       "addressRegion": "Maharashtra",
       "addressCountry": "IN"
     },
+    "areaServed": [
+      {
+        "@type": "Country",
+        "name": "India"
+      },
+      {
+        "@type": "City",
+        "name": "Pune"
+      }
+    ],
+    "serviceType": [
+      "Individual Psychological Counselling",
+      "Online Therapy & Counselling India",
+      "Stress & Anxiety Management",
+      "Student Resilience & Focus Coaching",
+      "Corporate Mental Health & Wellness Workshops",
+      "Cognitive Behavioral Therapy (CBT)",
+      "Couples & Relationship Counselling"
+    ],
     "sameAs": [
-      "https://www.instagram.com/beingyoupath",
-      "https://www.linkedin.com/company/beingyoupath"
+      "https://www.instagram.com/beingyoupathoffical",
+      "https://www.linkedin.com/company/beingyou-path-9965b1389/",
+      "https://www.facebook.com/share/1EHFBvwf4B/",
+      "https://youtube.com/@beingyoupath",
+      "https://x.com/BeingyouP84126",
+      "https://share.google/bQZJdmxPTbKo8iwKM"
     ]
   };
 
@@ -39,7 +67,7 @@ export function SEO({ title, description, keywords, url, noindex }: SEOProps) {
       {/* Basic HTML Meta Tags */}
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
-      {keywords && <meta name="keywords" content={keywords} />}
+      <meta name="keywords" content={finalKeywords} />
       {noindex && <meta name="robots" content="noindex, nofollow" />}
       <link rel="canonical" href={canonicalUrl} />
 
@@ -56,7 +84,7 @@ export function SEO({ title, description, keywords, url, noindex }: SEOProps) {
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       
-      {/* Schema.org for SEO */}
+      {/* Schema.org for Search Engine Indexing */}
       <script type="application/ld+json">
         {JSON.stringify(schemaOrgJSONLD)}
       </script>

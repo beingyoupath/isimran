@@ -1,8 +1,10 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { Menu, X, Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Youtube, Twitter, Video } from "lucide-react";
+import { Menu, X, Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Youtube, Twitter, Video, LogIn, LogOut, ShieldCheck, MailQuestion, MessageSquare } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import GeminiChatbot from "./GeminiChatbot";
+import AdminInquiriesModal from "./AdminInquiriesModal";
+import { useAuth } from "../contexts/AuthContext";
 
 const getSpecialDayInfo = () => {
   const today = new Date();
@@ -38,10 +40,11 @@ const getSpecialDayInfo = () => {
   return defaults[dayOfWeek];
 };
 
-function Navbar() {
+function Navbar({ onOpenAdminModal }: { onOpenAdminModal: () => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const specialDay = getSpecialDayInfo();
+  const { user, loginWithGoogle, logout, isAdmin } = useAuth();
 
   useEffect(() => {
     setIsOpen(false);
@@ -71,7 +74,17 @@ function Navbar() {
              {specialDay.message}
           </div>
 
-          <div className="hidden md:flex items-center space-x-5 shrink-0">
+          <div className="hidden md:flex items-center space-x-4 shrink-0">
+            {isAdmin && (
+              <button
+                onClick={onOpenAdminModal}
+                className="flex items-center text-[11px] hover:text-[#E6A157] transition-colors cursor-pointer bg-white/10 px-2.5 py-0.5 rounded-full"
+                title="Chatbot Questions & CTA Digest"
+              >
+                <MessageSquare className="w-3 h-3 mr-1 text-[#E6A157]" />
+                Inquiries Digest
+              </button>
+            )}
             <a href="https://share.google/bQZJdmxPTbKo8iwKM" target="_blank" rel="noopener noreferrer" className="flex items-center group cursor-pointer" aria-label="Visit our Google Business Profile">
               <MapPin className="w-3.5 h-3.5 mr-1.5 text-[#E6A157] group-hover:scale-110 transition-transform duration-300" />
               <span className="group-hover:text-[#E6A157] transition-colors duration-300">Pune & Online</span>
@@ -102,7 +115,16 @@ function Navbar() {
             </div>
             
             {/* Mobile Menu Toggle */}
-            <div className="lg:hidden flex items-center">
+            <div className="lg:hidden flex items-center gap-2">
+              {isAdmin && (
+                <button
+                  onClick={onOpenAdminModal}
+                  className="p-1.5 text-[#0B3A42] hover:text-[#E6A157] transition-colors"
+                  title="Inquiries Digest"
+                >
+                  <MessageSquare size={20} />
+                </button>
+              )}
               <button 
                 onClick={() => setIsOpen(!isOpen)}
                 className="text-[#0B3A42] hover:text-[#E6A157] transition-colors p-2 focus:outline-none"
@@ -130,6 +152,49 @@ function Navbar() {
                   </Link>
                 ))}
               </div>
+
+              {/* Inquiries Digest button - Only for Admin */}
+              {isAdmin && (
+                <button
+                  onClick={onOpenAdminModal}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-[#1A5F5F]/10 hover:bg-[#1A5F5F]/20 text-[#1A5F5F] transition-colors"
+                  title="Chatbot Questions Digest"
+                >
+                  <MessageSquare className="w-3.5 h-3.5 text-[#C85C3E]" />
+                  <span>Inquiries</span>
+                </button>
+              )}
+
+              {/* User Authentication Status */}
+              {user ? (
+                <div className="flex items-center gap-2 pl-1 border-l border-gray-200">
+                  {user.photoURL ? (
+                    <img src={user.photoURL} alt={user.displayName || "User"} className="w-7 h-7 rounded-full object-cover border border-[#1A5F5F]" />
+                  ) : (
+                    <div className="w-7 h-7 rounded-full bg-[#1A5F5F] text-white flex items-center justify-center text-xs font-semibold">
+                      {(user.displayName || user.email || 'U').charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                  <span className="text-xs font-medium text-[#0B3A42] max-w-[85px] truncate">
+                    {user.displayName?.split(' ')[0] || user.email?.split('@')[0]}
+                  </span>
+                  <button
+                    onClick={() => logout()}
+                    title="Sign Out"
+                    className="text-gray-400 hover:text-red-600 transition-colors p-1"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => loginWithGoogle()}
+                  className="flex items-center gap-1.5 text-xs font-medium px-3.5 py-1.5 rounded-full border border-[#0B3A42]/20 hover:border-[#0B3A42] text-[#0B3A42] hover:bg-[#0B3A42]/5 transition-colors"
+                >
+                  <LogIn className="w-3.5 h-3.5 text-[#1A5F5F]" />
+                  <span>Sign In</span>
+                </button>
+              )}
               
               <Link
                 to="/contact"
@@ -157,6 +222,40 @@ function Navbar() {
                 {link.name}
               </Link>
             ))}
+
+            <div className="flex items-center gap-3 pt-2">
+              {isAdmin && (
+                <button
+                  onClick={() => {
+                    setIsOpen(false);
+                    onOpenAdminModal();
+                  }}
+                  className="px-4 py-2 rounded-full text-xs font-semibold bg-[#1A5F5F]/15 text-[#1A5F5F] flex items-center gap-1.5"
+                >
+                  <MessageSquare className="w-4 h-4 text-[#C85C3E]" />
+                  Inquiries Digest
+                </button>
+              )}
+
+              {user ? (
+                <button
+                  onClick={() => logout()}
+                  className="px-4 py-2 rounded-full text-xs font-semibold border border-red-200 text-red-600 flex items-center gap-1.5"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                  Sign Out ({user.displayName?.split(' ')[0] || 'User'})
+                </button>
+              ) : (
+                <button
+                  onClick={() => loginWithGoogle()}
+                  className="px-4 py-2 rounded-full text-xs font-semibold border border-[#0B3A42]/20 text-[#0B3A42] flex items-center gap-1.5"
+                >
+                  <LogIn className="w-3.5 h-3.5" />
+                  Sign In with Google
+                </button>
+              )}
+            </div>
+
             <Link
               to="/contact"
               onClick={() => setIsOpen(false)}
@@ -289,7 +388,7 @@ function Footer() {
         {/* SEO Information Content */}
         <div className="border-t border-[#FDFBF7]/10 pt-8 mt-4">
           <p className="text-[11px] text-[#F4F1E1]/40 text-center leading-relaxed max-w-5xl mx-auto mb-4">
-            Being You Path™ offers top-rated counselling and psychological services in Pune, providing expert online therapy, child counselling, couples therapy, and corporate wellness workshops across India. Whether you are looking for stress management, anxiety treatment, depression therapy, mindfulness seminars, or specialized student resilience programs, our top-rated therapists and behavioral science experts are here to support your mental health journey. We bridge the gap between clinical psychology and holistic well-being to ensure you find the best psychologist near you for true, lasting change.
+            Being You Path™ is recognized as the <strong className="font-medium text-[#F4F1E1]/60">best counselling centre in India</strong>, offering top-rated psychological counselling, evidence-based psychotherapy, and mental health care in Pune and across India. Whether you are looking for stress management, anxiety counselling, depression therapy, child & adolescent support, or corporate wellness workshops, our leading psychologists and behavioral experts are here to guide your journey. Discover why Being You Path is trusted across India as the premier destination for genuine, lasting mental well-being and online therapy.
           </p>
         </div>
 
@@ -305,14 +404,22 @@ function Footer() {
 }
 
 export default function Layout() {
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
+
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
+      <Navbar onOpenAdminModal={() => setIsAdminModalOpen(true)} />
       <main className="flex-grow">
         <Outlet />
       </main>
       <Footer />
       
+      {/* Admin Inquiries & Weekly/Daily Digest Modal */}
+      <AdminInquiriesModal
+        isOpen={isAdminModalOpen}
+        onClose={() => setIsAdminModalOpen(false)}
+      />
+
       {/* Dialer Floating Button */}
       <motion.a
         href="tel:+917387779238"

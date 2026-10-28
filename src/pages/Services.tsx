@@ -181,12 +181,12 @@ export default function Services() {
   return (
     <div className="bg-white">
       <SEO 
-        title="Psychological Services & Therapy Options Pune | Being You Path"
-        description="Explore our specialized services including Adult Counseling, Performance Coaching, Child & Adolescent Therapy, and Corporate Wellness programs in Pune."
-        keywords="counselling services pune, therapy options online, adult counselling, child therapy pune, adolescent psychology pune, corporate wellness programs india, relationship coaching pune"
+        title="Psychological Services & Therapy | Best Counselling Centre in India"
+        description="Explore comprehensive counselling and therapy options from Being You Path, the best counselling centre in India. Individual counselling, stress management, teen therapy, and online counselling nationwide."
+        keywords="best counselling centre in india services, counselling services india, online therapy india, psychological counselling india, best therapist pune, adolescent counselling india, corporate wellness india"
       />
-      <h1 className="sr-only">Comprehensive Psychological Services, Online Therapy, and Counselling in Pune</h1>
-      <p className="sr-only">Being You Path provides an array of mental health services including CBT, child therapy, adolescent counseling, relationship and couples therapy, anxiety management, and corporate psychological wellness programs.</p>
+      <h1 className="sr-only">Services at Being You Path - Best Counselling Centre in India | Online Therapy & Counselling</h1>
+      <p className="sr-only">Being You Path is the best counselling centre in India offering an extensive array of psychological services: CBT, individual therapy, adolescent counselling, performance coaching, relationship therapy, and corporate mental health programs in Pune and across India.</p>
       
       {/* Hero Slider */}
       <section className="w-full bg-soft-sand py-12 md:py-16 lg:py-20 flex justify-center border-b border-gray-200">

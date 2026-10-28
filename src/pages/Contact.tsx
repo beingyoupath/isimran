@@ -1,7 +1,8 @@
-import { Phone, Mail, MapPin, ShieldCheck, UserCheck, Clock, CheckCircle2, Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import { Phone, Mail, MapPin, ShieldCheck, UserCheck, Clock, CheckCircle2, Quote, ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import React, { useState, useEffect } from "react";
 import { SEO } from "../components/SEO";
+import { GOOGLE_REVIEWS } from "../data/testimonials";
 
 export default function Contact() {
   const [showToast, setShowToast] = useState(false);
@@ -41,48 +42,7 @@ export default function Contact() {
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
   const prevSlide = () => setCurrentSlide((prev) => (prev === 0 ? heroSlides.length - 1 : prev - 1));
 
-  const testimonials = [
-    {
-      quote: "I thought I was just unmotivated, but I was fundamentally burned out. The counselling sessions didn't just give me a new perspective; they rewired how I approach my life and boundaries.",
-      author: "Priya S.",
-      role: "Marketing Director",
-    },
-    {
-      quote: "The 'Mindful Leadership' workshop transformed how our management team communicates. It wasn't just another offsite; we walked away with practical tools for emotional regulation that we use daily.",
-      author: "Sarah K.",
-      role: "HR Head",
-    },
-    {
-      quote: "As a student facing intense exam stress, the actionable habit science and emotional regulation tools changed everything. I stopped fighting my brain and learned how to work with it.",
-      author: "Ananya T.",
-      role: "University Student",
-    },
-    {
-      quote: "Our team's productivity and morale have visibly shifted since the well-being retainer program started. The approach is deeply human and incredibly effective.",
-      author: "Amit D.",
-      role: "Founder & CEO",
-    },
-    {
-      quote: "I've been to several therapists before, but the blend of CBT and somatic awareness here finally helped me break free from my chronic anxiety loop. The change has been profound.",
-      author: "Neha V.",
-      role: "Freelance Designer",
-    },
-    {
-      quote: "The mindfulness practices weren't spiritual fluff. They were practical nervous system anchors I could use in the middle of a high-pressure meeting. It's rare to find professionals who understand corporate anxiety so deeply.",
-      author: "Rahul M.",
-      role: "Software Engineer",
-    },
-    {
-      quote: "The student resilience workshop was exactly what our seniors needed before their finals. The facilitators knew how to speak their language and offered genuine support.",
-      author: "Dr. Meera J.",
-      role: "School Principal",
-    },
-    {
-      quote: "My career was stuck because of imposter syndrome. Through our 1-on-1 coaching sessions, I didn't just 'talk' about it; I learned actionable ways to rewire those limiting beliefs.",
-      author: "Jason L.",
-      role: "Product Manager",
-    }
-  ];
+  const testimonials = GOOGLE_REVIEWS;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -132,12 +92,12 @@ export default function Contact() {
   return (
     <div className="bg-white">
       <SEO 
-        title="Contact Best Psychologist in Pune | Book Appointment"
-        description="Book a free clarity call, send an email, or reach out on WhatsApp to Being You Path. Start a conversation about your well-being with our Pune therapists today."
-        keywords="contact psychologist pune, book therapy session pune, online therapy consultation, find a therapist pune, mental health appointment"
+        title="Contact Being You Path | Best Counselling Centre in India - Book Session"
+        description="Connect with Being You Path, the best counselling centre in India. Book a free clarity call, therapy session, or corporate consultation in Pune or online across India."
+        keywords="contact best counselling centre in india, book therapy session india, online counselling appointment, best psychologist pune contact, mental health clarity call india"
       />
-      <h1 className="sr-only">Contact Being You Path - Book Therapy & Counselling in Pune</h1>
-      <p className="sr-only">Get in touch with the best psychologists and counselling experts in Pune. Schedule your online therapy session, inquire about corporate workshops, or book a free mental health clarity call at Being You Path today.</p>
+      <h1 className="sr-only">Contact Being You Path - Best Counselling Centre in India | Book Therapy & Consultation</h1>
+      <p className="sr-only">Get in touch with Being You Path, widely recognized as the best counselling centre in India. Schedule your online therapy session, inquire about corporate workshops, or book a free mental health clarity call in Pune or across India today.</p>
       
       {/* Toast Notification */}
       <AnimatePresence>
@@ -298,57 +258,7 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Client Testimonials */}
-      <section className="py-16 md:py-20 lg:py-24 bg-soft-sand border-y border-gray-200 overflow-hidden">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-[36px] font-semibold text-deep-teal mb-4 font-heading">Real Shifts. Real Lives.</h2>
-            <p className="text-base text-charcoal-warm max-w-2xl mx-auto">Discover how our psychology-grounded approach translates to everyday clarity and resilience.</p>
-          </div>
-          
-          <div className="relative min-h-[300px] md:min-h-[250px] bg-white p-8 md:p-12 rounded-[24px] border border-gray-200 shadow-sm">
-            <Quote className="absolute top-8 left-8 w-10 h-10 text-terracotta/20" />
-            <div className="relative z-10 flex flex-col items-center justify-center text-center h-full pt-6">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentTestimonial}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -15 }}
-                  transition={{ duration: 0.5, ease: "easeOut" }}
-                  className="w-full"
-                >
-                  <p className="text-charcoal-warm leading-relaxed mb-8 italic text-[16px] md:text-[18px]">
-                    "{testimonials[currentTestimonial].quote}"
-                  </p>
-                  <div>
-                    <h4 className="text-deep-teal font-heading font-semibold text-lg">
-                      {testimonials[currentTestimonial].author}
-                    </h4>
-                    <span className="text-sm text-terracotta font-medium tracking-wide">
-                      {testimonials[currentTestimonial].role}
-                    </span>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-            
-            {/* Dots */}
-            <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-2">
-              {testimonials.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setCurrentTestimonial(idx)}
-                  className={`h-2 rounded-full transition-all duration-300 ${
-                    currentTestimonial === idx ? "bg-terracotta w-6" : "bg-gray-200 hover:bg-terracotta/50 w-2"
-                  }`}
-                  aria-label={`Go to testimonial ${idx + 1}`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       <section className="py-12 md:py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -470,6 +380,143 @@ export default function Contact() {
                </div>
             </div>
 
+          </div>
+        </div>
+      </section>
+
+      {/* Verified Google Reviews Showcase */}
+      <section className="py-16 md:py-24 bg-gradient-to-b from-white to-soft-sand/60 border-t border-gray-200">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-gray-200 shadow-xs mb-3">
+              <svg className="w-4 h-4" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+              </svg>
+              <span className="text-xs font-semibold text-gray-700 tracking-wide uppercase">Google Reviews • 5.0 Rating</span>
+              <div className="flex text-amber-500">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-3 h-3 fill-amber-400 text-amber-400" />
+                ))}
+              </div>
+            </div>
+            <h2 className="text-3xl md:text-[36px] font-bold text-deep-teal mb-3 font-heading">
+              Real Voices. Verified Google Reviews.
+            </h2>
+            <p className="text-base text-charcoal-warm max-w-2xl mx-auto">
+              Read authentic experiences from 10 verified reviewers who reached out for stress relief, self-esteem therapy, career clarity, and psychological care at Being You Path.
+            </p>
+          </div>
+
+          <div className="relative bg-white p-8 md:p-12 rounded-[28px] border border-gray-200/80 shadow-md">
+            <Quote className="absolute top-6 left-6 w-12 h-12 text-terracotta/15 pointer-events-none" />
+            
+            <div className="relative z-10 flex flex-col justify-between min-h-[300px] md:min-h-[250px]">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentTestimonial}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.35, ease: "easeOut" }}
+                  className="w-full"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-3 mb-5 pb-4 border-b border-gray-100">
+                    <div className="flex items-center gap-2">
+                      <div className="flex text-amber-400">
+                        {[...Array(testimonials[currentTestimonial].rating || 5)].map((_, i) => (
+                          <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                        ))}
+                      </div>
+                      <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                        Verified Review
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-gray-500 font-medium">
+                      <span>{testimonials[currentTestimonial].date}</span>
+                      {testimonials[currentTestimonial].location && (
+                        <>
+                          <span>•</span>
+                          <span className="text-deep-teal font-semibold">{testimonials[currentTestimonial].location}</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+
+                  {testimonials[currentTestimonial].highlight && (
+                    <div className="text-xs font-bold uppercase tracking-wider text-terracotta mb-3">
+                      {testimonials[currentTestimonial].highlight}
+                    </div>
+                  )}
+
+                  <p className="text-charcoal-warm leading-relaxed mb-8 text-[15px] md:text-[17px] font-normal whitespace-pre-line">
+                    "{testimonials[currentTestimonial].quote}"
+                  </p>
+
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                    <div className="flex items-center gap-3">
+                      <div className="w-11 h-11 rounded-full bg-deep-teal text-white flex items-center justify-center font-bold text-base shadow-xs">
+                        {testimonials[currentTestimonial].author.charAt(0).toUpperCase()}
+                      </div>
+                      <div>
+                        <h4 className="text-deep-teal font-heading font-semibold text-base md:text-lg flex items-center gap-1.5">
+                          {testimonials[currentTestimonial].author}
+                          {testimonials[currentTestimonial].badge && (
+                            <span className="text-[10px] font-semibold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full border border-amber-300">
+                              {testimonials[currentTestimonial].badge}
+                            </span>
+                          )}
+                        </h4>
+                        <span className="text-xs text-gray-500 font-medium">
+                          {testimonials[currentTestimonial].details} • Google Reviews
+                        </span>
+                      </div>
+                    </div>
+
+                    <span className="text-xs font-semibold text-gray-400 bg-gray-50 px-3 py-1 rounded-full">
+                      {currentTestimonial + 1} of {testimonials.length}
+                    </span>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            <div className="absolute top-1/2 -left-4 -translate-y-1/2 z-20">
+              <button
+                onClick={() => setCurrentTestimonial(prev => (prev === 0 ? testimonials.length - 1 : prev - 1))}
+                className="w-10 h-10 rounded-full bg-white border border-gray-200 shadow-md flex items-center justify-center text-deep-teal hover:text-terracotta hover:scale-105 transition-all"
+                aria-label="Previous Review"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="absolute top-1/2 -right-4 -translate-y-1/2 z-20">
+              <button
+                onClick={() => setCurrentTestimonial(prev => (prev + 1) % testimonials.length)}
+                className="w-10 h-10 rounded-full bg-white border border-gray-200 shadow-md flex items-center justify-center text-deep-teal hover:text-terracotta hover:scale-105 transition-all"
+                aria-label="Next Review"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
+            {testimonials.map((item, idx) => (
+              <button
+                key={item.id}
+                onClick={() => setCurrentTestimonial(idx)}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                  currentTestimonial === idx
+                    ? "bg-deep-teal text-white shadow-xs font-semibold"
+                    : "bg-white text-gray-600 border border-gray-200 hover:border-terracotta hover:text-terracotta"
+                }`}
+              >
+                {item.author.replace('13_', '')}
+              </button>
+            ))}
           </div>
         </div>
       </section>

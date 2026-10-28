@@ -71,12 +71,12 @@ export default function About() {
   return (
     <div className="bg-soft-sand">
       <SEO 
-        title="About Our Therapists & Approach | Being You Path Pune"
-        description="Learn about our philosophy, top psychologists, and how Behavioral Science combined with Modern Psychology can help you live better in Pune."
-        keywords="about psychologists pune, team of therapists pune, behavioral science counselling, mental health experts pune, online counselling practitioners"
+        title="About Being You Path | Best Counselling Centre in India"
+        description="Learn about Being You Path, the best counselling centre in India. Discover our philosophy, licensed psychologists, and how modern psychology and behavioral science empower lasting well-being across India and Pune."
+        keywords="about being you path, best counselling centre in india, best counselling centre india, top counselling centre india, best psychologist in india, top therapists pune, mental health experts india"
       />
-      <h1 className="sr-only">About The Best Psychologists in Pune | Expert Counselling Therapists</h1>
-      <p className="sr-only">Meet the experienced therapists and leading mental health professionals at Being You Path, serving Pune and beyond. Discover our evidence-based psychological approach combining modern therapy and behavioral science.</p>
+      <h1 className="sr-only">About Being You Path - Best Counselling Centre in India | Expert Therapists & Psychologists</h1>
+      <p className="sr-only">Meet the experienced therapists and leading mental health professionals at Being You Path, widely recognized as the best counselling centre in India. Discover our evidence-based psychological approach combining modern therapy, CBT, and behavioral science across Pune and pan-India.</p>
       
       {/* Hero Slider */}
       <section className="w-full bg-soft-sand py-12 md:py-16 lg:py-20 flex justify-center">

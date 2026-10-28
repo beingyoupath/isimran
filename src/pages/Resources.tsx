@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { BrainCircuit, Coffee, Briefcase, HeartHandshake, Waves, ArrowRight, X, Twitter, Linkedin, Mail, Facebook, Instagram, ChevronLeft, ChevronRight } from "lucide-react";
+import { BrainCircuit, Coffee, Briefcase, HeartHandshake, Waves, ArrowRight, X, Twitter, Linkedin, Mail, Facebook, Instagram, ChevronLeft, ChevronRight, HelpCircle, Lightbulb, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { SkeletonLoader } from "../components/SkeletonLoader";
@@ -248,6 +248,74 @@ export default function Resources() {
           link: "#" 
         },
       ]
+    },
+    {
+      id: "myths-dilemmas",
+      title: "Mental Health Myths & Modern Dilemmas",
+      icon: HelpCircle,
+      desc: "Debunking therapy myths, dismantling toxic positivity, and resolving modern psychological dilemmas.",
+      articles: [
+        {
+          title: "Myth: 'Therapy is Only for When You Hit Rock Bottom' (The Prevention Dilemma)",
+          overview: "Why do we wait until our mental health is in crisis before seeking guidance? Discover why preventative psychological counselling is the highest-leverage investment for everyday peace.",
+          body: "One of the most damaging cultural misconceptions is that you must be experiencing an acute breakdown or clinical crisis to visit a psychologist. In reality, mental hygiene is identical to dental hygiene or physical training: proactive care prevents chronic decay. When you seek counselling early—when you first notice boundary friction, recurring deadline anxiety, or emotional fatigue—you rewire unhelpful cognitive habits in just a few sessions, rather than spending years unravelling entrenched defense mechanisms.",
+          tips: [
+            "Practice Emotional Ergonomics: Address daily stress and friction before it turns into chronic burnout.",
+            "Normalize Preventative Checkups: High performers and leaders seek coaches to sharpen clarity; your mind deserves the same standard.",
+            "Lower the Threshold for Care: You don't need a diagnosis or rock-bottom despair to deserve non-judgmental space and psychological tools."
+          ],
+          conclusion: "Seeking support is not an admission of failure; it is proactive mastery over your emotional well-being.",
+          link: "#"
+        },
+        {
+          title: "Myth: 'Overthinking is My Natural Personality—I Can't Change It'",
+          overview: "Trapped in mental loops and convinced that 'you were just born an overthinker'? Learn why overthinking is a learned protective loop, not your permanent DNA.",
+          body: "Many people treat rumination as an unchangeable identity trait. In cognitive psychology, overthinking is actually a conditioned safety response: when your brain senses uncertainty, it loops through scenarios under the false illusion that constant analysis equals control. Through Cognitive Behavioural Therapy (CBT) and somatic grounding, you can learn to step back into the 'observing self'. You are not your thoughts; you are the awareness witnessing them.",
+          tips: [
+            "Differentiate Rumination from Problem-Solving: If a thought cannot be converted into an action within 15 minutes, it is rumination, not planning.",
+            "Practice Cognitive Defusion: Shift from saying 'I am anxious' to 'I notice my mind is generating anxious thoughts right now'.",
+            "Anchor Physically: Pull blood flow back to your body with cold water, physical contact, or sensory orienting (5-4-3-2-1 technique)."
+          ],
+          conclusion: "Your mind is a brilliant tool, but you are the master using it. Rumination can be systematically interrupted and unlearned.",
+          link: "#"
+        },
+        {
+          title: "Myth: 'Toxic Positivity—Just Smile and Think Good Thoughts'",
+          overview: "Why forced positive affirmations and 'good vibes only' often intensify psychological distress, and how emotional acceptance creates genuine calm.",
+          body: "When culture tells us to 'always look on the bright side', it inadvertently breeds experiential avoidance—the dangerous suppression of valid human pain. Neuroimaging studies demonstrate that suppressing difficult emotions actually spikes amygdala activity and increases cortisol levels. True resilience is not the absence of distress; it is psychological flexibility—the courage to honor sadness, anger, or fear without letting them dictate your actions.",
+          tips: [
+            "Name the Unfiltered Emotion: Acknowledge what is true ('I feel overwhelmed and scared right now') without forcing a silver lining.",
+            "Use Grounded Neutrality: Replace exaggerated affirmations with realistic truth ('This is difficult right now, and I have the tools to navigate it step by step').",
+            "Allow the Somatic Wave to Pass: Neurochemical emotion spikes typically peak and subside in 90 seconds if not re-fuelled by mental storytelling."
+          ],
+          conclusion: "True mental peace is not pretending everything is sunshine; it is developing the internal stability to welcome the weather as it comes.",
+          link: "#"
+        },
+        {
+          title: "Myth: 'Seeking Counselling Makes You Dependent or Weak'",
+          overview: "Deconstructing the fear of losing autonomy: why evidence-based therapy exists to build self-sovereignty and make the client completely self-reliant.",
+          body: "A frequent dilemma keeping people away from therapy is the fear of becoming reliant on a counsellor. However, ethical and evidence-based psychotherapy is designed with the explicit goal of client autonomy. A skilled counsellor acts like a driving instructor: they sit alongside you, offering mirrors and road maps, until your own nervous system and cognitive skills can handle any weather or terrain independently.",
+          tips: [
+            "Redefine Strength: Recognizing when an old mental model no longer serves your present life is the highest form of self-awareness.",
+            "Demand Concrete Skill Transfer: Expect every counselling session to equip you with actionable daily rituals and somatic anchors.",
+            "Measure Growth by Self-Trust: The true marker of successful counselling is not how much you rely on your therapist, but how deeply you trust yourself."
+          ],
+          conclusion: "Counselling doesn't take away your strength; it returns the keys to your own mind.",
+          link: "#"
+        },
+        {
+          title: "Myth: 'Mental Well-Being Lives Only in the Mind, Not the Body'",
+          overview: "The mind-body split dilemma: why attempting to solve chronic anxiety purely through intellectual debate fails without nervous system regulation.",
+          body: "Because of historical mind-body dualism, many individuals attempt to 'argue' themselves out of anxiety with logic. But over 80% of vagus nerve signals travel from the body up to the brain. When your body is tense, your heart rate elevated, and your breathing shallow, your amygdala assumes you are in mortal danger and turns off rational thought. Somatic therapy and physiological down-regulation create the bodily baseline of safety that allows the rational mind to flourish.",
+          tips: [
+            "Bottom-Up Before Top-Down: Calm your nervous system with prolonged exhales before attempting complex decision-making.",
+            "Scan for Physical Armor: Notice where your shoulders, jaw, or stomach are holding tension right now and consciously drop them 10%.",
+            "Incorporate Somatic Anchors: Movement, walks in nature, and rhythmic breathing are cognitive medicine, not optional hobbies."
+          ],
+          conclusion: "Your body is not just a vehicle carrying your brain around; it is the physiological foundation of your mental peace.",
+          link: "#"
+        }
+      ]
     }
   ];
 
@@ -273,12 +341,12 @@ export default function Resources() {
   return (
     <div className="bg-white">
       <SEO 
-        title="Mental Health Articles & Resources | Being You Path Blog"
-        description="Practical well-being articles, psychology guides, and mental health tools written for the way people actually live. Read top counselling tips from Pune experts."
-        keywords="mental health blog, psychology articles online, therapy resources, mindfulness tips, anxiety management guide, depression help reading, self-care articles"
+        title="Mental Health Articles & Resources | Best Counselling Centre in India"
+        description="Practical well-being articles, psychology guides, and mental health tools from Being You Path, the best counselling centre in India. Expert tips for mindfulness and emotional resilience."
+        keywords="best counselling centre in india resources, mental health blog india, psychology articles online, therapy resources india, anxiety relief tips, self-care guide"
       />
-      <h1 className="sr-only">Top Mental Health Blog, Psychological Resources, and Counselling Articles</h1>
-      <p className="sr-only">Read expert psychological insights, mental health support guides, and wellness tips from the best counseling professionals at Being You Path Pune. Discover articles on stress relief, cognitive behavioral practices, mindfulness, and authentic living.</p>
+      <h1 className="sr-only">Mental Health Blog & Resources - Being You Path Best Counselling Centre in India</h1>
+      <p className="sr-only">Read expert psychological insights, mental health guides, and wellness tips from the professionals at Being You Path, the best counselling centre in India. Explore articles on stress relief, cognitive behavioral practices, mindfulness, and authentic living.</p>
       
       {/* Hero Slider */}
       <section className="w-full bg-soft-sand py-12 md:py-16 lg:py-20 flex justify-center border-b border-gray-200">
