@@ -30,24 +30,26 @@ const CALL_LINK = 'tel:+917387779238';
 const EMAIL_ADDRESS = 'hello@beingyoupath.com';
 const EMAIL_LINK = 'mailto:hello@beingyoupath.com?subject=1-on-1%20Session%20Inquiry%20-%20Being%20You%20Path';
 
-const SYSTEM_INSTRUCTION = `You are the AI Wellness Guide for Being You Path (co-founded by Imran Patel and Tejaswini in Pune).
+const SYSTEM_INSTRUCTION = `You are the AI Wellness Guide for Being You Path (co-founded by Imran Patel and Tejaswini in Pune, India).
 
-CORE PRINCIPLE:
-Every response MUST be WARM, SHORT, TO THE POINT, and MEANINGFUL.
-Maximum 45 to 55 words total. Strictly 3 concise sentences.
+CORE MANDATE:
+Every single response MUST be WARM, ULTRA-CONCISE, TO THE POINT, and DEEPLY MEANINGFUL.
+Target length: Strictly 40 to 55 words total. Strictly 3 concise sentences.
 NEVER write lengthy paragraphs, essays, repetitive soothing words, or generic filler.
 
-RESPONSE STRUCTURE (Strict 3-part blueprint every single time):
-1. Warmth & Validation (1 sentence):
-Warmly acknowledge their feelings so they feel instantly heard and safe.
-2. High Solution (The First Half - 1 sentence):
-Give ONE high-impact, practical somatic or psychological tool they can do immediately. Start with "**Immediate relief:**".
-3. Psychological Curiosity Hook & CTA (The Other Half - 1 sentence):
-Explain that this soothes the immediate surface feeling, but uncovering the subconscious root trigger is the second half of the story. Invite them to connect with Imran Patel & Tejaswini using the quick buttons below to uncover the root and complete the picture.
+STRICT 3-PART BLUEPRINT (Every single response):
+Sentence 1 (Warmth & Validation):
+Warmly acknowledge their feelings with deep empathy so they feel instantly heard and safe (max 15 words).
+
+Sentence 2 (High Solution - The First Half):
+Give ONE high-impact, practical somatic or psychological tool they can do immediately. MUST start with "**Immediate relief:**" (max 20 words).
+
+Sentence 3 (Psychological Curiosity Hook & CTA - The Other Half):
+Explain that this soothes the immediate surface feeling, but discovering the subconscious root trigger is the second half of the story. Invite them to connect with Imran Patel & Tejaswini below to complete the picture (max 20 words).
 
 NEGATIVE CONSTRAINTS (Strictly Enforced):
 - Total response MUST be UNDER 60 words.
-- Do NOT type out phone numbers, emails, or multiple paragraphs.
+- Do NOT type out phone numbers, emails, or links in the text (clickable buttons exist directly underneath).
 - Always include the invisible metadata block at the very end:
 <!--DATA: {"topic": "...", "sentiment": "...", "readiness": "high|medium|low"}-->
 
@@ -59,7 +61,7 @@ I hear how heavy that feels, and please know you are not broken for feeling this
 
 **Immediate relief:** Place one hand firmly on your heart, take two deep inhales through your nose, and let out a slow sigh through your mouth to calm your nervous system right now.
 
-This relieves the immediate bodily alarm, but understanding the subconscious root trigger is the other half of your story. Connect with Imran & Tejaswini below to complete the picture.
+While this relieves the immediate bodily alarm, uncovering the subconscious root trigger is the other half of your story. Connect with Imran & Tejaswini below to complete the picture.
 <!--DATA: {"topic": "Self-Worth", "sentiment": "pain", "readiness": "high"}-->
 
 User: "I can't stop overthinking at night."
@@ -71,7 +73,7 @@ Racing thoughts can be exhausting, and your mind is simply in overdrive trying t
 While this interrupts the spiral, discovering why your subconscious refuses to rest is the second half of the puzzle. Reach out to Imran & Tejaswini below to uncover the root.
 <!--DATA: {"topic": "Overthinking", "sentiment": "anxiety", "readiness": "high"}-->`;
 
-const FALLBACK_MODELS = ['gemini-3.1-flash-lite', 'gemini-3-flash-preview', 'gemini-flash-latest'];
+const FALLBACK_MODELS = ['gemini-flash-latest', 'gemini-3.1-flash-lite', 'gemini-3-flash-preview', 'gemini-3.8-flash'];
 
 interface VisitorDetails {
   name: string;
@@ -243,6 +245,56 @@ export default function GeminiChatbot() {
     }
   }, [messages, isOpen]);
 
+  // Formatting function ensuring every response adheres strictly to the 3-part blueprint
+  const formatWellnessResponse = (rawText: string, userQuery: string): string => {
+    let text = rawText.replace(/<!--DATA:.*?-->/gs, '').trim();
+
+    const words = text.split(/\s+/).filter(Boolean);
+    const hasRelief = text.toLowerCase().includes('immediate relief:');
+    const hasHook = text.toLowerCase().includes('second half') || text.toLowerCase().includes('other half') || text.toLowerCase().includes('picture') || text.toLowerCase().includes('root');
+    const hasContactDump = text.includes('738777') || text.includes('@gmail') || text.includes('weight of those three words');
+
+    // If the model produced a concise, compliant 3-part response without phone dumps:
+    if (words.length <= 60 && hasRelief && hasHook && !hasContactDump) {
+      return text;
+    }
+
+    // If the model returned text containing immediate relief but slightly long, trim to the concise core:
+    if (hasRelief && !hasContactDump && words.length < 110) {
+      const parts = text.split(/(?=\*\*Immediate relief:\*\*)/i);
+      const warmthPart = parts[0]?.trim().replace(/\n+/g, ' ').split(/[.!?]\s+/)[0]?.trim() || "I hear how deeply this has been weighing on you, and you are not broken.";
+      const remaining = parts[1] || "";
+      const reliefMatch = remaining.match(/\*\*Immediate relief:\*\*\s*([^.\n\r]+[.!?])/i);
+      const reliefText = reliefMatch ? reliefMatch[1].trim() : "Place one hand gently on your heart, take two deep nasal inhales, and let out a slow sigh through your mouth to regulate your nervous system.";
+
+      return `${warmthPart.endsWith('.') ? warmthPart : warmthPart + '.'}\n\n**Immediate relief:** ${reliefText}\n\nWhile this calms the immediate bodily alarm, discovering the subconscious root trigger is the second half of the story. Reach out to Imran & Tejaswini below to complete the picture.`;
+    }
+
+    // Contextual fallback strictly following the 3-part formula
+    const q = userQuery.toLowerCase();
+    let warmth = "I hear how heavy that feels for you right now, and please know you are not alone.";
+    let relief = "Place one hand gently on your heart, take two quick inhales through your nose, and one slow sigh out through your mouth to settle your heart rate.";
+
+    if (q.includes('not enough') || q.includes('worth') || q.includes('failure') || q.includes('confidence') || q.includes('imposter')) {
+      warmth = "I hear that deep ache, and please remember that you do not need to earn your right to peace.";
+      relief = "Place both hands flat over your chest, feel the physical warmth of your palms, and breathe out with a soft audible sigh.";
+    } else if (q.includes('overthink') || q.includes('racing') || q.includes('mind') || q.includes('spiral')) {
+      warmth = "Racing thoughts can be exhausting, and your mind is simply in overdrive trying to protect you.";
+      relief = "Press both feet flat on the ground and name 3 physical textures you can feel right now to pull blood flow out of the overstimulated brain.";
+    } else if (q.includes('sleep') || q.includes('night') || q.includes('insomnia') || q.includes('tired')) {
+      warmth = "Restless nights are deeply draining, and your nervous system is currently stuck on high alert.";
+      relief = "Drop your jaw open slightly, consciously unclench your teeth, and make your exhales twice as long as your inhales.";
+    } else if (q.includes('work') || q.includes('burnout') || q.includes('career') || q.includes('stress') || q.includes('deadline')) {
+      warmth = "Managing continuous deadlines and workplace expectations without emotional recovery is unsustainable.";
+      relief = "Step away from all screens for two minutes, close your eyes, and drop your shoulders down by 10%.";
+    } else if (q.includes('relationship') || q.includes('family') || q.includes('argument') || q.includes('lonely')) {
+      warmth = "Relational friction hurts deeply because connection is our brain's primary source of safety.";
+      relief = "Place your feet flat on the floor, wrap your arms around yourself in a gentle self-hug, and take three steady breaths.";
+    }
+
+    return `${warmth}\n\n**Immediate relief:** ${relief}\n\nThis calms the immediate bodily alarm, but uncovering the subconscious root trigger is the second half of the story. Connect with Imran & Tejaswini below to complete the picture.`;
+  };
+
   // Enhanced message renderer: Strips invisible data tags, sanitizes any runaway text, and formats CTA links
   const renderMessageText = (rawText: string) => {
     // Strip invisible data block
@@ -392,12 +444,11 @@ export default function GeminiChatbot() {
         }
       }
 
-      if (!rawResponseText) {
-        rawResponseText = `I hear how deeply this has been weighing on you, and you don't have to carry it alone.\n\n**Immediate relief:** Place one hand firmly over your heart, take two sharp inhales through your nose, and one slow sigh out your mouth to calm your nervous system.\n\nThis calms the immediate bodily alarm, but uncovering the subconscious root trigger is the second half of your story. Connect with Imran & Tejaswini using the buttons below to explore the rest.`;
-      }
+      // Format response strictly through our wellness response formatter
+      const formattedResponse = formatWellnessResponse(rawResponseText, userText);
       
       // Check for hidden DATA block to seamlessly capture inquiry details
-      const dataMatch = rawResponseText.match(/<!--DATA:\s*(\{.*?\})\s*-->/s);
+      const dataMatch = (rawResponseText || '').match(/<!--DATA:\s*(\{.*?\})\s*-->/s);
       let extractedTopic = '';
       if (dataMatch && dataMatch[1]) {
         try {
@@ -422,13 +473,13 @@ export default function GeminiChatbot() {
       const modelMessage: Message = { 
         id: Date.now().toString() + Math.random(), 
         role: 'model', 
-        text: rawResponseText 
+        text: formattedResponse 
       };
       setMessages(prev => [...prev, modelMessage]);
     } catch (error: any) {
       console.error("Chat Error:", error);
-      const errorMessage = "I hear you, and please know you are not broken.\n\n**Immediate relief:** Take a slow physiological sigh right now—two quick inhales and one long, slow exhale through your mouth.\n\nTo discover the deeper root cause and complete the picture, connect with Imran Patel & Tejaswini using the quick buttons below.";
-      setMessages(prev => [...prev, { id: Date.now().toString() + Math.random(), role: 'model', text: errorMessage }]);
+      const fallbackResponse = formatWellnessResponse('', userText);
+      setMessages(prev => [...prev, { id: Date.now().toString() + Math.random(), role: 'model', text: fallbackResponse }]);
     } finally {
       setIsLoading(false);
     }
@@ -473,7 +524,7 @@ export default function GeminiChatbot() {
             className={`fixed z-50 bg-white shadow-2xl flex flex-col overflow-hidden border border-gray-100 transition-all duration-300 ${
               isExpanded 
                 ? "inset-0 md:inset-4 md:rounded-2xl rounded-none w-auto h-auto max-h-none" 
-                : "bottom-[100px] right-6 w-[360px] sm:w-[420px] h-[560px] max-h-[85vh] rounded-2xl"
+                : "bottom-[80px] sm:bottom-[100px] right-3 sm:right-6 w-[calc(100vw-24px)] sm:w-[420px] max-w-[420px] h-[550px] max-h-[82vh] rounded-2xl"
             }`}
           >
             {/* Header */}

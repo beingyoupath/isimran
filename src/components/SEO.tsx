@@ -52,7 +52,8 @@ export function SEO({ title, description, keywords, url, noindex }: SEOProps) {
     "sameAs": [
       "https://www.instagram.com/beingyoupathoffical",
       "https://www.linkedin.com/company/beingyou-path-9965b1389/",
-      "https://www.facebook.com/share/1EHFBvwf4B/",
+      "https://www.facebook.com/profile.php?id=61590091544601",
+      "https://www.reddit.com/u/Beingyoupath/s/PcquEhRTpM",
       "https://youtube.com/@beingyoupath",
       "https://x.com/BeingyouP84126",
       "https://share.google/bQZJdmxPTbKo8iwKM"

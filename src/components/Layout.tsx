@@ -300,7 +300,7 @@ function Footer() {
               </div>
             </div>
             <p className="text-[14px] leading-relaxed text-[#F4F1E1]/80 max-w-sm">
-              A holistic well-being practice blending modern psychology, secular mindfulness, and explainable ancient wisdom.
+              Psychology-grounded well-being for professionals, students, parents and individuals. Practical support for emotional well-being, relationships, career challenges and everyday life.
             </p>
           </div>
           
@@ -356,7 +356,7 @@ function Footer() {
               
               {/* Social Media Icons beneath Reach Out */}
               <div className="flex flex-wrap items-center mt-4 gap-4">
-                <a href="https://www.facebook.com/share/1EHFBvwf4B/" target="_blank" rel="noopener noreferrer" className="text-[#F4F1E1]/70 hover:text-[#E6A157] transition-all hover:scale-110 duration-300" aria-label="Facebook">
+                <a href="https://www.facebook.com/profile.php?id=61590091544601" target="_blank" rel="noopener noreferrer" className="text-[#F4F1E1]/70 hover:text-[#E6A157] transition-all hover:scale-110 duration-300" aria-label="Facebook">
                   <Facebook className="w-5 h-5" strokeWidth={1.5} />
                 </a>
                 <a href="https://www.instagram.com/beingyoupathoffical?igsh=MWdqejloNXAyank5dQ==" target="_blank" rel="noopener noreferrer" className="text-[#F4F1E1]/70 hover:text-[#E6A157] transition-all hover:scale-110 duration-300" aria-label="Instagram">
@@ -371,7 +371,7 @@ function Footer() {
                 <a href="https://x.com/BeingyouP84126" target="_blank" rel="noopener noreferrer" className="text-[#F4F1E1]/70 hover:text-[#E6A157] transition-all hover:scale-110 duration-300" aria-label="X (Twitter)">
                   <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" className="w-5 h-5"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
                 </a>
-                <a href="https://www.reddit.com/u/Beingyoupath/s/gZ4xXE2pwq" target="_blank" rel="noopener noreferrer" className="text-[#F4F1E1]/70 hover:text-[#E6A157] transition-all hover:scale-110 duration-300" aria-label="Reddit">
+                <a href="https://www.reddit.com/u/Beingyoupath/s/PcquEhRTpM" target="_blank" rel="noopener noreferrer" className="text-[#F4F1E1]/70 hover:text-[#E6A157] transition-all hover:scale-110 duration-300" aria-label="Reddit">
                   <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" className="w-5 h-5"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.758.79 1.758 1.761 0 .36-.104.694-.287.974.015.15.022.302.022.457 0 2.806-3.1 5.082-6.93 5.082-3.83 0-6.93-2.276-6.93-5.082 0-.155.008-.307.023-.457a1.71 1.71 0 0 1-.287-.974c0-.972.79-1.76 1.758-1.76.477 0 .899.182 1.207.491 1.194-.856 2.85-1.418 4.674-1.488l.899-4.202c.038-.178.204-.306.388-.282l3.018.635a1.26 1.26 0 0 1 1.249-.933zm-4.706 7.641c-1.373 0-2.483 1.11-2.483 2.484 0 1.374 1.11 2.484 2.483 2.484 1.374 0 2.484-1.11 2.484-2.484 0-1.374-1.11-2.484-2.484-2.484zm-3.328 1.383c-.886 0-1.604.718-1.604 1.604 0 .886.718 1.604 1.604 1.604.886 0 1.604-.718 1.604-1.604 0-.886-.718-1.604-1.604-1.604zm6.656 0c-.886 0-1.604.718-1.604 1.604 0 .886.718 1.604 1.604 1.604.886 0 1.604-.718 1.604-1.604 0-.886-.718-1.604-1.604-1.604zm-3.328 3.513c-1.332 0-2.477.728-2.923 1.745-.084.19-.001.408.188.491.19.084.408-.001.491-.188.32-.73 1.144-1.258 2.244-1.258 1.1 0 1.924.528 2.244 1.258.083.189.301.272.491.188.189-.083.272-.301.188-.491-.446-1.017-1.591-1.745-2.923-1.745z"/></svg>
                 </a>
                 <a href="https://pin.it/67TibrvMg" target="_blank" rel="noopener noreferrer" className="text-[#F4F1E1]/70 hover:text-[#E6A157] font-bold transition-all hover:scale-110 duration-300 flex items-center justify-center text-[10px]" aria-label="Pinterest">
