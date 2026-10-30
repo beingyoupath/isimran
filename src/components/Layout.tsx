@@ -70,8 +70,11 @@ function Navbar({ onOpenAdminModal }: { onOpenAdminModal: () => void }) {
             <span className="hidden lg:flex items-center hover:text-[#E6A157] transition-colors duration-300 cursor-pointer"><Mail className="w-3.5 h-3.5 mr-1.5 text-[#E6A157]" /> hello@beingyoupath.com</span>
           </div>
 
-          <div className="text-center italic opacity-100 font-heading md:px-4 text-[11px] md:text-[12.5px] lg:text-[13px] tracking-normal md:tracking-wide">
-             {specialDay.message}
+          <div className="text-center italic opacity-100 font-heading md:px-4 text-[11px] md:text-[12.5px] lg:text-[13px] tracking-normal md:tracking-wide flex items-center justify-center flex-wrap gap-2 text-[#FDFBF7]">
+             <span className="not-italic uppercase font-sans font-bold text-[9px] md:text-[9.5px] tracking-wider bg-white/20 px-2.5 py-0.5 rounded-full text-[#FDFBF7] border border-[#FDFBF7]/25 shadow-xs">
+               ✨ Thought of the Day
+             </span>
+             <span style={{ color: '#FDFBF7' }} className="text-[#FDFBF7] font-serif font-medium tracking-wide">"{specialDay.message}"</span>
           </div>
 
           <div className="hidden md:flex items-center space-x-4 shrink-0">

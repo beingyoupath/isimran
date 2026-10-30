@@ -26,7 +26,8 @@ import {
   Sparkles, 
   Clock, 
   Phone, 
-  Check 
+  Check,
+  Copy
 } from "lucide-react";
 import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
 import { useState, useEffect, useRef } from "react";
@@ -117,13 +118,55 @@ export default function Home() {
   };
 
   const thoughtsOfTheDay = [
-    "Rest is not a reward for the work done; it's the foundation for the work to come.", // Sunday
-    "You don't have to have it all figured out today. Just figure out your next right step.", // Monday
-    "Notice what happens when you stop trying to control the outcome and just focus on the action.", // Tuesday
-    "Self-compassion isn't letting yourself off the hook—it's giving yourself the safety to try again.", // Wednesday
-    "Friction is often a sign that we're pushing against our natural rhythm instead of working with it.", // Thursday
-    "What you leave unfinished today does not diminish what you accomplished this week.", // Friday
-    "The present moment is the only place where your life actually happens." // Saturday
+    {
+      quote: "Smile, breathe, and go slowly. There is no need to hurry. Have compassion for all beings, starting with yourself.",
+      theme: "Stillness & Compassion",
+      author: "Thích Nhất Hạnh",
+      tradition: "Plum Village Mindfulness",
+      day: "Sunday"
+    },
+    {
+      quote: "When you arise in the morning, think of what a precious privilege it is to be alive — to breathe, to think, to enjoy, to love.",
+      theme: "Clarity & Intention",
+      author: "Marcus Aurelius",
+      tradition: "Meditations & Stoic Philosophy",
+      day: "Monday"
+    },
+    {
+      quote: "Quiet the mind, and the soul will speak. What you think, you become. What you feel, you attract. What you imagine, you create.",
+      theme: "Mindful Focus & Flow",
+      author: "The Dhammapada",
+      tradition: "Ancient Buddhist Wisdom",
+      day: "Tuesday"
+    },
+    {
+      quote: "The wound is the place where the Light enters you. Let go of what you cannot change, and make space for your own peace.",
+      theme: "Emotional Freedom & Release",
+      author: "Rumi",
+      tradition: "Sufi Wisdom & Heart Centred Philosophy",
+      day: "Wednesday"
+    },
+    {
+      quote: "The curious paradox is that when I accept myself just as I am, then I can change. Who looks outside, dreams; who looks inside, awakes.",
+      theme: "Acceptance & Conscious Pacing",
+      author: "Carl Jung",
+      tradition: "Analytical Psychology & Depth Wisdom",
+      day: "Thursday"
+    },
+    {
+      quote: "Between stimulus and response there is a space. In that space is our power to choose our response. In our response lies our growth and our freedom.",
+      theme: "Inner Resilience & Strength",
+      author: "Viktor E. Frankl",
+      tradition: "Logotherapy & Existential Psychology",
+      day: "Friday"
+    },
+    {
+      quote: "Peace does not mean to be in a place where there is no noise or trouble. It means to be in the midst of those things and still be calm in your heart.",
+      theme: "Presence & Inner Stillness",
+      author: "Dalai Lama XIV",
+      tradition: "Tibetan Buddhist Philosophy",
+      day: "Saturday"
+    }
   ];
 
   const corePaths = [
@@ -185,7 +228,7 @@ export default function Home() {
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % corePaths.length);
   const prevSlide = () => setCurrentSlide((prev) => (prev === 0 ? corePaths.length - 1 : prev - 1));
 
-  const dayOfWeek = currentDate.getDay() as keyof typeof anchors;
+  const dayOfWeek = (currentDate.getDay() % 7) as keyof typeof anchors;
   const hour = currentDate.getHours();
   
   let timeOfDay: 'morning' | 'afternoon' | 'evening' = 'morning';
@@ -195,8 +238,57 @@ export default function Home() {
     timeOfDay = 'evening';
   }
 
-  const currentAnchor = anchors[dayOfWeek][timeOfDay];
-  const currentThought = thoughtsOfTheDay[dayOfWeek];
+  const currentAnchor = anchors[dayOfWeek]?.[timeOfDay] || anchors[0]['morning'];
+
+  const [copiedThought, setCopiedThought] = useState(false);
+
+  // Strictly determined by day of the week (0: Sunday, 1: Monday, ... 6: Saturday)
+  const currentDayIndex = currentDate.getDay() % thoughtsOfTheDay.length;
+  const currentThoughtItem = thoughtsOfTheDay[currentDayIndex] || thoughtsOfTheDay[0];
+
+  const handleCopyThought = () => {
+    const textToCopy = `"${currentThoughtItem.quote}" — ${currentThoughtItem.author} | Being You Path`;
+    if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(textToCopy)
+        .then(() => {
+          setCopiedThought(true);
+          setTimeout(() => setCopiedThought(false), 2000);
+        })
+        .catch(() => {
+          try {
+            const textArea = document.createElement("textarea");
+            textArea.value = textToCopy;
+            textArea.style.position = "fixed";
+            textArea.style.opacity = "0";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textArea);
+            setCopiedThought(true);
+            setTimeout(() => setCopiedThought(false), 2000);
+          } catch {
+            // fallback
+          }
+        });
+    } else {
+      try {
+        const textArea = document.createElement("textarea");
+        textArea.value = textToCopy;
+        textArea.style.position = "fixed";
+        textArea.style.opacity = "0";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+        setCopiedThought(true);
+        setTimeout(() => setCopiedThought(false), 2000);
+      } catch {
+        // fallback
+      }
+    }
+  };
 
   return (
     <div className="bg-soft-sand">
@@ -988,15 +1080,66 @@ export default function Home() {
 
              {/* Thought of the Day */}
              <motion.div 
-               className="bg-deep-teal rounded-[24px] p-8 md:p-10 flex-1 max-w-[500px] shadow-sm flex flex-col justify-center text-center border-l-4 border-sage-green hover-lift"
+               initial={{ opacity: 0, y: 15 }}
+               whileInView={{ opacity: 1, y: 0 }}
+               viewport={{ once: true }}
+               transition={{ duration: 0.5, delay: 0.1 }}
+               className="bg-deep-teal rounded-[24px] p-8 md:p-10 flex-1 max-w-[500px] shadow-md flex flex-col justify-between text-center border-l-4 border-[#FDFBF7]/80 hover-lift relative overflow-hidden"
              >
-               <div className="text-sm font-bold tracking-wider text-sage-green uppercase mb-4">
-                 Thought of the Day
+               <div>
+                 <div className="flex items-center justify-between gap-2 mb-4">
+                   <div className="inline-flex items-center gap-1.5 text-xs font-bold tracking-wider text-[#FDFBF7] uppercase bg-white/15 px-3 py-1 rounded-full font-sans border border-[#FDFBF7]/20">
+                     <Sparkles className="w-3.5 h-3.5 text-amber-glow" />
+                     <span>Thought of the Day</span>
+                   </div>
+
+                   <button
+                     onClick={handleCopyThought}
+                     className="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-[#FDFBF7] hover:text-white transition-all cursor-pointer flex items-center gap-1.5 text-xs font-sans border border-[#FDFBF7]/20"
+                     title={copiedThought ? "Copied to clipboard!" : "Copy thought"}
+                     aria-label="Copy thought"
+                   >
+                     {copiedThought ? (
+                       <>
+                         <Check className="w-3.5 h-3.5 text-amber-glow" />
+                         <span className="text-[11px] text-amber-glow font-semibold">Copied!</span>
+                       </>
+                     ) : (
+                       <>
+                         <Copy className="w-3.5 h-3.5 text-[#FDFBF7]" />
+                         <span className="text-[11px] text-[#FDFBF7] font-medium">Copy</span>
+                       </>
+                     )}
+                   </button>
+                 </div>
+
+                 <Quote className="w-8 h-8 text-[#F5F7F8]/70 mx-auto mb-4" />
+
+                 <blockquote 
+                   style={{ color: '#F5F7F8' }}
+                   className="!text-[#F5F7F8] text-[#F5F7F8] text-lg sm:text-xl md:text-2xl font-heading font-medium leading-relaxed italic px-2 min-h-[72px] flex items-center justify-center drop-shadow-xs"
+                 >
+                   "{currentThoughtItem.quote}"
+                 </blockquote>
+
+                 <div className="mt-4 text-sm text-[#FDFBF7] font-medium font-sans">
+                   — {currentThoughtItem.author}
+                   {currentThoughtItem.tradition && (
+                     <span className="text-[#FDFBF7]/80 text-xs block sm:inline sm:ml-1.5">
+                       • {currentThoughtItem.tradition}
+                     </span>
+                   )}
+                 </div>
+
+                 <div className="mt-3 inline-block text-[11px] font-sans uppercase tracking-widest text-[#FDFBF7] bg-[#FDFBF7]/15 border border-[#FDFBF7]/25 px-3 py-1 rounded-full font-semibold">
+                   {currentThoughtItem.theme}
+                 </div>
                </div>
-               <Quote className="w-8 h-8 text-sage-green/40 mx-auto mb-6" />
-               <p className="text-white text-xl md:text-2xl font-heading font-medium leading-relaxed italic px-2">
-                 "{currentThought}"
-               </p>
+
+               <div className="mt-6 pt-4 border-t border-[#FDFBF7]/20 flex items-center justify-between text-xs text-[#FDFBF7]/85 font-sans">
+                 <span className="text-[#FDFBF7] font-medium">{currentThoughtItem.day} Reflection</span>
+                 <span className="text-[#FDFBF7]/85">{copiedThought ? "Copied to clipboard!" : "Ancient Wisdom & Secular Mindfulness"}</span>
+               </div>
              </motion.div>
            </div>
          </div>
