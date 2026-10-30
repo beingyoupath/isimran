@@ -2,6 +2,10 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { auth, db, googleProvider } from '../lib/firebase';
+import firebaseConfig from '../../firebase-applet-config.json';
+
+export const FIREBASE_PROJECT_ID = firebaseConfig.projectId;
+export const FIREBASE_AUTH_SETTINGS_URL = `https://console.firebase.google.com/project/${firebaseConfig.projectId}/authentication/settings`;
 
 interface AuthContextType {
   user: User | null;
@@ -9,6 +13,8 @@ interface AuthContextType {
   isAdmin: boolean;
   isLoggingIn: boolean;
   authError: string | null;
+  unauthorizedDomain: string | null;
+  firebaseAuthSettingsUrl: string;
   loginWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
   clearAuthError: () => void;
@@ -25,6 +31,8 @@ const AuthContext = createContext<AuthContextType>({
   isAdmin: false,
   isLoggingIn: false,
   authError: null,
+  unauthorizedDomain: null,
+  firebaseAuthSettingsUrl: FIREBASE_AUTH_SETTINGS_URL,
   loginWithGoogle: async () => {},
   logout: async () => {},
   clearAuthError: () => {},
@@ -37,14 +45,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
+  const [unauthorizedDomain, setUnauthorizedDomain] = useState<string | null>(null);
 
-  const clearAuthError = () => setAuthError(null);
+  const clearAuthError = () => {
+    setAuthError(null);
+    setUnauthorizedDomain(null);
+  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
         setAuthError(null);
+        setUnauthorizedDomain(null);
         // Sync user profile to Firestore defensively
         try {
           const userRef = doc(db, 'users', currentUser.uid);
@@ -99,7 +112,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       } else if (error?.code === 'auth/cancelled-popup-request') {
         friendlyMessage = 'Another sign-in window was already open. Please retry.';
       } else if (error?.code === 'auth/unauthorized-domain') {
-        friendlyMessage = `This domain (${window.location.hostname}) is not authorized in Firebase Authentication. Please add it to Authorized Domains in your Firebase console.`;
+        const domain = window.location.hostname;
+        setUnauthorizedDomain(domain);
+        friendlyMessage = `This domain (${domain}) is not authorized in Firebase Authentication. Please add it to Authorized Domains in your Firebase console.`;
       } else if (error?.code === 'auth/network-request-failed') {
         friendlyMessage = 'Network connection issue. Please check your internet connection.';
       } else if (error?.message) {
@@ -135,6 +150,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isAdmin,
         isLoggingIn,
         authError,
+        unauthorizedDomain,
+        firebaseAuthSettingsUrl: FIREBASE_AUTH_SETTINGS_URL,
         loginWithGoogle,
         logout,
         clearAuthError,
