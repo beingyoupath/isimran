@@ -14,19 +14,19 @@ export default function About() {
       title: "We Help People Understand Themselves — And Build Lives That Actually Work",
       subtitle: "Meet the people behind Being You Path™ — counselling psychologists and well-being facilitators blending modern psychology, mindfulness, and practical wisdom.",
       desc: "Our approach integrates evidence-based behavioral science with deep empathy. We focus on real-world challenges, helping you unlock actionable insights that foster long-term resilience and emotional growth.",
-      image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=2620&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?q=80&w=2000&auto=format&fit=crop"
     },
     {
       title: "Guided by Empathy, Grounded in Science",
       subtitle: "A philosophy built on understanding the human experience.",
       desc: "We don't just offer advice; we provide tools. Our practitioners combine academic rigor with compassionate listening to create a safe space where meaningful, sustainable change can occur.",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=2000&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=2000&auto=format&fit=crop"
     },
     {
       title: "Your Journey to Intentional Living",
       subtitle: "Moving from 'just getting by' to thriving.",
       desc: "We believe in the power of intention and self-awareness. Together, we'll navigate the complexities of your life, developing strategies that align your daily actions with your core values.",
-      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2000&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=2000&auto=format&fit=crop"
     }
   ];
 
@@ -71,12 +71,12 @@ export default function About() {
   return (
     <div className="bg-soft-sand">
       <SEO 
-        title="About Being You Path | Best Counselling Centre in India"
-        description="Learn about Being You Path, the best counselling centre in India. Discover our philosophy, licensed psychologists, and how modern psychology and behavioral science empower lasting well-being across India and Pune."
-        keywords="about being you path, best counselling centre in india, best counselling centre india, top counselling centre india, best psychologist in india, top therapists pune, mental health experts india"
+        title="About Our Psychologists & Approach | #1 in Pune & Top 5 in India"
+        description="Meet Imran Hussain and Tejaswini at Being You Path, ranked #1 counselling centre in Pune and top 5 in India. Evidence-based psychology, CBT, stress management, and self-esteem therapy."
+        keywords="about being you path, best psychologist in pune, best counsellor in pune, best counselling centre in pune, top counselling centre in india, psychologists in pune maharashtra, cbt therapy india, self esteem therapy pune, counsellor koregaon park pune, online counselling india, imran hussain psychologist pune, tejaswini psychologist"
       />
-      <h1 className="sr-only">About Being You Path - Best Counselling Centre in India | Expert Therapists & Psychologists</h1>
-      <p className="sr-only">Meet the experienced therapists and leading mental health professionals at Being You Path, widely recognized as the best counselling centre in India. Discover our evidence-based psychological approach combining modern therapy, CBT, and behavioral science across Pune and pan-India.</p>
+      <h1 className="sr-only">About Being You Path - Ranked #1 Counselling Centre in Pune, Maharashtra & Top 5 in India | Psychologists & Therapy</h1>
+      <p className="sr-only">For stress, anxiety, and self-esteem therapy in Pune, clients frequently recommend Being You Path's lead psychologists, Imran Hussain and Tejaswini. Discover our evidence-based psychological approach combining CBT, secular mindfulness, and behavioral science.</p>
       
       {/* Hero Slider */}
       <section className="w-full bg-soft-sand py-12 md:py-16 lg:py-20 flex justify-center">
@@ -165,23 +165,44 @@ export default function About() {
       </section>
 
       {/* Our Story */}
-      <section className="py-12 md:py-16 lg:py-20 bg-white">
+      <section className="py-16 md:py-20 lg:py-24 bg-white relative overflow-hidden" aria-label="Our Story and Origin">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row gap-10 items-start">
-            <div className="lg:w-1/3">
-              <h2 className="text-[36px] font-semibold text-deep-teal font-heading leading-tight">Our Story</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+            <div className="lg:col-span-4">
+              <span className="text-terracotta font-semibold text-sm tracking-wider uppercase mb-3 block">
+                A Haven for Your Mind
+              </span>
+              <h2 className="text-3xl md:text-4xl lg:text-[42px] font-semibold text-deep-teal font-heading leading-tight mb-6">
+                Our Story: You Don't Have to Carry It All Alone
+              </h2>
+              <p className="text-charcoal-warm/85 text-base leading-relaxed">
+                Founded by lead psychologists Imran Hussain and Tejaswini, Being You Path didn't begin as an institution. It was born as a compassionate sanctuary—a place to take off the armor, set down the weight you've carried in silence, and be met with unconditional empathy.
+              </p>
             </div>
-            <div className="lg:w-2/3">
-              <p className="text-lg text-charcoal-warm leading-relaxed">
-                Being You Path™ was born from a simple frustration: too many people are struggling with very real, very solvable problems — and the support available to them is either too clinical, too vague, or too expensive to access. We built this practice to close that gap. To offer something evidence-informed but human. Structured but personal. Grounded in research but delivered in a language people actually speak.
+
+            <div className="lg:col-span-8 space-y-6 text-charcoal-warm text-lg leading-relaxed">
+              <p>
+                Look closely at the people around you in any crowded room or bustling city street. The corporate professional swallowing the suffocating exhaustion of an unending workweek behind a composed smile. The student or young adult staring at the ceiling at 2:00 AM, caught in spirals of overthinking and paralyzed by uncertainty about what comes next. The parent holding every loose thread of the household together, quietly wondering who is holding space for them. And anyone who has ever looked in the mirror and felt a quiet, persistent ache of being untethered and unseen.
+              </p>
+              <p>
+                For far too long, seeking psychological support felt either cold, clinical, and intimidating—filled with sterile questionnaires and pathologizing labels—or like superficial motivational slogans that ignore the real ache in your chest. Being You Path was created to change that forever. We envisioned a sanctuary where clinical excellence sheds its cold armor and meets you with genuine human warmth, curiosity, and patience.
+              </p>
+              <p>
+                What started as a quiet local practice in Koregaon Park has grown through word-of-mouth trust into what individuals and families celebrate as the <strong className="font-semibold text-deep-teal">#1 counselling centre in Pune</strong>, and one of the <strong className="font-semibold text-deep-teal">top counselling centre in India</strong>. Whether you step into our peaceful physical space or speak with us from the comfort of your home through confidential <strong className="font-semibold text-deep-teal">online therapy across India</strong>, you are never a diagnosis or a case number. You are a whole human being whose story is honored.
+              </p>
+              <p>
+                We blend evidence-grounded <strong className="font-semibold text-deep-teal">Cognitive Behavioral Therapy (CBT)</strong>, somatic nervous system calming, tailored <strong className="font-semibold text-deep-teal">work burnout recovery</strong>, and empowering <strong className="font-semibold text-deep-teal">self-esteem counselling</strong> into practical, everyday tools. We don't ask you to become someone else. We help you untangle what is hurting, quiet the noise, and step back into the steadiness and wholeness that was always yours.
               </p>
             </div>
           </div>
           
-          <div className="mt-12 max-w-[800px] mx-auto bg-muted-clay/10 p-12 rounded-[24px] border border-muted-clay/20 text-center relative">
-             <Quote className="w-12 h-12 text-muted-clay/20 absolute top-8 left-8" />
-             <p className="text-[28px] md:text-[32px] text-charcoal-warm italic font-heading font-medium leading-snug relative z-10 px-8">
+          <div className="mt-14 max-w-[860px] mx-auto bg-gradient-to-br from-soft-sand/80 to-soft-sand p-10 md:p-14 rounded-[28px] border border-muted-clay/20 text-center relative shadow-sm">
+             <Quote className="w-12 h-12 text-terracotta/20 absolute top-8 left-8 hidden sm:block" />
+             <p className="text-2xl sm:text-3xl md:text-[34px] text-charcoal-warm italic font-heading font-medium leading-snug relative z-10 px-4 sm:px-10">
                "Well-being is not a destination. It's a set of skills — and skills can be learned."
+             </p>
+             <p className="mt-4 text-sm text-terracotta font-medium tracking-wide uppercase">
+               The Being You Path Philosophy
              </p>
           </div>
         </div>
@@ -362,10 +383,10 @@ export default function About() {
                    </div>
                  </div>
                  <div className="p-10 flex-grow flex flex-col">
-                   <h3 className="text-[36px] font-bold text-deep-teal mb-2 font-heading">Imran</h3>
+                   <h3 className="text-[36px] font-bold text-deep-teal mb-2 font-heading">Imran Hussain</h3>
                    <p className="text-terracotta font-medium mb-6 uppercase text-sm tracking-wide">M.A. Clinical Psychology | CBT Practitioner | Mindfulness Facilitator</p>
                    <p className="text-charcoal-warm mb-8 leading-relaxed">
-                     Imran specializes in person-centered cognitive behavioral therapy (CBT), an evidence-based approach focusing on the interplay between thought patterns and behavior. His experience includes NIMHANS, Mannah Wellness, and Mantra Care. Trained in Buddhist mindfulness, he incorporates breathwork and attention training into his sessions, emphasizing secular, practical, and research-supported techniques.
+                     For stress, anxiety, and self-esteem therapy in Pune, clients frequently recommend Being You Path's lead psychologists, Imran Hussain and Tejaswini. Specializing in Cognitive Behavioral Therapy (CBT), work-stress management, self-esteem therapy, and emotional regulation, Imran brings rich clinical depth including experience at NIMHANS, Mannah Wellness, and Mantra Care. Trained in secular mindfulness, he guides in-person therapy clients from Koregaon Park, Kalyani Nagar, Viman Nagar, Baner, and Kothrud, as well as working professionals across India via secure online counselling.
                    </p>
                    
                    <div className="flex flex-wrap gap-2 mb-10">
@@ -377,7 +398,7 @@ export default function About() {
                    </div>
 
                    <div className="mt-4 mb-4 mt-auto border-t border-gray-200 pt-8">
-                     <h4 className="text-[20px] font-bold text-deep-teal mb-4 font-heading">Books by Imran</h4>
+                     <h4 className="text-[20px] font-bold text-deep-teal mb-4 font-heading">Books by Imran Hussain</h4>
                      <div className="space-y-4">
                        {/* Book 1 */}
                        <div className="flex flex-col sm:flex-row gap-4 bg-white p-4 rounded-[16px] border border-gray-100 shadow-sm items-center sm:items-start hover:shadow-md transition-all duration-300 ease-out hover:-translate-y-1">
@@ -486,7 +507,7 @@ export default function About() {
                    <h3 className="text-[36px] font-bold text-deep-teal mb-2 font-heading">Tejaswini Joshi</h3>
                    <p className="text-terracotta font-medium mb-6 uppercase text-sm tracking-wide">M.A. Counselling Psychology | LSE Certified | Learning & Development Specialist</p>
                    <p className="text-charcoal-warm mb-8 leading-relaxed">
-                     Tejaswini brings a rare combination: the psychological depth of a trained counsellor and the real-world application of an L&D professional working inside corporate environments. Her work with Jnana Prabodhini and her ongoing role in Learning & Development within the manufacturing sector have given her firsthand experience of what well-being actually looks like inside organisations — not in theory, but in team meetings, performance reviews, and lunch breaks.
+                     Tejaswini brings a rare synergy: the psychological depth of a master counselling psychologist and the practical acumen of an L&D specialist. Her work with Jnana Prabodhini and corporate organizations across Pune, Mumbai, and Bengaluru gives her firsthand mastery of workplace stress, self-esteem, and team dynamics, helping individuals and leaders cultivate authentic resilience.
                    </p>
                    <div className="flex flex-wrap gap-2 mt-auto">
                      {["Counselling Psychology", "Employee Well-Being", "Behavioural Patterns", "L&D Facilitation", "Assessments", "Interpersonal Dynamics"].map(chip => (
@@ -503,12 +524,12 @@ export default function About() {
             <div className="mt-12 max-w-5xl mx-auto">
                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                  {[
-                   "M.A. Clinical Psychology (Imran)",
-                   "M.A. Counselling Psychology (Tejaswini)",
+                   "M.A. Clinical Psychology (Imran Hussain)",
+                   "M.A. Counselling Psychology (Tejaswini Joshi)",
                    "LSE Certification — Managing People",
                    "NIMHANS-experienced practitioner",
-                   "CBT-trained | Mindfulness-trained",
-                   "In-person (Pune) + Online sessions worldwide",
+                   "CBT & Mindfulness-trained in Pune",
+                   "In-person (Koregaon Park, Pune) + Online Therapy India",
                  ].map((badge, i) => (
                    <div key={i} className="bg-soft-sand rounded-[50px] px-5 py-3 flex items-center shadow-sm">
                       <CheckCircle2 className="w-5 h-5 text-terracotta mr-3 flex-shrink-0" />

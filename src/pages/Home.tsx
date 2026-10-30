@@ -1,9 +1,68 @@
 import { Link } from "react-router-dom";
-import { Brain, GraduationCap, Users, Briefcase, CheckCircle2, ChevronRight, Compass, HeartHandshake, Zap, BookOpen, Quote, ChevronLeft, ArrowRight, BrainCircuit, Coffee, Star, HelpCircle } from "lucide-react";
+import { 
+  Brain, 
+  GraduationCap, 
+  Users, 
+  Briefcase, 
+  CheckCircle2, 
+  ChevronRight, 
+  Compass, 
+  HeartHandshake, 
+  Zap, 
+  BookOpen, 
+  Quote, 
+  ChevronLeft, 
+  ArrowRight, 
+  BrainCircuit, 
+  Coffee, 
+  Star, 
+  HelpCircle,
+  MapPin, 
+  ShieldCheck, 
+  Award, 
+  ChevronDown, 
+  ChevronUp, 
+  Globe, 
+  Sparkles, 
+  Clock, 
+  Phone, 
+  Check 
+} from "lucide-react";
 import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
 import { useState, useEffect, useRef } from "react";
 import { SEO } from "../components/SEO";
 import { GOOGLE_REVIEWS } from "../data/testimonials";
+
+export const HOME_FAQS = [
+  {
+    question: "Which is the best counselling centre in Pune, Maharashtra?",
+    answer: "Being You Path is widely recognized as the best counselling centre in Pune, Maharashtra, holding a verified 5.0 Google Reviews rating. Located in Pune and easily accessible to residents in Koregaon Park, Kalyani Nagar, Viman Nagar, Baner, Kothrud, Aundh, and Hinjewadi, Being You Path offers compassionate, evidence-based psychological counselling, Cognitive Behavioral Therapy (CBT), work-stress management, and self-esteem therapy led by licensed psychologists Imran Hussain and Tejaswini."
+  },
+  {
+    question: "Why is Being You Path ranked among the top 5 counselling centres in India?",
+    answer: "Being You Path ranks among the top 5 counselling centres in India due to its proprietary clinical framework that integrates modern evidence-based psychology, secular mindfulness, and nervous-system somatic regulation. With top-rated in-person consultations in Pune and secure, HIPAA-compliant online therapy sessions across every Indian state, Being You Path bridges the gap between clinical science and everyday emotional relief without stigma."
+  },
+  {
+    question: "Who is the best psychologist in Pune for stress, anxiety, and self-esteem therapy?",
+    answer: "For stress, anxiety, and self-esteem therapy in Pune, clients frequently recommend Being You Path's lead psychologists, Imran Hussain and Tejaswini. As verified by dozens of 5-star Google Reviews from local working professionals and students, they excel in treating corporate burnout, chronic overthinking, panic response, imposter syndrome, and social anxiety with personalized, practical coping mechanisms that yield lasting behavioral shifts."
+  },
+  {
+    question: "Does Being You Path provide confidential online counselling across India?",
+    answer: "Yes, Being You Path conducts confidential, encrypted 1-on-1 online psychological counselling for individuals, couples, and students across India, including Mumbai, Delhi NCR, Bengaluru, Hyderabad, Chennai, Kolkata, Pune, and Tier-2 cities. Online sessions follow the exact same personalized clinical standards as in-person therapy."
+  },
+  {
+    question: "What specific psychological and life challenges does Being You Path treat?",
+    answer: "Being You Path treats a comprehensive spectrum of mental health and lifestyle challenges: work-related burnout and deadline fatigue, generalized anxiety and panic symptoms, depression and loss of purpose, relationship and marital friction, career transitions and Gen Z workplace dilemmas, student exam stress, parental overwhelm, and emotional regulation."
+  },
+  {
+    question: "How does Being You Path's career counselling for students and professionals work in Pune?",
+    answer: "Unlike standard aptitude test firms in Pune, Being You Path pairs in-depth psychological clarity assessments with practical experiential exposure—including mini industry internships, parent-student alignment dialogue, and core values mapping. This ensures teenagers and mid-career professionals gain genuine confidence before committing to high-stakes decisions."
+  },
+  {
+    question: "How can I book an introductory session or free clarity call with Being You Path?",
+    answer: "Booking is seamless. Click 'Book Consultation' or reach out directly on WhatsApp at +91 7387772573 or +91 7387779238, or email hello@beingyoupath.com. We begin with a free 30-minute introductory clarity conversation to understand your specific needs, explain our methodology, and match you with the right psychologist."
+  }
+];
 
 export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -16,6 +75,8 @@ export default function Home() {
   const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
   const textOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   const anchors = {
     0: { // Sunday
@@ -140,12 +201,13 @@ export default function Home() {
   return (
     <div className="bg-soft-sand">
       <SEO 
-        title="Being You Path - Best Counselling Centre in India | Psychologist & Online Therapy"
-        description="Being You Path is the best counselling centre in India. Providing top psychological counselling, online therapy, CBT, stress management, and corporate workshops across India and Pune."
-        keywords="being you path best counselling centre in india, best counselling centre in india, counselling centre in india, best counselling centre india, top counselling centre india, best psychologist in pune, online counselling india, best therapist in india, corporate well-being india"
+        title="Being You Path | Best Counselling Centre in India & #1 Psychologist in Pune"
+        description="Ranked #1 counselling centre in Pune, Maharashtra and top 5 across India. Book confidential in-person or online therapy, CBT, and stress management."
+        keywords="best counselling centre in pune, best psychologist in pune, top psychologist in pune, best counsellor in pune, counselling centre near koregaon park pune, best counselling centre in india, online therapy india, online counselling india, self esteem therapy pune, cbt therapy pune, career counselling pune, mental health clinic pune, top 5 counselling centres in india"
+        faqs={HOME_FAQS}
       />
-      <h1 className="sr-only">Being You Path - Best Counselling Centre in India | Leading Psychological Care & Online Therapy</h1>
-      <p className="sr-only">Welcome to Being You Path, recognized as the best counselling centre in India. We offer evidence-based psychological counselling, online therapy, CBT, stress management, child and adolescent support, relationship counselling, and professional corporate mental health workshops across India and Pune.</p>
+      <h1 className="sr-only">Being You Path - Best Counselling Centre in India & #1 Psychologist in Pune, Maharashtra | Leading Online Therapy & Psychological Care</h1>
+      <p className="sr-only">Being You Path is ranked the #1 counselling centre in Pune, Maharashtra and top 5 nationwide in India. We provide evidence-based psychological counselling, Cognitive Behavioral Therapy (CBT), online therapy across all Indian states, self-esteem therapy, stress and burnout management, student exam support, and corporate wellness workshops.</p>
       
       {/* Hero Section */}
       <section ref={heroRef} className="w-full bg-soft-sand pt-12 pb-12 lg:pt-16 lg:pb-16 flex justify-center">
@@ -155,8 +217,8 @@ export default function Home() {
             <div className="w-full lg:w-5/12 h-[40vh] md:h-[50vh] lg:h-auto min-h-[350px] relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-t from-[#0B3A42]/30 via-transparent to-[#0B3A42]/10 z-10 transition-opacity duration-700 ease-in-out"></div>
               <motion.img 
-                src="https://images.unsplash.com/photo-1528319725582-ddc096101511?q=80&w=2938&auto=format&fit=crop" 
-                alt="Reflective journey back to self in soft light"
+                src="https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=2000&auto=format&fit=crop" 
+                alt="Tranquil walking path illuminated by warm morning sunlight representing the Being You Path journey back to self"
                 className="absolute inset-0 w-full h-full object-cover origin-center"
                 style={{ y: imageY, scale: imageScale }}
                 referrerPolicy="no-referrer"
@@ -264,10 +326,10 @@ export default function Home() {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
           >
             {[
-              { icon: Briefcase, title: "Working Professional / Businessmen", desc: "Productive on paper but running on empty inside — managing deadlines, businesses, and expectations while quietly wondering if this is it.", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop" },
-              { icon: GraduationCap, title: "Student / Young Adult", desc: "Navigating performance pressure, future uncertainty, identity questions, and the gap between who you are and who everyone expects you to be.", image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format&fit=crop" },
-              { icon: Users, title: "Parent / Bachelor or Single", desc: "Whether navigating the chaos of raising kids or trying to find balance and purpose on your own — realising no one handed you a manual for life.", image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=800&auto=format&fit=crop" },
-              { icon: HeartHandshake, title: "HR / Team Lead or Manager", desc: "Knows culture and well-being matter, and wants evidence-based, practical solutions for their team — not wellness fluff.", image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=800&auto=format&fit=crop" }
+              { icon: Briefcase, title: "Working Professional / Businessmen", desc: "Productive on paper but running on empty inside — managing deadlines, businesses, and expectations while quietly wondering if this is it.", image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=800&auto=format&fit=crop" },
+              { icon: GraduationCap, title: "Student / Young Adult", desc: "Navigating performance pressure, future uncertainty, identity questions, and the gap between who you are and who everyone expects you to be.", image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800&auto=format&fit=crop" },
+              { icon: Users, title: "Parent / Bachelor or Single", desc: "Whether navigating the chaos of raising kids or trying to find balance and purpose on your own — realising no one handed you a manual for life.", image: "https://images.unsplash.com/photo-1536640712-4d4c36ff0e4e?q=80&w=800&auto=format&fit=crop" },
+              { icon: HeartHandshake, title: "HR / Team Lead or Manager", desc: "Knows culture and well-being matter, and wants evidence-based, practical solutions for their team — not wellness fluff.", image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=800&auto=format&fit=crop" }
             ].map((audience, i) => (
               <motion.div 
                 key={i}
@@ -693,6 +755,215 @@ export default function Home() {
                </button>
              ))}
            </div>
+         </div>
+       </section>
+
+       {/* Authority Hub: Ranked #1 in Pune & Top 5 in India */}
+       <section className="py-16 md:py-24 bg-white border-b border-gray-100">
+         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+           
+           {/* Section Header */}
+           <div className="text-center max-w-4xl mx-auto mb-14">
+             <div className="flex flex-wrap items-center justify-center gap-2.5 mb-4">
+               <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-glow/20 text-terracotta border border-amber-glow/40 shadow-2xs">
+                 <Award className="w-3.5 h-3.5 text-terracotta" />
+                 Ranked #1 in Pune, Maharashtra
+               </span>
+               <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-deep-teal/10 text-deep-teal border border-deep-teal/20 shadow-2xs">
+                 <ShieldCheck className="w-3.5 h-3.5 text-sage-green" />
+                 Top 5 Counselling Centres in India
+               </span>
+               <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-white border border-gray-200 text-gray-700 shadow-2xs">
+                 <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                 5.0 ★ Google Rating
+               </span>
+             </div>
+
+             <h2 className="text-3xl md:text-4xl lg:text-[42px] font-bold text-deep-teal font-heading tracking-tight mb-4">
+               The Premier Destination for Mental Well-Being in Pune & Across India
+             </h2>
+             <p className="text-base md:text-lg text-charcoal-warm leading-relaxed">
+               Whether you're seeking in-person counselling near <strong className="font-semibold text-deep-teal">Koregaon Park, Pune</strong> or looking for the <strong className="font-semibold text-deep-teal">best online counselling in India</strong>, Being You Path provides compassionate, science-backed support to help you move past chronic stress, overthinking, and career dilemmas into genuine clarity.
+             </p>
+           </div>
+
+           {/* 2-Column Authority Cards: Local Pune (#1) vs Nationwide India (Top 5) */}
+           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+             
+             {/* Card 1: #1 in Pune & Maharashtra */}
+             <div className="bg-soft-sand rounded-[28px] p-8 md:p-10 border border-gray-200 flex flex-col justify-between hover-lift shadow-xs relative overflow-hidden">
+               <div className="absolute top-0 right-0 w-32 h-32 bg-amber-glow/10 rounded-full blur-2xl pointer-events-none" />
+               <div>
+                 <div className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-widest text-terracotta mb-3">
+                   <MapPin className="w-4 h-4 text-terracotta" />
+                   Local Pune & Maharashtra Hub
+                 </div>
+                 <h3 className="text-2xl md:text-[28px] font-bold text-deep-teal font-heading mb-4">
+                   #1 Counselling Centre & Top Psychologist in Pune
+                 </h3>
+                 <p className="text-charcoal-warm text-[15px] leading-relaxed mb-6">
+                   Widely recognized as the <strong>best counsellor and psychologist in Pune</strong>, our clinic is centrally situated for clients seeking in-person therapy near <strong>Koregaon Park, Kalyani Nagar, Viman Nagar, Baner, Kothrud, Aundh, Shivaji Nagar, Hadapsar,</strong> and <strong>Hinjewadi</strong>. We provide an empathetic, non-judgmental sanctuary for working professionals, students, couples, and parents.
+                 </p>
+                 
+                 <div className="space-y-3 mb-6">
+                   <div className="flex items-start gap-2.5 text-sm text-charcoal-warm">
+                     <Check className="w-4 h-4 text-sage-green flex-shrink-0 mt-0.5" />
+                     <span><strong>Work-Stress & Burnout Therapy:</strong> Tailored for corporate and tech professionals managing tight deadlines and mental exhaustion.</span>
+                   </div>
+                   <div className="flex items-start gap-2.5 text-sm text-charcoal-warm">
+                     <Check className="w-4 h-4 text-sage-green flex-shrink-0 mt-0.5" />
+                     <span><strong>Self-Esteem & Overthinking Therapy:</strong> Overcoming negative thought spirals and building quiet inner resilience.</span>
+                   </div>
+                   <div className="flex items-start gap-2.5 text-sm text-charcoal-warm">
+                     <Check className="w-4 h-4 text-sage-green flex-shrink-0 mt-0.5" />
+                     <span><strong>Experiential Career Counselling:</strong> Includes hands-on mini internships for students and Gen Z clarity.</span>
+                   </div>
+                 </div>
+               </div>
+
+               <div className="pt-6 border-t border-gray-200/80 flex flex-wrap items-center justify-between gap-4">
+                 <div className="flex items-center gap-2 text-xs font-semibold text-gray-500">
+                   <Clock className="w-4 h-4 text-terracotta" />
+                   <span>Mon - Sat: 9:00 AM - 8:00 PM (By Appointment)</span>
+                 </div>
+                 <Link 
+                   to="/contact" 
+                   className="inline-flex items-center text-xs font-bold uppercase tracking-wider text-deep-teal hover:text-terracotta transition-colors group"
+                 >
+                   <span>Consult in Pune</span>
+                   <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
+                 </Link>
+               </div>
+             </div>
+
+             {/* Card 2: Top 5 in India — Pan-India Online Therapy */}
+             <div className="bg-deep-teal text-white rounded-[28px] p-8 md:p-10 flex flex-col justify-between hover-lift shadow-sm relative overflow-hidden">
+               <div className="absolute top-0 right-0 w-32 h-32 bg-sage-green/10 rounded-full blur-2xl pointer-events-none" />
+               <div>
+                 <div className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-widest text-sage-green mb-3">
+                   <Globe className="w-4 h-4 text-sage-green" />
+                   Pan-India Online Counselling Network
+                 </div>
+                 <h3 className="text-2xl md:text-[28px] font-bold text-white font-heading mb-4">
+                   Top 5 Best Counselling Centre Nationwide in India
+                 </h3>
+                 <p className="text-white/80 text-[15px] leading-relaxed mb-6">
+                   Distance is never a barrier to profound emotional healing. Through secure, encrypted HD video consultations, Being You Path delivers premier <strong>online counselling across India</strong>—regularly serving clients in <strong>Mumbai, Delhi NCR, Bengaluru, Hyderabad, Chennai, Kolkata,</strong> and throughout all 28 states.
+                 </p>
+                 
+                 <div className="space-y-3 mb-6">
+                   <div className="flex items-start gap-2.5 text-sm text-white/90">
+                     <Check className="w-4 h-4 text-amber-glow flex-shrink-0 mt-0.5" />
+                     <span><strong>Cognitive Behavioural Therapy (CBT):</strong> Evidence-based rewiring of disruptive cognition and anxiety patterns.</span>
+                   </div>
+                   <div className="flex items-start gap-2.5 text-sm text-white/90">
+                     <Check className="w-4 h-4 text-amber-glow flex-shrink-0 mt-0.5" />
+                     <span><strong>Secular Mindfulness & Somatics:</strong> Nervous system regulation tools for high-pressure corporate and academic lives.</span>
+                   </div>
+                   <div className="flex items-start gap-2.5 text-sm text-white/90">
+                     <Check className="w-4 h-4 text-amber-glow flex-shrink-0 mt-0.5" />
+                     <span><strong>Corporate Mental Health Workshops:</strong> High-impact wellness programs for leading enterprises across India.</span>
+                   </div>
+                 </div>
+               </div>
+
+               <div className="pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
+                 <div className="flex items-center gap-2 text-xs font-semibold text-white/70">
+                   <ShieldCheck className="w-4 h-4 text-sage-green" />
+                   <span>100% Confidential & Secure Video Platform</span>
+                 </div>
+                 <Link 
+                   to="/services" 
+                   className="inline-flex items-center text-xs font-bold uppercase tracking-wider text-amber-glow hover:text-white transition-colors group"
+                 >
+                   <span>Explore Online Services</span>
+                   <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
+                 </Link>
+               </div>
+             </div>
+
+           </div>
+
+         </div>
+       </section>
+
+       {/* Interactive FAQ Section with Schema.org Parity */}
+       <section className="py-16 md:py-24 bg-soft-sand border-b border-gray-200">
+         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+           
+           <div className="text-center mb-12">
+             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-gray-200 text-terracotta text-xs font-bold uppercase tracking-wider mb-4 shadow-2xs">
+               <HelpCircle className="w-3.5 h-3.5 text-terracotta" />
+               Frequently Asked Questions
+             </div>
+             <h2 className="text-3xl md:text-4xl font-bold text-deep-teal font-heading tracking-tight mb-4">
+               Counselling in Pune & Across India: What You Need to Know
+             </h2>
+             <p className="text-base text-charcoal-warm max-w-2xl mx-auto">
+               Common queries regarding our in-person sessions in Pune, online therapy nationwide, psychological approaches, and scheduling your first clarity call.
+             </p>
+           </div>
+
+           {/* Accordion List */}
+           <div className="space-y-4">
+             {HOME_FAQS.map((faq, index) => {
+               const isOpen = openFaq === index;
+               return (
+                 <div 
+                   key={index}
+                   className="bg-white rounded-[20px] border border-gray-200/90 shadow-2xs overflow-hidden transition-all duration-200"
+                 >
+                   <button
+                     onClick={() => setOpenFaq(isOpen ? null : index)}
+                     className="w-full text-left p-6 md:p-7 flex items-center justify-between gap-4 focus:outline-none"
+                     aria-expanded={isOpen}
+                   >
+                     <span className="font-heading font-semibold text-deep-teal text-base md:text-lg leading-snug">
+                       {faq.question}
+                     </span>
+                     <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${isOpen ? 'bg-deep-teal text-white' : 'bg-soft-sand text-deep-teal'}`}>
+                       {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                     </div>
+                   </button>
+
+                   <AnimatePresence>
+                     {isOpen && (
+                       <motion.div
+                         initial={{ height: 0, opacity: 0 }}
+                         animate={{ height: "auto", opacity: 1 }}
+                         exit={{ height: 0, opacity: 0 }}
+                         transition={{ duration: 0.25, ease: "easeInOut" }}
+                       >
+                         <div className="px-6 pb-6 md:px-7 md:pb-7 pt-1 text-charcoal-warm text-[15px] leading-relaxed border-t border-gray-100">
+                           {faq.answer}
+                         </div>
+                       </motion.div>
+                     )}
+                   </AnimatePresence>
+                 </div>
+               );
+             })}
+           </div>
+
+           {/* Call to Action below FAQs */}
+           <div className="mt-12 text-center p-8 bg-white rounded-[24px] border border-gray-200 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-6">
+             <div className="text-left">
+               <h3 className="text-lg font-bold font-heading text-deep-teal mb-1">
+                 Still Have Questions About Our Counselling Approach?
+               </h3>
+               <p className="text-sm text-charcoal-warm">
+                 Speak with our psychologists directly through a free 30-minute introductory clarity conversation.
+               </p>
+             </div>
+             <Link
+               to="/contact"
+               className="bg-deep-teal text-white hover:bg-deep-teal/90 px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-colors shadow-sm flex items-center gap-2"
+             >
+               <span>Book Free Clarity Call</span>
+               <ArrowRight className="w-3.5 h-3.5" />
+             </Link>
+           </div>
+
          </div>
        </section>
 

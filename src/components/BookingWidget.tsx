@@ -67,7 +67,7 @@ export default function BookingWidget() {
       <div className="flex flex-col md:flex-row">
         {/* Left Side: Summary info */}
         <div className="bg-soft-sand/50 p-8 md:w-1/3 border-b md:border-b-0 md:border-r border-gray-200">
-          <h3 className="font-heading font-medium text-charcoal-warm mb-2">Imran Patel & Tejaswini</h3>
+          <h3 className="font-heading font-medium text-charcoal-warm mb-2">Imran Hussain & Tejaswini</h3>
           <h2 className="text-2xl font-semibold text-deep-teal font-heading mb-6">Free Clarity Call</h2>
           
           <div className="space-y-4 text-charcoal-warm">

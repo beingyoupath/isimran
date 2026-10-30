@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import React, { useState, useEffect } from "react";
 import { SEO } from "../components/SEO";
 import { GOOGLE_REVIEWS } from "../data/testimonials";
+import { saveInquiry } from "../lib/inquiries";
 
 export default function Contact() {
   const [showToast, setShowToast] = useState(false);
@@ -63,6 +64,17 @@ export default function Contact() {
     const heardAbout = (form.elements.namedItem('heard_about') as HTMLSelectElement).value;
     const messageText = (form.elements.namedItem('message') as HTMLTextAreaElement).value;
 
+    const email = contact.includes('@') ? contact : `${name.toLowerCase().replace(/[^a-z0-9]/g, '') || 'client'}@beingyoupath.client`;
+    const whatsapp = !contact.includes('@') ? contact : '';
+
+    // Asynchronously persist inquiry in Firestore
+    saveInquiry({
+      name,
+      email,
+      whatsapp,
+      question: `[Source: Contact Page | Heard via: ${heardAbout}] ${messageText}`
+    }).catch(err => console.error("Could not record inquiry in database:", err));
+
     const body = `Name: ${name}%0AContact: ${contact}%0AHeard About: ${heardAbout}%0AMessage: ${messageText}`;
     window.location.href = `mailto:beingyoupath@gmail.com?subject=New Clarity Request from ${name}&body=${body}`;
     
@@ -82,8 +94,26 @@ export default function Contact() {
     const heardAbout = (form.elements.namedItem('heard_about') as HTMLSelectElement).value;
     const messageText = (form.elements.namedItem('message') as HTMLTextAreaElement).value;
 
+    const email = contact.includes('@') ? contact : `${name.toLowerCase().replace(/[^a-z0-9]/g, '') || 'client'}@beingyoupath.client`;
+    const whatsapp = !contact.includes('@') ? contact : '';
+
+    // Asynchronously persist inquiry in Firestore
+    saveInquiry({
+      name,
+      email,
+      whatsapp,
+      question: `[Source: Contact Page via WhatsApp | Heard via: ${heardAbout}] ${messageText}`
+    }).catch(err => console.error("Could not record inquiry in database:", err));
+
     const body = `New Clarity Request:%0A%0AName: ${name}%0AContact: ${contact}%0AHeard About: ${heardAbout}%0AMessage: ${messageText}`;
-    window.open(`https://wa.me/917387779238?text=${body}`, '_blank');
+    const waUrl = `https://wa.me/917387779238?text=${body}`;
+    const link = document.createElement('a');
+    link.href = waUrl;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
     
     setShowToast(true);
     setTimeout(() => setShowToast(false), 3000);
@@ -92,12 +122,12 @@ export default function Contact() {
   return (
     <div className="bg-white">
       <SEO 
-        title="Contact Being You Path | Best Counselling Centre in India - Book Session"
-        description="Connect with Being You Path, the best counselling centre in India. Book a free clarity call, therapy session, or corporate consultation in Pune or online across India."
-        keywords="contact best counselling centre in india, book therapy session india, online counselling appointment, best psychologist pune contact, mental health clarity call india"
+        title="Contact & Book Consultation | Best Counselling Centre in Pune & India"
+        description="Book your in-person counselling session in Pune (near Koregaon Park / Deccan Gymkhana) or online therapy across India. Call +91 7387772573 or chat on WhatsApp."
+        keywords="contact best counselling centre in india, book therapy session pune, online counselling appointment india, best psychologist pune contact, mental health clarity call pune, counsellor koregaon park pune, counselling deccan pune, online therapy india"
       />
-      <h1 className="sr-only">Contact Being You Path - Best Counselling Centre in India | Book Therapy & Consultation</h1>
-      <p className="sr-only">Get in touch with Being You Path, widely recognized as the best counselling centre in India. Schedule your online therapy session, inquire about corporate workshops, or book a free mental health clarity call in Pune or across India today.</p>
+      <h1 className="sr-only">Contact Being You Path - Ranked #1 Counselling Centre in Pune & Top 5 in India | Book Therapy & Consultation</h1>
+      <p className="sr-only">Connect with Being You Path, recognized as the best counselling centre in Pune, Maharashtra and top 5 in India. Schedule your in-person therapy session in Pune or confidential online consultation across India today.</p>
       
       {/* Toast Notification */}
       <AnimatePresence>
@@ -233,8 +263,9 @@ export default function Contact() {
                 <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-6 shadow-sm icon-scale">
                   <MapPin className="w-8 h-8 text-terracotta" strokeWidth={1.5} />
                 </div>
-                <h3 className="text-[20px] font-semibold text-deep-teal mb-2 font-heading">In Person</h3>
-                <p className="text-charcoal-warm text-[15px] mb-2">Visit our office by appointment only.</p>
+                <h3 className="text-[20px] font-semibold text-deep-teal mb-2 font-heading">In Person (Pune Clinic)</h3>
+                <p className="text-charcoal-warm text-[15px] mb-1 font-medium">Deccan Gymkhana & Koregaon Park Access</p>
+                <p className="text-charcoal-warm/70 text-[13px] mb-2">Private sessions by appointment only.</p>
                 <div className="flex flex-col gap-2 mt-2">
                   <a 
                      href="https://share.google/bQZJdmxPTbKo8iwKM" 

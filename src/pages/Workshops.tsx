@@ -17,6 +17,7 @@ import {
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect } from "react";
 import { SEO } from "../components/SEO";
+import { saveInquiry } from "../lib/inquiries";
 
 export default function Workshops() {
   const heroSlides = [
@@ -30,13 +31,13 @@ export default function Workshops() {
       title: "Facilitated Learning Grounded in Psychology",
       subtitle: "We don't just talk. We help you experience.",
       desc: "Go beyond theory. Our sessions integrate actionable behavioral science with practical tools, equipping your team with skills to self-regulate, collaborate, and adapt to high-pressure environments.",
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2940&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1531497865144-0464ef8fb9a9?q=80&w=2000&auto=format&fit=crop"
     },
     {
       title: "Meaningful Connection & Engagement",
       subtitle: "Where honest conversation meets practical application.",
       desc: "Whether it's bridging the generational gap or building psychological safety, we create a structured environment where real change begins, driving sustained shifts long after the session ends.",
-      image: "https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?q=80&w=2940&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2000&auto=format&fit=crop"
     }
   ];
 
@@ -45,7 +46,7 @@ export default function Workshops() {
       title: "Stress & Burnout Prevention",
       desc: "Practical tools for regulation, recovery, and sustainable performance.",
       icon: <ShieldAlert className="w-8 h-8 text-terracotta mb-4" />,
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&auto=format&fit=crop"
     },
     {
       title: "Focus & Attention in a Distracted World",
@@ -69,19 +70,19 @@ export default function Workshops() {
       title: "Parenting in the Digital Age",
       desc: "For parent communities, schools, and family programmes.",
       icon: <HeartHandshake className="w-8 h-8 text-terracotta mb-4" />,
-      image: "https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=800&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1485546246426-74dc88dec4d9?q=80&w=800&auto=format&fit=crop"
     },
     {
       title: "Student Resilience & Exam Readiness",
       desc: "For schools and colleges (ages 15-22).",
       icon: <GraduationCap className="w-8 h-8 text-terracotta mb-4" />,
-      image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1513258496099-48168024aec0?q=80&w=800&auto=format&fit=crop"
     },
     {
       title: "Habit Science for Behaviour Change",
       desc: "Applied behavioural psychology for teams or individuals.",
       icon: <Sprout className="w-8 h-8 text-terracotta mb-4" />,
-      image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=800&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=800&auto=format&fit=crop"
     }
   ];
 
@@ -120,8 +121,23 @@ export default function Workshops() {
     const phone = (form.elements.namedItem('phone') as HTMLInputElement).value;
     const attendees = (form.elements.namedItem('attendees') as HTMLInputElement).value;
 
+    // Asynchronously record workshop registration into Firestore database
+    saveInquiry({
+      name,
+      email,
+      whatsapp: phone,
+      question: `Workshop Registration: "${selectedTheme?.title || 'Corporate/Community'}" | Attendees: ${attendees}`
+    }).catch(err => console.error("Could not record workshop registration in database:", err));
+
     const body = `Workshop Registration:%0A%0AWorkshop: ${selectedTheme?.title}%0AName: ${name}%0AEmail: ${email}%0APhone: ${phone}%0AAttendees: ${attendees}`;
-    window.open(`https://wa.me/917387779238?text=${body}`, '_blank');
+    const waUrl = `https://wa.me/917387779238?text=${body}`;
+    const link = document.createElement('a');
+    link.href = waUrl;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
     
     setIsSubmitted(true);
   };
@@ -146,12 +162,12 @@ export default function Workshops() {
   return (
     <div className="bg-soft-sand">
       <SEO 
-        title="Mental Health & Corporate Workshops | Best Counselling Centre in India"
-        description="Corporate mental health, student resilience, and leadership workshops from Being You Path, the best counselling centre in India. Customised training for companies and educational institutions across India."
-        keywords="corporate wellness workshops india, student resilience training, best counselling centre in india workshops, employee mental health programs india, workplace wellness seminars"
+        title="Corporate Wellness & Mental Health Workshops | Pune & India | Being You Path"
+        description="High-impact corporate mental health, employee burnout, and student resilience workshops in Pune, Maharashtra, and across India. Facilitated by licensed psychologists."
+        keywords="corporate wellness workshops pune, employee mental health workshops india, workplace stress management pune, corporate wellness india, student resilience training pune, best counselling centre in pune corporate"
       />
-      <h1 className="sr-only">Workshops at Being You Path - Best Counselling Centre in India | Corporate & Student Training</h1>
-      <p className="sr-only">Join expert psychological and mental health workshops conducted by Being You Path, the best counselling centre in India. Tailored for corporate teams, colleges, schools, and communities across India and Pune.</p>
+      <h1 className="sr-only">Corporate Mental Health & Wellness Workshops | Ranked #1 in Pune & Top 5 in India - Being You Path</h1>
+      <p className="sr-only">Join expert psychological workshops conducted by Being You Path, recognized as the best counselling centre in Pune, Maharashtra and top 5 across India. Customized for enterprises, IT companies, and educational institutions.</p>
       
       {/* Hero Slider */}
       <section className="w-full bg-soft-sand py-12 md:py-16 lg:py-20 flex justify-center">

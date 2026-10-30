@@ -1,12 +1,38 @@
-import { useState, useEffect } from "react";
-import { BrainCircuit, Coffee, Briefcase, HeartHandshake, Waves, ArrowRight, X, Twitter, Linkedin, Mail, Facebook, Instagram, ChevronLeft, ChevronRight, HelpCircle, Lightbulb, ShieldCheck } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
+import { 
+  BrainCircuit, 
+  Coffee, 
+  Briefcase, 
+  HeartHandshake, 
+  Waves, 
+  ArrowRight, 
+  X, 
+  Twitter, 
+  Linkedin, 
+  Mail, 
+  Facebook, 
+  ChevronLeft, 
+  ChevronRight, 
+  HelpCircle, 
+  Search, 
+  Sparkles,
+  BookOpen,
+  CheckCircle2,
+  Share2,
+  Clock,
+  Tag,
+  MessageSquare
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { SkeletonLoader } from "../components/SkeletonLoader";
 import { SEO } from "../components/SEO";
+import { BLOG_POSTS, BLOG_CATEGORIES, BlogPost } from "../data/blogs";
 
 export default function Resources() {
-  const [selectedArticle, setSelectedArticle] = useState<any>(null);
+  const [selectedArticle, setSelectedArticle] = useState<BlogPost | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [searchQuery, setSearchQuery] = useState("");
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -16,21 +42,21 @@ export default function Resources() {
   const heroSlides = [
     {
       title: "Practical Well-Being — Written for the Way People Actually Live",
-      subtitle: "No jargon. No generic advice. Just honest, research-informed writing to help you think clearer.",
-      desc: "Dive into actionable psychological insights to overcome overthinking, manage burnout, and navigate the realities of modern professional and personal life.",
+      subtitle: "No jargon. No generic advice. Evidence-informed psychological frameworks for everyday life.",
+      desc: "Explore actionable guides to overcome overthinking, conquer workplace burnout, heal relationship patterns, and regulate your nervous system in Pune and across India.",
       image: "https://images.unsplash.com/photo-1544928147-79a2dbc1f389?q=80&w=2787&auto=format&fit=crop"
     },
     {
-      title: "Insights That Spark Action",
-      subtitle: "Move from 'just getting by' to intentional living.",
-      desc: "Our resources distill complex behavioral science into simple, actionable tools you can use immediately to improve focus, emotional regulation, and relationships.",
+      title: "Insights That Spark Concrete Behavioral Action",
+      subtitle: "Move from 'just getting by' to intentional, grounded living.",
+      desc: "Our clinical team distills behavioral science, Cognitive Behavioral Therapy (CBT), and somatic regulation into simple, practical tools you can implement immediately.",
       image: "https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?q=80&w=2874&auto=format&fit=crop"
     },
     {
-      title: "Tools for the Thinking Mind",
-      subtitle: "Equip yourself with evidence-based strategies.",
-      desc: "From understanding cognitive fatigue to mastering habit design, explore mental frameworks that help you build resilience in a demanding world.",
-      image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2942&auto=format&fit=crop"
+      title: "Mental Hygiene & Tools for the High-Performing Mind",
+      subtitle: "Equip yourself with sustainable emotional resilience.",
+      desc: "From understanding executive burnout to establishing guilt-free boundaries with family, discover why preventative counselling is the highest-leverage investment.",
+      image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=2000&auto=format&fit=crop"
     }
   ];
 
@@ -48,311 +74,83 @@ export default function Resources() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2500); // Simulate data loading for a data-heavy component
+    }, 600);
     return () => clearTimeout(timer);
   }, []);
 
-  const blogCategories = [
-    {
-      id: "mind",
-      title: "Mind & Thinking",
-      icon: BrainCircuit,
-      desc: "Overthinking, focus, decision fatigue, and cognitive load.",
-      articles: [
-        { 
-          title: "Why You're Tired in Ways Sleep Can't Fix",
-          overview: "You're getting 8 hours of sleep, but you still wake up exhausted. Sound familiar? Many of us mistake cognitive or emotional fatigue for physical tiredness, leading to a frustrating cycle of 'resting' without actually recovering.",
-          body: "Physical rest isn't enough when your brain is overloaded. Cognitive fatigue happens when you have too many open loops—unanswered emails, pending decisions, or unresolved conflicts. To truly recharge, you need to identify the specific type of rest you're lacking.",
-          tips: [
-            "Audit Energy Drains: Write down every pending task or worry on paper to reduce cognitive load.",
-            "Schedule 'Sensory Rest': Take 10 minutes in a quiet room with no screens to let your nervous system baseline.",
-            "Differentiate Burnout: Notice whether you need physical sleep, or if you need absence of emotional demands."
-          ],
-          conclusion: "Understanding the difference between being sleepy and being depleted is the first step toward reclaiming your energy.",
-          link: "#" 
-        },
-        { 
-          title: "The 3 Types of Overthinking (And What to Do About Them)",
-          overview: "Are you trapped in analysis paralysis, or constantly worrying about the future? Overthinking isn't a single habit—it's a collection of three distinct cognitive patterns.",
-          body: "The three main types of overthinking are rumination (living in the past), worry (fearing the future), and over-analysis (paralysis by choice). You cannot solve an emotional block with pure logic, so trying to 'think' your way out of overthinking usually makes it worse.",
-          tips: [
-            "Identify Your Pattern: Recognize whether you're living in the past, the future, or trapped in 'analysis paralysis'.",
-            "Set a Dedicated 'Worry Time': Contain your anxieties to a specific 15-minute window during the day to prevent constant rumination.",
-            "Use Somatic Anchors: Use physical grounding techniques, like splashing cold water on your face, to interrupt circular thoughts."
-          ],
-          conclusion: "By identifying your specific type of overthinking, you can apply the right tool to break the cycle instead of just spinning your wheels.",
-          link: "#" 
-        },
-        { 
-          title: "Decision Fatigue: How to Protect Your Choices",
-          overview: "Have you noticed that you make worse choices at the end of the day? Decision fatigue is a real psychological phenomenon where your capacity to make good choices degrades with each decision.",
-          body: "Every choice you make, from what to wear to how to respond to an email, draws from the same finite pool of mental energy. When that pool runs dry, you default to the easiest option—which is usually procrastination, unhealthy habits, or poor emotional regulation.",
-          tips: [
-            "Automate the Trivial: Standardize daily choices like what to wear or eat so you don't waste energy on them.",
-            "Prioritize Morning Decisions: Make your most important, high-stakes decisions early in the morning when your mental energy is highest.",
-            "Embrace 'Good Enough': Stop trying to optimize every single outcome; sometimes a B+ decision made quickly is better than an A+ decision that takes hours."
-          ],
-          conclusion: "Protecting your decision-making energy isn't about making fewer choices—it's about making choices where they actually matter.",
-          link: "#" 
-        },
-      ]
-    },
-    {
-      id: "routines",
-      title: "Daily Routines & Habits",
-      icon: Coffee,
-      desc: "Morning routines, procrastination, environment design.",
-      articles: [
-        { 
-          title: "Forget Motivation: Why Environment Design Works Better",
-          overview: "Explore why relying on willpower is a losing battle and how redesigning your environment makes good habits inevitable and bad habits impossible.",
-          tips: [
-            "Remove friction for the habits you want to build (e.g., leaving a book on your pillow).",
-            "Add friction to habits you want to break (e.g., keeping your phone in another room).",
-            "Use visual cues in your workspace to remind yourself of priorities."
-          ],
-          link: "#" 
-        },
-        { 
-          title: "The 'Good Enough' Morning Routine",
-          overview: "A realistic approach to starting your day that doesn't involve waking up at 5 AM, taking an ice bath, or meditating for an hour.",
-          tips: [
-            "Focus on getting just 10 minutes of sunlight immediately after waking up.",
-            "Hydrate before consuming caffeine to support your nervous system.",
-            "Anchor your routine around one small, achievable win."
-          ],
-          link: "#" 
-        },
-        { 
-          title: "Why Willpower is a Finite Resource",
-          overview: "An evidence-based look at ego depletion and why relying solely on self-control throughout the day leads to collapse in the evening.",
-          tips: [
-            "Understand that self-regulation consumes physical energy.",
-            "Don't tackle multiple major habit changes at the same time.",
-            "Rely on commitment devices rather than in-the-moment discipline."
-          ],
-          link: "#" 
-        },
-      ]
-    },
-    {
-      id: "work",
-      title: "Work & Career",
-      icon: Briefcase,
-      desc: "Burnout, career confusion, psychological safety.",
-      articles: [
-        { 
-          title: "How to Tell the Difference Between Burnout and 'Just a Bad Week'",
-          overview: "Learn to distinguish between temporary situational stress and deeper emotional exhaustion, recognizing the subtle signs of true burnout.",
-          tips: [
-            "Look out for deep cynicism and a sense of detachment from your responsibilities.",
-            "Notice if extended rest (like a weekend or vacation) fails to restore your energy.",
-            "Evaluate if your workload mismatches your personal values."
-          ],
-          link: "#" 
-        },
-        { 
-          title: "Setting Boundaries When You're Ambitious",
-          overview: "A guide for high-achievers on how to protect their time and mental well-being without compromising their professional goals.",
-          tips: [
-            "Communicate your boundaries clearly, focusing on productivity rather than just 'needing a break'.",
-            "Identify your 'glass balls' (things you can't drop) and 'plastic balls' (things that can bounce).",
-            "Practice the art of the 'graceful no'."
-          ],
-          link: "#" 
-        },
-        { 
-          title: "The Signs of Low Psychological Safety in Your Team",
-          overview: "Understand what psychological safety actually looks like in a workplace and how to navigate an environment where it's lacking.",
-          tips: [
-            "Watch for environments where silence replaces debate or curiosity.",
-            "Notice if failures are punished rather than treated as learning opportunities.",
-            "Find micro-allies within the organization to start building a safe sub-culture."
-          ],
-          link: "#" 
-        },
-      ]
-    },
-    {
-      id: "relationships",
-      title: "Relationships & Parenting",
-      icon: HeartHandshake,
-      desc: "Communication, emotional coaching, screen time.",
-      articles: [
-        { 
-          title: "Emotional Coaching vs. Emotional Dismissing",
-          overview: "Delve into communication styles that validate emotions in children and partners, compared to well-meaning but dismissive patterns.",
-          tips: [
-            "Acknowledge the emotion before trying to solve the problem.",
-            "Avoid statements that begin with 'At least...' or 'You shouldn't feel...'.",
-            "Use active listening to make the other person feel truly seen."
-          ],
-          link: "#" 
-        },
-        { 
-          title: "How to Have an Argument Without Ruining the Weekend",
-          overview: "Practical strategies for navigating conflict with a partner in a way that is constructive, contained, and emotionally safe.",
-          tips: [
-            "Avoid using absolutes like 'You always' or 'You never'.",
-            "Take designated 'time-outs' when physiological arousal gets too high.",
-            "Focus on a single issue at a time rather than bringing up past grievances."
-          ],
-          link: "#" 
-        },
-        { 
-          title: "Managing Your Own Nervous System While Parenting",
-          overview: "Why your ability to emotionally regulate yourself is the most important parenting tool you have, and how to maintain it during stress.",
-          tips: [
-            "Recognize your own triggers and physical signs of mounting frustration.",
-            "Practice 'co-regulation'—your calm helps calm the child.",
-            "Give yourself permission to step away securely for a moment to breathe."
-          ],
-          link: "#" 
-        },
-      ]
-    },
-    {
-      id: "somatic",
-      title: "Sound, Breath & Body",
-      icon: Waves,
-      desc: "Pranayama, sleep hygiene, nervous system regulation.",
-      articles: [
-        { 
-          title: "The 4-Second Reset for Immediate Anxiety Relief",
-          overview: "A simple, discreet breathing technique based on autonomic research that you can use anywhere to signal safety to your nervous system.",
-          tips: [
-            "Focus on making the exhale longer than the inhale (e.g., inhale for 4, exhale for 6).",
-            "Breathe low into your diaphragm rather than shallowly into your chest.",
-            "Use this technique proactively before entering stressful situations."
-          ],
-          link: "#" 
-        },
-        { 
-          title: "Why Talk Therapy Sometimes Needs Somatic Tools",
-          overview: "Understanding why we can't always 'think' our way out of stress, and how involving the body is crucial for processing deep anxiety.",
-          tips: [
-            "Notice where in your body you physically feel stress or tension.",
-            "Incorporate gentle movement, like walking or stretching, when feeling stuck.",
-            "Explore somatic experiencing techniques to release stored survival energy."
-          ],
-          link: "#" 
-        },
-        { 
-          title: "A Practical Guide to Nervous System Down-Regulation",
-          overview: "Actionable ways to shift from a sympathetic 'fight or flight' state back into a parasympathetic 'rest and digest' state.",
-          tips: [
-            "Expose your face and eyes to cold water to trigger the mammalian dive reflex.",
-            "Engage in low-stimulation activities like reading or listening to calm music.",
-            "Use weighted blankets or deep pressure therapy to encourage relaxation."
-          ],
-          link: "#" 
-        },
-      ]
-    },
-    {
-      id: "myths-dilemmas",
-      title: "Mental Health Myths & Modern Dilemmas",
-      icon: HelpCircle,
-      desc: "Debunking therapy myths, dismantling toxic positivity, and resolving modern psychological dilemmas.",
-      articles: [
-        {
-          title: "Myth: 'Therapy is Only for When You Hit Rock Bottom' (The Prevention Dilemma)",
-          overview: "Why do we wait until our mental health is in crisis before seeking guidance? Discover why preventative psychological counselling is the highest-leverage investment for everyday peace.",
-          body: "One of the most damaging cultural misconceptions is that you must be experiencing an acute breakdown or clinical crisis to visit a psychologist. In reality, mental hygiene is identical to dental hygiene or physical training: proactive care prevents chronic decay. When you seek counselling early—when you first notice boundary friction, recurring deadline anxiety, or emotional fatigue—you rewire unhelpful cognitive habits in just a few sessions, rather than spending years unravelling entrenched defense mechanisms.",
-          tips: [
-            "Practice Emotional Ergonomics: Address daily stress and friction before it turns into chronic burnout.",
-            "Normalize Preventative Checkups: High performers and leaders seek coaches to sharpen clarity; your mind deserves the same standard.",
-            "Lower the Threshold for Care: You don't need a diagnosis or rock-bottom despair to deserve non-judgmental space and psychological tools."
-          ],
-          conclusion: "Seeking support is not an admission of failure; it is proactive mastery over your emotional well-being.",
-          link: "#"
-        },
-        {
-          title: "Myth: 'Overthinking is My Natural Personality—I Can't Change It'",
-          overview: "Trapped in mental loops and convinced that 'you were just born an overthinker'? Learn why overthinking is a learned protective loop, not your permanent DNA.",
-          body: "Many people treat rumination as an unchangeable identity trait. In cognitive psychology, overthinking is actually a conditioned safety response: when your brain senses uncertainty, it loops through scenarios under the false illusion that constant analysis equals control. Through Cognitive Behavioural Therapy (CBT) and somatic grounding, you can learn to step back into the 'observing self'. You are not your thoughts; you are the awareness witnessing them.",
-          tips: [
-            "Differentiate Rumination from Problem-Solving: If a thought cannot be converted into an action within 15 minutes, it is rumination, not planning.",
-            "Practice Cognitive Defusion: Shift from saying 'I am anxious' to 'I notice my mind is generating anxious thoughts right now'.",
-            "Anchor Physically: Pull blood flow back to your body with cold water, physical contact, or sensory orienting (5-4-3-2-1 technique)."
-          ],
-          conclusion: "Your mind is a brilliant tool, but you are the master using it. Rumination can be systematically interrupted and unlearned.",
-          link: "#"
-        },
-        {
-          title: "Myth: 'Toxic Positivity—Just Smile and Think Good Thoughts'",
-          overview: "Why forced positive affirmations and 'good vibes only' often intensify psychological distress, and how emotional acceptance creates genuine calm.",
-          body: "When culture tells us to 'always look on the bright side', it inadvertently breeds experiential avoidance—the dangerous suppression of valid human pain. Neuroimaging studies demonstrate that suppressing difficult emotions actually spikes amygdala activity and increases cortisol levels. True resilience is not the absence of distress; it is psychological flexibility—the courage to honor sadness, anger, or fear without letting them dictate your actions.",
-          tips: [
-            "Name the Unfiltered Emotion: Acknowledge what is true ('I feel overwhelmed and scared right now') without forcing a silver lining.",
-            "Use Grounded Neutrality: Replace exaggerated affirmations with realistic truth ('This is difficult right now, and I have the tools to navigate it step by step').",
-            "Allow the Somatic Wave to Pass: Neurochemical emotion spikes typically peak and subside in 90 seconds if not re-fuelled by mental storytelling."
-          ],
-          conclusion: "True mental peace is not pretending everything is sunshine; it is developing the internal stability to welcome the weather as it comes.",
-          link: "#"
-        },
-        {
-          title: "Myth: 'Seeking Counselling Makes You Dependent or Weak'",
-          overview: "Deconstructing the fear of losing autonomy: why evidence-based therapy exists to build self-sovereignty and make the client completely self-reliant.",
-          body: "A frequent dilemma keeping people away from therapy is the fear of becoming reliant on a counsellor. However, ethical and evidence-based psychotherapy is designed with the explicit goal of client autonomy. A skilled counsellor acts like a driving instructor: they sit alongside you, offering mirrors and road maps, until your own nervous system and cognitive skills can handle any weather or terrain independently.",
-          tips: [
-            "Redefine Strength: Recognizing when an old mental model no longer serves your present life is the highest form of self-awareness.",
-            "Demand Concrete Skill Transfer: Expect every counselling session to equip you with actionable daily rituals and somatic anchors.",
-            "Measure Growth by Self-Trust: The true marker of successful counselling is not how much you rely on your therapist, but how deeply you trust yourself."
-          ],
-          conclusion: "Counselling doesn't take away your strength; it returns the keys to your own mind.",
-          link: "#"
-        },
-        {
-          title: "Myth: 'Mental Well-Being Lives Only in the Mind, Not the Body'",
-          overview: "The mind-body split dilemma: why attempting to solve chronic anxiety purely through intellectual debate fails without nervous system regulation.",
-          body: "Because of historical mind-body dualism, many individuals attempt to 'argue' themselves out of anxiety with logic. But over 80% of vagus nerve signals travel from the body up to the brain. When your body is tense, your heart rate elevated, and your breathing shallow, your amygdala assumes you are in mortal danger and turns off rational thought. Somatic therapy and physiological down-regulation create the bodily baseline of safety that allows the rational mind to flourish.",
-          tips: [
-            "Bottom-Up Before Top-Down: Calm your nervous system with prolonged exhales before attempting complex decision-making.",
-            "Scan for Physical Armor: Notice where your shoulders, jaw, or stomach are holding tension right now and consciously drop them 10%.",
-            "Incorporate Somatic Anchors: Movement, walks in nature, and rhythmic breathing are cognitive medicine, not optional hobbies."
-          ],
-          conclusion: "Your body is not just a vehicle carrying your brain around; it is the physiological foundation of your mental peace.",
-          link: "#"
-        }
-      ]
-    }
-  ];
+  // Filtered articles based on search query and selected category
+  const filteredArticles = useMemo(() => {
+    return BLOG_POSTS.filter((post) => {
+      const matchesCategory = selectedCategory === "all" || post.category === selectedCategory;
+      if (!matchesCategory) return false;
 
-  const allArticles = blogCategories.flatMap(category => category.articles);
-  const selectedArticleIndex = selectedArticle ? allArticles.findIndex(a => a.title === selectedArticle.title) : -1;
+      if (!searchQuery.trim()) return true;
+
+      const q = searchQuery.toLowerCase().trim();
+      const inTitle = post.title.toLowerCase().includes(q);
+      const inQuery = post.searchQuery.toLowerCase().includes(q);
+      const inOverview = post.overview.toLowerCase().includes(q);
+      const inBody = post.body.toLowerCase().includes(q);
+      const inKeywords = post.keywords.some((k) => k.toLowerCase().includes(q));
+
+      return inTitle || inQuery || inOverview || inBody || inKeywords;
+    });
+  }, [selectedCategory, searchQuery]);
+
+  // Article navigation in modal
+  const selectedArticleIndex = selectedArticle 
+    ? filteredArticles.findIndex(a => a.id === selectedArticle.id) 
+    : -1;
 
   const handlePrevArticle = () => {
     if (selectedArticleIndex > 0) {
-      setSelectedArticle(allArticles[selectedArticleIndex - 1]);
+      setSelectedArticle(filteredArticles[selectedArticleIndex - 1]);
     } else {
-      setSelectedArticle(allArticles[allArticles.length - 1]);
+      setSelectedArticle(filteredArticles[filteredArticles.length - 1]);
     }
   };
 
   const handleNextArticle = () => {
-    if (selectedArticleIndex !== -1 && selectedArticleIndex < allArticles.length - 1) {
-      setSelectedArticle(allArticles[selectedArticleIndex + 1]);
+    if (selectedArticleIndex !== -1 && selectedArticleIndex < filteredArticles.length - 1) {
+      setSelectedArticle(filteredArticles[selectedArticleIndex + 1]);
     } else {
-      setSelectedArticle(allArticles[0]);
+      setSelectedArticle(filteredArticles[0]);
     }
   };
 
+  // Category Icon helper
+  const getCategoryIcon = (category: string) => {
+    switch (category) {
+      case "mind": return BrainCircuit;
+      case "work": return Briefcase;
+      case "routines": return Coffee;
+      case "relationships": return HeartHandshake;
+      case "somatic": return Waves;
+      case "myths": return HelpCircle;
+      default: return Sparkles;
+    }
+  };
+
+  // Featured article (first featured or first article)
+  const featuredArticle = useMemo(() => {
+    return BLOG_POSTS.find(p => p.featured) || BLOG_POSTS[0];
+  }, []);
+
   return (
-    <div className="bg-white">
+    <div className="bg-white min-h-screen">
       <SEO 
-        title="Mental Health Articles & Resources | Best Counselling Centre in India"
-        description="Practical well-being articles, psychology guides, and mental health tools from Being You Path, the best counselling centre in India. Expert tips for mindfulness and emotional resilience."
-        keywords="best counselling centre in india resources, mental health blog india, psychology articles online, therapy resources india, anxiety relief tips, self-care guide"
+        title="Mental Health Articles, Myth Busters & CBT Guides | #1 in Pune & India | Being You Path"
+        description="Evidence-based mental health articles, therapy myth busters, and CBT advice from Being You Path, ranked #1 in Pune and top 5 in India. Explore practical tools for overthinking, burnout, relationships, and somatic grounding."
+        keywords="mental health blog pune, best counselling centre in pune articles, psychology articles india, anxiety relief tips pune, self esteem therapy advice, cbt techniques india, burnout counselling pune, psychologist koregaon park pune"
       />
-      <h1 className="sr-only">Mental Health Blog & Resources - Being You Path Best Counselling Centre in India</h1>
-      <p className="sr-only">Read expert psychological insights, mental health guides, and wellness tips from the professionals at Being You Path, the best counselling centre in India. Explore articles on stress relief, cognitive behavioral practices, mindfulness, and authentic living.</p>
+      <h1 className="sr-only">Mental Health Blog, Guides & Myth Busters - Ranked #1 in Pune & Top 5 in India | Being You Path</h1>
+      <p className="sr-only">Read expert psychological insights, mental health guides, and wellness tips from the professionals at Being You Path, recognized as the best counselling centre in Pune, Maharashtra and top 5 across India. Explore articles on stress relief, cognitive behavioral practices, mindfulness, and authentic living.</p>
       
       {/* Hero Slider */}
-      <section className="w-full bg-soft-sand py-12 md:py-16 lg:py-20 flex justify-center border-b border-gray-200">
+      <section className="w-full bg-[#FAF8F5] py-10 md:py-14 lg:py-16 flex justify-center border-b border-gray-200/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div 
-            className="relative rounded-[32px] overflow-hidden shadow-2xl flex flex-col bg-white"
+            className="relative rounded-[32px] overflow-hidden shadow-xl flex flex-col bg-white border border-gray-100"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
@@ -362,69 +160,92 @@ export default function Resources() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="flex flex-col lg:flex-row w-full min-h-[600px] lg:min-h-[550px]"
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className="flex flex-col lg:flex-row w-full min-h-[480px] lg:min-h-[500px]"
               >
                 {/* Image Element */}
-                <div className="w-full lg:w-5/12 h-[35vh] md:h-[45vh] lg:h-auto relative shrink-0">
+                <div className="w-full lg:w-5/12 h-[30vh] md:h-[40vh] lg:h-auto relative shrink-0">
                   <img 
                     src={heroSlides[currentSlide].image} 
                     alt={heroSlides[currentSlide].title}
                     className="absolute inset-0 w-full h-full object-cover"
                     referrerPolicy="no-referrer"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent lg:hidden" />
                 </div>
                 
                 {/* Text Content Area */}
-                <div className="w-full lg:w-7/12 p-8 md:p-12 lg:p-16 pb-20 md:pb-24 lg:pb-16 flex flex-col items-center lg:items-start text-center lg:text-left justify-center relative z-20">
-                  <div className="w-full max-w-2xl mx-auto lg:mx-0">
-                    <h1 className="text-3xl md:text-[40px] lg:text-[48px] leading-tight font-bold text-deep-teal mb-6 font-heading tracking-tight">
+                <div className="w-full lg:w-7/12 p-8 md:p-12 lg:p-14 flex flex-col items-start justify-center relative z-20">
+                  <div className="w-full max-w-2xl">
+                    <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-terracotta/10 text-terracotta mb-4">
+                      <Sparkles className="w-3.5 h-3.5" />
+                      Evidence-Based Psychological Insights
+                    </span>
+                    <h2 className="text-2xl md:text-3xl lg:text-4xl leading-tight font-bold text-deep-teal mb-4 font-heading tracking-tight">
                       {heroSlides[currentSlide].title}
-                    </h1>
-                    
-                    <h2 className="text-xl md:text-[24px] md:leading-[32px] text-terracotta mb-6 font-semibold font-heading">
-                      {heroSlides[currentSlide].subtitle}
                     </h2>
+                    
+                    <p className="text-base md:text-lg text-terracotta mb-4 font-semibold">
+                      {heroSlides[currentSlide].subtitle}
+                    </p>
 
-                    <p className="text-lg text-charcoal-warm mb-10 leading-relaxed">
+                    <p className="text-charcoal-warm mb-8 leading-relaxed text-[15px] md:text-[16px]">
                       {heroSlides[currentSlide].desc}
                     </p>
-                    
+
+                    <div className="flex flex-wrap items-center gap-4">
+                      <a 
+                        href="#all-articles"
+                        className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-deep-teal text-white hover:bg-terracotta transition-all text-sm font-semibold uppercase tracking-wider shadow-sm hover:shadow"
+                      >
+                        <BookOpen className="w-4 h-4" />
+                        Explore All 24 Guides
+                      </a>
+                      <a 
+                        href="https://wa.me/917387779238?text=Hi%20Being%20You%20Path%2C%20I%20would%20like%20to%20learn%20more%20about%20your%20counselling%20and%20wellness%20sessions."
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-gray-300 text-deep-teal hover:border-terracotta hover:text-terracotta transition-all text-sm font-semibold uppercase tracking-wider"
+                      >
+                        <MessageSquare className="w-4 h-4 text-[#25D366]" />
+                        Speak with a Psychologist
+                      </a>
+                    </div>
                   </div>
                 </div>
               </motion.div>
             </AnimatePresence>
 
-            {/* Controls */}
-            <div className="absolute top-1/2 -translate-y-1/2 left-4 md:left-6 z-30">
+            {/* Slider Controls */}
+            <div className="absolute top-1/2 -translate-y-1/2 left-4 z-30">
               <button
                 onClick={prevSlide}
-                className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/80 hover:bg-white shadow-md text-deep-teal hover:text-terracotta backdrop-blur-md flex items-center justify-center transition-all border border-gray-100"
+                className="w-10 h-10 rounded-full bg-white/80 hover:bg-white shadow-md text-deep-teal hover:text-terracotta backdrop-blur-md flex items-center justify-center transition-all border border-gray-200"
                 aria-label="Previous slide"
               >
-                <ChevronLeft className="w-6 h-6" />
+                <ChevronLeft className="w-5 h-5" />
               </button>
             </div>
-            <div className="absolute top-1/2 -translate-y-1/2 right-4 md:right-6 z-30">
+            <div className="absolute top-1/2 -translate-y-1/2 right-4 z-30">
               <button
                 onClick={nextSlide}
-                className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/80 hover:bg-white shadow-md text-deep-teal hover:text-terracotta backdrop-blur-md flex items-center justify-center transition-all border border-gray-100"
+                className="w-10 h-10 rounded-full bg-white/80 hover:bg-white shadow-md text-deep-teal hover:text-terracotta backdrop-blur-md flex items-center justify-center transition-all border border-gray-200"
                 aria-label="Next slide"
               >
-                <ChevronRight className="w-6 h-6" />
+                <ChevronRight className="w-5 h-5" />
               </button>
             </div>
 
             {/* Indicators */}
-            <div className="absolute bottom-6 md:bottom-8 lg:bottom-12 right-0 left-0 lg:left-auto lg:right-[29%] z-30 flex justify-center gap-3">
+            <div className="absolute bottom-4 right-8 z-30 flex gap-2">
               {heroSlides.map((_, idx) => (
                 <button
                   key={idx}
                   onClick={() => setCurrentSlide(idx)}
-                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                  className={`h-2 rounded-full transition-all duration-300 ${
                     currentSlide === idx 
-                      ? "bg-terracotta w-8" 
-                      : "bg-gray-300 hover:bg-terracotta/60"
+                      ? "bg-terracotta w-7" 
+                      : "bg-gray-300 hover:bg-terracotta/60 w-2"
                   }`}
                   aria-label={`Go to slide ${idx + 1}`}
                 />
@@ -434,145 +255,352 @@ export default function Resources() {
         </div>
       </section>
 
-      {/* Blog Categories Grid */}
-      <section className="py-12 md:py-16 lg:py-20">
+      {/* Featured Editorial Spotlight Banner */}
+      <section className="py-8 bg-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-           {isLoading ? (
-             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <SkeletonLoader />
-                <SkeletonLoader className="hidden md:flex" />
-                <SkeletonLoader className="hidden lg:flex" />
-             </div>
-           ) : (
-             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {blogCategories.map((category, index) => (
-                   <motion.div 
-                     key={category.id}
-                     initial={{ opacity: 0, y: 20 }}
-                     whileInView={{ opacity: 1, y: 0 }}
-                     viewport={{ once: true }}
-                     transition={{ duration: 0.5, delay: index * 0.1 }}
-                     className="bg-white rounded-[24px] p-8 border border-gray-200 shadow-sm hover:shadow-md transition-shadow flex flex-col hover-lift h-full"
-                   >
-                     <div className="flex items-center mb-6">
-                       <div className="w-12 h-12 bg-soft-sand rounded-xl flex items-center justify-center mr-4">
-                         <category.icon className="w-6 h-6 text-terracotta" strokeWidth={1.5} />
-                       </div>
-                       <h2 className="text-[20px] font-semibold text-deep-teal font-heading">{category.title}</h2>
-                     </div>
-                     <p className="text-charcoal-warm text-[15px] mb-6 pb-6 border-b border-gray-100 flex-grow">
-                       {category.desc}
-                     </p>
-                     <ul className="space-y-4">
-                       {category.articles.map((article, i) => (
-                         <li key={i} className="flex flex-col items-start w-full">
-                           <span className="font-medium text-deep-teal leading-snug mb-1.5">{article.title}</span>
-                           {article.overview && (
-                             <p className="text-sm text-charcoal-warm line-clamp-2 mb-2 opacity-90 leading-relaxed">
-                               {article.overview}
-                             </p>
-                           )}
-                           <button 
-                             onClick={() => setSelectedArticle(article)} 
-                             className="group flex items-center text-left text-terracotta hover:text-amber-glow transition-colors font-medium text-[13px] uppercase tracking-wide"
-                           >
-                             Read More
-                             <ArrowRight className="w-3.5 h-3.5 ml-1.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                           </button>
-                         </li>
-                       ))}
-                     </ul>
-                   </motion.div>
-                ))}
-                
-                {/* Coming Soon Card */}
-                <div className="bg-soft-sand rounded-[24px] p-8 border border-gray-200 shadow-sm flex flex-col items-center justify-center text-center min-h-[300px] h-full">
-                   <h2 className="text-[20px] font-semibold text-deep-teal mb-3 font-heading">More Topics Coming Soon</h2>
-                   <p className="text-charcoal-warm mb-6 text-[15px]">We publish new, practical insights regularly.</p>
-                   <a href="#newsletter" className="text-terracotta font-medium hover:text-amber-glow transition-colors uppercase text-sm tracking-wide">
-                      Join the newsletter &rarr;
-                   </a>
+          <div className="bg-gradient-to-r from-[#FAF6F0] via-[#F4ECE1] to-[#FAF6F0] rounded-[24px] p-6 sm:p-8 md:p-10 border border-[#E8DACB] shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="space-y-3 max-w-3xl">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="px-3 py-1 bg-terracotta text-white text-xs font-bold uppercase tracking-wider rounded-full">
+                  Featured Editorial Spotlight
+                </span>
+                <span className="px-3 py-1 bg-white/80 border border-[#DAC4B0] text-deep-teal text-xs font-medium rounded-full flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5 text-terracotta" />
+                  {featuredArticle.readTime}
+                </span>
+                <span className="px-3 py-1 bg-white/80 border border-[#DAC4B0] text-deep-teal text-xs font-medium rounded-full">
+                  {featuredArticle.categoryLabel}
+                </span>
+              </div>
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-deep-teal font-heading leading-snug">
+                {featuredArticle.title}
+              </h3>
+              <p className="text-charcoal-warm text-sm sm:text-base leading-relaxed">
+                {featuredArticle.overview}
+              </p>
+              <div className="pt-1 flex items-center gap-2 text-xs text-charcoal-warm/80">
+                <span className="font-semibold text-deep-teal">Common user query:</span>
+                <span className="italic">"{featuredArticle.searchQuery}"</span>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setSelectedArticle(featuredArticle)}
+              className="shrink-0 px-8 py-4 bg-terracotta hover:bg-deep-teal text-white font-semibold rounded-full text-sm uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center gap-2"
+            >
+              Read Full Guide
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Main Filter, Search & Articles Section */}
+      <section id="all-articles" className="py-12 md:py-16 lg:py-20 bg-[#FAF9F6]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          {/* Section Header */}
+          <div className="text-center max-w-3xl mx-auto mb-10">
+            <span className="text-terracotta font-semibold text-sm uppercase tracking-widest block mb-2">
+              Mental Health & Well-Being Knowledge Base
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-deep-teal font-heading mb-4">
+              Search & Explore Evidence-Based Articles
+            </h2>
+            <p className="text-charcoal-warm text-base md:text-lg">
+              Practical psychological guidance, Cognitive Behavioral Therapy (CBT) frameworks, somatic protocols, and answers to common mental dilemmas.
+            </p>
+          </div>
+
+          {/* Search Bar & Stats */}
+          <div className="max-w-2xl mx-auto mb-8">
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search by keyword, question, or dilemma (e.g. overthinking, burnout, boundaries, sleep, CBT)..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-12 pr-12 py-4 bg-white border border-gray-200 rounded-full text-deep-teal placeholder-gray-400 text-sm sm:text-base focus:outline-none focus:border-terracotta focus:ring-2 focus:ring-terracotta/20 shadow-sm transition-all"
+              />
+              {searchQuery && (
+                <button 
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-charcoal-warm p-1"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Category Filter Pills */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
+            <button
+              onClick={() => setSelectedCategory("all")}
+              className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all ${
+                selectedCategory === "all"
+                  ? "bg-deep-teal text-white shadow-sm"
+                  : "bg-white text-charcoal-warm hover:bg-gray-100 border border-gray-200"
+              }`}
+            >
+              All Topics ({BLOG_POSTS.length})
+            </button>
+            {BLOG_CATEGORIES.map((cat) => {
+              const Icon = getCategoryIcon(cat.id);
+              const isSelected = selectedCategory === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setSelectedCategory(cat.id)}
+                  className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all ${
+                    isSelected
+                      ? "bg-deep-teal text-white shadow-sm"
+                      : "bg-white text-charcoal-warm hover:bg-gray-100 border border-gray-200"
+                  }`}
+                >
+                  <Icon className={`w-3.5 h-3.5 ${isSelected ? "text-amber-glow" : "text-terracotta"}`} />
+                  {cat.title.split(",")[0]} ({cat.articleCount})
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Results Summary Counter */}
+          <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
+            <span className="text-xs sm:text-sm text-charcoal-warm font-medium">
+              Showing <strong className="text-deep-teal">{filteredArticles.length}</strong> {filteredArticles.length === 1 ? "article" : "articles"}
+              {searchQuery && (
+                <span> for <strong className="text-terracotta">"{searchQuery}"</strong></span>
+              )}
+            </span>
+            {searchQuery && (
+              <button 
+                onClick={() => setSearchQuery("")}
+                className="text-xs font-semibold text-terracotta hover:underline"
+              >
+                Clear Search
+              </button>
+            )}
+          </div>
+
+          {/* Balanced Article Cards Grid - Eliminating All Blank Spaces */}
+          {isLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[...Array(6)].map((_, i) => (
+                <div key={i}>
+                  <SkeletonLoader />
                 </div>
-             </div>
-           )}
+              ))}
+            </div>
+          ) : filteredArticles.length === 0 ? (
+            <div className="bg-white rounded-[24px] p-12 text-center border border-gray-200 max-w-xl mx-auto shadow-sm">
+              <BrainCircuit className="w-12 h-12 text-terracotta mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-deep-teal font-heading mb-2">No matching guides found</h3>
+              <p className="text-charcoal-warm text-sm mb-6">
+                We couldn't find an article matching "{searchQuery}". Try searching for terms like "anxiety", "burnout", "boundaries", "sleep", or "overthinking".
+              </p>
+              <button
+                onClick={() => {
+                  setSearchQuery("");
+                  setSelectedCategory("all");
+                }}
+                className="px-6 py-2.5 bg-terracotta text-white font-semibold text-xs uppercase tracking-wider rounded-full hover:bg-deep-teal transition-all"
+              >
+                Reset Search Filters
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredArticles.map((article, index) => {
+                const Icon = getCategoryIcon(article.category);
+                return (
+                  <motion.article
+                    key={article.id}
+                    initial={{ opacity: 0, y: 15 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: (index % 6) * 0.05 }}
+                    className="bg-white rounded-[24px] p-6 sm:p-7 border border-gray-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between h-full group hover:border-terracotta/40"
+                  >
+                    {/* Card Top: Badges & Read Time */}
+                    <div>
+                      <div className="flex items-center justify-between gap-2 mb-4">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-soft-sand rounded-full text-xs font-semibold text-deep-teal">
+                          <Icon className="w-3.5 h-3.5 text-terracotta" />
+                          {article.categoryLabel}
+                        </span>
+                        <div className="flex items-center gap-1.5 text-xs text-charcoal-warm/75">
+                          <Clock className="w-3.5 h-3.5 text-terracotta" />
+                          {article.readTime}
+                        </div>
+                      </div>
+
+                      {/* Card Title */}
+                      <h3 className="text-lg sm:text-[19px] font-bold text-deep-teal font-heading leading-snug mb-3 group-hover:text-terracotta transition-colors">
+                        {article.title}
+                      </h3>
+
+                      {/* User Query Solved Box */}
+                      <div className="bg-[#F8F6F0] rounded-xl p-3 border border-[#EAE3D2] mb-3.5">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-terracotta block mb-0.5">
+                          Answers User Query
+                        </span>
+                        <p className="text-xs text-deep-teal font-medium italic line-clamp-1">
+                          "{article.searchQuery}"
+                        </p>
+                      </div>
+
+                      {/* Overview Excerpt */}
+                      <p className="text-sm text-charcoal-warm leading-relaxed line-clamp-3 mb-4">
+                        {article.overview}
+                      </p>
+
+                      {/* Key Keyword Tags */}
+                      <div className="flex flex-wrap gap-1.5 mb-6">
+                        {article.keywords.slice(0, 3).map((keyword, kidx) => (
+                          <span 
+                            key={kidx}
+                            className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-gray-50 border border-gray-200 text-[11px] text-charcoal-warm/80 font-medium"
+                          >
+                            <Tag className="w-2.5 h-2.5 text-terracotta/70" />
+                            {keyword}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Card Bottom: Action Button */}
+                    <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
+                      <button
+                        onClick={() => setSelectedArticle(article)}
+                        className="inline-flex items-center gap-1.5 text-xs uppercase font-bold tracking-wider text-terracotta hover:text-deep-teal transition-colors group-hover:translate-x-0.5"
+                      >
+                        Read Full Guide & Tools
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                      {article.badge && (
+                        <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 bg-amber-glow/20 text-[#8C4A15] rounded">
+                          {article.badge}
+                        </span>
+                      )}
+                    </div>
+                  </motion.article>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Direct Consultation Callout Footer */}
+          <div className="mt-14 bg-deep-teal text-white rounded-[28px] p-8 md:p-12 shadow-lg flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="max-w-2xl">
+              <span className="text-xs uppercase font-bold tracking-widest text-amber-glow block mb-2">
+                Need Personalized Support?
+              </span>
+              <h3 className="text-2xl sm:text-3xl font-bold font-heading mb-3">
+                Connect with Imran Hussain & Tejaswini at Being You Path
+              </h3>
+              <p className="text-white/80 text-sm sm:text-base leading-relaxed">
+                Reading articles provides helpful cognitive clarity, but uncovering the subconscious root triggers is the other half of your journey. Available in Koregaon Park, Pune and online across India.
+              </p>
+            </div>
+            <div className="shrink-0 flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+              <a
+                href="https://wa.me/917387779238?text=Hi%20Being%20You%20Path%2C%20I%20read%20your%20articles%20and%20would%20like%20to%20consult%20with%20a%20psychologist."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-3.5 bg-[#25D366] hover:bg-[#128C7E] text-white font-semibold rounded-full text-xs sm:text-sm uppercase tracking-wider text-center transition-all shadow-md flex items-center justify-center gap-2"
+              >
+                <MessageSquare className="w-4 h-4" />
+                Chat on WhatsApp
+              </a>
+              <Link
+                to="/contact"
+                className="px-6 py-3.5 bg-terracotta hover:bg-amber-glow text-white font-semibold rounded-full text-xs sm:text-sm uppercase tracking-wider text-center transition-all shadow-md"
+              >
+                Book 1-on-1 Session
+              </Link>
+            </div>
+          </div>
+
         </div>
       </section>
 
       {/* Newsletter Signup Area */}
-      <section id="newsletter" className="py-12 md:py-16 lg:py-20 bg-soft-sand border-t border-gray-200">
-         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div 
-               whileHover={{ scale: 1.01 }}
-               className="bg-amber-glow/15 border border-amber-glow/30 rounded-[32px] p-10 sm:p-16 text-center shadow-sm"
-             >
-               <h2 className="text-[36px] font-semibold text-deep-teal mb-4 font-heading">
-                 Get One Useful Thing Per Week
-               </h2>
-               <p className="text-lg text-charcoal-warm mb-10 max-w-2xl mx-auto">
-                 One short, evidence-informed piece of well-being. No filler. No sales. Unsubscribe anytime.
-               </p>
-               
-               {isSubscribed ? (
-                 <motion.div 
-                   initial={{ opacity: 0, y: 10 }}
-                   animate={{ opacity: 1, y: 0 }}
-                   className="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-terracotta/20"
-                 >
-                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                     <BrainCircuit className="w-8 h-8 text-green-600" />
-                   </div>
-                   <h3 className="text-2xl font-bold text-deep-teal mb-2 font-heading">You're on the list!</h3>
-                   <p className="text-charcoal-warm mb-6">
-                     We'll start sending you useful insights to <strong className="text-deep-teal">{email}</strong>. 
-                     If you'd like to dive deeper and connect with our community right now, join our WhatsApp channel!
-                   </p>
-                   <a 
-                     href="https://whatsapp.com/channel/0029VbCcrrzHAdNY1M7MEF31" 
-                     target="_blank" 
-                     rel="noopener noreferrer"
-                     className="inline-flex items-center justify-center px-8 py-3.5 text-sm font-medium rounded-full text-white bg-[#25D366] hover:bg-[#128C7E] transition-all uppercase tracking-wide w-full sm:w-auto shadow-md hover:shadow-lg gap-2"
-                   >
-                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                       <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
-                     </svg>
-                     Join WhatsApp Channel
-                   </a>
-                 </motion.div>
-               ) : (
-                 <form 
-                   className="max-w-xl mx-auto flex flex-col sm:flex-row gap-3" 
-                   onSubmit={(e) => {
-                     e.preventDefault();
-                     setIsSubscribed(true);
-                   }}
-                 >
-                    <input 
-                      type="email" 
-                      placeholder="Your email address" 
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      className="flex-grow px-6 py-4 rounded-[50px] border border-amber-glow/50 focus:border-terracotta focus:ring focus:ring-terracotta/20 bg-white text-deep-teal outline-none transition-all text-[15px]"
-                    />
-                    <button 
-                      type="submit"
-                      className="px-8 py-4 bg-terracotta text-white font-medium rounded-[50px] hover:bg-amber-glow transition-colors whitespace-nowrap shadow-sm uppercase tracking-wide text-sm"
-                    >
-                      Subscribe — It's Free &rarr;
-                    </button>
-                 </form>
-               )}
-               {!isSubscribed && (
-                 <p className="text-[13px] text-charcoal-warm/70 mt-6">We respect your inbox. You can unsubscribe at any time.</p>
-               )}
-            </motion.div>
-         </div>
+      <section id="newsletter" className="py-12 md:py-16 bg-[#F4EFE6] border-t border-gray-200">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div 
+            whileHover={{ scale: 1.005 }}
+            className="bg-white/80 border border-amber-glow/30 rounded-[32px] p-8 sm:p-12 text-center shadow-sm backdrop-blur-sm"
+          >
+            <span className="text-terracotta font-semibold text-xs uppercase tracking-widest block mb-2">
+              Weekly Psychology Digest
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-deep-teal mb-4 font-heading">
+              Get One Practical Well-Being Framework Per Week
+            </h2>
+            <p className="text-base text-charcoal-warm mb-8 max-w-2xl mx-auto leading-relaxed">
+              One short, research-informed piece on overcoming mental barriers, managing emotions, and living intentionally. No spam. Unsubscribe anytime.
+            </p>
+            
+            {isSubscribed ? (
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="max-w-lg mx-auto bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-green-200 text-center"
+              >
+                <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <CheckCircle2 className="w-7 h-7 text-green-600" />
+                </div>
+                <h3 className="text-xl font-bold text-deep-teal mb-2 font-heading">You're Subscribed!</h3>
+                <p className="text-charcoal-warm text-sm mb-6">
+                  We'll send practical psychological tools directly to <strong className="text-deep-teal">{email}</strong>. 
+                  You can also join our direct WhatsApp Community for daily reflections.
+                </p>
+                <a 
+                  href="https://whatsapp.com/channel/0029VbCcrrzHAdNY1M7MEF31" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center px-6 py-3 text-xs font-semibold rounded-full text-white bg-[#25D366] hover:bg-[#128C7E] transition-all uppercase tracking-wider w-full sm:w-auto shadow gap-2"
+                >
+                  Join Official WhatsApp Channel
+                </a>
+              </motion.div>
+            ) : (
+              <form 
+                className="max-w-xl mx-auto flex flex-col sm:flex-row gap-3" 
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (email) setIsSubscribed(true);
+                }}
+              >
+                <input 
+                  type="email" 
+                  placeholder="Enter your email address" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="flex-grow px-6 py-3.5 rounded-full border border-gray-300 focus:border-terracotta focus:ring-2 focus:ring-terracotta/20 bg-white text-deep-teal outline-none transition-all text-sm"
+                />
+                <button 
+                  type="submit"
+                  className="px-8 py-3.5 bg-terracotta text-white font-semibold rounded-full hover:bg-deep-teal transition-all whitespace-nowrap shadow uppercase tracking-wider text-xs"
+                >
+                  Subscribe Free &rarr;
+                </button>
+              </form>
+            )}
+            {!isSubscribed && (
+              <p className="text-xs text-charcoal-warm/70 mt-4">We respect your privacy. 100% spam-free guarantee.</p>
+            )}
+          </motion.div>
+        </div>
       </section>
 
-      {/* Article Modal */}
+      {/* Comprehensive Article Reader Modal */}
       <AnimatePresence>
         {selectedArticle && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 pb-20">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 pb-16">
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -585,98 +613,146 @@ export default function Resources() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto bg-white rounded-[24px] shadow-2xl z-10 flex flex-col"
+              className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white rounded-[24px] shadow-2xl z-10 flex flex-col border border-gray-100"
             >
-              <div className="sticky top-0 bg-white/90 backdrop-blur-md p-6 border-b border-gray-100 flex justify-between items-center z-20 rounded-t-[24px]">
-                <h3 className="text-xl sm:text-2xl font-bold font-heading text-deep-teal pr-8 leading-tight">
-                  {selectedArticle.title}
-                </h3>
+              {/* Modal Sticky Header */}
+              <div className="sticky top-0 bg-white/95 backdrop-blur-md px-6 py-4 border-b border-gray-100 flex justify-between items-center z-20 rounded-t-[24px]">
+                <div className="flex items-center gap-2">
+                  <span className="px-3 py-1 bg-terracotta/10 text-terracotta text-xs font-bold uppercase tracking-wider rounded-full">
+                    {selectedArticle.categoryLabel}
+                  </span>
+                  <span className="text-xs text-charcoal-warm/70 flex items-center gap-1">
+                    <Clock className="w-3.5 h-3.5 text-terracotta" />
+                    {selectedArticle.readTime}
+                  </span>
+                </div>
                 <button 
                   onClick={() => setSelectedArticle(null)}
-                  className="absolute right-6 top-6 text-gray-400 hover:text-terracotta transition-colors bg-gray-50 rounded-full p-2"
+                  className="text-gray-400 hover:text-terracotta transition-colors bg-gray-100 hover:bg-gray-200 rounded-full p-1.5"
+                  aria-label="Close modal"
                 >
-                  <X size={24} />
+                  <X size={20} />
                 </button>
               </div>
               
-              <div className="p-8 pb-12">
-                <div className="mb-8">
-                  <p className="text-xl text-deep-teal font-medium mb-6 leading-relaxed">
-                    {selectedArticle.overview || "This is a brief overview and SEO description of this article exploring key evidence-informed strategies and thoughtful insights perfectly built for your path of finding better well-being."}
-                  </p>
-                  <p className="text-charcoal-warm leading-relaxed mb-6 text-lg">
-                    {selectedArticle.body || "When we try to solve internal friction with external solutions, we often miss the root cause. This guide provides evidence-backed approaches to help you navigate through these challenges effectively, moving beyond temporary fixes to build lasting resilience."}
+              {/* Modal Body Content */}
+              <div className="p-6 sm:p-8 md:p-10">
+                {/* Title */}
+                <h2 className="text-2xl sm:text-3xl font-bold font-heading text-deep-teal leading-tight mb-4">
+                  {selectedArticle.title}
+                </h2>
+
+                {/* Question Answered Box */}
+                <div className="bg-[#FAF7F0] border-l-4 border-terracotta p-4 rounded-r-xl mb-6">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-terracotta block mb-1">
+                    Direct Search Query Solved:
+                  </span>
+                  <p className="text-sm font-semibold text-deep-teal italic">
+                    "{selectedArticle.searchQuery}"
                   </p>
                 </div>
 
-                <div className="mb-10 bg-soft-sand p-8 rounded-2xl border border-amber-glow/20">
-                  <h4 className="text-lg font-bold font-heading text-deep-teal mb-6 flex items-center">
-                    <BrainCircuit className="w-5 h-5 mr-3 text-terracotta" />
-                    Practical Tools & Strategies
+                {/* Overview Box */}
+                <div className="mb-6">
+                  <p className="text-base sm:text-lg text-deep-teal font-medium leading-relaxed bg-soft-sand/60 p-4 rounded-xl border border-amber-glow/20">
+                    {selectedArticle.overview}
+                  </p>
+                </div>
+
+                {/* Comprehensive Body Content */}
+                <div className="mb-8 space-y-4 text-charcoal-warm leading-relaxed text-sm sm:text-base">
+                  <p>{selectedArticle.body}</p>
+                </div>
+
+                {/* Actionable Practical Tools Box */}
+                <div className="mb-8 bg-[#F6F4ED] p-6 sm:p-8 rounded-2xl border border-[#E3DCB8]">
+                  <h4 className="text-base sm:text-lg font-bold font-heading text-deep-teal mb-4 flex items-center">
+                    <BrainCircuit className="w-5 h-5 mr-2.5 text-terracotta" />
+                    Practical Tools & Interventions to Apply
                   </h4>
-                  <div className="space-y-5">
-                    {selectedArticle.tips ? selectedArticle.tips.map((tip: string, idx: number) => {
+                  <div className="space-y-4">
+                    {selectedArticle.tips.map((tip: string, idx: number) => {
                       const tipParts = tip.split(':');
                       const hasTitle = tipParts.length > 1;
                       const title = hasTitle ? tipParts[0] : '';
                       const desc = hasTitle ? tipParts.slice(1).join(':') : tip;
                       
                       return (
-                      <div key={idx} className="flex items-start">
-                        <div className="w-2 h-2 rounded-full bg-terracotta mt-2.5 mr-4 flex-shrink-0" />
-                        <p className="text-charcoal-warm leading-relaxed text-[15px]">
-                          {hasTitle ? (
-                            <><strong className="text-deep-teal font-semibold">{title}:</strong>{desc}</>
-                          ) : (
-                            tip
-                          )}
-                        </p>
-                      </div>
-                    )}) : (
-                      <>
-                        <div className="flex items-start">
-                          <div className="w-2 h-2 rounded-full bg-terracotta mt-2.5 mr-4 flex-shrink-0" />
-                          <p className="text-charcoal-warm leading-relaxed text-[15px]"><strong className="text-deep-teal font-semibold">Grounding:</strong> Practice grounding techniques by acknowledging five things you can see around you right now.</p>
+                        <div key={idx} className="flex items-start">
+                          <div className="w-2 h-2 rounded-full bg-terracotta mt-2 mr-3 flex-shrink-0" />
+                          <p className="text-charcoal-warm leading-relaxed text-sm sm:text-[15px]">
+                            {hasTitle ? (
+                              <><strong className="text-deep-teal font-semibold">{title}:</strong>{desc}</>
+                            ) : (
+                              tip
+                            )}
+                          </p>
                         </div>
-                        <div className="flex items-start">
-                          <div className="w-2 h-2 rounded-full bg-terracotta mt-2.5 mr-4 flex-shrink-0" />
-                          <p className="text-charcoal-warm leading-relaxed text-[15px]"><strong className="text-deep-teal font-semibold">Action:</strong> Remember that understanding happens at the intersection of insight and action.</p>
-                        </div>
-                        <div className="flex items-start">
-                          <div className="w-2 h-2 rounded-full bg-terracotta mt-2.5 mr-4 flex-shrink-0" />
-                          <p className="text-charcoal-warm leading-relaxed text-[15px]"><strong className="text-deep-teal font-semibold">Evidence:</strong> Focus on evidence-based practical science without the jargon.</p>
-                        </div>
-                      </>
-                    )}
+                      );
+                    })}
                   </div>
                 </div>
                 
-                <div className="mb-10">
-                  <h4 className="text-lg font-bold font-heading text-deep-teal mb-3">The Takeaway</h4>
-                  <p className="text-charcoal-warm leading-relaxed italic text-lg">
-                    {selectedArticle.conclusion || "Taking small, intentional steps with the right tools can fundamentally shift your experience. It's not about being perfect; it's about being equipped."}
+                {/* Takeaway / Conclusion */}
+                <div className="mb-8 p-5 bg-white rounded-xl border border-gray-200">
+                  <h4 className="text-sm uppercase font-bold tracking-widest text-terracotta mb-2">The Clinical Takeaway</h4>
+                  <p className="text-charcoal-warm leading-relaxed italic text-base sm:text-lg font-medium">
+                    "{selectedArticle.conclusion}"
                   </p>
                 </div>
 
-                <div className="mb-10 border-t border-gray-100 pt-8 flex items-center justify-between">
-                  <button onClick={handlePrevArticle} className="text-terracotta hover:text-amber-glow font-medium text-[14px] flex items-center uppercase tracking-wide transition-colors group">
-                    <ChevronLeft className="w-5 h-5 mr-1 group-hover:-translate-x-1 transition-transform" />
-                    Previous Article
+                {/* Article Keywords */}
+                <div className="mb-8">
+                  <span className="text-xs font-semibold text-deep-teal block mb-2">Related Topics & Keywords:</span>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedArticle.keywords.map((kw, i) => (
+                      <span key={i} className="text-xs px-2.5 py-1 bg-gray-100 rounded-md text-charcoal-warm font-medium">
+                        #{kw}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Next / Previous Article Navigation */}
+                <div className="mb-8 border-t border-gray-200 pt-6 flex items-center justify-between">
+                  <button 
+                    onClick={handlePrevArticle} 
+                    className="text-terracotta hover:text-deep-teal font-semibold text-xs sm:text-sm flex items-center uppercase tracking-wider transition-colors group"
+                  >
+                    <ChevronLeft className="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform" />
+                    Previous Guide
                   </button>
-                  <button onClick={handleNextArticle} className="text-terracotta hover:text-amber-glow font-medium text-[14px] flex items-center uppercase tracking-wide transition-colors group">
-                    Next Article
-                    <ChevronRight className="w-5 h-5 ml-1 group-hover:translate-x-1 transition-transform" />
+                  <button 
+                    onClick={handleNextArticle} 
+                    className="text-terracotta hover:text-deep-teal font-semibold text-xs sm:text-sm flex items-center uppercase tracking-wider transition-colors group"
+                  >
+                    Next Guide
+                    <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                   </button>
                 </div>
 
-                <div className="mb-10 border-t border-gray-100 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <span className="text-sm font-semibold text-deep-teal uppercase tracking-widest">Share this Insight</span>
-                  <div className="flex gap-4">
+                {/* Social Share Bar */}
+                <div className="mb-8 border-t border-gray-200 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <span className="text-xs font-bold text-deep-teal uppercase tracking-widest flex items-center gap-1.5">
+                    <Share2 className="w-4 h-4 text-terracotta" />
+                    Share this Guide
+                  </span>
+                  <div className="flex gap-3">
+                    <a 
+                      href={`https://wa.me/?text=${encodeURIComponent(selectedArticle.title + " - " + window.location.origin + '/resources')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-9 h-9 rounded-full bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white flex items-center justify-center transition-all"
+                      aria-label="Share on WhatsApp"
+                      title="Share on WhatsApp"
+                    >
+                      <MessageSquare className="w-4 h-4" />
+                    </a>
                     <a 
                       href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin + '/resources')}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:text-[#1877F2] hover:bg-[#1877F2]/10 transition-colors"
+                      className="w-9 h-9 rounded-full bg-blue-50 text-[#1877F2] hover:bg-[#1877F2] hover:text-white flex items-center justify-center transition-all"
                       aria-label="Share on Facebook"
                     >
                       <Facebook className="w-4 h-4" fill="currentColor" />
@@ -685,7 +761,7 @@ export default function Resources() {
                       href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(selectedArticle.title)}&url=${encodeURIComponent(window.location.origin + '/resources')}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:text-[#1DA1F2] hover:bg-[#1DA1F2]/10 transition-colors"
+                      className="w-9 h-9 rounded-full bg-sky-50 text-[#1DA1F2] hover:bg-[#1DA1F2] hover:text-white flex items-center justify-center transition-all"
                       aria-label="Share on Twitter"
                     >
                       <Twitter className="w-4 h-4" fill="currentColor" />
@@ -694,23 +770,14 @@ export default function Resources() {
                       href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.origin + '/resources')}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:text-[#0A66C2] hover:bg-[#0A66C2]/10 transition-colors"
+                      className="w-9 h-9 rounded-full bg-blue-50 text-[#0A66C2] hover:bg-[#0A66C2] hover:text-white flex items-center justify-center transition-all"
                       aria-label="Share on LinkedIn"
                     >
                       <Linkedin className="w-4 h-4" fill="currentColor" />
                     </a>
                     <a 
-                      href="https://www.instagram.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:text-[#E1306C] hover:bg-[#E1306C]/10 transition-colors"
-                      aria-label="Share on Instagram"
-                    >
-                      <Instagram className="w-4 h-4" />
-                    </a>
-                    <a 
-                      href={`mailto:?subject=${encodeURIComponent(selectedArticle.title)}&body=${encodeURIComponent("Check out this insight from Being You Path:\n\n" + window.location.origin + '/resources')}`}
-                      className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:text-terracotta hover:bg-terracotta/10 transition-colors"
+                      href={`mailto:?subject=${encodeURIComponent(selectedArticle.title)}&body=${encodeURIComponent("Read this insight from Being You Path:\n\n" + window.location.origin + '/resources')}`}
+                      className="w-9 h-9 rounded-full bg-orange-50 text-terracotta hover:bg-terracotta hover:text-white flex items-center justify-center transition-all"
                       aria-label="Share via Email"
                     >
                       <Mail className="w-4 h-4" />
@@ -718,20 +785,31 @@ export default function Resources() {
                   </div>
                 </div>
                 
-                <div className="pt-10 border-t border-gray-100 flex flex-col items-center text-center">
-                  <h4 className="text-2xl font-bold text-deep-teal font-heading mb-4">Ready to apply these tools to your own life?</h4>
-                  <p className="text-charcoal-warm mb-8 max-w-lg text-[15px] leading-relaxed">
-                    If you're looking for personalized guidance to overcome these challenges, let's talk about how we can help you build a clearer path forward.
+                {/* 1-on-1 Consultation Callout */}
+                <div className="pt-8 border-t border-gray-200 flex flex-col items-center text-center bg-[#FAF8F5] -mx-6 sm:-mx-8 md:-mx-10 -mb-6 sm:-mb-8 md:-mb-10 p-8 rounded-b-[24px]">
+                  <h4 className="text-xl sm:text-2xl font-bold text-deep-teal font-heading mb-2">
+                    Ready to uncover the root cause with our psychologists?
+                  </h4>
+                  <p className="text-charcoal-warm mb-6 max-w-lg text-sm sm:text-base leading-relaxed">
+                    Reading provides half the picture; personalized psychological support in Pune gives you the second half. Book a 1-on-1 clarity session today.
                   </p>
-                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <a
+                      href="https://wa.me/917387779238?text=Hi%20Being%20You%20Path%2C%20I%20would%20like%20to%20discuss%20a%20counselling%20session%20after%20reading%20your%20articles."
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center px-6 py-3.5 text-xs font-semibold rounded-full text-white bg-[#25D366] hover:bg-[#128C7E] transition-all uppercase tracking-wider shadow"
+                    >
+                      Chat on WhatsApp (+91 7387779238)
+                    </a>
                     <Link
                       to="/contact"
                       onClick={() => setSelectedArticle(null)}
-                      className="inline-flex items-center justify-center px-8 py-4 text-sm font-medium rounded-full text-white bg-terracotta hover:bg-amber-glow transition-all uppercase tracking-widest w-full sm:w-auto shadow-md hover:shadow-lg"
+                      className="inline-flex items-center justify-center px-6 py-3.5 text-xs font-semibold rounded-full text-white bg-terracotta hover:bg-deep-teal transition-all uppercase tracking-wider shadow"
                     >
-                      Book A Free Clarity Call &rarr;
+                      Book A Clarity Call &rarr;
                     </Link>
-                  </motion.div>
+                  </div>
                 </div>
               </div>
             </motion.div>

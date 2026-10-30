@@ -16,19 +16,19 @@ export default function Services() {
       title: "Support That Fits Your Life — Not Someone Else's Diagnosis",
       subtitle: "Tailored counseling and holistic support designed around your unique reality.",
       desc: "Whether you're managing career burnout, seeking personal growth, or looking for practical psychological tools, we meet you exactly where you are.",
-      image: "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?q=80&w=2940&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1516585427167-9f4af9627e6c?q=80&w=2000&auto=format&fit=crop"
     },
     {
       title: "Clarity in Career and Life",
       subtitle: "Moving past confusion to deliberate action.",
       desc: "Our career counseling sessions help you align your daily work with your deeper values, transforming professional stagnation into meaningful engagement.",
-      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2940&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?q=80&w=2000&auto=format&fit=crop"
     },
     {
       title: "Actionable Well-being Support",
       subtitle: "When nothing's 'wrong' but everything feels heavy.",
       desc: "Overthinking, decision fatigue, and low motivation quietly drain you. Let's work together to understand these patterns and build sustainable resilience.",
-      image: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?q=80&w=2940&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=2000&auto=format&fit=crop"
     }
   ];
 
@@ -69,7 +69,7 @@ export default function Services() {
       ],
       format: "1:1 sessions (By appointments only) | 60 minutes | Pune or online",
       cta: "Book a Career Clarity Session",
-      image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2940&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1200&auto=format&fit=crop"
     },
     {
       title: "Employee Well-Being Workshops",
@@ -83,7 +83,7 @@ export default function Services() {
       ],
       format: "Half-day or full-day | Online or on-site | Customisable",
       cta: "Enquire About a Workshop",
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2940&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1531497865144-0464ef8fb9a9?q=80&w=1200&auto=format&fit=crop"
     },
     {
       title: "Gen Z in the Workplace",
@@ -96,7 +96,7 @@ export default function Services() {
       ],
       format: "Workshops (teams) | 1:1 sessions (By appointments only) (managers) | Lunch & learn",
       cta: "Book a Gen Z Workshop",
-      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2940&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop"
     },
     {
       title: "Parenting & Family Well-Being",
@@ -109,7 +109,7 @@ export default function Services() {
       ],
       format: "1:1 parent sessions (By appointments only) | Parent-and-child sessions | Small group workshops",
       cta: "Book a Parenting Session",
-      image: "https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=2940&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1476703993599-0035a21b17a9?q=80&w=1200&auto=format&fit=crop"
     },
     {
       title: "Student Support & Exam Stress",
@@ -122,7 +122,7 @@ export default function Services() {
       ],
       format: "1:1 sessions (By appointments only) | Parent-student sessions | Group workshops",
       cta: "Book a Student Clarity Session",
-      image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=2940&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1513258496099-48168024aec0?q=80&w=1200&auto=format&fit=crop"
     },
     {
       title: "Mindfulness & Meditation (Secular, Practical)",
@@ -135,7 +135,7 @@ export default function Services() {
       ],
       format: "Individual coaching (By appointments only) | Group sessions | Workplace programmes",
       cta: "Try a Free Mindfulness Session",
-      image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=2899&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1200&auto=format&fit=crop"
     },
     {
       title: "Functional Yoga for Mental Well-Being",
@@ -148,7 +148,7 @@ export default function Services() {
       ],
       format: "Integrated into individual sessions (By appointments only) | Guided recordings | Group workshops",
       cta: "Learn More About Our Approach",
-      image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=2920&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=1200&auto=format&fit=crop"
     },
     {
       title: "Behavioural Change & Habit Coaching",
@@ -161,7 +161,7 @@ export default function Services() {
       ],
       format: "1:1 sessions (By appointments only) | Structured 4-week programme | Group workshop",
       cta: "Start Your Habit Change Session",
-      image: "https://images.unsplash.com/photo-1506784365847-bbad939e9335?q=80&w=2936&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=1200&auto=format&fit=crop"
     },
     {
       title: "Support for Daily Life Challenges",
@@ -174,19 +174,19 @@ export default function Services() {
       ],
       format: "1:1 sessions (By appointments only) | Ongoing support packages",
       cta: "Book a Session for Daily Life Support",
-      image: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?q=80&w=2940&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?q=80&w=1200&auto=format&fit=crop"
     }
   ];
 
   return (
     <div className="bg-white">
       <SEO 
-        title="Psychological Services & Therapy | Best Counselling Centre in India"
-        description="Explore comprehensive counselling and therapy options from Being You Path, the best counselling centre in India. Individual counselling, stress management, teen therapy, and online counselling nationwide."
-        keywords="best counselling centre in india services, counselling services india, online therapy india, psychological counselling india, best therapist pune, adolescent counselling india, corporate wellness india"
+        title="Psychological Counselling & Therapy Services | Pune & Online India"
+        description="Comprehensive psychological counselling & therapy in Pune (near Koregaon Park) and online therapy across India. Individual CBT, stress, self-esteem, & career counselling."
+        keywords="best counselling centre in pune services, counselling services pune, online therapy india, psychological counselling pune, best psychologist in pune, self esteem therapy pune, cbt therapy india, career counselling pune, counsellor koregaon park pune, online counselling mumbai delhi bengaluru, therapy baner kothrud pune"
       />
-      <h1 className="sr-only">Services at Being You Path - Best Counselling Centre in India | Online Therapy & Counselling</h1>
-      <p className="sr-only">Being You Path is the best counselling centre in India offering an extensive array of psychological services: CBT, individual therapy, adolescent counselling, performance coaching, relationship therapy, and corporate mental health programs in Pune and across India.</p>
+      <h1 className="sr-only">Services at Being You Path - Best Counselling Centre in India & #1 Psychologist in Pune | Online Therapy & Psychological Care</h1>
+      <p className="sr-only">Being You Path is the leading counselling centre in Pune, Maharashtra and top 5 nationwide in India. We offer an extensive array of evidence-based psychological services: CBT therapy, individual counselling, adolescent support, self-esteem coaching, relationship therapy, and corporate mental health programs in Pune and across India.</p>
       
       {/* Hero Slider */}
       <section className="w-full bg-soft-sand py-12 md:py-16 lg:py-20 flex justify-center border-b border-gray-200">
@@ -411,6 +411,43 @@ export default function Services() {
               </motion.div>
             )}
          </div>
+      </section>
+
+      {/* Service Delivery Modes: Pune Clinic & Pan-India Online Therapy */}
+      <section className="bg-soft-sand py-12 md:py-16 border-t border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div className="bg-white rounded-[24px] p-8 border border-gray-200 shadow-xs">
+              <span className="text-xs font-bold uppercase tracking-widest text-terracotta mb-2 inline-block">
+                In-Person Psychological Counselling in Pune
+              </span>
+              <h3 className="text-2xl font-bold text-deep-teal font-heading mb-3">
+                #1 Counselling Centre & Psychologist Clinic in Pune
+              </h3>
+              <p className="text-sm text-charcoal-warm leading-relaxed mb-4">
+                Our peaceful counselling clinic is centrally situated near <strong>Koregaon Park</strong>, serving clients across Pune including <strong>Kalyani Nagar, Viman Nagar, Baner, Kothrud, Aundh, Shivaji Nagar, Hadapsar,</strong> and <strong>Hinjewadi</strong>. We specialize in evidence-based Cognitive Behavioral Therapy (CBT), work-stress burnout management, self-esteem therapy, and career clarity in a safe, non-judgmental environment.
+              </p>
+              <div className="text-xs font-medium text-deep-teal/80 bg-soft-sand p-3 rounded-xl border border-gray-100">
+                📍 Private consultation rooms • Safe, non-clinical sanctuary • Flexible appointments in Pune
+              </div>
+            </div>
+
+            <div className="bg-deep-teal text-white rounded-[24px] p-8 shadow-xs">
+              <span className="text-xs font-bold uppercase tracking-widest text-sage-green mb-2 inline-block">
+                Online Counselling Nationwide in India
+              </span>
+              <h3 className="text-2xl font-bold text-white font-heading mb-3">
+                Top 5 Rated Online Therapy Across India
+              </h3>
+              <p className="text-sm text-white/80 leading-relaxed mb-4">
+                Access certified psychological support, CBT therapy, and secular mindfulness from the comfort of your home anywhere in India: <strong>Mumbai, Delhi NCR, Bengaluru, Hyderabad, Chennai, Kolkata,</strong> and beyond. Confidential, encrypted 1-on-1 video sessions tailored around your daily professional and personal routine.
+              </p>
+              <div className="text-xs font-medium text-white/90 bg-white/10 p-3 rounded-xl border border-white/15">
+                🔒 Encrypted, HIPAA-compliant platform • Same clinical rigor as in-person • Evening & weekend slots
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* End CTA */}
