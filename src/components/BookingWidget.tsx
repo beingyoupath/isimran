@@ -1,274 +1,182 @@
-import React, { useState } from "react";
-import { Calendar as CalendarIcon, Clock, ChevronLeft, ChevronRight, CheckCircle2 } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import React from "react";
+import { Clock, Calendar, ExternalLink, CheckCircle2, Shield, Video, MapPin, Sparkles, UserCheck } from "lucide-react";
 
-export default function BookingWidget() {
-  const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [selectedTime, setSelectedTime] = useState<string | null>(null);
-  const [step, setStep] = useState<1 | 2 | 3>(1); // 1: Date/Time, 2: Details, 3: Confirmation
+export const CALENDLY_MAIN_URL = "https://calendly.com/beingyoupathappointment";
 
-  const getDaysInMonth = (date: Date) => {
-    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+export default function BookingWidget({ className = "" }: { className?: string }) {
+  const handleOpenCalendly = () => {
+    window.open(CALENDLY_MAIN_URL, "_blank", "noopener,noreferrer");
   };
 
-  const getFirstDayOfMonth = (date: Date) => {
-    return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
-  };
-
-  const daysInMonth = getDaysInMonth(currentMonth);
-  const firstDay = getFirstDayOfMonth(currentMonth);
-  const monthName = currentMonth.toLocaleString("default", { month: "long" });
-  const year = currentMonth.getFullYear();
-
-  const handlePrevMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
-  };
-
-  const handleNextMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
-  };
-
-  const timeSlots = [
-    "09:00 AM", "10:00 AM", "11:00 AM", "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM"
-  ];
-
-  const handleDateSelect = (day: number) => {
-    const newDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
-    // Don't allow past dates (simplified check)
-    newDate.setHours(0,0,0,0);
-    const today = new Date();
-    today.setHours(0,0,0,0);
-    
-    if (newDate >= today) {
-      setSelectedDate(newDate);
-      setSelectedTime(null);
-    }
-  };
-
-  const handleContinue = () => {
-    if (selectedDate && selectedTime) setStep(2);
-  };
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setStep(3);
-    }, 1500);
+  const handleWhatsAppBooking = () => {
+    const text = encodeURIComponent(
+      "Hello Being You Path,\n\nI would like to schedule a 1-on-1 psychological session / free 15-minute clarity call.\n\nPlease share your earliest available slots for online video or in-person clinic (Pune).\n\nThank you!"
+    );
+    window.open(`https://wa.me/917387772573?text=${text}`, "_blank", "noopener,noreferrer");
   };
 
   return (
-    <div className="bg-white rounded-[24px] border border-gray-200 overflow-hidden shadow-sm">
-      <div className="flex flex-col md:flex-row">
-        {/* Left Side: Summary info */}
-        <div className="bg-soft-sand/50 p-8 md:w-1/3 border-b md:border-b-0 md:border-r border-gray-200">
-          <h3 className="font-heading font-medium text-charcoal-warm mb-2">Imran Hussain & Tejaswini</h3>
-          <h2 className="text-2xl font-semibold text-deep-teal font-heading mb-6">Free Clarity Call</h2>
-          
-          <div className="space-y-4 text-charcoal-warm">
-            <div className="flex items-center gap-3">
-              <Clock className="w-5 h-5 text-terracotta" />
-              <span>30 min</span>
+    <div className={`bg-white rounded-[28px] border border-gray-200 shadow-md overflow-hidden ${className}`}>
+      {/* Top Banner & Psychologists Info */}
+      <div className="bg-deep-teal text-white p-6 sm:p-8 lg:p-10">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-xs font-semibold text-[#FDFBF7] uppercase tracking-wider mb-3 font-sans border border-white/10">
+              <Sparkles className="w-3.5 h-3.5 text-amber-glow" />
+              <span>Direct 1-on-1 Calendly Scheduling</span>
             </div>
-            
-            {step > 1 && selectedDate && selectedTime && (
-              <div className="flex items-start gap-3 mt-4 pt-4 border-t border-gray-200">
-                <CalendarIcon className="w-5 h-5 text-terracotta mt-0.5" />
-                <span>
-                  {selectedTime} <br />
-                  {selectedDate.toLocaleDateString('default', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+            <h3 className="text-2xl sm:text-3xl lg:text-4xl font-heading font-semibold text-[#FDFBF7] leading-tight">
+              Book Directly with Our Lead Psychologists
+            </h3>
+            <p className="text-white/85 text-sm sm:text-base mt-2 leading-relaxed">
+              Choose your session duration and practitioner—<strong>Imran Hussain</strong> or <strong>Tejaswini Joshi</strong>—instantly on Calendly. Available in-person at our Pune sanctuary (near Koregaon Park) or via confidential online video nationwide.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap md:flex-col items-start gap-2.5 text-xs text-white/90 shrink-0">
+            <span className="flex items-center gap-2 bg-white/10 px-3.5 py-2 rounded-full border border-white/10">
+              <MapPin className="w-3.5 h-3.5 text-amber-glow" />
+              <span>Pune Clinic (Near Koregaon Park)</span>
+            </span>
+            <span className="flex items-center gap-2 bg-white/10 px-3.5 py-2 rounded-full border border-white/10">
+              <Video className="w-3.5 h-3.5 text-amber-glow" />
+              <span>Pan-India Video Sessions</span>
+            </span>
+            <span className="flex items-center gap-2 bg-white/10 px-3.5 py-2 rounded-full border border-white/10">
+              <Shield className="w-3.5 h-3.5 text-amber-glow" />
+              <span>100% Confidential & Secure</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Available Session Types on Calendly */}
+      <div className="p-6 sm:p-8 lg:p-10 bg-soft-sand/30 border-b border-gray-200">
+        <div className="flex items-center justify-between mb-4">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-charcoal-warm/70 font-sans">
+            Available Session Options on Calendly
+          </h4>
+          <span className="text-xs font-medium text-terracotta">Select your preference on Calendly</span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* 15-Min Free Clarity Call */}
+          <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-xs flex flex-col justify-between hover:border-terracotta/40 transition-colors">
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800">
+                  15 Minutes Free
+                </span>
+                <span className="text-xs font-semibold text-terracotta font-sans">
+                  Free Clarity Call
                 </span>
               </div>
-            )}
-            
-            <p className="text-sm mt-6 leading-relaxed">
-              Book a no-obligation introductory call to discuss your needs, ask questions, and explore if we're the right fit for each other.
+              <h5 className="font-heading font-bold text-deep-teal text-lg mb-1.5">
+                Introductory Clarity Call
+              </h5>
+              <p className="text-xs text-charcoal-warm/80 leading-relaxed mb-3">
+                A free 15-minute introductory conversation to discuss what you're navigating, explore therapeutic fit, and map your path forward with zero obligation.
+              </p>
+            </div>
+            <div className="pt-2 border-t border-gray-100 flex items-center gap-1.5 text-xs text-charcoal-warm">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+              <span>Free initial fit & goal mapping</span>
+            </div>
+          </div>
+
+          {/* 30 & 45 Min Focused Therapy */}
+          <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-xs flex flex-col justify-between hover:border-terracotta/40 transition-colors">
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800">
+                  30 or 45 Minutes
+                </span>
+                <span className="text-xs font-semibold text-terracotta font-sans">
+                  Focused Therapy
+                </span>
+              </div>
+              <h5 className="font-heading font-bold text-deep-teal text-lg mb-1.5">
+                Targeted CBT & Regulation
+              </h5>
+              <p className="text-xs text-charcoal-warm/80 leading-relaxed mb-3">
+                High-impact therapeutic sessions addressing acute workplace burnout, stress loops, overthinking, and immediate anxiety coping tools.
+              </p>
+            </div>
+            <div className="pt-2 border-t border-gray-100 flex items-center gap-1.5 text-xs text-charcoal-warm">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+              <span>Evidence-based CBT reframing</span>
+            </div>
+          </div>
+
+          {/* 60 Min In-Depth Consultation */}
+          <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-xs flex flex-col justify-between hover:border-terracotta/40 transition-colors">
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-deep-teal/10 text-deep-teal">
+                  60 Minutes (1 Hour)
+                </span>
+                <span className="text-xs font-semibold text-terracotta font-sans">
+                  Deep Dive
+                </span>
+              </div>
+              <h5 className="font-heading font-bold text-deep-teal text-lg mb-1.5">
+                Comprehensive Consultation
+              </h5>
+              <p className="text-xs text-charcoal-warm/80 leading-relaxed mb-3">
+                In-depth psychological assessment, root-cause emotional processing, behavioral habit redesign, and personalized healing roadmaps.
+              </p>
+            </div>
+            <div className="pt-2 border-t border-gray-100 flex items-center gap-1.5 text-xs text-charcoal-warm">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+              <span>Complete psychological roadmap</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Primary Action Section */}
+      <div className="p-6 sm:p-8 lg:p-10 bg-white">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-6 bg-soft-sand rounded-2xl p-6 border border-gray-200">
+          <div className="space-y-2 text-center lg:text-left">
+            <div className="flex items-center justify-center lg:justify-start gap-2 text-xs font-bold uppercase tracking-wider text-deep-teal font-sans">
+              <UserCheck className="w-4 h-4 text-terracotta" />
+              <span>Imran Hussain &amp; Tejaswini Joshi</span>
+            </div>
+            <h4 className="text-xl sm:text-2xl font-heading font-bold text-deep-teal">
+              Ready to Book? Choose Your Slot on Calendly
+            </h4>
+            <p className="text-charcoal-warm text-sm max-w-xl">
+              One unified scheduling link. Select your preferred practitioner, session length (15-min free clarity call, 30-min, 45-min, or 1-hour), and live available time slots directly in Calendly.
             </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto shrink-0">
+            <button
+              type="button"
+              onClick={handleOpenCalendly}
+              className="py-4 px-7 bg-terracotta text-white rounded-xl font-semibold text-sm hover:bg-amber-glow transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2.5 cursor-pointer"
+            >
+              <Calendar className="w-4 h-4" />
+              <span>Open Calendly Scheduler</span>
+              <ExternalLink className="w-4 h-4 opacity-80" />
+            </button>
+
+            <button
+              type="button"
+              onClick={handleWhatsAppBooking}
+              className="py-4 px-6 bg-[#25D366] text-white hover:bg-[#1DA851] rounded-xl font-semibold text-sm transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" className="w-4 h-4">
+                <path d="M12.031 0C5.398 0 .016 5.378.016 12.015c0 2.128.553 4.202 1.602 6.03L0 24l6.113-1.604a11.967 11.967 0 005.918 1.564h.005c6.634 0 12.014-5.38 12.014-12.017C24.05 5.378 18.665 0 12.031 0zm0 21.964c-1.802 0-3.567-.485-5.11-1.401l-.367-.217-3.794.996 1.015-3.698-.238-.378a9.98 9.98 0 01-1.521-5.263c0-5.518 4.492-10.013 10.015-10.013 5.517 0 10.014 4.495 10.014 10.013 0 5.517-4.497 10.013-10.014 10.013zm5.494-7.514c-.301-.151-1.782-.879-2.059-.979-.276-.1-.478-.152-.678.151-.2.302-.779.979-.955 1.18-.175.201-.351.226-.652.076-.301-.151-1.272-.469-2.424-1.496-.897-.798-1.503-1.784-1.678-2.086-.176-.302-.019-.465.132-.615.136-.135.301-.351.452-.526.151-.176.201-.301.301-.502.1-.2.051-.377-.025-.527-.076-.151-.678-1.633-.929-2.235-.245-.589-.494-.509-.678-.518-.175-.008-.376-.011-.577-.011-.2 0-.527.075-.802.376-.276.301-1.054 1.029-1.054 2.508s1.079 2.909 1.23 3.11c.151.2 2.122 3.238 5.14 4.542.718.31 1.28.495 1.717.635.72.228 1.376.195 1.894.118.579-.085 1.782-.728 2.033-1.431.251-.703.251-1.306.176-1.432-.075-.125-.276-.2-.577-.35z"/>
+              </svg>
+              <span>Connect on WhatsApp</span>
+            </button>
           </div>
         </div>
 
-        {/* Right Side: Interactive Selection */}
-        <div className="p-8 md:w-2/3">
-          <AnimatePresence mode="wait">
-            {step === 1 && (
-              <motion.div
-                key="step1"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                className="flex flex-col lg:flex-row gap-8"
-              >
-                {/* Calendar */}
-                <div className="flex-1">
-                  <h3 className="font-semibold text-deep-teal mb-6 text-lg">Select a Date & Time</h3>
-                  <div className="flex items-center justify-between mb-4">
-                    <button onClick={handlePrevMonth} className="p-2 hover:bg-soft-sand rounded-full transition-colors text-deep-teal">
-                      <ChevronLeft className="w-5 h-5" />
-                    </button>
-                    <span className="font-medium text-deep-teal">{monthName} {year}</span>
-                    <button onClick={handleNextMonth} className="p-2 hover:bg-soft-sand rounded-full transition-colors text-deep-teal">
-                      <ChevronRight className="w-5 h-5" />
-                    </button>
-                  </div>
-                  
-                  <div className="grid grid-cols-7 gap-1 mb-2">
-                    {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-                      <div key={day} className="text-center text-xs font-semibold text-gray-400 py-2">
-                        {day}
-                      </div>
-                    ))}
-                  </div>
-                  
-                  <div className="grid grid-cols-7 gap-1">
-                    {Array.from({ length: firstDay }).map((_, i) => (
-                      <div key={`empty-${i}`} className="p-2"></div>
-                    ))}
-                    {Array.from({ length: daysInMonth }).map((_, i) => {
-                      const day = i + 1;
-                      const checkDate = new Date(year, currentMonth.getMonth(), day);
-                      checkDate.setHours(0,0,0,0);
-                      const today = new Date();
-                      today.setHours(0,0,0,0);
-                      
-                      const isPast = checkDate < today;
-                      const isWeekend = checkDate.getDay() === 0 || checkDate.getDay() === 6;
-                      const isSelected = selectedDate?.getDate() === day && selectedDate?.getMonth() === currentMonth.getMonth();
-                      
-                      return (
-                        <button
-                          key={day}
-                          onClick={() => !isPast && !isWeekend && handleDateSelect(day)}
-                          disabled={isPast || isWeekend}
-                          className={`
-                            aspect-square flex items-center justify-center rounded-full text-sm font-medium transition-all
-                            ${isPast || isWeekend ? 'text-gray-300 cursor-not-allowed' : 'hover:bg-soft-sand cursor-pointer text-charcoal-warm'}
-                            ${isSelected ? 'bg-terracotta text-white hover:bg-terracotta' : ''}
-                          `}
-                        >
-                          {day}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Time Slots */}
-                {selectedDate && (
-                  <motion.div 
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="lg:w-[200px] flex flex-col pt-12 lg:pt-0"
-                  >
-                    <div className="text-sm font-medium text-deep-teal mb-4 text-center lg:text-left">
-                      {selectedDate.toLocaleDateString('default', { weekday: 'long', month: 'short', day: 'numeric' })}
-                    </div>
-                    <div className="flex-1 overflow-y-auto pr-2 space-y-2 max-h-[300px]">
-                      {timeSlots.map(time => (
-                        <div key={time} className="flex gap-2">
-                          <button
-                            onClick={() => setSelectedTime(time)}
-                            className={`
-                              flex-1 py-3 px-4 rounded-[8px] border transition-all text-sm font-medium text-center
-                              ${selectedTime === time 
-                                ? 'border-deep-teal bg-deep-teal text-white' 
-                                : 'border-gray-200 text-deep-teal hover:border-deep-teal'}
-                            `}
-                          >
-                            {time}
-                          </button>
-                          {selectedTime === time && (
-                            <motion.button
-                              initial={{ opacity: 0, width: 0 }}
-                              animate={{ opacity: 1, width: 'auto' }}
-                              onClick={handleContinue}
-                              className="bg-terracotta text-white px-4 rounded-[8px] text-sm font-medium hover:bg-amber-glow transition-colors"
-                            >
-                              Next
-                            </motion.button>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-              </motion.div>
-            )}
-
-            {step === 2 && (
-              <motion.div
-                key="step2"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-              >
-                <div className="flex items-center gap-4 mb-6">
-                  <button 
-                    onClick={() => setStep(1)}
-                    className="p-2 rounded-full hover:bg-soft-sand transition-colors border border-gray-200"
-                  >
-                    <ChevronLeft className="w-5 h-5 text-deep-teal" />
-                  </button>
-                  <h3 className="font-semibold text-deep-teal text-lg">Enter Details</h3>
-                </div>
-                
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-deep-teal mb-1">Name *</label>
-                    <input required type="text" className="w-full px-4 py-3 rounded-[12px] border border-gray-300 focus:border-terracotta focus:ring focus:ring-terracotta/20 outline-none transition-all" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-deep-teal mb-1">Email *</label>
-                    <input required type="email" className="w-full px-4 py-3 rounded-[12px] border border-gray-300 focus:border-terracotta focus:ring focus:ring-terracotta/20 outline-none transition-all" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-deep-teal mb-1">Phone Number (Optional)</label>
-                    <input type="tel" className="w-full px-4 py-3 rounded-[12px] border border-gray-300 focus:border-terracotta focus:ring focus:ring-terracotta/20 outline-none transition-all" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-deep-teal mb-1">Anything else we should know?</label>
-                    <textarea rows={3} className="w-full px-4 py-3 rounded-[12px] border border-gray-300 focus:border-terracotta focus:ring focus:ring-terracotta/20 outline-none transition-all"></textarea>
-                  </div>
-                  <div className="pt-4">
-                    <button 
-                      type="submit" 
-                      disabled={isSubmitting}
-                      className={`px-8 py-3 bg-terracotta text-white font-medium rounded-[50px] transition-colors uppercase text-sm tracking-wide ${isSubmitting ? 'animate-shimmer opacity-80 cursor-not-allowed' : 'hover:bg-amber-glow hover-lift'}`}
-                    >
-                      {isSubmitting ? 'Scheduling...' : 'Schedule Event'}
-                    </button>
-                  </div>
-                </form>
-              </motion.div>
-            )}
-
-            {step === 3 && (
-              <motion.div
-                key="step3"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="flex flex-col items-center justify-center py-12 text-center"
-              >
-                <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-6">
-                  <CheckCircle2 className="w-8 h-8" />
-                </div>
-                <h3 className="text-2xl font-semibold text-deep-teal font-heading mb-2">You're scheduled</h3>
-                <p className="text-charcoal-warm">
-                  A calendar invitation has been sent to your email address.
-                </p>
-                <button 
-                  onClick={() => { setStep(1); setSelectedDate(null); setSelectedTime(null); }}
-                  className="mt-8 px-6 py-2 border border-gray-300 rounded-[50px] text-charcoal-warm font-medium hover:bg-soft-sand transition-colors"
-                >
-                  Book another session
-                </button>
-              </motion.div>
-            )}
-          </AnimatePresence>
+        <div className="mt-4 flex flex-wrap items-center justify-between text-xs text-charcoal-warm/70 px-2 gap-2">
+          <span>Need a customized schedule? Reach out directly to <strong>hello@beingyoupath.com</strong></span>
+          <span>WhatsApp support: <strong>+91 7387772573</strong> / <strong>+91 7387779238</strong></span>
         </div>
       </div>
     </div>

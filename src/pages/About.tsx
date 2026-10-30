@@ -48,7 +48,7 @@ export default function About() {
   const faqs = [
     {
       question: "How do I book a wellness session, and what happens during the first consultation?",
-      answer: <>You can book by clicking the <strong>"Free Clarity Call"</strong> button or by contacting us via WhatsApp. Initially, we schedule a free 30-minute introductory call to understand your challenges, explain our approach, and ensure we're the right fit for your mental well-being goals. There is no commitment required at this stage.</>
+      answer: <>You can book by clicking the <strong>"Free Clarity Call"</strong> button or by contacting us via WhatsApp. Initially, we schedule a free 15-minute introductory call to understand your challenges, explain our approach, and ensure we're the right fit for your mental well-being goals. There is no commitment required at this stage.</>
     },
     {
       question: "What types of mental health counselling and life coaching services do you provide?",

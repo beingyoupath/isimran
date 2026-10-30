@@ -1,15 +1,46 @@
-import { useState, useEffect } from "react";
-import { CheckCircle2, ChevronDown, ChevronUp, ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { 
+  CheckCircle2, 
+  ChevronDown, 
+  ChevronLeft, 
+  ChevronRight, 
+  X, 
+  Mail, 
+  Calendar, 
+  Clock, 
+  ExternalLink, 
+  Sparkles, 
+  Shield, 
+  Video, 
+  MapPin 
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { SkeletonLoader } from "../components/SkeletonLoader";
 import { SEO } from "../components/SEO";
+import BookingWidget, { CALENDLY_MAIN_URL } from "../components/BookingWidget";
+import { saveInquiry } from "../lib/inquiries";
+
+interface ServiceItem {
+  title: string;
+  audience: string;
+  desc: string;
+  whoItFor: string[];
+  format: string;
+  cta: string;
+  image: string;
+}
 
 export default function Services() {
-  const [expandedServices, setExpandedServices] = useState<number[]>([]);
+  const [expandedServices, setExpandedServices] = useState<number[]>([0]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+
+  // Service Inquiry Modal State
+  const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const heroSlides = [
     {
@@ -46,7 +77,7 @@ export default function Services() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2500); // Simulate data loading for a data-heavy component
+    }, 1500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -56,7 +87,7 @@ export default function Services() {
     );
   };
 
-  const servicesList = [
+  const servicesList: ServiceItem[] = [
     {
       title: "Career Counselling & Clarity Sessions",
       audience: "For Professionals, Career Shifters, and Anyone Who Doesn't Know What's Next",
@@ -178,6 +209,91 @@ export default function Services() {
     }
   ];
 
+  const handleOpenInquiryModal = (service: ServiceItem) => {
+    setSelectedService(service);
+    setIsSubmitted(false);
+  };
+
+  const closeInquiryModal = () => {
+    setSelectedService(null);
+    setIsSubmitted(false);
+  };
+
+  // Submit via Email
+  const handleInquiryEmail = (e: React.FormEvent) => {
+    e.preventDefault();
+    const form = (e.target as HTMLElement).closest('form') as HTMLFormElement;
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    const name = (form.elements.namedItem('service_name') as HTMLInputElement).value;
+    const email = (form.elements.namedItem('service_email') as HTMLInputElement).value;
+    const phone = (form.elements.namedItem('service_phone') as HTMLInputElement).value;
+    const message = (form.elements.namedItem('service_message') as HTMLTextAreaElement).value;
+
+    setIsSubmitting(true);
+
+    // Asynchronously record into Firestore database
+    saveInquiry({
+      name,
+      email,
+      whatsapp: phone,
+      question: `[Service Inquiry: "${selectedService?.title}"] Specific Requirements / Challenges: ${message}`
+    })
+      .then(() => setIsSubmitting(false))
+      .catch((err) => {
+        console.error("Could not record service inquiry in database:", err);
+        setIsSubmitting(false);
+      });
+
+    const body = `Service Inquiry: ${selectedService?.title}%0A%0AFull Name: ${name}%0AEmail: ${email}%0APhone: ${phone}%0A%0ASpecific Requirements / Needs / Goals:%0A${message}`;
+    window.location.href = `mailto:hello@beingyoupath.com?subject=Service Inquiry: ${selectedService?.title} - ${name}&body=${body}`;
+
+    setIsSubmitted(true);
+  };
+
+  // Submit via WhatsApp
+  const handleInquiryWhatsApp = (e: React.FormEvent) => {
+    e.preventDefault();
+    const form = (e.target as HTMLElement).closest('form') as HTMLFormElement;
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    const name = (form.elements.namedItem('service_name') as HTMLInputElement).value;
+    const email = (form.elements.namedItem('service_email') as HTMLInputElement).value;
+    const phone = (form.elements.namedItem('service_phone') as HTMLInputElement).value;
+    const message = (form.elements.namedItem('service_message') as HTMLTextAreaElement).value;
+
+    setIsSubmitting(true);
+
+    // Asynchronously record into Firestore database
+    saveInquiry({
+      name,
+      email,
+      whatsapp: phone,
+      question: `[Service Inquiry via WhatsApp: "${selectedService?.title}"] Specific Requirements / Challenges: ${message}`
+    })
+      .then(() => setIsSubmitting(false))
+      .catch((err) => {
+        console.error("Could not record service inquiry in database:", err);
+        setIsSubmitting(false);
+      });
+
+    const body = `*Service Inquiry: ${selectedService?.title}*%0A%0A*Name:* ${name}%0A*Email:* ${email}%0A*Phone:* ${phone}%0A%0A*My Requirements / Challenges:*%0A${message}`;
+    const waUrl = `https://wa.me/917387772573?text=${body}`;
+    const link = document.createElement('a');
+    link.href = waUrl;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    setIsSubmitted(true);
+  };
+
   return (
     <div className="bg-white">
       <SEO 
@@ -230,6 +346,21 @@ export default function Services() {
                       {heroSlides[currentSlide].desc}
                     </p>
                     
+                    <div className="flex flex-wrap items-center gap-4">
+                      <a
+                        href="#appointments"
+                        className="px-8 py-3.5 bg-terracotta text-white rounded-full font-semibold text-sm tracking-wide hover:bg-amber-glow transition-all shadow-md flex items-center gap-2"
+                      >
+                        <Calendar className="w-4 h-4" />
+                        <span>Book 1-on-1 Appointment</span>
+                      </a>
+                      <a
+                        href="#service-menu"
+                        className="px-6 py-3.5 bg-deep-teal/10 hover:bg-deep-teal/15 text-deep-teal rounded-full font-semibold text-sm transition-all border border-deep-teal/20"
+                      >
+                        Explore Service Menu
+                      </a>
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -239,7 +370,7 @@ export default function Services() {
             <div className="absolute top-1/2 -translate-y-1/2 left-4 md:left-6 z-30">
               <button
                 onClick={prevSlide}
-                className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/80 hover:bg-white shadow-md text-deep-teal hover:text-terracotta backdrop-blur-md flex items-center justify-center transition-all border border-gray-100"
+                className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/80 hover:bg-white shadow-md text-deep-teal hover:text-terracotta backdrop-blur-md flex items-center justify-center transition-all border border-gray-100 cursor-pointer"
                 aria-label="Previous slide"
               >
                 <ChevronLeft className="w-6 h-6" />
@@ -248,7 +379,7 @@ export default function Services() {
             <div className="absolute top-1/2 -translate-y-1/2 right-4 md:right-6 z-30">
               <button
                 onClick={nextSlide}
-                className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/80 hover:bg-white shadow-md text-deep-teal hover:text-terracotta backdrop-blur-md flex items-center justify-center transition-all border border-gray-100"
+                className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/80 hover:bg-white shadow-md text-deep-teal hover:text-terracotta backdrop-blur-md flex items-center justify-center transition-all border border-gray-100 cursor-pointer"
                 aria-label="Next slide"
               >
                 <ChevronRight className="w-6 h-6" />
@@ -261,7 +392,7 @@ export default function Services() {
                 <button
                   key={idx}
                   onClick={() => setCurrentSlide(idx)}
-                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
                     currentSlide === idx 
                       ? "bg-terracotta w-8" 
                       : "bg-gray-300 hover:bg-terracotta/60"
@@ -297,8 +428,20 @@ export default function Services() {
       </div>
 
       {/* Services Accordion List */}
-      <section className="pt-4 pb-12 md:pb-16 lg:pb-20 bg-white">
+      <section id="service-menu" className="pt-4 pb-12 md:pb-16 lg:pb-20 bg-white">
          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-10">
+              <span className="text-xs font-bold uppercase tracking-widest text-terracotta bg-soft-sand px-3 py-1 rounded-full font-sans inline-block mb-3">
+                Evidence-Based Psychological Support
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-bold text-deep-teal font-heading">
+                Comprehensive Service Menu
+              </h2>
+              <p className="text-charcoal-warm text-sm sm:text-base mt-2">
+                Click on any service to explore details, or use the inquiry button to open our dedicated service requirement form.
+              </p>
+            </div>
+
             {isLoading ? (
               <div className="space-y-6">
                  <SkeletonLoader />
@@ -326,20 +469,20 @@ export default function Services() {
                     >
                       <button 
                         onClick={() => toggleExpand(index)}
-                      className="w-full p-6 md:p-8 flex items-center justify-between text-left hover:bg-gray-50/50 transition-colors focus:outline-none"
-                    >
-                      <div>
-                        <h2 className="text-[28px] md:text-[32px] font-semibold text-deep-teal font-heading leading-tight mb-2 transition-colors duration-300">{service.title}</h2>
-                        <h3 className="text-[16px] md:text-[18px] font-medium text-terracotta font-heading">{service.audience}</h3>
-                      </div>
-                      <motion.div 
-                        className="flex-shrink-0 ml-4 text-terracotta bg-white p-2 rounded-full shadow-sm border border-gray-100"
-                        animate={{ rotate: expandedServices.includes(index) ? 180 : 0 }}
-                        transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+                        className="w-full p-6 md:p-8 flex items-center justify-between text-left hover:bg-gray-50/50 transition-colors focus:outline-none cursor-pointer"
                       >
-                        <ChevronDown className="w-6 h-6" />
-                      </motion.div>
-                    </button>
+                        <div>
+                          <h2 className="text-[28px] md:text-[32px] font-semibold text-deep-teal font-heading leading-tight mb-2 transition-colors duration-300">{service.title}</h2>
+                          <h3 className="text-[16px] md:text-[18px] font-medium text-terracotta font-heading">{service.audience}</h3>
+                        </div>
+                        <motion.div 
+                          className="flex-shrink-0 ml-4 text-terracotta bg-white p-2 rounded-full shadow-sm border border-gray-100"
+                          animate={{ rotate: expandedServices.includes(index) ? 180 : 0 }}
+                          transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+                        >
+                          <ChevronDown className="w-6 h-6" />
+                        </motion.div>
+                      </button>
 
                     <AnimatePresence initial={false}>
                       {expandedServices.includes(index) && (
@@ -395,12 +538,28 @@ export default function Services() {
                                 <span className="text-charcoal-warm text-sm ml-2">{service.format}</span>
                               </div>
 
-                              <Link
-                                to="/contact"
-                                className="inline-flex items-center justify-center px-8 py-3 bg-terracotta text-white font-medium rounded-[50px] hover:bg-amber-glow transition-all uppercase text-sm tracking-wide self-start shadow-sm hover:shadow-md hover:-translate-y-0.5"
-                              >
-                                {service.cta} &rarr;
-                              </Link>
+                              {/* Interactive Modal Booking & Calendly Options */}
+                              <div className="flex flex-wrap items-center gap-3">
+                                <button
+                                  type="button"
+                                  onClick={() => handleOpenInquiryModal(service)}
+                                  className="inline-flex items-center justify-center px-8 py-3.5 bg-terracotta text-white font-medium rounded-[50px] hover:bg-amber-glow transition-all uppercase text-sm tracking-wide shadow-sm hover:shadow-md hover:-translate-y-0.5 cursor-pointer"
+                                >
+                                  <span>{service.cta}</span>
+                                  <span className="ml-2">&rarr;</span>
+                                </button>
+
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    window.open(CALENDLY_MAIN_URL, "_blank", "noopener,noreferrer");
+                                  }}
+                                  className="inline-flex items-center justify-center px-5 py-3 bg-white text-deep-teal border border-deep-teal/20 font-medium rounded-[50px] hover:bg-white/90 hover:border-deep-teal transition-all text-xs tracking-wider uppercase shadow-2xs hover:-translate-y-0.5 cursor-pointer gap-2"
+                                >
+                                  <Calendar className="w-3.5 h-3.5 text-terracotta" />
+                                  <span>Calendly Slot</span>
+                                </button>
+                              </div>
                             </div>
                           </motion.div>
                         </motion.div>
@@ -413,11 +572,30 @@ export default function Services() {
          </div>
       </section>
 
+      {/* One-on-One Appointment Calendly Integration */}
+      <section id="appointments" className="py-16 md:py-24 bg-soft-sand border-t border-b border-gray-200">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <span className="text-xs font-bold uppercase tracking-widest text-terracotta bg-white px-4 py-1.5 rounded-full inline-block mb-3 font-sans shadow-2xs border border-gray-200">
+              One-on-One Counseling & Direct Appointments
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-deep-teal font-heading mb-4">
+              Book Your 1:1 Psychological Session
+            </h2>
+            <p className="text-charcoal-warm text-base sm:text-lg leading-relaxed">
+              Choose your session length—including our <strong>15-Minute Free Clarity Call</strong>, 30/45-min focused therapy, or 60-min comprehensive consultation—and instantly reserve your slot via Calendly. Facilitated by our lead psychologists, <strong>Imran Hussain</strong> and <strong>Tejaswini Joshi</strong>.
+            </p>
+          </div>
+
+          <BookingWidget />
+        </div>
+      </section>
+
       {/* Service Delivery Modes: Pune Clinic & Pan-India Online Therapy */}
-      <section className="bg-soft-sand py-12 md:py-16 border-t border-b border-gray-200">
+      <section className="bg-white py-12 md:py-16 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <div className="bg-white rounded-[24px] p-8 border border-gray-200 shadow-xs">
+            <div className="bg-soft-sand rounded-[24px] p-8 border border-gray-200 shadow-xs">
               <span className="text-xs font-bold uppercase tracking-widest text-terracotta mb-2 inline-block">
                 In-Person Psychological Counselling in Pune
               </span>
@@ -427,7 +605,7 @@ export default function Services() {
               <p className="text-sm text-charcoal-warm leading-relaxed mb-4">
                 Our peaceful counselling clinic is centrally situated near <strong>Koregaon Park</strong>, serving clients across Pune including <strong>Kalyani Nagar, Viman Nagar, Baner, Kothrud, Aundh, Shivaji Nagar, Hadapsar,</strong> and <strong>Hinjewadi</strong>. We specialize in evidence-based Cognitive Behavioral Therapy (CBT), work-stress burnout management, self-esteem therapy, and career clarity in a safe, non-judgmental environment.
               </p>
-              <div className="text-xs font-medium text-deep-teal/80 bg-soft-sand p-3 rounded-xl border border-gray-100">
+              <div className="text-xs font-medium text-deep-teal/80 bg-white p-3 rounded-xl border border-gray-200">
                 📍 Private consultation rooms • Safe, non-clinical sanctuary • Flexible appointments in Pune
               </div>
             </div>
@@ -455,16 +633,188 @@ export default function Services() {
         <div className="max-w-[800px] mx-auto px-4 text-center bg-soft-sand rounded-[24px] p-12 md:p-16">
            <h2 className="text-[36px] font-semibold text-deep-teal mb-6 font-heading">Still not sure which service fits?</h2>
            <p className="text-lg text-charcoal-warm mb-10">That's completely okay. Book a free clarity call — we'll figure it out together.</p>
-           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+           <div className="flex flex-wrap items-center justify-center gap-4">
+             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+               <button
+                  type="button"
+                  onClick={() => {
+                    window.open(CALENDLY_MAIN_URL, "_blank", "noopener,noreferrer");
+                  }}
+                  className="inline-flex items-center justify-center px-10 py-5 text-lg font-medium rounded-[50px] text-white bg-terracotta hover:bg-amber-glow transition-colors uppercase tracking-wide shadow-md hover:shadow-lg cursor-pointer"
+                >
+                  &rarr; Book Your Free 15-Min Clarity Call
+                </button>
+             </motion.div>
              <Link
-                to="/contact"
-                className="inline-flex items-center justify-center px-10 py-5 text-lg font-medium rounded-[50px] text-white bg-terracotta hover:bg-amber-glow transition-colors uppercase tracking-wide shadow-md hover:shadow-lg"
-              >
-                &rarr; Book Your Free Clarity Call
-              </Link>
-           </motion.div>
+               to="/contact"
+               className="inline-flex items-center justify-center px-8 py-5 text-lg font-medium rounded-[50px] text-deep-teal bg-white border border-gray-200 hover:bg-gray-50 transition-colors uppercase tracking-wide shadow-xs"
+             >
+               Visit Contact Page
+             </Link>
+           </div>
         </div>
       </section>
+
+      {/* 1. Interactive Service Inquiry Modal (Matching Workshop Popup Style) */}
+      <AnimatePresence>
+        {selectedService && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-[#0B3A42]/80 backdrop-blur-sm"
+              onClick={closeInquiryModal}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative w-full max-w-lg bg-soft-sand rounded-[24px] shadow-2xl overflow-hidden z-10 flex flex-col max-h-[90vh]"
+            >
+              {/* Modal Top Header with Selected Service Highlight */}
+              <div className="flex justify-between items-center p-6 border-b border-gray-200 bg-white">
+                <div>
+                  <h3 className="text-xl font-bold text-deep-teal font-heading">
+                    Service Inquiry Form
+                  </h3>
+                  <p className="text-sm text-terracotta font-medium mt-1">
+                    Inquire for: <span className="font-bold">{selectedService.title}</span>
+                  </p>
+                </div>
+                <button
+                  onClick={closeInquiryModal}
+                  className="text-gray-400 hover:text-terracotta transition-colors p-2 rounded-full hover:bg-gray-100 cursor-pointer"
+                  aria-label="Close modal"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Modal Body */}
+              <div className="p-6 md:p-8 overflow-y-auto">
+                {isSubmitted ? (
+                  <div className="text-center py-8">
+                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <CheckCircle2 className="w-8 h-8 text-green-600" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-deep-teal font-heading mb-3">
+                      Inquiry Received!
+                    </h3>
+                    <p className="text-charcoal-warm mb-6 leading-relaxed">
+                      Thank you for your interest in <strong>{selectedService.title}</strong>. Our lead psychologists, Imran Hussain & Tejaswini Joshi, will review your details and reach out to you directly.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                      <button
+                        onClick={closeInquiryModal}
+                        className="px-6 py-3 bg-deep-teal text-white rounded-full font-medium tracking-wide hover:bg-[#07252A] transition-colors cursor-pointer"
+                      >
+                        Close
+                      </button>
+                      <button
+                        onClick={() => {
+                          closeInquiryModal();
+                          window.open(CALENDLY_MAIN_URL, "_blank", "noopener,noreferrer");
+                        }}
+                        className="px-6 py-3 bg-terracotta text-white rounded-full font-medium tracking-wide hover:bg-amber-glow transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+                      >
+                        <Calendar className="w-4 h-4" />
+                        <span>Schedule on Calendly</span>
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <form className="space-y-4">
+                    <div>
+                      <label htmlFor="service_name" className="block text-sm font-medium text-deep-teal mb-1">
+                        Full Name *
+                      </label>
+                      <input
+                        type="text"
+                        id="service_name"
+                        name="service_name"
+                        required
+                        className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-terracotta focus:ring focus:ring-terracotta/20 bg-white transition-all outline-none"
+                        placeholder="Your full name"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="service_email" className="block text-sm font-medium text-deep-teal mb-1">
+                        Email Address *
+                      </label>
+                      <input
+                        type="email"
+                        id="service_email"
+                        name="service_email"
+                        required
+                        className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-terracotta focus:ring focus:ring-terracotta/20 bg-white transition-all outline-none"
+                        placeholder="you@example.com"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="service_phone" className="block text-sm font-medium text-deep-teal mb-1">
+                        Phone / WhatsApp Number *
+                      </label>
+                      <input
+                        type="tel"
+                        id="service_phone"
+                        name="service_phone"
+                        required
+                        className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-terracotta focus:ring focus:ring-terracotta/20 bg-white transition-all outline-none"
+                        placeholder="+91 98765 43210"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="service_message" className="block text-sm font-medium text-deep-teal mb-1">
+                        Requirement Description / Specific Needs *
+                      </label>
+                      <textarea
+                        id="service_message"
+                        name="service_message"
+                        required
+                        rows={3}
+                        className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-terracotta focus:ring focus:ring-terracotta/20 bg-white transition-all outline-none"
+                        placeholder="Describe what you are navigating (e.g. career burnout, overthinking, parenting challenges, exam anxiety, or goals)..."
+                      />
+                    </div>
+
+                    <div className="pt-2 flex flex-col sm:flex-row gap-3">
+                      <button
+                        type="button"
+                        onClick={handleInquiryEmail}
+                        disabled={isSubmitting}
+                        className="flex-1 py-3.5 bg-terracotta text-white rounded-xl font-semibold tracking-wide hover:bg-amber-glow transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 whitespace-nowrap px-4 flex justify-center items-center gap-2 cursor-pointer text-sm"
+                      >
+                        <Mail className="w-4 h-4" />
+                        <span>Send via Email</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={handleInquiryWhatsApp}
+                        disabled={isSubmitting}
+                        className="flex-1 py-3.5 bg-[#25D366] text-white rounded-xl font-semibold tracking-wide hover:bg-[#1DA851] transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 whitespace-nowrap px-4 flex justify-center items-center gap-2 cursor-pointer text-sm"
+                      >
+                        <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" className="w-4 h-4">
+                          <path d="M12.031 0C5.398 0 .016 5.378.016 12.015c0 2.128.553 4.202 1.602 6.03L0 24l6.113-1.604a11.967 11.967 0 005.918 1.564h.005c6.634 0 12.014-5.38 12.014-12.017C24.05 5.378 18.665 0 12.031 0zm0 21.964c-1.802 0-3.567-.485-5.11-1.401l-.367-.217-3.794.996 1.015-3.698-.238-.378a9.98 9.98 0 01-1.521-5.263c0-5.518 4.492-10.013 10.015-10.013 5.517 0 10.014 4.495 10.014 10.013 0 5.517-4.497 10.013-10.014 10.013zm5.494-7.514c-.301-.151-1.782-.879-2.059-.979-.276-.1-.478-.152-.678.151-.2.302-.779.979-.955 1.18-.175.201-.351.226-.652.076-.301-.151-1.272-.469-2.424-1.496-.897-.798-1.503-1.784-1.678-2.086-.176-.302-.019-.465.132-.615.136-.135.301-.351.452-.526.151-.176.201-.301.301-.502.1-.2.051-.377-.025-.527-.076-.151-.678-1.633-.929-2.235-.245-.589-.494-.509-.678-.518-.175-.008-.376-.011-.577-.011-.2 0-.527.075-.802.376-.276.301-1.054 1.029-1.054 2.508s1.079 2.909 1.23 3.11c.151.2 2.122 3.238 5.14 4.542.718.31 1.28.495 1.717.635.72.228 1.376.195 1.894.118.579-.085 1.782-.728 2.033-1.431.251-.703.251-1.306.176-1.432-.075-.125-.276-.2-.577-.35z"/>
+                        </svg>
+                        <span>Connect via WhatsApp</span>
+                      </button>
+                    </div>
+
+                    <p className="text-center text-xs text-charcoal-warm/60 pt-1 font-sans">
+                      Submissions route securely to hello@beingyoupath.com &amp; WhatsApp: +91 7387772573 / +91 7387779238
+                    </p>
+                  </form>
+                )}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

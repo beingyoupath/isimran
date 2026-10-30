@@ -61,7 +61,7 @@ export const HOME_FAQS = [
   },
   {
     question: "How can I book an introductory session or free clarity call with Being You Path?",
-    answer: "Booking is seamless. Click 'Book Consultation' or reach out directly on WhatsApp at +91 7387772573 or +91 7387779238, or email hello@beingyoupath.com. We begin with a free 30-minute introductory clarity conversation to understand your specific needs, explain our methodology, and match you with the right psychologist."
+    answer: "Booking is seamless. Click 'Book Consultation' or reach out directly on WhatsApp at +91 7387772573 or +91 7387779238, or email hello@beingyoupath.com. We begin with a free 15-minute introductory clarity call to understand your specific needs, explain our methodology, and match you with the right psychologist."
   }
 ];
 
@@ -1044,7 +1044,7 @@ export default function Home() {
                  Still Have Questions About Our Counselling Approach?
                </h3>
                <p className="text-sm text-charcoal-warm">
-                 Speak with our psychologists directly through a free 30-minute introductory clarity conversation.
+                 Speak with our psychologists directly through a free 15-minute introductory clarity call.
                </p>
              </div>
              <Link
