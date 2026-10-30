@@ -84,9 +84,20 @@ body {
   background-color: var(--color-soft-sand);
   color: var(--color-charcoal-warm);
   line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6 {
+p, span, li, a, label, input, textarea, button, blockquote, div {
+  font-family: inherit;
+}
+
+h1, h2, h3, h4, h5, h6, .font-heading {
   font-family: var(--font-heading);
   color: var(--color-deep-teal);
 }
+
+.font-sans {
+  font-family: var(--font-sans) !important;
+}
+

@@ -169,29 +169,29 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
             <div className="lg:col-span-4">
-              <span className="text-terracotta font-semibold text-sm tracking-wider uppercase mb-3 block">
+              <span className="text-terracotta font-semibold text-sm tracking-wider uppercase mb-3 block font-sans">
                 A Haven for Your Mind
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-[42px] font-semibold text-deep-teal font-heading leading-tight mb-6">
                 Our Story: You Don't Have to Carry It All Alone
               </h2>
-              <p className="text-charcoal-warm/85 text-base leading-relaxed">
+              <p className="text-charcoal-warm/85 text-base leading-relaxed font-sans">
                 Founded by lead psychologists Imran Hussain and Tejaswini, Being You Path didn't begin as an institution. It was born as a compassionate sanctuary—a place to take off the armor, set down the weight you've carried in silence, and be met with unconditional empathy.
               </p>
             </div>
 
-            <div className="lg:col-span-8 space-y-6 text-charcoal-warm text-lg leading-relaxed">
-              <p>
+            <div className="lg:col-span-8 space-y-6 text-charcoal-warm text-base md:text-lg leading-relaxed font-sans">
+              <p className="font-sans">
                 Look closely at the people around you in any crowded room or bustling city street. The corporate professional swallowing the suffocating exhaustion of an unending workweek behind a composed smile. The student or young adult staring at the ceiling at 2:00 AM, caught in spirals of overthinking and paralyzed by uncertainty about what comes next. The parent holding every loose thread of the household together, quietly wondering who is holding space for them. And anyone who has ever looked in the mirror and felt a quiet, persistent ache of being untethered and unseen.
               </p>
-              <p>
+              <p className="font-sans">
                 For far too long, seeking psychological support felt either cold, clinical, and intimidating—filled with sterile questionnaires and pathologizing labels—or like superficial motivational slogans that ignore the real ache in your chest. Being You Path was created to change that forever. We envisioned a sanctuary where clinical excellence sheds its cold armor and meets you with genuine human warmth, curiosity, and patience.
               </p>
-              <p>
-                What started as a quiet local practice in Koregaon Park has grown through word-of-mouth trust into what individuals and families celebrate as the <strong className="font-semibold text-deep-teal">#1 counselling centre in Pune</strong>, and one of the <strong className="font-semibold text-deep-teal">top counselling centre in India</strong>. Whether you step into our peaceful physical space or speak with us from the comfort of your home through confidential <strong className="font-semibold text-deep-teal">online therapy across India</strong>, you are never a diagnosis or a case number. You are a whole human being whose story is honored.
+              <p className="font-sans">
+                What started as a quiet local practice in Koregaon Park has grown through word-of-mouth trust into what individuals and families celebrate as the <strong className="font-semibold text-deep-teal font-sans">#1 counselling centre in Pune</strong>, and one of the <strong className="font-semibold text-deep-teal font-sans">top counselling centre in India</strong>. Whether you step into our peaceful physical space or speak with us from the comfort of your home through confidential <strong className="font-semibold text-deep-teal font-sans">online therapy across India</strong>, you are never a diagnosis or a case number. You are a whole human being whose story is honored.
               </p>
-              <p>
-                We blend evidence-grounded <strong className="font-semibold text-deep-teal">Cognitive Behavioral Therapy (CBT)</strong>, somatic nervous system calming, tailored <strong className="font-semibold text-deep-teal">work burnout recovery</strong>, and empowering <strong className="font-semibold text-deep-teal">self-esteem counselling</strong> into practical, everyday tools. We don't ask you to become someone else. We help you untangle what is hurting, quiet the noise, and step back into the steadiness and wholeness that was always yours.
+              <p className="font-sans">
+                We blend evidence-grounded <strong className="font-semibold text-deep-teal font-sans">Cognitive Behavioral Therapy (CBT)</strong>, somatic nervous system calming, tailored <strong className="font-semibold text-deep-teal font-sans">work burnout recovery</strong>, and empowering <strong className="font-semibold text-deep-teal font-sans">self-esteem counselling</strong> into practical, everyday tools. We don't ask you to become someone else. We help you untangle what is hurting, quiet the noise, and step back into the steadiness and wholeness that was always yours.
               </p>
             </div>
           </div>
@@ -201,7 +201,7 @@ export default function About() {
              <p className="text-2xl sm:text-3xl md:text-[34px] text-charcoal-warm italic font-heading font-medium leading-snug relative z-10 px-4 sm:px-10">
                "Well-being is not a destination. It's a set of skills — and skills can be learned."
              </p>
-             <p className="mt-4 text-sm text-terracotta font-medium tracking-wide uppercase">
+             <p className="mt-4 text-sm text-terracotta font-medium tracking-wide uppercase font-sans">
                The Being You Path Philosophy
              </p>
           </div>
