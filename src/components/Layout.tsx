@@ -1,5 +1,5 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { Menu, X, Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Youtube, Twitter, Video, LogIn, LogOut, ShieldCheck, MailQuestion, MessageSquare } from "lucide-react";
+import { Menu, X, Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Youtube, Twitter, Video, LogIn, LogOut, ShieldCheck, MailQuestion, MessageSquare, Loader2, AlertCircle } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import GeminiChatbot from "./GeminiChatbot";
@@ -44,7 +44,7 @@ function Navbar({ onOpenAdminModal }: { onOpenAdminModal: () => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const specialDay = getSpecialDayInfo();
-  const { user, loginWithGoogle, logout, isAdmin } = useAuth();
+  const { user, loginWithGoogle, logout, isAdmin, isLoggingIn, authError, clearAuthError } = useAuth();
 
   useEffect(() => {
     setIsOpen(false);
@@ -191,11 +191,23 @@ function Navbar({ onOpenAdminModal }: { onOpenAdminModal: () => void }) {
                 </div>
               ) : (
                 <button
-                  onClick={() => loginWithGoogle()}
-                  className="flex items-center gap-1.5 text-xs font-medium px-3.5 py-1.5 rounded-full border border-[#0B3A42]/20 hover:border-[#0B3A42] text-[#0B3A42] hover:bg-[#0B3A42]/5 transition-colors"
+                  type="button"
+                  onClick={() => loginWithGoogle().catch(() => {})}
+                  disabled={isLoggingIn}
+                  className="flex items-center gap-1.5 text-xs font-medium px-3.5 py-1.5 rounded-full border border-[#0B3A42]/20 hover:border-[#0B3A42] text-[#0B3A42] hover:bg-[#0B3A42]/5 transition-colors cursor-pointer disabled:opacity-60"
+                  title="Sign In with your Google account"
                 >
-                  <LogIn className="w-3.5 h-3.5 text-[#1A5F5F]" />
-                  <span>Sign In</span>
+                  {isLoggingIn ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 text-[#1A5F5F] animate-spin" />
+                      <span>Signing In...</span>
+                    </>
+                  ) : (
+                    <>
+                      <LogIn className="w-3.5 h-3.5 text-[#1A5F5F]" />
+                      <span>Sign In</span>
+                    </>
+                  )}
                 </button>
               )}
               
@@ -250,11 +262,22 @@ function Navbar({ onOpenAdminModal }: { onOpenAdminModal: () => void }) {
                 </button>
               ) : (
                 <button
-                  onClick={() => loginWithGoogle()}
-                  className="px-4 py-2 rounded-full text-xs font-semibold border border-[#0B3A42]/20 text-[#0B3A42] flex items-center gap-1.5"
+                  type="button"
+                  onClick={() => loginWithGoogle().catch(() => {})}
+                  disabled={isLoggingIn}
+                  className="px-4 py-2 rounded-full text-xs font-semibold border border-[#0B3A42]/20 text-[#0B3A42] flex items-center gap-1.5 cursor-pointer disabled:opacity-60"
                 >
-                  <LogIn className="w-3.5 h-3.5" />
-                  Sign In with Google
+                  {isLoggingIn ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      <span>Signing In...</span>
+                    </>
+                  ) : (
+                    <>
+                      <LogIn className="w-3.5 h-3.5" />
+                      <span>Sign In with Google</span>
+                    </>
+                  )}
                 </button>
               )}
             </div>
@@ -270,6 +293,35 @@ function Navbar({ onOpenAdminModal }: { onOpenAdminModal: () => void }) {
             <div className="mt-6 flex flex-col items-center space-y-4 pt-6 border-t border-gray-200 w-full mb-2">
               <span className="flex items-center text-[13px] text-[#0B3A42]"><Phone className="w-4 h-4 mr-2" /> +91 7387772573</span>
               <span className="flex items-center text-[13px] text-[#0B3A42]"><Mail className="w-4 h-4 mr-2" /> hello@beingyoupath.com</span>
+            </div>
+          </div>
+        )}
+
+        {/* Auth Error Banner with Actionable Advice */}
+        {authError && (
+          <div className="bg-amber-50 border-t border-b border-amber-200/80 px-4 py-2.5 text-xs text-amber-900 transition-all">
+            <div className="max-w-[1400px] mx-auto flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2 flex-1">
+                <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+                <span className="leading-snug">{authError}</span>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => loginWithGoogle().catch(() => {})}
+                  className="px-2.5 py-1 rounded bg-amber-200 hover:bg-amber-300 text-amber-950 font-semibold cursor-pointer text-[11px]"
+                >
+                  Try Again
+                </button>
+                <button
+                  type="button"
+                  onClick={clearAuthError}
+                  className="text-amber-700 hover:text-amber-950 p-1 cursor-pointer"
+                  aria-label="Dismiss error notification"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </div>
         )}
