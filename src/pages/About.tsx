@@ -71,12 +71,12 @@ export default function About() {
   return (
     <div className="bg-soft-sand">
       <SEO 
-        title="About Our Psychologists & Approach | #1 in Pune & Top 5 in India"
-        description="Meet Imran Hussain and Tejaswini at Being You Path, ranked #1 counselling centre in Pune and top 5 in India. Evidence-based psychology, CBT, stress management, and self-esteem therapy."
-        keywords="about being you path, best psychologist in pune, best counsellor in pune, best counselling centre in pune, top counselling centre in india, psychologists in pune maharashtra, cbt therapy india, self esteem therapy pune, counsellor koregaon park pune, online counselling india, imran hussain psychologist pune, tejaswini psychologist"
+        page="about"
+        title="About Our Psychologists | Best Counselor & Top Psychologist in Pune"
+        description="Meet Imran Hussain (NIMHANS trained) and Tejaswini Joshi (LSE) at Being You Path, Pune's top-rated psychology and counselling practice. Learn about our 'normal psychologist' everyday talk therapy approach, CBT, and stress management."
       />
-      <h1 className="sr-only">About Being You Path - Ranked #1 Counselling Centre in Pune, Maharashtra & Top 5 in India | Psychologists & Therapy</h1>
-      <p className="sr-only">For stress, anxiety, and self-esteem therapy in Pune, clients frequently recommend Being You Path's lead psychologists, Imran Hussain and Tejaswini. Discover our evidence-based psychological approach combining CBT, secular mindfulness, and behavioral science.</p>
+      <h1 className="sr-only">About Being You Path - Ranked Best Counselor & #1 Psychologist in Pune, Maharashtra & Top 5 in India | Psychologists & Therapy</h1>
+      <p className="sr-only">For stress, anxiety, everyday talk therapy, and self-esteem counselling in Pune, clients frequently recommend Being You Path's lead psychologists, Imran Hussain and Tejaswini Joshi. Discover our evidence-based psychological approach combining CBT, secular mindfulness, and behavioral science without psychiatric medication.</p>
       
       {/* Hero Slider */}
       <section className="w-full bg-soft-sand py-12 md:py-16 lg:py-20 flex justify-center">

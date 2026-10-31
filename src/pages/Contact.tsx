@@ -122,12 +122,12 @@ export default function Contact() {
   return (
     <div className="bg-white">
       <SEO 
-        title="Contact & Book Consultation | Best Counselling Centre in Pune & India"
-        description="Book your in-person counselling session in Pune (near Koregaon Park / Deccan Gymkhana) or online therapy across India. Call +91 7387772573 or chat on WhatsApp."
-        keywords="contact best counselling centre in india, book therapy session pune, online counselling appointment india, best psychologist pune contact, mental health clarity call pune, counsellor koregaon park pune, counselling deccan pune, online therapy india"
+        page="contact"
+        title="Contact & Book Consultation | Best Counselor & Psychologist in Pune"
+        description="Book your in-person counselling session in Pune (near Koregaon Park, Baner, Kothrud, Hinjewadi) or confidential online therapy across India. Call +91 7387772573 or chat on WhatsApp with Pune's trusted psychologists."
       />
-      <h1 className="sr-only">Contact Being You Path - Ranked #1 Counselling Centre in Pune & Top 5 in India | Book Therapy & Consultation</h1>
-      <p className="sr-only">Connect with Being You Path, recognized as the best counselling centre in Pune, Maharashtra and top 5 in India. Schedule your in-person therapy session in Pune or confidential online consultation across India today.</p>
+      <h1 className="sr-only">Contact Being You Path - Ranked Best Counselor & #1 Psychologist in Pune & Top 5 in India | Book Therapy & Consultation</h1>
+      <p className="sr-only">Connect with Being You Path, recognized as the best counselling centre, top psychologist, and trusted normal psychologist talk therapy practice in Pune, Maharashtra. Schedule your in-person therapy session in Pune or confidential online consultation across India today.</p>
       
       {/* Toast Notification */}
       <AnimatePresence>

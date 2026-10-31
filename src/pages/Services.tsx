@@ -195,16 +195,17 @@ export default function Services() {
       image: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=1200&auto=format&fit=crop"
     },
     {
-      title: "Support for Daily Life Challenges",
-      audience: "When Nothing's \"Wrong\" — But Everything Feels Heavy",
-      desc: "Not every problem needs a diagnosis. Chronic overthinking, decision fatigue, low motivation, disrupted sleep, emotional flatness — these don't get a sick day. They just quietly drain you. We help you understand and respond to these patterns.",
+      title: "Everyday Talk Therapy & 'Normal Psychologist' Consultations in Pune",
+      audience: "For Working Professionals & Individuals Seeking Guidance Without Psychiatric Medication",
+      desc: "Not every struggle requires a psychiatric diagnosis or prescription drugs. In Pune, many people search for a 'normal psychologist' or 'regular psychologist' when experiencing chronic overthinking, workplace burnout, decision fatigue, emotional flatness, or relationship stress. Our sessions offer de-stigmatized, evidence-based talk therapy, CBT tools, and lifestyle recalibration.",
       whoItFor: [
-        "Overthinkers",
-        "Sleep strugglers",
+        "Overthinkers & high achievers",
+        "Individuals experiencing burnout",
+        "Those wanting talk therapy without medicine",
         "\"Functioning but empty\" experiencers",
       ],
-      format: "1:1 sessions (By appointments only) | Ongoing support packages",
-      cta: "Book a Session for Daily Life Support",
+      format: "1:1 sessions (By appointments only) | 60 minutes | Pune (In-Person) or Online across India",
+      cta: "Book Everyday Talk Therapy Session",
       image: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?q=80&w=1200&auto=format&fit=crop"
     }
   ];
@@ -297,12 +298,12 @@ export default function Services() {
   return (
     <div className="bg-white">
       <SEO 
-        title="Psychological Counselling & Therapy Services | Pune & Online India"
-        description="Comprehensive psychological counselling & therapy in Pune (near Koregaon Park) and online therapy across India. Individual CBT, stress, self-esteem, & career counselling."
-        keywords="best counselling centre in pune services, counselling services pune, online therapy india, psychological counselling pune, best psychologist in pune, self esteem therapy pune, cbt therapy india, career counselling pune, counsellor koregaon park pune, online counselling mumbai delhi bengaluru, therapy baner kothrud pune"
+        page="services"
+        title="Psychological Counselling & Therapy Services | Best Psychologist in Pune & Everyday Talk Therapy"
+        description="Comprehensive psychological counselling, CBT therapy, and 'normal psychologist' talk therapy in Pune (near Koregaon Park, Baner, Kothrud, Hinjewadi) and online therapy across India. Confidential care for stress, burnout, and career clarity."
       />
-      <h1 className="sr-only">Services at Being You Path - Best Counselling Centre in India & #1 Psychologist in Pune | Online Therapy & Psychological Care</h1>
-      <p className="sr-only">Being You Path is the leading counselling centre in Pune, Maharashtra and top 5 nationwide in India. We offer an extensive array of evidence-based psychological services: CBT therapy, individual counselling, adolescent support, self-esteem coaching, relationship therapy, and corporate mental health programs in Pune and across India.</p>
+      <h1 className="sr-only">Services at Being You Path - Best Counselor & #1 Psychologist in Pune | Normal Psychologist Consultations & Online Therapy India</h1>
+      <p className="sr-only">Being You Path is the leading counselling centre in Pune, Maharashtra and top 5 nationwide in India. We offer an extensive array of evidence-based psychological services: CBT therapy, everyday non-medicinal talk therapy with Pune's top psychologists, adolescent support, self-esteem coaching, relationship therapy, and corporate mental health programs in Pune and across India.</p>
       
       {/* Hero Slider */}
       <section className="w-full bg-soft-sand py-12 md:py-16 lg:py-20 flex justify-center border-b border-gray-200">

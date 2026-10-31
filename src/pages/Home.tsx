@@ -36,6 +36,18 @@ import { GOOGLE_REVIEWS } from "../data/testimonials";
 
 export const HOME_FAQS = [
   {
+    question: "What is a 'normal psychologist' in Pune, and is therapy suitable if I don't have a severe clinical diagnosis?",
+    answer: "In Pune, people often search for a 'normal psychologist' or 'regular psychologist' when they want compassionate, everyday talk therapy without medication or psychiatric hospitalization. At Being You Path, we specialize in helping individuals who are functioning in daily life but struggling internally with overthinking, emotional fatigue, imposter syndrome, stress, workplace burnout, or relationship confusion. You do not need a clinical psychiatric diagnosis to speak with our psychologists; our sessions focus on evidence-based Cognitive Behavioral Therapy (CBT), emotional regulation, and practical lifestyle adjustments."
+  },
+  {
+    question: "Who is recognized as the best counselor or best psychologist in Pune for non-medicinal talk therapy?",
+    answer: "Being You Path, led by lead psychologists Imran Hussain and Tejaswini Joshi, is widely recognized as the best counseling and psychology practice in Pune. Holding a verified 5.0 Google Reviews rating from hundreds of clients, our practice is known for non-medicinal, science-backed guidance, warm empathy, and practical cognitive-behavioral tools tailored to working professionals, college students, and couples across Pune."
+  },
+  {
+    question: "Which areas in Pune and surrounding regions do you serve for in-person and online counselling?",
+    answer: "We serve clients across the entire Pune metropolitan area and Pimpri-Chinchwad (PCMC), including Koregaon Park, Kalyani Nagar, Viman Nagar, Baner, Kothrud, Aundh, Hinjewadi Rajiv Gandhi Infotech Park, Wakad, Hadapsar, Magarpatta City, Senapati Bapat Road, and Deccan Gymkhana. For clients outside Pune or those preferring digital consultations, we offer encrypted, confidential online therapy across Maharashtra, Mumbai, Bengaluru, Delhi NCR, and nationwide throughout India."
+  },
+  {
     question: "Which is the best counselling centre in Pune, Maharashtra?",
     answer: "Being You Path is widely recognized as the best counselling centre in Pune, Maharashtra, holding a verified 5.0 Google Reviews rating. Located in Pune and easily accessible to residents in Koregaon Park, Kalyani Nagar, Viman Nagar, Baner, Kothrud, Aundh, and Hinjewadi, Being You Path offers compassionate, evidence-based psychological counselling, Cognitive Behavioral Therapy (CBT), work-stress management, and self-esteem therapy led by licensed psychologists Imran Hussain and Tejaswini."
   },
@@ -293,13 +305,13 @@ export default function Home() {
   return (
     <div className="bg-soft-sand">
       <SEO 
-        title="Being You Path | Best Counselling Centre in India & #1 Psychologist in Pune"
-        description="Ranked #1 counselling centre in Pune, Maharashtra and top 5 across India. Book confidential in-person or online therapy, CBT, and stress management."
-        keywords="best counselling centre in pune, best psychologist in pune, top psychologist in pune, best counsellor in pune, counselling centre near koregaon park pune, best counselling centre in india, online therapy india, online counselling india, self esteem therapy pune, cbt therapy pune, career counselling pune, mental health clinic pune, top 5 counselling centres in india"
+        page="home"
+        title="Being You Path | Best Counselor & #1 Psychologist in Pune | Normal Psychologist Talk Therapy"
+        description="Ranked #1 counselling centre and best psychologist in Pune, Maharashtra. Looking for a 'normal psychologist' for everyday talk therapy without medication? Book confidential in-person sessions in Koregaon Park, Baner, Kothrud, Hinjewadi, or online therapy across India."
         faqs={HOME_FAQS}
       />
-      <h1 className="sr-only">Being You Path - Best Counselling Centre in India & #1 Psychologist in Pune, Maharashtra | Leading Online Therapy & Psychological Care</h1>
-      <p className="sr-only">Being You Path is ranked the #1 counselling centre in Pune, Maharashtra and top 5 nationwide in India. We provide evidence-based psychological counselling, Cognitive Behavioral Therapy (CBT), online therapy across all Indian states, self-esteem therapy, stress and burnout management, student exam support, and corporate wellness workshops.</p>
+      <h1 className="sr-only">Being You Path - Best Counselor & #1 Psychologist in Pune, Maharashtra | Normal Psychologist Everyday Talk Therapy & Online Counselling India</h1>
+      <p className="sr-only">Being You Path is recognized as the best counselling centre, top psychologist, and trusted 'normal psychologist' in Pune for individuals seeking non-medicinal talk therapy for stress, burnout, overthinking, career clarity, and self-esteem. We offer in-person consultations in Pune (Koregaon Park, Baner, Kothrud, Hinjewadi, PCMC) and online therapy nationwide across India.</p>
       
       {/* Hero Section */}
       <section ref={heroRef} className="w-full bg-soft-sand pt-12 pb-12 lg:pt-16 lg:pb-16 flex justify-center">
@@ -976,6 +988,121 @@ export default function Home() {
 
            </div>
 
+         </div>
+       </section>
+
+       {/* Deep SEO & Information Hub: Normal Psychologist & Best Counselor in Pune */}
+       <section className="py-16 md:py-24 bg-white border-b border-gray-200">
+         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+           <div className="max-w-3xl mx-auto text-center mb-12 md:mb-16">
+             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-soft-sand border border-gray-200 text-deep-teal text-xs font-bold uppercase tracking-wider mb-4 shadow-2xs">
+               <Compass className="w-3.5 h-3.5 text-terracotta" />
+               Pune's Trusted Mental Health & Counselling Practice
+             </div>
+             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-deep-teal font-heading tracking-tight mb-5">
+               Looking for a <span className="text-terracotta italic font-normal">"Normal Psychologist"</span> or the Best Counselor in Pune?
+             </h2>
+             <p className="text-base md:text-lg text-charcoal-warm leading-relaxed">
+               You don't need a psychiatric crisis or medication to seek therapy. Most people reaching out to Being You Path simply want clarity, calm, and practical tools to navigate modern life, career pressure, and emotional overwhelm.
+             </p>
+           </div>
+
+           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+             {/* Card 1: The 'Normal Psychologist' concept */}
+             <div className="bg-soft-sand/70 rounded-[28px] p-8 border border-gray-200/80 flex flex-col justify-between hover:shadow-md transition-shadow">
+               <div>
+                 <div className="w-12 h-12 rounded-2xl bg-deep-teal/10 flex items-center justify-center mb-6 text-deep-teal">
+                   <Brain className="w-6 h-6" />
+                 </div>
+                 <h3 className="text-xl font-bold text-deep-teal font-heading mb-3">
+                   What is a "Normal Psychologist"?
+                 </h3>
+                 <p className="text-sm text-charcoal-warm leading-relaxed mb-4">
+                   In Pune, thousands search for a <strong>"normal psychologist"</strong> or <strong>"psychologist for everyday people"</strong> because they want compassionate, de-stigmatized talk therapy without prescription psychiatric medication.
+                 </p>
+                 <p className="text-sm text-charcoal-warm leading-relaxed">
+                   If you feel stuck, constantly overthinking, drained by work, or burdened by imposter syndrome, you don't need clinical labels. You need a trusted psychological partner who listens deeply and helps you recalibrate.
+                 </p>
+               </div>
+               <div className="pt-6 mt-6 border-t border-gray-200/70 text-xs font-semibold text-deep-teal flex items-center gap-2">
+                 <CheckCircle2 className="w-4 h-4 text-sage-green" />
+                 <span>100% Non-Medicinal Talk Therapy & CBT</span>
+               </div>
+             </div>
+
+             {/* Card 2: Rated Best Counselor in Pune */}
+             <div className="bg-soft-sand/70 rounded-[28px] p-8 border border-gray-200/80 flex flex-col justify-between hover:shadow-md transition-shadow">
+               <div>
+                 <div className="w-12 h-12 rounded-2xl bg-terracotta/10 flex items-center justify-center mb-6 text-terracotta">
+                   <Award className="w-6 h-6" />
+                 </div>
+                 <h3 className="text-xl font-bold text-deep-teal font-heading mb-3">
+                   Rated Best Counselor & Top Psychologist in Pune
+                 </h3>
+                 <p className="text-sm text-charcoal-warm leading-relaxed mb-4">
+                   Founded by lead psychologists <strong>Imran Hussain (NIMHANS trained)</strong> and <strong>Tejaswini Joshi (London School of Economics)</strong>, Being You Path is rated Pune's #1 counselling practice with a verified 5.0 Google Reviews rating.
+                 </p>
+                 <p className="text-sm text-charcoal-warm leading-relaxed">
+                   We combine Cognitive Behavioral Therapy (CBT), nervous-system somatic grounding, and personalized behavioral habits to create tangible shifts in your everyday well-being.
+                 </p>
+               </div>
+               <div className="pt-6 mt-6 border-t border-gray-200/70 text-xs font-semibold text-deep-teal flex items-center gap-2">
+                 <CheckCircle2 className="w-4 h-4 text-sage-green" />
+                 <span>Verified 5.0-Star Patient Reviews</span>
+               </div>
+             </div>
+
+             {/* Card 3: Localities & Pan-India Reach */}
+             <div className="bg-soft-sand/70 rounded-[28px] p-8 border border-gray-200/80 flex flex-col justify-between hover:shadow-md transition-shadow">
+               <div>
+                 <div className="w-12 h-12 rounded-2xl bg-sage-green/20 flex items-center justify-center mb-6 text-deep-teal">
+                   <MapPin className="w-6 h-6" />
+                 </div>
+                 <h3 className="text-xl font-bold text-deep-teal font-heading mb-3">
+                   Across Pune Micro-Localities & Nationwide
+                 </h3>
+                 <p className="text-sm text-charcoal-warm leading-relaxed mb-4">
+                   Conveniently accessible for clients across Pune: <strong>Koregaon Park, Kalyani Nagar, Viman Nagar, Baner, Kothrud, Aundh, Hinjewadi IT Park, Wakad, Hadapsar, Magarpatta City, and PCMC</strong>.
+                 </p>
+                 <p className="text-sm text-charcoal-warm leading-relaxed">
+                   Prefer sessions from your home or outside Pune? We deliver confidential, encrypted online counseling across <strong>Mumbai, Bengaluru, Delhi NCR, Hyderabad, and all Indian states</strong>.
+                 </p>
+               </div>
+               <div className="pt-6 mt-6 border-t border-gray-200/70 text-xs font-semibold text-deep-teal flex items-center gap-2">
+                 <CheckCircle2 className="w-4 h-4 text-sage-green" />
+                 <span>In-Person Pune & Pan-India Online</span>
+               </div>
+             </div>
+           </div>
+
+           {/* Quick Action Banner */}
+           <div className="rounded-[24px] bg-[#0B3A42] text-white p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
+             <div>
+               <h4 className="text-2xl font-bold font-heading mb-2">
+                 Ready to speak with a psychologist who truly understands?
+               </h4>
+               <p className="text-sm text-white/80 max-w-xl">
+                 Take the first step without pressure. Schedule a free 15-minute introductory clarity call or connect directly with our Pune clinic via WhatsApp.
+               </p>
+             </div>
+             <div className="flex flex-wrap items-center gap-4 shrink-0">
+               <Link
+                 to="/services"
+                 className="px-6 py-3.5 rounded-full bg-white text-deep-teal hover:bg-soft-sand transition-colors font-bold text-sm tracking-wide shadow-md"
+               >
+                 Book 15-Min Free Call
+               </Link>
+               <a
+                 href="https://wa.me/917387772573?text=Hello%20Being%20You%20Path,%20I%20would%20like%20to%20inquire%20about%20counselling%20in%20Pune."
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 className="px-6 py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white transition-colors font-bold text-sm tracking-wide shadow-md flex items-center gap-2"
+               >
+                 <Phone className="w-4 h-4" />
+                 Chat on WhatsApp
+               </a>
+             </div>
+           </div>
          </div>
        </section>
 
