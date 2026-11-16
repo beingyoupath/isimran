@@ -1,1277 +1,1208 @@
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { 
-  Brain, 
-  GraduationCap, 
-  Users, 
-  Briefcase, 
-  CheckCircle2, 
-  ChevronRight, 
-  Compass, 
-  HeartHandshake, 
-  Zap, 
-  BookOpen, 
-  Quote, 
-  ChevronLeft, 
-  ArrowRight, 
-  BrainCircuit, 
-  Coffee, 
-  Star, 
-  HelpCircle,
-  MapPin, 
-  ShieldCheck, 
-  Award, 
-  ChevronDown, 
-  ChevronUp, 
-  Globe, 
-  Sparkles, 
-  Clock, 
-  Phone, 
-  Check,
-  Copy
-} from "lucide-react";
-import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
-import { useState, useEffect, useRef } from "react";
-import { SEO } from "../components/SEO";
+import { motion, useScroll, useTransform } from "motion/react";
+import SEO from "../components/SEO";
 import { GOOGLE_REVIEWS } from "../data/testimonials";
+import {
+  CLINIC_ADDRESS,
+  CLINIC_HOURS_LABEL,
+  GBP_URL,
+  LOCAL_BUSINESS_SCHEMA,
+  TELE_MANAS_NOTICE,
+} from "../lib/seoConfig";
+import {
+  Quote,
+  Star,
+  ChevronDown,
+  ChevronUp,
+  Check,
+  Copy,
+  Sparkles,
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+  Briefcase,
+  GraduationCap,
+  CircleHelp,
+  BookOpen,
+  Coffee,
+  Users,
+  HeartHandshake,
+  Compass,
+  Layers,
+  ShieldCheck,
+  CheckCircle2,
+  Calendar,
+  Clock,
+  MapPin,
+  Share2,
+  PhoneCall,
+} from "lucide-react";
+import {
+  DailyThoughtResult,
+  buildCopyThoughtText,
+  buildISTDatePartsFromYMD,
+  buildWhatsAppThoughtShareUrl,
+  getDailyThoughtIST,
+  getDefaultThought,
+  getDefaultWeekdayPractice,
+  getSeasonFromMonth,
+  msUntilNextISTMidnight,
+} from "../lib/thoughts";
 
 export const HOME_FAQS = [
   {
-    question: "What is a 'normal psychologist' in Pune, and is therapy suitable if I don't have a severe clinical diagnosis?",
-    answer: "In Pune, people often search for a 'normal psychologist' or 'regular psychologist' when they want compassionate, everyday talk therapy without medication or psychiatric hospitalization. At Being You Path, we specialize in helping individuals who are functioning in daily life but struggling internally with overthinking, emotional fatigue, imposter syndrome, stress, workplace burnout, or relationship confusion. You do not need a clinical psychiatric diagnosis to speak with our psychologists; our sessions focus on evidence-based Cognitive Behavioral Therapy (CBT), emotional regulation, and practical lifestyle adjustments."
+    question: "How much do counselling sessions cost and is there a free call first?",
+    answer:
+      "We always begin with a free 15-minute clarity call so you can speak with us, ask questions, and decide if we feel like the right fit before booking anything. Regular 50–60 minute individual sessions and 75-minute couples sessions have fees shared transparently during that call based on the format (in person in Pune or online across India).",
   },
   {
-    question: "Who is recognized as the best counselor or best psychologist in Pune for non-medicinal talk therapy?",
-    answer: "Being You Path, led by lead psychologists Imran Hussain and Tejaswini Joshi, is widely recognized as the best counseling and psychology practice in Pune. Holding a verified 5.0 Google Reviews rating from hundreds of clients, our practice is known for non-medicinal, science-backed guidance, warm empathy, and practical cognitive-behavioral tools tailored to working professionals, college students, and couples across Pune."
+    question: "What happens in the first counselling session?",
+    answer:
+      "Our first 50–60 minute session is calm, unhurried, and structured around listening. We ask about what brought you here, your sleep, work or study routines, and what feels hardest right now. You do not need to share everything at once—by the end of the session we outline initial themes and a practical plan together.",
   },
   {
-    question: "Which areas in Pune and surrounding regions do you serve for in-person and online counselling?",
-    answer: "We serve clients across the entire Pune metropolitan area and Pimpri-Chinchwad (PCMC), including Koregaon Park, Kalyani Nagar, Viman Nagar, Baner, Kothrud, Aundh, Hinjewadi Rajiv Gandhi Infotech Park, Wakad, Hadapsar, Magarpatta City, Senapati Bapat Road, and Deccan Gymkhana. For clients outside Pune or those preferring digital consultations, we offer encrypted, confidential online therapy across Maharashtra, Mumbai, Bengaluru, Delhi NCR, and nationwide throughout India."
+    question: "What is the difference between CBT and regular talk therapy?",
+    answer:
+      "Traditional talk therapy focuses mainly on exploring thoughts, feelings, and past context in conversation. Cognitive Behavioural Therapy (CBT) is active and structured: alongside listening warmly, we map specific thought loops and daily habits, practise measurable tools between sessions, and focus on steady, real-life change.",
   },
   {
-    question: "Which is the best counselling centre in Pune, Maharashtra?",
-    answer: "Being You Path is widely recognized as the best counselling centre in Pune, Maharashtra, holding a verified 5.0 Google Reviews rating. Located in Pune and easily accessible to residents in Koregaon Park, Kalyani Nagar, Viman Nagar, Baner, Kothrud, Aundh, and Hinjewadi, Being You Path offers compassionate, evidence-based psychological counselling, Cognitive Behavioral Therapy (CBT), work-stress management, and self-esteem therapy led by licensed psychologists Imran Hussain and Tejaswini."
+    question: "Should I choose online therapy or in-person sessions in Pune?",
+    answer:
+      "Both formats offer the same clinical depth and confidentiality. Choose in-person visits at our Deccan Gymkhana clinic near Prabhat Road, Pune if you prefer stepping into a quiet room away from home. Choose online video therapy if you live elsewhere in India, commute long distances, or need evening and weekend flexibility.",
   },
   {
-    question: "Why is Being You Path ranked among the top 5 counselling centres in India?",
-    answer: "Being You Path ranks among the top 5 counselling centres in India due to its proprietary clinical framework that integrates modern evidence-based psychology, secular mindfulness, and nervous-system somatic regulation. With top-rated in-person consultations in Pune and secure, HIPAA-compliant online therapy sessions across every Indian state, Being You Path bridges the gap between clinical science and everyday emotional relief without stigma."
+    question: "Is everything I share completely confidential?",
+    answer:
+      "Yes. Your personal details, intake notes, and everything discussed in sessions are kept strictly confidential. We never share information with employers, family members, or partners without your explicit consent—the only legal exceptions are immediate risk of serious harm to yourself or someone else.",
+  },
+];
+
+
+
+const CORE_PILLARS = [
+  {
+    title: "Modern Psychology",
+    subtitle: "Grounded in Science",
+    description:
+      "Using evidence-based therapeutic techniques like Cognitive Behavioural Therapy (CBT) and Positive Psychology, we help you understand your mind, rewire unhelpful thought patterns, and build genuine emotional resilience without the heavy jargon.",
   },
   {
-    question: "Who is the best psychologist in Pune for stress, anxiety, and self-esteem therapy?",
-    answer: "For stress, anxiety, and self-esteem therapy in Pune, clients frequently recommend Being You Path's lead psychologists, Imran Hussain and Tejaswini. As verified by dozens of 5-star Google Reviews from local working professionals and students, they excel in treating corporate burnout, chronic overthinking, panic response, imposter syndrome, and social anxiety with personalized, practical coping mechanisms that yield lasting behavioral shifts."
+    title: "Secular Mindfulness",
+    subtitle: "Attention & Regulation",
+    description:
+      "Practical, accessible attention training for the real world. Learn how to regulate your nervous system, pause before reacting, and navigate high-stress environments without needing to retreat to a mountaintop.",
   },
   {
-    question: "Does Being You Path provide confidential online counselling across India?",
-    answer: "Yes, Being You Path conducts confidential, encrypted 1-on-1 online psychological counselling for individuals, couples, and students across India, including Mumbai, Delhi NCR, Bengaluru, Hyderabad, Chennai, Kolkata, Pune, and Tier-2 cities. Online sessions follow the exact same personalized clinical standards as in-person therapy."
+    title: "Ancient Wisdom",
+    subtitle: "Meaning & Purpose",
+    description:
+      "We translate timeless, profound historical insights into actionable modern frameworks. Because beyond fixing what's broken, true well-being is about finding deeper connection, purpose, and clarity in your everyday life.",
   },
   {
-    question: "What specific psychological and life challenges does Being You Path treat?",
-    answer: "Being You Path treats a comprehensive spectrum of mental health and lifestyle challenges: work-related burnout and deadline fatigue, generalized anxiety and panic symptoms, depression and loss of purpose, relationship and marital friction, career transitions and Gen Z workplace dilemmas, student exam stress, parental overwhelm, and emotional regulation."
+    title: "Somatic Awareness",
+    subtitle: "Body-Mind Connection",
+    description:
+      "Learning to listen to the physical sensations of emotion, understanding how your body stores stress, and using somatic techniques to release tension and actively restore physical and emotional equilibrium.",
   },
   {
-    question: "How does Being You Path's career counselling for students and professionals work in Pune?",
-    answer: "Unlike standard aptitude test firms in Pune, Being You Path pairs in-depth psychological clarity assessments with practical experiential exposure—including mini industry internships, parent-student alignment dialogue, and core values mapping. This ensures teenagers and mid-career professionals gain genuine confidence before committing to high-stakes decisions."
+    title: "Behavioral Integration",
+    subtitle: "Sustainable Habits",
+    description:
+      "Moving beyond insight to action. We focus on creating structured, consistent, and resilient daily habits that reinforce your well-being journey and align your behaviors with your deepest values.",
   },
-  {
-    question: "How can I book an introductory session or free clarity call with Being You Path?",
-    answer: "Booking is seamless. Click 'Book Consultation' or reach out directly on WhatsApp at +91 7387772573 or +91 7387779238, or email hello@beingyoupath.com. We begin with a free 15-minute introductory clarity call to understand your specific needs, explain our methodology, and match you with the right psychologist."
-  }
 ];
 
 export default function Home() {
-  const heroRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
-    offset: ["start start", "end start"]
+    offset: ["start start", "end start"],
+  });
+  const heroImgY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
+  const heroImgScale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
+  const heroTextY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const heroTextOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const [activePillarIndex, setActivePillarIndex] = useState(0);
+  const [isPillarPaused, setIsPillarPaused] = useState(false);
+  const [activeReviewIndex, setActiveReviewIndex] = useState(0);
+  const [copiedQuote, setCopiedQuote] = useState(false);
+
+  const [dailyThought, setDailyThought] = useState<DailyThoughtResult>(() => {
+    const defaultIst = buildISTDatePartsFromYMD(2026, 1, 5); // Monday fallback for SSR/no-JS
+    return {
+      thought: getDefaultThought(),
+      practice: getDefaultWeekdayPractice(),
+      ist: defaultIst,
+      season: getSeasonFromMonth(defaultIst.month),
+      matchKind: "fallback",
+    };
   });
 
-  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
-  const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
-  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
-  const textOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
-
-  const anchors = {
-    0: { // Sunday
-      morning: { emoji: "🌅", title: "Sunday Morning Stillness", body: "Before the week's planning begins, spend 2 minutes in conscious breathing. Let today be about restoration, not just preparation." },
-      afternoon: { emoji: "☕", title: "Sunday Afternoon Pause", body: "Notice if the 'Sunday Scaries' are creeping in. Acknowledge the feeling without trying to fix it immediately. You are here, right now, and you are safe." },
-      evening: { emoji: "🌙", title: "Sunday Evening Transition", body: "Close out the weekend deliberately. Write down one thing you're looking forward to this week. This shifts the brain from avoidance to approach motivation." }
-    },
-    1: { // Monday
-      morning: { emoji: "🌅", title: "Monday Morning Anchor", body: "Before checking your phone, spend 90 seconds in stillness. Set a single intention for how you want to feel today, rather than what you want to achieve." },
-      afternoon: { emoji: "☀️", title: "Monday Afternoon Reset", body: "Step away from the screen. Look at something distant. Take 3 deep breaths. This breaks the sympathetic nervous system's 'tunnel vision'." },
-      evening: { emoji: "🌙", title: "Monday Evening Boundary", body: "Work is done. Physically close your laptop or notebook. Say aloud, 'I am leaving work for today.' This creates a clear psychological boundary." }
-    },
-    2: { // Tuesday
-      morning: { emoji: "🌅", title: "Tuesday Morning Focus", body: "Identify your one 'frog' today—the hardest but most important task. Commit to doing it first, protecting your peak cognitive energy." },
-      afternoon: { emoji: "☕", title: "Tuesday Afternoon Clarity", body: "Notice any tension in your jaw or shoulders. Consciously let it go. Action doesn't require physical tension." },
-      evening: { emoji: "🌙", title: "Tuesday Evening Unwind", body: "Transition into your evening with a sensory shift. Dim the lights, play different music, or change your clothes to signal to your brain that the workday is over." }
-    },
-    3: { // Wednesday
-      morning: { emoji: "🌅", title: "Wednesday Mid-Week Check", body: "You're halfway there. Acknowledge what hasn't gone perfectly this week and practice self-compassion. Adjust your expectations if necessary." },
-      afternoon: { emoji: "☀️", title: "Wednesday Energy Audit", body: "Where is your energy right now? Rate it from 1-10. If it's low, don't push through forcefully. Take a 5-minute break to stretch or hydrate." },
-      evening: { emoji: "🌙", title: "Wednesday Reconnection", body: "Mid-week can feel isolating. Send a quick message of appreciation to someone in your life. Connection is a powerful regulator of the nervous system." }
-    },
-    4: { // Thursday
-      morning: { emoji: "🌅", title: "Thursday Morning Pace", body: "Resist the urge to rush. Move deliberately through your morning routine. Rushing signals danger to the brain; pacing signals safety." },
-      afternoon: { emoji: "☕", title: "Thursday Afternoon Friction", body: "Feeling friction? Ask yourself: 'Am I making this harder than it needs to be?' Look for the path of least resistance for the rest of the day." },
-      evening: { emoji: "🌙", title: "Thursday Gratitude", body: "Reflect on one thing you handled well today. Acknowledging your own competence builds self-efficacy and resilience." }
-    },
-    5: { // Friday
-      morning: { emoji: "🌅", title: "Friday Morning Sprint", body: "Identify what absolutely must be done to close out the week peacefully. Prioritize ruthlessly. The rest can wait." },
-      afternoon: { emoji: "☀️", title: "Friday Brain Dump", body: "Write down all open loops—tasks, ideas, worries. Get them out of your head and onto paper so you don't carry them into the weekend." },
-      evening: { emoji: "🌙", title: "Friday Evening Shift", body: "You made it. Do something that requires absolutely no optimization or productivity. Permit yourself to just 'be'." }
-    },
-    6: { // Saturday
-      morning: { emoji: "🌅", title: "Saturday Morning Freedom", body: "Wake up without an immediate agenda. Let your curiosity guide your first hour today instead of obligation." },
-      afternoon: { emoji: "☕", title: "Saturday Afternoon Play", body: "Engage in an activity just for the joy of it. Play is essential for neuroplasticity and emotional regulation, even for adults." },
-      evening: { emoji: "🌙", title: "Saturday Evening Presence", body: "Notice the people or environment around you. Put down devices and practice undivided attention. It's the highest form of connection." }
-    }
-  };
-
-  const thoughtsOfTheDay = [
-    {
-      quote: "Smile, breathe, and go slowly. There is no need to hurry. Have compassion for all beings, starting with yourself.",
-      theme: "Stillness & Compassion",
-      author: "Thích Nhất Hạnh",
-      tradition: "Plum Village Mindfulness",
-      day: "Sunday"
-    },
-    {
-      quote: "When you arise in the morning, think of what a precious privilege it is to be alive — to breathe, to think, to enjoy, to love.",
-      theme: "Clarity & Intention",
-      author: "Marcus Aurelius",
-      tradition: "Meditations & Stoic Philosophy",
-      day: "Monday"
-    },
-    {
-      quote: "Quiet the mind, and the soul will speak. What you think, you become. What you feel, you attract. What you imagine, you create.",
-      theme: "Mindful Focus & Flow",
-      author: "The Dhammapada",
-      tradition: "Ancient Buddhist Wisdom",
-      day: "Tuesday"
-    },
-    {
-      quote: "The wound is the place where the Light enters you. Let go of what you cannot change, and make space for your own peace.",
-      theme: "Emotional Freedom & Release",
-      author: "Rumi",
-      tradition: "Sufi Wisdom & Heart Centred Philosophy",
-      day: "Wednesday"
-    },
-    {
-      quote: "The curious paradox is that when I accept myself just as I am, then I can change. Who looks outside, dreams; who looks inside, awakes.",
-      theme: "Acceptance & Conscious Pacing",
-      author: "Carl Jung",
-      tradition: "Analytical Psychology & Depth Wisdom",
-      day: "Thursday"
-    },
-    {
-      quote: "Between stimulus and response there is a space. In that space is our power to choose our response. In our response lies our growth and our freedom.",
-      theme: "Inner Resilience & Strength",
-      author: "Viktor E. Frankl",
-      tradition: "Logotherapy & Existential Psychology",
-      day: "Friday"
-    },
-    {
-      quote: "Peace does not mean to be in a place where there is no noise or trouble. It means to be in the midst of those things and still be calm in your heart.",
-      theme: "Presence & Inner Stillness",
-      author: "Dalai Lama XIV",
-      tradition: "Tibetan Buddhist Philosophy",
-      day: "Saturday"
-    }
-  ];
-
-  const corePaths = [
-    {
-      title: "Modern Psychology",
-      subtitle: "Grounded in Science",
-      description: "Using evidence-based therapeutic techniques like Cognitive Behavioural Therapy (CBT) and Positive Psychology, we help you understand your mind, rewire unhelpful thought patterns, and build genuine emotional resilience without the heavy jargon."
-    },
-    {
-      title: "Secular Mindfulness",
-      subtitle: "Attention & Regulation",
-      description: "Practical, accessible attention training for the real world. Learn how to regulate your nervous system, pause before reacting, and navigate high-stress environments without needing to retreat to a mountaintop."
-    },
-    {
-      title: "Ancient Wisdom",
-      subtitle: "Meaning & Purpose",
-      description: "We translate timeless, profound historical insights into actionable modern frameworks. Because beyond fixing what's broken, true well-being is about finding deeper connection, purpose, and clarity in your everyday life."
-    },
-    {
-      title: "Somatic Awareness",
-      subtitle: "Body-Mind Connection",
-      description: "Learning to listen to the physical sensations of emotion, understanding how your body stores stress, and using somatic techniques to release tension and actively restore physical and emotional equilibrium."
-    },
-    {
-      title: "Behavioral Integration",
-      subtitle: "Sustainable Habits",
-      description: "Moving beyond insight to action. We focus on creating structured, consistent, and resilient daily habits that reinforce your well-being journey and align your behaviors with your deepest values."
-    }
-  ];
-
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
-
-  const testimonials = GOOGLE_REVIEWS;
+  const reviews = GOOGLE_REVIEWS;
 
   useEffect(() => {
-    const timer = setInterval(() => setCurrentDate(new Date()), 60000);
-    return () => clearInterval(timer);
+    let midnightTimer: ReturnType<typeof setTimeout> | undefined;
+
+    const refreshDailyThought = () => {
+      setDailyThought(getDailyThoughtIST(new Date()));
+      midnightTimer = setTimeout(refreshDailyThought, msUntilNextISTMidnight());
+    };
+
+    refreshDailyThought();
+
+    return () => {
+      if (midnightTimer) clearTimeout(midnightTimer);
+    };
   }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+      setActiveReviewIndex((prev) => (prev + 1) % reviews.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, [testimonials.length]);
+  }, [reviews.length]);
 
   useEffect(() => {
-    if (!isHovered) {
-      const timer = setInterval(() => {
-        setCurrentSlide((prev) => (prev + 1) % corePaths.length);
-      }, 7000);
-      return () => clearInterval(timer);
-    }
-  }, [corePaths.length, isHovered]);
+    if (isPillarPaused) return;
+    const timer = setInterval(() => {
+      setActivePillarIndex((prev) => (prev + 1) % CORE_PILLARS.length);
+    }, 7000);
+    return () => clearInterval(timer);
+  }, [isPillarPaused]);
 
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % corePaths.length);
-  const prevSlide = () => setCurrentSlide((prev) => (prev === 0 ? corePaths.length - 1 : prev - 1));
+  const currentPractice = dailyThought.practice;
+  const currentThought = dailyThought.thought;
 
-  const dayOfWeek = (currentDate.getDay() % 7) as keyof typeof anchors;
-  const hour = currentDate.getHours();
-  
-  let timeOfDay: 'morning' | 'afternoon' | 'evening' = 'morning';
-  if (hour >= 12 && hour < 17) {
-    timeOfDay = 'afternoon';
-  } else if (hour >= 17 || hour < 5) {
-    timeOfDay = 'evening';
-  }
-
-  const currentAnchor = anchors[dayOfWeek]?.[timeOfDay] || anchors[0]['morning'];
-
-  const [copiedThought, setCopiedThought] = useState(false);
-
-  // Strictly determined by day of the week (0: Sunday, 1: Monday, ... 6: Saturday)
-  const currentDayIndex = currentDate.getDay() % thoughtsOfTheDay.length;
-  const currentThoughtItem = thoughtsOfTheDay[currentDayIndex] || thoughtsOfTheDay[0];
-
-  const handleCopyThought = () => {
-    const textToCopy = `"${currentThoughtItem.quote}" — ${currentThoughtItem.author} | Being You Path`;
-    if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
-      navigator.clipboard.writeText(textToCopy)
+  const handleCopyQuote = () => {
+    const text = buildCopyThoughtText(currentThought);
+    if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
+      navigator.clipboard
+        .writeText(text)
         .then(() => {
-          setCopiedThought(true);
-          setTimeout(() => setCopiedThought(false), 2000);
+          setCopiedQuote(true);
+          setTimeout(() => setCopiedQuote(false), 2000);
         })
-        .catch(() => {
-          try {
-            const textArea = document.createElement("textarea");
-            textArea.value = textToCopy;
-            textArea.style.position = "fixed";
-            textArea.style.opacity = "0";
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            document.execCommand("copy");
-            document.body.removeChild(textArea);
-            setCopiedThought(true);
-            setTimeout(() => setCopiedThought(false), 2000);
-          } catch {
-            // fallback
-          }
-        });
-    } else {
-      try {
-        const textArea = document.createElement("textarea");
-        textArea.value = textToCopy;
-        textArea.style.position = "fixed";
-        textArea.style.opacity = "0";
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textArea);
-        setCopiedThought(true);
-        setTimeout(() => setCopiedThought(false), 2000);
-      } catch {
-        // fallback
-      }
+        .catch(() => {});
     }
   };
 
+  const audienceCards = [
+    {
+      icon: Briefcase,
+      title: "Working Professional / Businessmen",
+      desc: "Productive on paper but running on empty inside — managing deadlines, businesses, and expectations while quietly wondering if this is it.",
+      image: "/images/audience-professional.webp",
+      alt: "Working professional in Pune reflecting on career clarity and work-life balance",
+    },
+    {
+      icon: GraduationCap,
+      title: "Student / Young Adult",
+      desc: "Navigating performance pressure, future uncertainty, identity questions, and the gap between who you are and who everyone expects you to be.",
+      image: "/images/audience-student.webp",
+      alt: "Young adult student studying with calm focus and guidance",
+    },
+    {
+      icon: Users,
+      title: "Parent / Bachelor or Single",
+      desc: "Whether navigating the chaos of raising kids or trying to find balance and purpose on your own — realising no one handed you a manual for life.",
+      image: "/images/family-parenting.webp",
+      alt: "Warm family conversation representing parenting and personal well-being support",
+    },
+    {
+      icon: HeartHandshake,
+      title: "HR / Team Lead or Manager",
+      desc: "Knows culture and well-being matter, and wants evidence-based, practical solutions for their team — not wellness fluff.",
+      image: "/images/team-hr.webp",
+      alt: "Workplace team collaborating in a supportive wellness workshop",
+    },
+  ];
+
+  const pathCards = [
+    {
+      icon: Compass,
+      title: "Career Counselling & Clarity",
+      desc: "For professionals stuck or burning out",
+      path: "/services/career-counselling-pune",
+    },
+    {
+      icon: Briefcase,
+      title: "Employee Well-Being Workshops",
+      desc: "For organisations that take people seriously",
+      path: "/workshops",
+    },
+    {
+      icon: GraduationCap,
+      title: "Student Support & Exam Stress",
+      desc: "For young adults navigating pressure",
+      path: "/services/student-adolescent-counselling-pune",
+    },
+    {
+      icon: Users,
+      title: "Parenting & Family Well-Being",
+      desc: "Raising humans while being human",
+      path: "/services/relationship-couples-counselling-pune",
+    },
+    {
+      icon: HeartHandshake,
+      title: "CBT & Self-Esteem Therapy",
+      desc: "Train attention. Change unhelpful loops.",
+      path: "/services/cbt-therapy-pune",
+    },
+    {
+      icon: Layers,
+      title: "Burnout & Workplace Stress",
+      desc: "Practical recovery and healthy boundaries",
+      path: "/services/burnout-counselling-pune",
+    },
+  ];
+
   return (
     <div className="bg-soft-sand">
-      <SEO 
-        page="home"
-        title="Being You Path | Best Counselor & #1 Psychologist in Pune | Normal Psychologist Talk Therapy"
-        description="Ranked #1 counselling centre and best psychologist in Pune, Maharashtra. Looking for a 'normal psychologist' for everyday talk therapy without medication? Book confidential in-person sessions in Koregaon Park, Baner, Kothrud, Hinjewadi, or online therapy across India."
+      <SEO
+        title="Psychologist & Counselling in Pune | Being You Path"
+        description="CBT and evidence-based counselling in Pune and online across India, with a NIMHANS-trained psychologist. Book a free 15-minute clarity call."
+        url="/"
+        locale="en_IN"
+        alternates={[
+          { hreflang: "en-IN", href: "/" },
+          { hreflang: "hi-IN", href: "/hi" },
+          { hreflang: "x-default", href: "/" },
+        ]}
+        schema={[LOCAL_BUSINESS_SCHEMA]}
         faqs={HOME_FAQS}
       />
-      <h1 className="sr-only">Being You Path - Best Counselor & #1 Psychologist in Pune, Maharashtra | Normal Psychologist Everyday Talk Therapy & Online Counselling India</h1>
-      <p className="sr-only">Being You Path is recognized as the best counselling centre, top psychologist, and trusted 'normal psychologist' in Pune for individuals seeking non-medicinal talk therapy for stress, burnout, overthinking, career clarity, and self-esteem. We offer in-person consultations in Pune (Koregaon Park, Baner, Kothrud, Hinjewadi, PCMC) and online therapy nationwide across India.</p>
-      
+
       {/* Hero Section */}
-      <section ref={heroRef} className="w-full bg-soft-sand pt-12 pb-12 lg:pt-16 lg:pb-16 flex justify-center">
+      <section
+        ref={heroRef}
+        className="w-full bg-soft-sand pt-12 pb-12 lg:pt-16 lg:pb-16 flex justify-center"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="relative rounded-[32px] overflow-hidden shadow-2xl flex flex-col lg:flex-row bg-white">
-            {/* Image Element */}
             <div className="w-full lg:w-5/12 h-[40vh] md:h-[50vh] lg:h-auto min-h-[350px] relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0B3A42]/30 via-transparent to-[#0B3A42]/10 z-10 transition-opacity duration-700 ease-in-out"></div>
-              <motion.img 
-                src="https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=2000&auto=format&fit=crop" 
-                alt="Tranquil walking path illuminated by warm morning sunlight representing the Being You Path journey back to self"
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0B3A42]/30 via-transparent to-[#0B3A42]/10 z-10 transition-opacity duration-700 ease-in-out" />
+              <motion.img
+                src="/images/hero-path.webp"
+                alt="Quiet pathway in morning light representing psychological counselling at Being You Path in Pune"
+                width={1200}
+                height={800}
+                loading="eager"
                 className="absolute inset-0 w-full h-full object-cover origin-center"
-                style={{ y: imageY, scale: imageScale }}
-                referrerPolicy="no-referrer"
+                style={{ y: heroImgY, scale: heroImgScale }}
               />
             </div>
-            
-            {/* Text Content Area */}
-            <motion.div 
-              style={{ y: textY, opacity: textOpacity }}
+
+            <motion.div
+              style={{ y: heroTextY, opacity: heroTextOpacity }}
               className="w-full lg:w-7/12 p-8 md:p-12 lg:p-16 flex flex-col items-center lg:items-start text-center lg:text-left justify-center relative z-20 bg-white"
             >
-              <motion.div 
-                className="w-full max-w-2xl mx-auto lg:mx-0"
-                initial="hidden"
-                animate="show"
-                variants={{
-                  hidden: { opacity: 0 },
-                  show: {
-                    opacity: 1,
-                    transition: {
-                      staggerChildren: 0.2,
-                      delayChildren: 0.1,
-                    }
-                  }
-                }}
-              >
-                <motion.h1 
-                  variants={{
-                    hidden: { opacity: 0, y: 20 },
-                    show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-                  }}
-                  className="text-4xl md:text-[48px] lg:text-[52px] xl:text-[56px] leading-tight font-bold text-deep-teal mb-6 font-heading tracking-tight"
-                >
+              <div className="w-full max-w-2xl mx-auto lg:mx-0">
+                <h1 className="text-xs sm:text-sm font-bold tracking-widest uppercase text-terracotta mb-3 font-sans">
+                  Psychologist &amp; Counselling Centre in Pune
+                </h1>
+                <h2 className="text-4xl md:text-[48px] lg:text-[52px] xl:text-[56px] leading-tight font-bold text-deep-teal mb-6 font-heading tracking-tight">
                   Feel Clearer. Think Better. Live With More Purpose.
-                </motion.h1>
-                
-                <motion.h2 
-                  variants={{
-                    hidden: { opacity: 0, y: 15 },
-                    show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-                  }}
-                  className="text-xl md:text-[28px] md:leading-[36px] text-charcoal-warm mb-8 font-semibold font-heading"
-                >
+                </h2>
+                <p className="text-xl md:text-[26px] md:leading-[34px] text-charcoal-warm mb-6 font-semibold font-heading">
                   Evidence-informed well-being support for the way real life actually feels.
-                </motion.h2>
-
-                <motion.p 
-                  variants={{
-                    hidden: { opacity: 0, y: 15 },
-                    show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-                  }}
-                  className="text-lg text-charcoal-warm mb-10 leading-relaxed"
-                >
-                  You don't need to be in crisis to deserve support. Maybe you're tired in ways sleep doesn't fix. Maybe you're doing everything right but feel nothing clicking. Maybe you're good at your job but lost on the inside.<br/><br/>
-                  Being You Path™ blends modern psychology, mindfulness, and practical everyday science into support that's grounded, warm, and built for real people. No jargon. No mysticism. Just clarity, direction, and tools that work.
-                </motion.p>
-                
-                <motion.div 
-                  variants={{
-                    hidden: { opacity: 0, y: 15 },
-                    show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-                  }}
-                  className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4"
-                >
-                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
-                    <Link
-                      to="/contact"
-                      className="inline-flex items-center justify-center px-8 py-4 text-base tracking-wide font-medium rounded-[50px] text-white bg-terracotta hover:bg-amber-glow transition-all uppercase shadow-md hover:shadow-lg w-full sm:w-auto"
-                    >
-                      &rarr; Book Your Free Clarity Call
-                    </Link>
-                  </motion.div>
-                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
-                    <Link
-                      to="/services"
-                      className="inline-flex items-center justify-center px-8 py-4 text-base tracking-wide font-medium rounded-[50px] text-terracotta border-2 border-terracotta hover:bg-terracotta hover:text-white transition-all uppercase shadow-sm hover:shadow-md w-full sm:w-auto"
-                    >
-                      &rarr; Explore What We Do
-                    </Link>
-                  </motion.div>
-                </motion.div>
-              </motion.div>
+                </p>
+                <p className="text-lg text-charcoal-warm mb-10 leading-relaxed">
+                  You don&apos;t need to be in crisis to deserve support. Maybe you&apos;re tired in ways sleep doesn&apos;t fix. Maybe you&apos;re doing everything right but feel nothing clicking. Maybe you&apos;re good at your job but lost on the inside.
+                  <br />
+                  <br />
+                  Being You Path™ blends modern psychology, mindfulness, and practical everyday science into support that&apos;s grounded, warm, and built for real people. No jargon. Just clarity, direction, and tools that work.
+                </p>
+                <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
+                  <Link
+                    to="/contact"
+                    className="inline-flex items-center justify-center px-8 py-4 text-base tracking-wide font-medium rounded-[50px] text-white bg-terracotta hover:bg-[#823018] transition-all uppercase shadow-md hover:shadow-lg w-full sm:w-auto"
+                  >
+                    → Book Your Free Clarity Call
+                  </Link>
+                  <Link
+                    to="/services"
+                    className="inline-flex items-center justify-center px-8 py-4 text-base tracking-wide font-medium rounded-[50px] text-terracotta border-2 border-terracotta hover:bg-terracotta hover:text-white transition-all uppercase shadow-sm hover:shadow-md w-full sm:w-auto"
+                  >
+                    → Explore What We Do
+                  </Link>
+                </div>
+                <div className="mt-5 flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2 text-xs font-semibold">
+                  <Link
+                    to="/guides/how-to-choose-a-psychologist-pune"
+                    className="text-deep-teal hover:text-terracotta underline underline-offset-4 py-1"
+                  >
+                    How to choose a psychologist in Pune &rarr;
+                  </Link>
+                  <Link
+                    to="/hi"
+                    hrefLang="hi-IN"
+                    className="text-terracotta hover:text-deep-teal underline underline-offset-4 py-1"
+                  >
+                    हिन्दी में देखें (Hindi)
+                  </Link>
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-
-
-      {/* You're In The Right Place If */}
+      {/* Audience Section */}
       <section className="py-12 md:py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10 md:mb-16">
-            <h2 className="text-3xl md:text-[44px] font-semibold text-deep-teal mb-4 font-heading">You're In The Right Place If...</h2>
+            <h2 className="text-3xl md:text-[44px] font-semibold text-deep-teal mb-4 font-heading">
+              You&apos;re In The Right Place If...
+            </h2>
           </div>
-          
-          <motion.div 
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: "-50px" }}
-            variants={{
-              hidden: {},
-              show: { transition: { staggerChildren: 0.1 } }
-            }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-          >
-            {[
-              { icon: Briefcase, title: "Working Professional / Businessmen", desc: "Productive on paper but running on empty inside — managing deadlines, businesses, and expectations while quietly wondering if this is it.", image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=800&auto=format&fit=crop" },
-              { icon: GraduationCap, title: "Student / Young Adult", desc: "Navigating performance pressure, future uncertainty, identity questions, and the gap between who you are and who everyone expects you to be.", image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800&auto=format&fit=crop" },
-              { icon: Users, title: "Parent / Bachelor or Single", desc: "Whether navigating the chaos of raising kids or trying to find balance and purpose on your own — realising no one handed you a manual for life.", image: "https://images.unsplash.com/photo-1536640712-4d4c36ff0e4e?q=80&w=800&auto=format&fit=crop" },
-              { icon: HeartHandshake, title: "HR / Team Lead or Manager", desc: "Knows culture and well-being matter, and wants evidence-based, practical solutions for their team — not wellness fluff.", image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=800&auto=format&fit=crop" }
-            ].map((audience, i) => (
-              <motion.div 
-                key={i}
-                variants={{
-                  hidden: { opacity: 0, y: 30 },
-                  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] } }
-                }}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {audienceCards.map((card, idx) => (
+              <div
+                key={idx}
                 className="bg-soft-sand rounded-[16px] border-t-4 border-t-terracotta border-x border-b border-gray-200 shadow-sm hover-lift group overflow-hidden flex flex-col"
               >
                 <div className="h-48 w-full overflow-hidden relative">
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-300 z-10"></div>
-                  <img src={audience.image} alt={audience.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" loading="lazy" referrerPolicy="no-referrer" />
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-300 z-10" />
+                  <img
+                    src={card.image}
+                    alt={card.alt}
+                    width={800}
+                    height={480}
+                    loading="lazy"
+                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                  />
                 </div>
                 <div className="p-6 flex-grow flex flex-col">
                   <div className="mb-4">
-                    <audience.icon className="text-terracotta w-8 h-8 group-hover:scale-110 transition-transform duration-300 ease-out icon-scale" strokeWidth={1.5} />
+                    <card.icon
+                      className="text-terracotta w-8 h-8 group-hover:scale-110 transition-transform duration-300 ease-out icon-scale"
+                      strokeWidth={1.5}
+                      aria-hidden="true"
+                    />
                   </div>
-                  <h3 className="text-xl font-medium text-deep-teal mb-3 font-heading">{audience.title}</h3>
-                  <p className="text-charcoal-warm text-[15px]">{audience.desc}</p>
+                  <h3 className="text-xl font-medium text-deep-teal mb-3 font-heading">
+                    {card.title}
+                  </h3>
+                  <p className="text-charcoal-warm text-[15px]">{card.desc}</p>
                 </div>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* What Makes Us Different */}
+      {/* Integrated Model Section */}
       <section className="py-12 md:py-16 lg:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-10 items-center">
           <div className="lg:w-1/2">
-            <h2 className="text-3xl md:text-[36px] font-semibold text-deep-teal mb-6 font-heading leading-tight">Not a clinic. Not a coach.<br/>Something more integrated.</h2>
+            <h2 className="text-3xl md:text-[36px] font-semibold text-deep-teal mb-6 font-heading leading-tight">
+              Not a clinic. Not a coach.
+              <br />
+              Something more integrated.
+            </h2>
           </div>
           <div className="lg:w-1/2">
             <p className="text-lg text-charcoal-warm mb-10 leading-relaxed">
-              Most well-being services give you one lens. Therapy looks at the past. Coaching looks at goals. Meditation apps give you breathing exercises. We bring all three together — in a way that's practical, personalised, and grounded in how minds actually work.
+              Most well-being services give you one lens. Therapy looks at the past. Coaching looks at goals. Meditation apps give you breathing exercises. We bring all three together — in a way that&apos;s practical, personalised, and grounded in how minds actually work.
             </p>
-            
             <div className="space-y-6">
               <div className="flex items-center gap-4">
-                <Brain className="w-8 h-8 text-terracotta flex-shrink-0" strokeWidth={1.5} />
-                <span className="font-semibold text-charcoal-warm text-lg">Psychology-Grounded (CBT, Positive, Counselling)</span>
+                <HeartHandshake className="w-8 h-8 text-terracotta flex-shrink-0" strokeWidth={1.5} aria-hidden="true" />
+                <span className="font-semibold text-charcoal-warm text-lg">
+                  Psychology-Grounded (CBT, Positive, Counselling)
+                </span>
               </div>
               <div className="flex items-center gap-4">
-                <Compass className="w-8 h-8 text-terracotta flex-shrink-0" strokeWidth={1.5} />
-                <span className="font-semibold text-charcoal-warm text-lg">Mindfulness-Based (Secular, Attention Training)</span>
+                <Compass className="w-8 h-8 text-terracotta flex-shrink-0" strokeWidth={1.5} aria-hidden="true" />
+                <span className="font-semibold text-charcoal-warm text-lg">
+                  Mindfulness-Based (Secular, Attention Training)
+                </span>
               </div>
               <div className="flex items-center gap-4">
-                <Zap className="w-8 h-8 text-terracotta flex-shrink-0" strokeWidth={1.5} />
-                <span className="font-semibold text-charcoal-warm text-lg">Behavioural Science (Habits, Environment, Friction)</span>
+                <Layers className="w-8 h-8 text-terracotta flex-shrink-0" strokeWidth={1.5} aria-hidden="true" />
+                <span className="font-semibold text-charcoal-warm text-lg">
+                  Behavioural Science (Habits, Environment, Friction)
+                </span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Services Snapshot */}
+      {/* Find Your Path Grid */}
       <section className="py-12 md:py-16 lg:py-20 bg-soft-sand">
-         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10 md:mb-16">
-              <h2 className="text-3xl md:text-[44px] font-semibold text-deep-teal mb-4 font-heading">Find Your Path</h2>
-            </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10 md:mb-16">
+            <h2 className="text-3xl md:text-[44px] font-semibold text-deep-teal mb-4 font-heading">
+              Find Your Path
+            </h2>
+          </div>
 
-            <motion.div 
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, margin: "-50px" }}
-              variants={{
-                hidden: {},
-                show: { transition: { staggerChildren: 0.1 } }
-              }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            >
-               {[
-                 { icon: Compass, title: "Career Counselling & Clarity", desc: "For professionals stuck or burning out" },
-                 { icon: Briefcase, title: "Employee Well-Being Workshops", desc: "For organisations that take people seriously" },
-                 { icon: BookOpen, title: "Student Support & Exam Stress", desc: "For young adults navigating pressure" },
-                 { icon: Users, title: "Parenting & Family Well-Being", desc: "Raising humans while being human" },
-                 { icon: Brain, title: "Mindfulness & Habit Science", desc: "Train attention. Change patterns." },
-                 { icon: Zap, title: "Gen Z in the Workplace", desc: "Bridge the generational gap" },
-               ].map((service, i) => (
-                 <motion.div
-                   key={i}
-                   variants={{
-                     hidden: { opacity: 0, y: 30 },
-                     show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] } }
-                   }}
-                 >
-                   <Link to="/services" className="group bg-white p-8 rounded-[16px] border border-gray-100 shadow-sm hover-lift flex flex-col h-full block">
-                      <service.icon className="w-8 h-8 text-terracotta mb-6 icon-scale" strokeWidth={1.5} />
-                      <h3 className="text-[24px] font-medium text-deep-teal mb-3 font-heading group-hover:text-terracotta transition-colors leading-tight">{service.title}</h3>
-                      <p className="text-charcoal-warm mb-8 flex-grow">{service.desc}</p>
-                      <span className="text-terracotta font-medium flex items-center mt-auto uppercase text-sm tracking-wide">
-                        Learn More &rarr; <ChevronRight className="w-4 h-4 ml-1 opacity-0 -translate-x-2 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:translate-x-0" />
-                      </span>
-                   </Link>
-                 </motion.div>
-               ))}
-            </motion.div>
-         </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {pathCards.map((item, idx) => (
+              <Link
+                key={idx}
+                to={item.path}
+                className="group bg-white p-8 rounded-[16px] border border-gray-100 shadow-sm hover-lift flex flex-col h-full block"
+              >
+                <item.icon className="w-8 h-8 text-terracotta mb-6 icon-scale" strokeWidth={1.5} aria-hidden="true" />
+                <h3 className="text-[24px] font-medium text-deep-teal mb-3 font-heading group-hover:text-terracotta transition-colors leading-tight">
+                  {item.title}
+                </h3>
+                <p className="text-charcoal-warm mb-8 flex-grow">{item.desc}</p>
+                <span className="text-terracotta font-medium flex items-center mt-auto uppercase text-sm tracking-wide">
+                  Learn More →{" "}
+                  <ChevronRight className="w-4 h-4 ml-1 opacity-0 -translate-x-2 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:translate-x-0" />
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
       </section>
 
-      {/* Core Path Slider */}
-      <section className="py-12 md:py-16 lg:py-20 bg-white border-b border-t border-gray-100" aria-label="Our Core Path">
+      {/* The Core Path Carousel (all slides preserved in raw DOM for SSR/crawlers) */}
+      <section
+        className="py-12 md:py-16 lg:py-20 bg-white border-b border-t border-gray-100"
+        aria-label="Our Core Path"
+      >
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10 md:mb-16">
-            <h2 className="text-3xl md:text-[44px] font-semibold text-deep-teal mb-4 font-heading">The Core Path</h2>
-            <p className="text-lg text-charcoal-warm">A holistic well-being practice integrating five essential pillars.</p>
+            <h2 className="text-3xl md:text-[44px] font-semibold text-deep-teal mb-4 font-heading">
+              The Core Path
+            </h2>
+            <p className="text-lg text-charcoal-warm">
+              A holistic well-being practice integrating five essential pillars.
+            </p>
           </div>
 
-          <div 
+          <div
             className="relative bg-soft-sand rounded-[32px] p-8 md:p-16 shadow-sm border border-gray-200"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            onMouseEnter={() => setIsPillarPaused(true)}
+            onMouseLeave={() => setIsPillarPaused(false)}
           >
-             <Quote className="absolute top-8 left-8 md:top-12 md:left-12 w-12 h-12 text-terracotta/20" />
-             <div className="relative z-10 min-h-[260px] flex items-center justify-center overflow-hidden">
-               <AnimatePresence mode="wait">
-                 <motion.div
-                   key={currentSlide}
-                   initial="hidden"
-                   animate="visible"
-                   exit="exit"
-                   variants={{
-                     hidden: { opacity: 0 },
-                     visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
-                     exit: { opacity: 0, x: -20, transition: { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] } }
-                   }}
-                   className="text-center w-full"
-                 >
-                   <motion.h3 
-                     variants={{
-                       hidden: { opacity: 0, x: 20 },
-                       visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] } },
-                       exit: { opacity: 0 }
-                     }}
-                     className="text-3xl md:text-4xl text-deep-teal font-heading font-semibold mb-4"
-                   >
-                     {corePaths[currentSlide].title}
-                   </motion.h3>
-                   <motion.div 
-                     variants={{
-                       hidden: { opacity: 0, y: 10 },
-                       visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] } },
-                       exit: { opacity: 0 }
-                     }}
-                     className="text-sm font-bold tracking-wider text-terracotta uppercase mb-6"
-                   >
-                     {corePaths[currentSlide].subtitle}
-                   </motion.div>
-                   <motion.p 
-                     variants={{
-                       hidden: { opacity: 0, x: 20 },
-                       visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] } },
-                       exit: { opacity: 0 }
-                     }}
-                     className="text-lg md:text-xl text-charcoal-warm leading-relaxed mb-8 px-4 md:px-12"
-                   >
-                     {corePaths[currentSlide].description}
-                   </motion.p>
-                 </motion.div>
-               </AnimatePresence>
-             </div>
+            <Quote className="absolute top-8 left-8 md:top-12 md:left-12 w-12 h-12 text-terracotta/20" aria-hidden="true" />
 
-             {/* Controls */}
-             <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 flex justify-between px-4 md:-mx-6 pointer-events-none z-20">
-               <button
-                 onClick={prevSlide}
-                 aria-label="Previous core path"
-                 className="pointer-events-auto w-12 h-12 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center text-deep-teal hover:text-terracotta hover:scale-105 transition-all outline-none focus:ring-2 focus:ring-terracotta/50"
-               >
-                 <ChevronLeft className="w-6 h-6" />
-               </button>
-               <button
-                 onClick={nextSlide}
-                 aria-label="Next core path"
-                 className="pointer-events-auto w-12 h-12 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center text-deep-teal hover:text-terracotta hover:scale-105 transition-all outline-none focus:ring-2 focus:ring-terracotta/50"
-               >
-                 <ChevronRight className="w-6 h-6" />
-               </button>
-             </div>
+            <div className="relative z-10 min-h-[260px] flex items-center justify-center overflow-hidden">
+              {CORE_PILLARS.map((pillar, idx) => (
+                <div
+                  key={pillar.title}
+                  className={idx === activePillarIndex ? "text-center w-full" : "hidden"}
+                >
+                  <h3 className="text-3xl md:text-4xl text-deep-teal font-heading font-semibold mb-4">
+                    {pillar.title}
+                  </h3>
+                  <div className="text-sm font-bold tracking-wider text-terracotta uppercase mb-6">
+                    {pillar.subtitle}
+                  </div>
+                  <p className="text-lg md:text-xl text-charcoal-warm leading-relaxed mb-8 px-4 md:px-12">
+                    {pillar.description}
+                  </p>
+                </div>
+              ))}
+            </div>
 
-             {/* Dots */}
-             <div className="flex justify-center gap-2 mt-12 relative z-20">
-               {corePaths.map((_, idx) => (
-                 <button
-                   key={idx}
-                   onClick={() => setCurrentSlide(idx)}
-                   aria-label={`Go to slide ${idx + 1}`}
-                   className={`h-2.5 rounded-full transition-all duration-300 ${currentSlide === idx ? 'bg-terracotta w-8' : 'bg-gray-300 hover:bg-terracotta/50 w-2.5'}`}
-                 />
-               ))}
-             </div>
+            <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 flex justify-between px-4 md:-mx-6 pointer-events-none z-20">
+              <button
+                type="button"
+                onClick={() =>
+                  setActivePillarIndex((prev) =>
+                    prev === 0 ? CORE_PILLARS.length - 1 : prev - 1
+                  )
+                }
+                aria-label="Previous core path"
+                className="pointer-events-auto w-12 h-12 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center text-deep-teal hover:text-terracotta hover:scale-105 transition-all outline-none focus:ring-2 focus:ring-terracotta/50 cursor-pointer"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  setActivePillarIndex((prev) => (prev + 1) % CORE_PILLARS.length)
+                }
+                aria-label="Next core path"
+                className="pointer-events-auto w-12 h-12 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center text-deep-teal hover:text-terracotta hover:scale-105 transition-all outline-none focus:ring-2 focus:ring-terracotta/50 cursor-pointer"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </div>
+
+            <div className="flex justify-center gap-2 mt-12 relative z-20">
+              {CORE_PILLARS.map((pillar, idx) => (
+                <button
+                  key={pillar.title}
+                  type="button"
+                  onClick={() => setActivePillarIndex(idx)}
+                  aria-label={`Go to slide ${idx + 1}: ${pillar.title}`}
+                  className={`h-3 rounded-full transition-all duration-300 cursor-pointer ${
+                    activePillarIndex === idx
+                      ? "bg-terracotta w-8"
+                      : "bg-gray-300 hover:bg-terracotta/50 w-3"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Resources & Blogs Preview */}
+      {/* Insights & Blogs Preview */}
       <section className="py-16 md:py-20 lg:py-24 bg-white border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-            className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6"
-          >
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div className="max-w-2xl">
-              <h2 className="text-3xl md:text-[36px] font-semibold text-deep-teal mb-4 font-heading">Insights & Blogs</h2>
-              <p className="text-lg text-charcoal-warm">Practical, evidence-based articles to help you think clearer and live better.</p>
+              <h2 className="text-3xl md:text-[36px] font-semibold text-deep-teal mb-4 font-heading">
+                Insights &amp; Blogs
+              </h2>
+              <p className="text-lg text-charcoal-warm">
+                Practical, evidence-based articles to help you think clearer and live better.
+              </p>
             </div>
-            <Link 
-              to="/resources" 
-              className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium rounded-full border-2 border-terracotta text-terracotta hover:bg-terracotta hover:text-white transition-all uppercase tracking-wide group whitespace-nowrap"
+            <Link
+              to="/resources"
+              className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium rounded-full border-2 border-terracotta text-terracotta hover:bg-terracotta hover:text-white transition-all uppercase tracking-wide group whitespace-nowrap min-h-[44px]"
             >
-              Explore All Articles <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              Explore All Articles{" "}
+              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
             </Link>
-          </motion.div>
-          
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={{
-              visible: { transition: { staggerChildren: 0.12 } },
-              hidden: {}
-            }}
-          >
-            <motion.div 
-              variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } }}
-              className="bg-soft-sand rounded-[24px] p-7 border border-amber-glow/30 hover:shadow-md transition-all group flex flex-col hover-lift h-full ring-2 ring-amber-glow/20"
-            >
-               <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-5 text-terracotta flex-shrink-0">
-                  <HelpCircle className="w-6 h-6" />
-               </div>
-               <span className="text-[11px] font-bold uppercase tracking-wider text-terracotta bg-amber-glow/20 px-2.5 py-1 rounded-full self-start mb-3">New Myth Buster</span>
-               <h3 className="text-lg font-bold font-heading text-deep-teal mb-2 group-hover:text-terracotta transition-colors leading-tight">Therapy Is Only for 'Rock Bottom'</h3>
-               <p className="text-charcoal-warm text-[14px] mb-5 flex-grow leading-relaxed">Why waiting for complete breakdown hurts, and how proactive emotional ergonomics rewire thought patterns early.</p>
-               <Link to="/resources" className="text-sm font-bold uppercase tracking-wide text-terracotta group-hover:text-amber-glow transition-colors italic flex items-center mt-auto">Read Myth & Dilemma <ArrowRight className="w-3 h-3 ml-1" /></Link>
-            </motion.div>
-            <motion.div 
-              variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } }}
-              className="bg-soft-sand rounded-[24px] p-7 border border-gray-100 hover:shadow-md transition-all group flex flex-col hover-lift h-full"
-            >
-               <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-5 text-terracotta flex-shrink-0">
-                  <BrainCircuit className="w-6 h-6" />
-               </div>
-               <span className="text-[11px] font-bold uppercase tracking-wider text-deep-teal/70 bg-white px-2.5 py-1 rounded-full self-start mb-3">Mind & Thinking</span>
-               <h3 className="text-lg font-bold font-heading text-deep-teal mb-2 group-hover:text-terracotta transition-colors leading-tight">Why You're Tired in Ways Sleep Can't Fix</h3>
-               <p className="text-charcoal-warm text-[14px] mb-5 flex-grow leading-relaxed">Mistaking cognitive and emotional fatigue for physical tiredness leads to resting without recovering.</p>
-               <Link to="/resources" className="text-sm font-bold uppercase tracking-wide text-terracotta group-hover:text-amber-glow transition-colors italic flex items-center mt-auto">Read Article <ArrowRight className="w-3 h-3 ml-1" /></Link>
-            </motion.div>
-            <motion.div 
-              variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } }}
-              className="bg-soft-sand rounded-[24px] p-7 border border-gray-100 hover:shadow-md transition-all group flex flex-col hover-lift h-full"
-            >
-               <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-5 text-terracotta flex-shrink-0">
-                  <Coffee className="w-6 h-6" />
-               </div>
-               <span className="text-[11px] font-bold uppercase tracking-wider text-deep-teal/70 bg-white px-2.5 py-1 rounded-full self-start mb-3">Daily Habits</span>
-               <h3 className="text-lg font-bold font-heading text-deep-teal mb-2 group-hover:text-terracotta transition-colors leading-tight">The 'Good Enough' Morning Routine</h3>
-               <p className="text-charcoal-warm text-[14px] mb-5 flex-grow leading-relaxed">A realistic approach to starting your day that doesn't involve waking up at 5 AM or ice baths.</p>
-               <Link to="/resources" className="text-sm font-bold uppercase tracking-wide text-terracotta group-hover:text-amber-glow transition-colors italic flex items-center mt-auto">Read Article <ArrowRight className="w-3 h-3 ml-1" /></Link>
-            </motion.div>
-            <motion.div 
-              variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } }}
-              className="bg-soft-sand rounded-[24px] p-7 border border-gray-100 hover:shadow-md transition-all group flex flex-col hover-lift h-full"
-            >
-               <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-5 text-terracotta flex-shrink-0">
-                  <Briefcase className="w-6 h-6" />
-               </div>
-               <span className="text-[11px] font-bold uppercase tracking-wider text-deep-teal/70 bg-white px-2.5 py-1 rounded-full self-start mb-3">Work & Life</span>
-               <h3 className="text-lg font-bold font-heading text-deep-teal mb-2 group-hover:text-terracotta transition-colors leading-tight">Setting Boundaries When Ambitious</h3>
-               <p className="text-charcoal-warm text-[14px] mb-5 flex-grow leading-relaxed">Protect your mental well-being and calendar without compromising high-standard career goals.</p>
-               <Link to="/resources" className="text-sm font-bold uppercase tracking-wide text-terracotta group-hover:text-amber-glow transition-colors italic flex items-center mt-auto">Read Article <ArrowRight className="w-3 h-3 ml-1" /></Link>
-            </motion.div>
-          </motion.div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <article className="bg-soft-sand rounded-[24px] p-7 border border-amber-glow/30 hover:shadow-md transition-all group flex flex-col hover-lift h-full ring-2 ring-amber-glow/20">
+              <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-5 text-terracotta flex-shrink-0">
+                <CircleHelp className="w-6 h-6" aria-hidden="true" />
+              </div>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#9E3F24] bg-amber-glow/20 px-2.5 py-1 rounded-full self-start mb-3">
+                Myth Buster
+              </span>
+              <h3 className="text-lg font-bold font-heading text-deep-teal mb-2 group-hover:text-terracotta transition-colors leading-tight">
+                Therapy Is Only for &apos;Rock Bottom&apos;
+              </h3>
+              <p className="text-charcoal-warm text-[14px] mb-5 flex-grow leading-relaxed">
+                Why waiting for complete breakdown hurts, and how proactive emotional support helps rewire thought patterns early.
+              </p>
+              <Link
+                to="/resources/myth-therapy-is-only-for-rock-bottom"
+                className="text-sm font-bold uppercase tracking-wide text-terracotta group-hover:text-deep-teal transition-colors flex items-center mt-auto min-h-[44px]"
+              >
+                Read Myth &amp; Dilemma <ArrowRight className="w-3.5 h-3.5 ml-1" />
+              </Link>
+            </article>
+
+            <article className="bg-soft-sand rounded-[24px] p-7 border border-gray-100 hover:shadow-md transition-all group flex flex-col hover-lift h-full">
+              <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-5 text-terracotta flex-shrink-0">
+                <BookOpen className="w-6 h-6" aria-hidden="true" />
+              </div>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-deep-teal bg-white px-2.5 py-1 rounded-full self-start mb-3">
+                Mind &amp; Thinking
+              </span>
+              <h3 className="text-lg font-bold font-heading text-deep-teal mb-2 group-hover:text-terracotta transition-colors leading-tight">
+                Why You&apos;re Tired in Ways Sleep Can&apos;t Fix
+              </h3>
+              <p className="text-charcoal-warm text-[14px] mb-5 flex-grow leading-relaxed">
+                Mistaking cognitive and emotional fatigue for physical tiredness leads to resting without recovering.
+              </p>
+              <Link
+                to="/resources/why-youre-tired-in-ways-sleep-cant-fix"
+                className="text-sm font-bold uppercase tracking-wide text-terracotta group-hover:text-deep-teal transition-colors flex items-center mt-auto min-h-[44px]"
+              >
+                Read Article <ArrowRight className="w-3.5 h-3.5 ml-1" />
+              </Link>
+            </article>
+
+            <article className="bg-soft-sand rounded-[24px] p-7 border border-gray-100 hover:shadow-md transition-all group flex flex-col hover-lift h-full">
+              <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-5 text-terracotta flex-shrink-0">
+                <Coffee className="w-6 h-6" aria-hidden="true" />
+              </div>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-deep-teal bg-white px-2.5 py-1 rounded-full self-start mb-3">
+                Daily Habits
+              </span>
+              <h3 className="text-lg font-bold font-heading text-deep-teal mb-2 group-hover:text-terracotta transition-colors leading-tight">
+                The &apos;Good Enough&apos; Morning Routine
+              </h3>
+              <p className="text-charcoal-warm text-[14px] mb-5 flex-grow leading-relaxed">
+                A realistic approach to starting your day that doesn&apos;t involve waking up at 5 AM or ice baths.
+              </p>
+              <Link
+                to="/resources/realistic-morning-routine-no-ice-baths"
+                className="text-sm font-bold uppercase tracking-wide text-terracotta group-hover:text-deep-teal transition-colors flex items-center mt-auto min-h-[44px]"
+              >
+                Read Article <ArrowRight className="w-3.5 h-3.5 ml-1" />
+              </Link>
+            </article>
+
+            <article className="bg-soft-sand rounded-[24px] p-7 border border-gray-100 hover:shadow-md transition-all group flex flex-col hover-lift h-full">
+              <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-5 text-terracotta flex-shrink-0">
+                <Briefcase className="w-6 h-6" aria-hidden="true" />
+              </div>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-deep-teal bg-white px-2.5 py-1 rounded-full self-start mb-3">
+                Work &amp; Life
+              </span>
+              <h3 className="text-lg font-bold font-heading text-deep-teal mb-2 group-hover:text-terracotta transition-colors leading-tight">
+                Setting Boundaries When Ambitious
+              </h3>
+              <p className="text-charcoal-warm text-[14px] mb-5 flex-grow leading-relaxed">
+                Protect your mental well-being and calendar without compromising high-standard career goals.
+              </p>
+              <Link
+                to="/resources/setting-boundaries-when-ambitious"
+                className="text-sm font-bold uppercase tracking-wide text-terracotta group-hover:text-deep-teal transition-colors flex items-center mt-auto min-h-[44px]"
+              >
+                Read Article <ArrowRight className="w-3.5 h-3.5 ml-1" />
+              </Link>
+            </article>
+          </div>
         </div>
       </section>
 
-       {/* Client Testimonials - Google Reviews Showcase */}
-       <section className="py-16 md:py-24 bg-gradient-to-b from-white to-soft-sand/50 border-y border-gray-100 overflow-hidden">
-         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-           {/* Section Badge & Header */}
-           <div className="text-center mb-10">
-             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-gray-200 shadow-xs mb-4">
-               {/* Google G SVG */}
-               <svg className="w-4 h-4" viewBox="0 0 24 24">
-                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                 <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                 <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
-                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
-               </svg>
-               <span className="text-xs font-semibold text-gray-700 tracking-wide uppercase">Google Reviews • 5.0 Rating</span>
-               <div className="flex text-amber-500">
-                 {[...Array(5)].map((_, i) => (
-                   <Star key={i} className="w-3 h-3 fill-amber-400 text-amber-400" />
-                 ))}
-               </div>
-             </div>
-             <h2 className="text-3xl md:text-[38px] font-bold text-deep-teal mb-3 font-heading">
-               Real Shifts. Verified Google Reviews.
-             </h2>
-             <p className="text-base text-charcoal-warm max-w-2xl mx-auto">
-               Authentic feedback from clients who found grounded peace, career clarity, and emotional resilience at <strong className="font-semibold text-deep-teal">Being You Path — Best Counselling Centre in India</strong>.
-             </p>
-           </div>
-           
-           {/* Testimonial Card */}
-           <div className="relative bg-white p-8 md:p-12 rounded-[28px] border border-gray-200/80 shadow-md">
-             <Quote className="absolute top-6 left-6 w-12 h-12 text-terracotta/15 pointer-events-none" />
-             
-             {/* Google Verified Reviewer Card */}
-             <div className="relative z-10 flex flex-col justify-between min-h-[310px] md:min-h-[260px]">
-               <AnimatePresence mode="wait">
-                 <motion.div
-                   key={currentTestimonial}
-                   initial={{ opacity: 0, y: 12 }}
-                   animate={{ opacity: 1, y: 0 }}
-                   exit={{ opacity: 0, y: -12 }}
-                   transition={{ duration: 0.35, ease: "easeOut" }}
-                   className="w-full"
-                 >
-                   {/* Rating Header */}
-                   <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-gray-100">
-                     <div className="flex items-center gap-2">
-                       <div className="flex text-amber-400">
-                         {[...Array(testimonials[currentTestimonial].rating || 5)].map((_, i) => (
-                           <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                         ))}
-                       </div>
-                       <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
-                         Verified Review
-                       </span>
-                     </div>
-                     <div className="flex items-center gap-2 text-xs text-gray-500 font-medium">
-                       <span>{testimonials[currentTestimonial].date}</span>
-                       {testimonials[currentTestimonial].location && (
-                         <>
-                           <span>•</span>
-                           <span className="text-deep-teal font-semibold">{testimonials[currentTestimonial].location}</span>
-                         </>
-                       )}
-                     </div>
-                   </div>
+      {/* Client Testimonials Carousel (all slides kept in raw HTML DOM) */}
+      <section className="py-16 md:py-24 bg-gradient-to-b from-white to-soft-sand/50 border-y border-gray-100 overflow-hidden">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <a
+              href={GBP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 shadow-xs mb-4 hover:border-terracotta transition-colors"
+            >
+              <svg className="w-4 h-4" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+              </svg>
+              <span className="text-xs font-semibold text-gray-700 tracking-wide uppercase">
+                Client Feedback on Google
+              </span>
+            </a>
 
-                   {/* Review Highlight */}
-                   {testimonials[currentTestimonial].highlight && (
-                     <div className="text-xs font-bold uppercase tracking-wider text-terracotta mb-3">
-                       {testimonials[currentTestimonial].highlight}
-                     </div>
-                   )}
+            <h2 className="text-3xl md:text-[38px] font-bold text-deep-teal mb-3 font-heading">
+              Real Shifts. Client Experiences.
+            </h2>
+            <p className="text-base text-charcoal-warm max-w-2xl mx-auto">
+              Feedback from clients who sought grounded peace, career clarity, and emotional resilience with{" "}
+              <strong className="font-semibold text-deep-teal">Being You Path</strong>.
+            </p>
+          </div>
 
-                   {/* Full Review Text */}
-                   <p className="text-charcoal-warm leading-relaxed mb-8 text-[15px] md:text-[17px] font-normal whitespace-pre-line">
-                     "{testimonials[currentTestimonial].quote}"
-                   </p>
+          <div className="relative bg-white p-8 md:p-12 rounded-[28px] border border-gray-200/80 shadow-md">
+            <Quote className="absolute top-6 left-6 w-12 h-12 text-terracotta/15 pointer-events-none" aria-hidden="true" />
 
-                   {/* Author & Profile Meta */}
-                   <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                     <div className="flex items-center gap-3">
-                       <div className="w-11 h-11 rounded-full bg-deep-teal text-white flex items-center justify-center font-bold text-base shadow-xs">
-                         {testimonials[currentTestimonial].author.charAt(0).toUpperCase()}
-                       </div>
-                       <div>
-                         <h4 className="text-deep-teal font-heading font-semibold text-base md:text-lg flex items-center gap-1.5">
-                           {testimonials[currentTestimonial].author}
-                           {testimonials[currentTestimonial].badge && (
-                             <span className="text-[10px] font-semibold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full border border-amber-300">
-                               {testimonials[currentTestimonial].badge}
-                             </span>
-                           )}
-                         </h4>
-                         <span className="text-xs text-gray-500 font-medium">
-                           {testimonials[currentTestimonial].details} • Google Reviews
-                         </span>
-                       </div>
-                     </div>
+            <div className="relative z-10 flex flex-col justify-between min-h-[310px] md:min-h-[260px]">
+              {reviews.map((rev, idx) => (
+                <div key={rev.id} className={idx === activeReviewIndex ? "w-full" : "hidden"}>
+                  <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-gray-100">
+                    <div className="flex items-center gap-2">
+                      <div className="flex text-amber-400" aria-label="5 out of 5 stars">
+                        {[...Array(rev.rating || 5)].map((_, sIdx) => (
+                          <Star key={sIdx} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                        ))}
+                      </div>
+                      <span className="text-xs font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                        Google Review
+                      </span>
+                    </div>
 
-                     {/* Counter Badge */}
-                     <span className="text-xs font-semibold text-gray-400 bg-gray-50 px-3 py-1 rounded-full">
-                       {currentTestimonial + 1} of {testimonials.length}
-                     </span>
-                   </div>
-                 </motion.div>
-               </AnimatePresence>
-             </div>
-             
-             {/* Left & Right Arrow Navigation */}
-             <div className="absolute top-1/2 -left-4 -translate-y-1/2 z-20">
-               <button
-                 onClick={() => setCurrentTestimonial(prev => (prev === 0 ? testimonials.length - 1 : prev - 1))}
-                 className="w-10 h-10 rounded-full bg-white border border-gray-200 shadow-md flex items-center justify-center text-deep-teal hover:text-terracotta hover:scale-105 transition-all"
-                 aria-label="Previous Review"
-               >
-                 <ChevronLeft className="w-5 h-5" />
-               </button>
-             </div>
-             <div className="absolute top-1/2 -right-4 -translate-y-1/2 z-20">
-               <button
-                 onClick={() => setCurrentTestimonial(prev => (prev + 1) % testimonials.length)}
-                 className="w-10 h-10 rounded-full bg-white border border-gray-200 shadow-md flex items-center justify-center text-deep-teal hover:text-terracotta hover:scale-105 transition-all"
-                 aria-label="Next Review"
-               >
-                 <ChevronRight className="w-5 h-5" />
-               </button>
-             </div>
-           </div>
+                    <div className="flex items-center gap-2 text-xs text-gray-600 font-medium">
+                      <span>{rev.date}</span>
+                      {rev.location && (
+                        <>
+                          <span>•</span>
+                          <span className="text-deep-teal font-semibold">{rev.location}</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
 
-           {/* Quick Reviewer Chips for Fast Jumping */}
-           <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
-             {testimonials.map((item, idx) => (
-               <button
-                 key={item.id}
-                 onClick={() => setCurrentTestimonial(idx)}
-                 className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                   currentTestimonial === idx
-                     ? "bg-deep-teal text-white shadow-xs font-semibold"
-                     : "bg-white text-gray-600 border border-gray-200 hover:border-terracotta hover:text-terracotta"
-                 }`}
-               >
-                 {item.author.replace('13_', '')}
-               </button>
-             ))}
-           </div>
-         </div>
-       </section>
+                  <p className="text-charcoal-warm leading-relaxed mb-8 text-[15px] md:text-[17px] font-normal whitespace-pre-line">
+                    &ldquo;{rev.quote}&rdquo;
+                  </p>
 
-       {/* Authority Hub: Ranked #1 in Pune & Top 5 in India */}
-       <section className="py-16 md:py-24 bg-white border-b border-gray-100">
-         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-           
-           {/* Section Header */}
-           <div className="text-center max-w-4xl mx-auto mb-14">
-             <div className="flex flex-wrap items-center justify-center gap-2.5 mb-4">
-               <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-glow/20 text-terracotta border border-amber-glow/40 shadow-2xs">
-                 <Award className="w-3.5 h-3.5 text-terracotta" />
-                 Ranked #1 in Pune, Maharashtra
-               </span>
-               <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-deep-teal/10 text-deep-teal border border-deep-teal/20 shadow-2xs">
-                 <ShieldCheck className="w-3.5 h-3.5 text-sage-green" />
-                 Top 5 Counselling Centres in India
-               </span>
-               <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-white border border-gray-200 text-gray-700 shadow-2xs">
-                 <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                 5.0 ★ Google Rating
-               </span>
-             </div>
+                  <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-gray-100">
+                    <div className="flex items-center gap-3">
+                      <div className="w-11 h-11 rounded-full bg-deep-teal text-white flex items-center justify-center font-bold text-base shadow-xs">
+                        {rev.author.charAt(0).toUpperCase()}
+                      </div>
+                      <div>
+                        <h3 className="text-deep-teal font-heading font-semibold text-base md:text-lg flex items-center gap-1.5">
+                          {rev.author}
+                          {rev.badge && (
+                            <span className="text-[10px] font-semibold bg-amber-100 text-amber-950 px-2 py-0.5 rounded-full border border-amber-300">
+                              {rev.badge}
+                            </span>
+                          )}
+                        </h3>
+                        <span className="text-xs text-gray-700 font-medium">
+                          {rev.details} · {rev.date}
+                        </span>
+                      </div>
+                    </div>
 
-             <h2 className="text-3xl md:text-4xl lg:text-[42px] font-bold text-deep-teal font-heading tracking-tight mb-4">
-               The Premier Destination for Mental Well-Being in Pune & Across India
-             </h2>
-             <p className="text-base md:text-lg text-charcoal-warm leading-relaxed">
-               Whether you're seeking in-person counselling near <strong className="font-semibold text-deep-teal">Koregaon Park, Pune</strong> or looking for the <strong className="font-semibold text-deep-teal">best online counselling in India</strong>, Being You Path provides compassionate, science-backed support to help you move past chronic stress, overthinking, and career dilemmas into genuine clarity.
-             </p>
-           </div>
+                    <div className="flex items-center gap-3">
+                      <a
+                        href={GBP_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-semibold text-deep-teal hover:text-terracotta underline transition-colors"
+                      >
+                        Google Business Profile →
+                      </a>
+                      <span className="text-xs font-semibold text-gray-700 bg-gray-100 px-3 py-1 rounded-full">
+                        {idx + 1} of {reviews.length}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
 
-           {/* 2-Column Authority Cards: Local Pune (#1) vs Nationwide India (Top 5) */}
-           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-             
-             {/* Card 1: #1 in Pune & Maharashtra */}
-             <div className="bg-soft-sand rounded-[28px] p-8 md:p-10 border border-gray-200 flex flex-col justify-between hover-lift shadow-xs relative overflow-hidden">
-               <div className="absolute top-0 right-0 w-32 h-32 bg-amber-glow/10 rounded-full blur-2xl pointer-events-none" />
-               <div>
-                 <div className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-widest text-terracotta mb-3">
-                   <MapPin className="w-4 h-4 text-terracotta" />
-                   Local Pune & Maharashtra Hub
-                 </div>
-                 <h3 className="text-2xl md:text-[28px] font-bold text-deep-teal font-heading mb-4">
-                   #1 Counselling Centre & Top Psychologist in Pune
-                 </h3>
-                 <p className="text-charcoal-warm text-[15px] leading-relaxed mb-6">
-                   Widely recognized as the <strong>best counsellor and psychologist in Pune</strong>, our clinic is centrally situated for clients seeking in-person therapy near <strong>Koregaon Park, Kalyani Nagar, Viman Nagar, Baner, Kothrud, Aundh, Shivaji Nagar, Hadapsar,</strong> and <strong>Hinjewadi</strong>. We provide an empathetic, non-judgmental sanctuary for working professionals, students, couples, and parents.
-                 </p>
-                 
-                 <div className="space-y-3 mb-6">
-                   <div className="flex items-start gap-2.5 text-sm text-charcoal-warm">
-                     <Check className="w-4 h-4 text-sage-green flex-shrink-0 mt-0.5" />
-                     <span><strong>Work-Stress & Burnout Therapy:</strong> Tailored for corporate and tech professionals managing tight deadlines and mental exhaustion.</span>
-                   </div>
-                   <div className="flex items-start gap-2.5 text-sm text-charcoal-warm">
-                     <Check className="w-4 h-4 text-sage-green flex-shrink-0 mt-0.5" />
-                     <span><strong>Self-Esteem & Overthinking Therapy:</strong> Overcoming negative thought spirals and building quiet inner resilience.</span>
-                   </div>
-                   <div className="flex items-start gap-2.5 text-sm text-charcoal-warm">
-                     <Check className="w-4 h-4 text-sage-green flex-shrink-0 mt-0.5" />
-                     <span><strong>Experiential Career Counselling:</strong> Includes hands-on mini internships for students and Gen Z clarity.</span>
-                   </div>
-                 </div>
-               </div>
+            <div className="absolute top-1/2 -left-4 -translate-y-1/2 z-20">
+              <button
+                type="button"
+                onClick={() =>
+                  setActiveReviewIndex((prev) =>
+                    prev === 0 ? reviews.length - 1 : prev - 1
+                  )
+                }
+                className="w-11 h-11 rounded-full bg-white border border-gray-200 shadow-md flex items-center justify-center text-deep-teal hover:text-terracotta hover:scale-105 transition-all cursor-pointer"
+                aria-label="Previous Review"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="absolute top-1/2 -right-4 -translate-y-1/2 z-20">
+              <button
+                type="button"
+                onClick={() =>
+                  setActiveReviewIndex((prev) => (prev + 1) % reviews.length)
+                }
+                className="w-11 h-11 rounded-full bg-white border border-gray-200 shadow-md flex items-center justify-center text-deep-teal hover:text-terracotta hover:scale-105 transition-all cursor-pointer"
+                aria-label="Next Review"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
 
-               <div className="pt-6 border-t border-gray-200/80 flex flex-wrap items-center justify-between gap-4">
-                 <div className="flex items-center gap-2 text-xs font-semibold text-gray-500">
-                   <Clock className="w-4 h-4 text-terracotta" />
-                   <span>Mon - Sat: 9:00 AM - 8:00 PM (By Appointment)</span>
-                 </div>
-                 <Link 
-                   to="/contact" 
-                   className="inline-flex items-center text-xs font-bold uppercase tracking-wider text-deep-teal hover:text-terracotta transition-colors group"
-                 >
-                   <span>Consult in Pune</span>
-                   <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
-                 </Link>
-               </div>
-             </div>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
+            {reviews.map((rev, idx) => (
+              <button
+                key={rev.id}
+                type="button"
+                onClick={() => setActiveReviewIndex(idx)}
+                className={`px-3.5 py-2 min-h-[44px] sm:min-h-0 rounded-full text-xs font-medium transition-all cursor-pointer ${
+                  activeReviewIndex === idx
+                    ? "bg-deep-teal text-white shadow-xs font-semibold"
+                    : "bg-white text-gray-700 border border-gray-200 hover:border-terracotta hover:text-terracotta"
+                }`}
+              >
+                {rev.author.replace("13_", "")}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
 
-             {/* Card 2: Top 5 in India — Pan-India Online Therapy */}
-             <div className="bg-deep-teal text-white rounded-[28px] p-8 md:p-10 flex flex-col justify-between hover-lift shadow-sm relative overflow-hidden">
-               <div className="absolute top-0 right-0 w-32 h-32 bg-sage-green/10 rounded-full blur-2xl pointer-events-none" />
-               <div>
-                 <div className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-widest text-sage-green mb-3">
-                   <Globe className="w-4 h-4 text-sage-green" />
-                   Pan-India Online Counselling Network
-                 </div>
-                 <h3 className="text-2xl md:text-[28px] font-bold text-white font-heading mb-4">
-                   Top 5 Best Counselling Centre Nationwide in India
-                 </h3>
-                 <p className="text-white/80 text-[15px] leading-relaxed mb-6">
-                   Distance is never a barrier to profound emotional healing. Through secure, encrypted HD video consultations, Being You Path delivers premier <strong>online counselling across India</strong>—regularly serving clients in <strong>Mumbai, Delhi NCR, Bengaluru, Hyderabad, Chennai, Kolkata,</strong> and throughout all 28 states.
-                 </p>
-                 
-                 <div className="space-y-3 mb-6">
-                   <div className="flex items-start gap-2.5 text-sm text-white/90">
-                     <Check className="w-4 h-4 text-amber-glow flex-shrink-0 mt-0.5" />
-                     <span><strong>Cognitive Behavioural Therapy (CBT):</strong> Evidence-based rewiring of disruptive cognition and anxiety patterns.</span>
-                   </div>
-                   <div className="flex items-start gap-2.5 text-sm text-white/90">
-                     <Check className="w-4 h-4 text-amber-glow flex-shrink-0 mt-0.5" />
-                     <span><strong>Secular Mindfulness & Somatics:</strong> Nervous system regulation tools for high-pressure corporate and academic lives.</span>
-                   </div>
-                   <div className="flex items-start gap-2.5 text-sm text-white/90">
-                     <Check className="w-4 h-4 text-amber-glow flex-shrink-0 mt-0.5" />
-                     <span><strong>Corporate Mental Health Workshops:</strong> High-impact wellness programs for leading enterprises across India.</span>
-                   </div>
-                 </div>
-               </div>
+      {/* Dual Hubs Section: Deccan Gymkhana Clinic + Online Across India */}
+      <section className="py-16 md:py-24 bg-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-4xl mx-auto mb-14">
+            <div className="flex flex-wrap items-center justify-center gap-2.5 mb-4">
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-glow/20 text-[#9E3F24] border border-amber-glow/40 shadow-2xs">
+                <MapPin className="w-3.5 h-3.5" aria-hidden="true" />
+                Deccan Gymkhana, Pune
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-deep-teal/10 text-deep-teal border border-deep-teal/20 shadow-2xs">
+                <CheckCircle2 className="w-3.5 h-3.5 text-sage-green" aria-hidden="true" />
+                Online Counselling Across India
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-white border border-gray-200 text-gray-700 shadow-2xs">
+                <ShieldCheck className="w-3.5 h-3.5 text-terracotta" aria-hidden="true" />
+                NIMHANS-Trained Clinical Lead
+              </span>
+            </div>
 
-               <div className="pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
-                 <div className="flex items-center gap-2 text-xs font-semibold text-white/70">
-                   <ShieldCheck className="w-4 h-4 text-sage-green" />
-                   <span>100% Confidential & Secure Video Platform</span>
-                 </div>
-                 <Link 
-                   to="/services" 
-                   className="inline-flex items-center text-xs font-bold uppercase tracking-wider text-amber-glow hover:text-white transition-colors group"
-                 >
-                   <span>Explore Online Services</span>
-                   <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
-                 </Link>
-               </div>
-             </div>
+            <h2 className="text-3xl md:text-4xl lg:text-[42px] font-bold text-deep-teal font-heading tracking-tight mb-4">
+              In-Person Therapy in Pune &amp; Online Across India
+            </h2>
+            <p className="text-base md:text-lg text-charcoal-warm leading-relaxed">
+              Visit our clinic at{" "}
+              <strong className="font-semibold text-deep-teal">{CLINIC_ADDRESS}</strong>{" "}
+              or book confidential{" "}
+              <strong className="font-semibold text-deep-teal">online counselling across India</strong>{" "}
+              for support with stress, overthinking, burnout, self-esteem, and career clarity.
+            </p>
+          </div>
 
-           </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            {/* Pune Clinic Card */}
+            <div className="bg-soft-sand rounded-[28px] p-8 md:p-10 border border-gray-200 flex flex-col justify-between hover-lift shadow-xs relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-amber-glow/10 rounded-full blur-2xl pointer-events-none" />
+              <div>
+                <div className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-widest text-terracotta mb-3">
+                  <Calendar className="w-4 h-4 text-terracotta" aria-hidden="true" />
+                  Deccan Gymkhana, Pune Clinic
+                </div>
+                <h3 className="text-2xl md:text-[28px] font-bold text-deep-teal font-heading mb-4">
+                  In-Person Counselling Near Prabhat Road, Pune
+                </h3>
+                <p className="text-charcoal-warm text-[15px] leading-relaxed mb-6">
+                  Our quiet clinic on Dr. Sripati Shastri Path near Prabhat Road serves clients from{" "}
+                  <strong>Deccan Gymkhana, Erandwane, Law College Road, Bhandarkar Road, FC Road, Model Colony, Kothrud, Baner, Aundh,</strong>{" "}
+                  and <strong>Hinjewadi</strong>, as well as visitors travelling from{" "}
+                  <strong>Koregaon Park, Viman Nagar,</strong> and <strong>Kalyani Nagar</strong>.
+                </p>
 
-         </div>
-       </section>
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-start gap-2.5 text-sm text-charcoal-warm">
+                    <Check className="w-4 h-4 text-sage-green flex-shrink-0 mt-0.5" aria-hidden="true" />
+                    <span>
+                      <strong>Work-Stress &amp; Burnout Therapy:</strong> Tailored for professionals managing demanding workloads and mental exhaustion.
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-2.5 text-sm text-charcoal-warm">
+                    <Check className="w-4 h-4 text-sage-green flex-shrink-0 mt-0.5" aria-hidden="true" />
+                    <span>
+                      <strong>Self-Esteem &amp; Overthinking Therapy:</strong> Structured CBT strategies for negative thought loops and inner resilience.
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-2.5 text-sm text-charcoal-warm">
+                    <Check className="w-4 h-4 text-sage-green flex-shrink-0 mt-0.5" aria-hidden="true" />
+                    <span>
+                      <strong>Student &amp; Career Counselling:</strong> Strengths and values mapping with practical direction for students and professionals.
+                    </span>
+                  </div>
+                </div>
+              </div>
 
-       {/* Deep SEO & Information Hub: Normal Psychologist & Best Counselor in Pune */}
-       <section className="py-16 md:py-24 bg-white border-b border-gray-200">
-         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-           <div className="max-w-3xl mx-auto text-center mb-12 md:mb-16">
-             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-soft-sand border border-gray-200 text-deep-teal text-xs font-bold uppercase tracking-wider mb-4 shadow-2xs">
-               <Compass className="w-3.5 h-3.5 text-terracotta" />
-               Pune's Trusted Mental Health & Counselling Practice
-             </div>
-             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-deep-teal font-heading tracking-tight mb-5">
-               Looking for a <span className="text-terracotta italic font-normal">"Normal Psychologist"</span> or the Best Counselor in Pune?
-             </h2>
-             <p className="text-base md:text-lg text-charcoal-warm leading-relaxed">
-               You don't need a psychiatric crisis or medication to seek therapy. Most people reaching out to Being You Path simply want clarity, calm, and practical tools to navigate modern life, career pressure, and emotional overwhelm.
-             </p>
-           </div>
+              <div className="pt-6 border-t border-gray-200/80 flex flex-wrap items-center justify-between gap-4">
+                <div className="flex items-center gap-2 text-xs font-semibold text-gray-700">
+                  <Clock className="w-4 h-4 text-terracotta" aria-hidden="true" />
+                  <span>{CLINIC_HOURS_LABEL} (By Appointment)</span>
+                </div>
+                <Link
+                  to="/services/counselling-prabhat-road-pune"
+                  className="inline-flex items-center text-xs font-bold uppercase tracking-wider text-deep-teal hover:text-terracotta transition-colors group min-h-[44px]"
+                >
+                  <span>Prabhat Road Clinic &amp; Directions</span>
+                  <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
+            </div>
 
-           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-             {/* Card 1: The 'Normal Psychologist' concept */}
-             <div className="bg-soft-sand/70 rounded-[28px] p-8 border border-gray-200/80 flex flex-col justify-between hover:shadow-md transition-shadow">
-               <div>
-                 <div className="w-12 h-12 rounded-2xl bg-deep-teal/10 flex items-center justify-center mb-6 text-deep-teal">
-                   <Brain className="w-6 h-6" />
-                 </div>
-                 <h3 className="text-xl font-bold text-deep-teal font-heading mb-3">
-                   What is a "Normal Psychologist"?
-                 </h3>
-                 <p className="text-sm text-charcoal-warm leading-relaxed mb-4">
-                   In Pune, thousands search for a <strong>"normal psychologist"</strong> or <strong>"psychologist for everyday people"</strong> because they want compassionate, de-stigmatized talk therapy without prescription psychiatric medication.
-                 </p>
-                 <p className="text-sm text-charcoal-warm leading-relaxed">
-                   If you feel stuck, constantly overthinking, drained by work, or burdened by imposter syndrome, you don't need clinical labels. You need a trusted psychological partner who listens deeply and helps you recalibrate.
-                 </p>
-               </div>
-               <div className="pt-6 mt-6 border-t border-gray-200/70 text-xs font-semibold text-deep-teal flex items-center gap-2">
-                 <CheckCircle2 className="w-4 h-4 text-sage-green" />
-                 <span>100% Non-Medicinal Talk Therapy & CBT</span>
-               </div>
-             </div>
+            {/* Online India Card */}
+            <div className="section-dark bg-[#0B3A42] text-[#FAF9F6] rounded-[28px] p-8 md:p-10 flex flex-col justify-between hover-lift shadow-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-sage-green/10 rounded-full blur-2xl pointer-events-none" />
+              <div>
+                <div className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-widest text-[#A7E0BA] mb-3">
+                  <ShieldCheck className="w-4 h-4 text-[#A7E0BA]" aria-hidden="true" />
+                  Pan-India Online Counselling
+                </div>
+                <h3 className="card-title text-2xl md:text-[28px] font-bold text-[#FAF9F6] font-heading mb-4">
+                  Online Therapy Across India
+                </h3>
+                <p className="text-[#F5F0E6] text-[15px] leading-relaxed mb-6">
+                  Distance should not get in the way of consistent care. Through private video sessions, Being You Path supports{" "}
+                  <strong className="text-white">online counselling across India</strong>—serving clients in{" "}
+                  <strong className="text-white">Mumbai, Delhi NCR, Bengaluru, Hyderabad, Chennai, Kolkata,</strong> and across every state with evening and weekend slots.
+                </p>
 
-             {/* Card 2: Rated Best Counselor in Pune */}
-             <div className="bg-soft-sand/70 rounded-[28px] p-8 border border-gray-200/80 flex flex-col justify-between hover:shadow-md transition-shadow">
-               <div>
-                 <div className="w-12 h-12 rounded-2xl bg-terracotta/10 flex items-center justify-center mb-6 text-terracotta">
-                   <Award className="w-6 h-6" />
-                 </div>
-                 <h3 className="text-xl font-bold text-deep-teal font-heading mb-3">
-                   Rated Best Counselor & Top Psychologist in Pune
-                 </h3>
-                 <p className="text-sm text-charcoal-warm leading-relaxed mb-4">
-                   Founded by lead psychologists <strong>Imran Hussain (NIMHANS trained)</strong> and <strong>Tejaswini Joshi (London School of Economics)</strong>, Being You Path is rated Pune's #1 counselling practice with a verified 5.0 Google Reviews rating.
-                 </p>
-                 <p className="text-sm text-charcoal-warm leading-relaxed">
-                   We combine Cognitive Behavioral Therapy (CBT), nervous-system somatic grounding, and personalized behavioral habits to create tangible shifts in your everyday well-being.
-                 </p>
-               </div>
-               <div className="pt-6 mt-6 border-t border-gray-200/70 text-xs font-semibold text-deep-teal flex items-center gap-2">
-                 <CheckCircle2 className="w-4 h-4 text-sage-green" />
-                 <span>Verified 5.0-Star Patient Reviews</span>
-               </div>
-             </div>
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-start gap-2.5 text-sm text-[#F5F0E6]">
+                    <Check className="w-4 h-4 text-[#F8C988] flex-shrink-0 mt-0.5" aria-hidden="true" />
+                    <span>
+                      <strong className="text-white">Cognitive Behavioural Therapy (CBT):</strong> Evidence-based work for anxiety, overthinking, and low mood patterns.
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-2.5 text-sm text-[#F5F0E6]">
+                    <Check className="w-4 h-4 text-[#F8C988] flex-shrink-0 mt-0.5" aria-hidden="true" />
+                    <span>
+                      <strong className="text-white">Secular Mindfulness &amp; Somatics:</strong> Nervous-system regulation tools for busy workdays and academic schedules.
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-2.5 text-sm text-[#F5F0E6]">
+                    <Check className="w-4 h-4 text-[#F8C988] flex-shrink-0 mt-0.5" aria-hidden="true" />
+                    <span>
+                      <strong className="text-white">Corporate Wellness Workshops:</strong> Structured stress, burnout, and communication modules for teams across India.
+                    </span>
+                  </div>
+                </div>
+              </div>
 
-             {/* Card 3: Localities & Pan-India Reach */}
-             <div className="bg-soft-sand/70 rounded-[28px] p-8 border border-gray-200/80 flex flex-col justify-between hover:shadow-md transition-shadow">
-               <div>
-                 <div className="w-12 h-12 rounded-2xl bg-sage-green/20 flex items-center justify-center mb-6 text-deep-teal">
-                   <MapPin className="w-6 h-6" />
-                 </div>
-                 <h3 className="text-xl font-bold text-deep-teal font-heading mb-3">
-                   Across Pune Micro-Localities & Nationwide
-                 </h3>
-                 <p className="text-sm text-charcoal-warm leading-relaxed mb-4">
-                   Conveniently accessible for clients across Pune: <strong>Koregaon Park, Kalyani Nagar, Viman Nagar, Baner, Kothrud, Aundh, Hinjewadi IT Park, Wakad, Hadapsar, Magarpatta City, and PCMC</strong>.
-                 </p>
-                 <p className="text-sm text-charcoal-warm leading-relaxed">
-                   Prefer sessions from your home or outside Pune? We deliver confidential, encrypted online counseling across <strong>Mumbai, Bengaluru, Delhi NCR, Hyderabad, and all Indian states</strong>.
-                 </p>
-               </div>
-               <div className="pt-6 mt-6 border-t border-gray-200/70 text-xs font-semibold text-deep-teal flex items-center gap-2">
-                 <CheckCircle2 className="w-4 h-4 text-sage-green" />
-                 <span>In-Person Pune & Pan-India Online</span>
-               </div>
-             </div>
-           </div>
+              <div className="pt-6 border-t border-white/15 flex flex-wrap items-center justify-between gap-4">
+                <div className="flex items-center gap-2 text-xs font-semibold text-[#F5F0E6]">
+                  <CheckCircle2 className="w-4 h-4 text-[#A7E0BA]" aria-hidden="true" />
+                  <span>Confidential Video Consultations</span>
+                </div>
+                <Link
+                  to="/services/online-therapy-india"
+                  className="inline-flex items-center text-xs font-bold uppercase tracking-wider text-[#F8C988] hover:text-white transition-colors group min-h-[44px]"
+                >
+                  <span>Explore Online Therapy</span>
+                  <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
+            </div>
+          </div>
 
-           {/* Quick Action Banner */}
-           <div className="rounded-[24px] bg-[#0B3A42] text-white p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
-             <div>
-               <h4 className="text-2xl font-bold font-heading mb-2">
-                 Ready to speak with a psychologist who truly understands?
-               </h4>
-               <p className="text-sm text-white/80 max-w-xl">
-                 Take the first step without pressure. Schedule a free 15-minute introductory clarity call or connect directly with our Pune clinic via WhatsApp.
-               </p>
-             </div>
-             <div className="flex flex-wrap items-center gap-4 shrink-0">
-               <Link
-                 to="/services"
-                 className="px-6 py-3.5 rounded-full bg-white text-deep-teal hover:bg-soft-sand transition-colors font-bold text-sm tracking-wide shadow-md"
-               >
-                 Book 15-Min Free Call
-               </Link>
-               <a
-                 href="https://wa.me/917387772573?text=Hello%20Being%20You%20Path,%20I%20would%20like%20to%20inquire%20about%20counselling%20in%20Pune."
-                 target="_blank"
-                 rel="noopener noreferrer"
-                 className="px-6 py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white transition-colors font-bold text-sm tracking-wide shadow-md flex items-center gap-2"
-               >
-                 <Phone className="w-4 h-4" />
-                 Chat on WhatsApp
-               </a>
-             </div>
-           </div>
-         </div>
-       </section>
+          <div className="text-center">
+            <Link
+              to="/areas-we-serve"
+              className="inline-flex items-center gap-2 text-xs font-semibold text-deep-teal hover:text-terracotta underline underline-offset-4 min-h-[44px]"
+            >
+              <span>See all Pune neighbourhoods &amp; Indian cities we serve</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        </div>
+      </section>
 
-       {/* Interactive FAQ Section with Schema.org Parity */}
-       <section className="py-16 md:py-24 bg-soft-sand border-b border-gray-200">
-         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-           
-           <div className="text-center mb-12">
-             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-gray-200 text-terracotta text-xs font-bold uppercase tracking-wider mb-4 shadow-2xs">
-               <HelpCircle className="w-3.5 h-3.5 text-terracotta" />
-               Frequently Asked Questions
-             </div>
-             <h2 className="text-3xl md:text-4xl font-bold text-deep-teal font-heading tracking-tight mb-4">
-               Counselling in Pune & Across India: What You Need to Know
-             </h2>
-             <p className="text-base text-charcoal-warm max-w-2xl mx-auto">
-               Common queries regarding our in-person sessions in Pune, online therapy nationwide, psychological approaches, and scheduling your first clarity call.
-             </p>
-           </div>
+      {/* FAQ Section (all answers present in raw HTML DOM via CSS collapse) */}
+      <section className="py-16 md:py-24 bg-soft-sand border-b border-gray-200">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-gray-200 text-terracotta text-xs font-bold uppercase tracking-wider mb-4 shadow-2xs">
+              <CircleHelp className="w-3.5 h-3.5 text-terracotta" aria-hidden="true" />
+              Frequently Asked Questions
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-deep-teal font-heading tracking-tight mb-4">
+              Questions people ask
+            </h2>
+            <p className="text-base text-charcoal-warm max-w-2xl mx-auto">
+              Clear answers about fees, your first session, CBT vs talk therapy, online vs in-person care in Pune, and client confidentiality.
+            </p>
+          </div>
 
-           {/* Accordion List */}
-           <div className="space-y-4">
-             {HOME_FAQS.map((faq, index) => {
-               const isOpen = openFaq === index;
-               return (
-                 <div 
-                   key={index}
-                   className="bg-white rounded-[20px] border border-gray-200/90 shadow-2xs overflow-hidden transition-all duration-200"
-                 >
-                   <button
-                     onClick={() => setOpenFaq(isOpen ? null : index)}
-                     className="w-full text-left p-6 md:p-7 flex items-center justify-between gap-4 focus:outline-none"
-                     aria-expanded={isOpen}
-                   >
-                     <span className="font-heading font-semibold text-deep-teal text-base md:text-lg leading-snug">
-                       {faq.question}
-                     </span>
-                     <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${isOpen ? 'bg-deep-teal text-white' : 'bg-soft-sand text-deep-teal'}`}>
-                       {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                     </div>
-                   </button>
+          <div className="space-y-4">
+            {HOME_FAQS.map((faq, idx) => {
+              const isOpen = openFaqIndex === idx;
+              return (
+                <div
+                  key={idx}
+                  className="bg-white rounded-[20px] border border-gray-200/90 shadow-2xs overflow-hidden transition-all duration-200"
+                >
+                  <h3 className="m-0 font-heading font-semibold text-deep-teal text-base md:text-lg leading-snug">
+                    <button
+                      type="button"
+                      onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
+                      className="w-full text-left p-6 md:p-7 flex items-center justify-between gap-4 focus:outline-none cursor-pointer"
+                      aria-expanded={isOpen}
+                    >
+                      <span>{faq.question}</span>
+                      <span
+                        className={`w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${
+                          isOpen ? "bg-deep-teal text-white" : "bg-soft-sand text-deep-teal"
+                        }`}
+                      >
+                        {isOpen ? (
+                          <ChevronUp className="w-4 h-4" />
+                        ) : (
+                          <ChevronDown className="w-4 h-4" />
+                        )}
+                      </span>
+                    </button>
+                  </h3>
 
-                   <AnimatePresence>
-                     {isOpen && (
-                       <motion.div
-                         initial={{ height: 0, opacity: 0 }}
-                         animate={{ height: "auto", opacity: 1 }}
-                         exit={{ height: 0, opacity: 0 }}
-                         transition={{ duration: 0.25, ease: "easeInOut" }}
-                       >
-                         <div className="px-6 pb-6 md:px-7 md:pb-7 pt-1 text-charcoal-warm text-[15px] leading-relaxed border-t border-gray-100">
-                           {faq.answer}
-                         </div>
-                       </motion.div>
-                     )}
-                   </AnimatePresence>
-                 </div>
-               );
-             })}
-           </div>
+                  <div
+                    className={`grid transition-all duration-200 ease-in-out ${
+                      isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                    }`}
+                  >
+                    <div className="overflow-hidden">
+                      <div className="px-6 pb-6 md:px-7 md:pb-7 pt-2 text-charcoal-warm text-[15px] leading-relaxed border-t border-gray-100">
+                        {faq.answer}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
 
-           {/* Call to Action below FAQs */}
-           <div className="mt-12 text-center p-8 bg-white rounded-[24px] border border-gray-200 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-6">
-             <div className="text-left">
-               <h3 className="text-lg font-bold font-heading text-deep-teal mb-1">
-                 Still Have Questions About Our Counselling Approach?
-               </h3>
-               <p className="text-sm text-charcoal-warm">
-                 Speak with our psychologists directly through a free 15-minute introductory clarity call.
-               </p>
-             </div>
-             <Link
-               to="/contact"
-               className="bg-deep-teal text-white hover:bg-deep-teal/90 px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-colors shadow-sm flex items-center gap-2"
-             >
-               <span>Book Free Clarity Call</span>
-               <ArrowRight className="w-3.5 h-3.5" />
-             </Link>
-           </div>
+          <div className="mt-12 text-center p-8 bg-white rounded-[24px] border border-gray-200 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="text-left">
+              <h3 className="text-lg font-bold font-heading text-deep-teal mb-1">
+                Still deciding who is the right fit?
+              </h3>
+              <p className="text-sm text-charcoal-warm">
+                Read our step-by-step guide on{" "}
+                <Link
+                  to="/guides/how-to-choose-a-psychologist-pune"
+                  className="font-semibold text-terracotta underline underline-offset-4 hover:text-deep-teal"
+                >
+                  how to choose a psychologist or counsellor in Pune
+                </Link>{" "}
+                or book a free 15-minute clarity call.
+              </p>
+            </div>
+            <Link
+              to="/contact"
+              className="bg-deep-teal text-white hover:bg-deep-teal/90 px-6 py-3.5 min-h-[44px] rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-colors shadow-sm flex items-center gap-2"
+            >
+              <span>Book Free Clarity Call</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        </div>
+      </section>
 
-         </div>
-       </section>
+      {/* Daily Micro-Practice & Thought of the Day */}
+      <section className="pt-16 md:pt-20 lg:pt-24 pb-24 md:pb-28 bg-soft-sand">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row gap-8 justify-center items-stretch">
+            <div className="bg-amber-glow/15 rounded-[24px] p-8 md:p-10 flex-1 max-w-[500px] border border-amber-glow/20 shadow-sm flex flex-col justify-center text-center">
+              <div
+                suppressHydrationWarning
+                className="text-xs sm:text-sm font-bold tracking-wider text-terracotta uppercase mb-4"
+              >
+                {currentPractice.weekday} Micro-Practice · {currentPractice.duration}
+              </div>
+              <h3
+                suppressHydrationWarning
+                className="text-[24px] font-medium text-deep-teal mb-4 font-heading"
+              >
+                {currentPractice.emoji} {currentPractice.title}
+              </h3>
+              <p
+                suppressHydrationWarning
+                className="text-charcoal-warm text-lg leading-relaxed"
+              >
+                {currentPractice.body}
+              </p>
+            </div>
 
-       {/* Micro-Moment Box & Thought of the Day */}
-       <section className="py-16 md:py-20 lg:py-24 bg-soft-sand">
-         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-           <div className="flex flex-col md:flex-row gap-8 justify-center items-stretch">
-             {/* Dynamic Anchor */}
-             <motion.div 
-               className="bg-amber-glow/15 rounded-[24px] p-8 md:p-10 flex-1 max-w-[500px] border border-amber-glow/20 shadow-sm flex flex-col justify-center text-center hover-lift"
-             >
-               <div className="text-sm font-bold tracking-wider text-terracotta uppercase mb-4">
-                 Your {timeOfDay} Anchor
-               </div>
-               <h3 className="text-[24px] font-medium text-deep-teal mb-4 font-heading">
-                 {currentAnchor.emoji} {currentAnchor.title}
-               </h3>
-               <p className="text-charcoal-warm text-lg leading-relaxed">
-                 {currentAnchor.body}
-               </p>
-             </motion.div>
+            <div className="section-dark bg-[#0B3A42] rounded-[24px] p-8 md:p-10 flex-1 max-w-[500px] shadow-md flex flex-col justify-between text-center border-l-4 border-[#FDFBF7]/80 relative overflow-hidden">
+              <div>
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <div className="inline-flex items-center gap-1.5 text-xs font-bold tracking-wider text-[#FAF9F6] uppercase bg-white/15 px-3 py-1 rounded-full font-sans border border-[#FAF9F6]/20">
+                      <Sparkles className="w-3.5 h-3.5 text-[#F8C988]" aria-hidden="true" />
+                      <span>Thought of the Day</span>
+                    </div>
+                    {currentThought.occasion && (
+                      <span
+                        suppressHydrationWarning
+                        className="inline-flex items-center text-[11px] font-bold tracking-wide text-[#F8C988] bg-[#E6A157]/20 border border-[#E6A157]/45 px-2.5 py-1 rounded-full font-sans"
+                      >
+                        {currentThought.occasion}
+                      </span>
+                    )}
+                  </div>
 
-             {/* Thought of the Day */}
-             <motion.div 
-               initial={{ opacity: 0, y: 15 }}
-               whileInView={{ opacity: 1, y: 0 }}
-               viewport={{ once: true }}
-               transition={{ duration: 0.5, delay: 0.1 }}
-               className="bg-deep-teal rounded-[24px] p-8 md:p-10 flex-1 max-w-[500px] shadow-md flex flex-col justify-between text-center border-l-4 border-[#FDFBF7]/80 hover-lift relative overflow-hidden"
-             >
-               <div>
-                 <div className="flex items-center justify-between gap-2 mb-4">
-                   <div className="inline-flex items-center gap-1.5 text-xs font-bold tracking-wider text-[#FDFBF7] uppercase bg-white/15 px-3 py-1 rounded-full font-sans border border-[#FDFBF7]/20">
-                     <Sparkles className="w-3.5 h-3.5 text-amber-glow" />
-                     <span>Thought of the Day</span>
-                   </div>
+                  <div className="flex items-center gap-1.5 ml-auto">
+                    <button
+                      type="button"
+                      onClick={handleCopyQuote}
+                      className="px-3 py-1.5 min-h-[38px] rounded-full bg-white/10 hover:bg-white/20 text-[#FAF9F6] hover:text-white transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-sans border border-[#FAF9F6]/25"
+                      title={copiedQuote ? "Copied to clipboard!" : "Copy thought"}
+                      aria-label="Copy thought"
+                    >
+                      {copiedQuote ? (
+                        <>
+                          <Check className="w-3.5 h-3.5 text-[#F8C988]" />
+                          <span className="text-[11px] text-[#F8C988] font-semibold">
+                            Copied!
+                          </span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3.5 h-3.5 text-[#FAF9F6]" aria-hidden="true" />
+                          <span className="text-[11px] text-[#FAF9F6] font-medium">
+                            Copy
+                          </span>
+                        </>
+                      )}
+                    </button>
 
-                   <button
-                     onClick={handleCopyThought}
-                     className="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-[#FDFBF7] hover:text-white transition-all cursor-pointer flex items-center gap-1.5 text-xs font-sans border border-[#FDFBF7]/20"
-                     title={copiedThought ? "Copied to clipboard!" : "Copy thought"}
-                     aria-label="Copy thought"
-                   >
-                     {copiedThought ? (
-                       <>
-                         <Check className="w-3.5 h-3.5 text-amber-glow" />
-                         <span className="text-[11px] text-amber-glow font-semibold">Copied!</span>
-                       </>
-                     ) : (
-                       <>
-                         <Copy className="w-3.5 h-3.5 text-[#FDFBF7]" />
-                         <span className="text-[11px] text-[#FDFBF7] font-medium">Copy</span>
-                       </>
-                     )}
-                   </button>
-                 </div>
+                    <a
+                      href={buildWhatsAppThoughtShareUrl(currentThought)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-1.5 min-h-[38px] rounded-full bg-white/10 hover:bg-white/20 text-[#FAF9F6] hover:text-white transition-colors inline-flex items-center gap-1.5 text-xs font-sans border border-[#FAF9F6]/25"
+                      aria-label="Share on WhatsApp"
+                    >
+                      <Share2 className="w-3.5 h-3.5 text-[#F8C988]" aria-hidden="true" />
+                      <span className="text-[11px] text-[#FAF9F6] font-medium">
+                        Share on WhatsApp
+                      </span>
+                    </a>
+                  </div>
+                </div>
 
-                 <Quote className="w-8 h-8 text-[#F5F7F8]/70 mx-auto mb-4" />
+                <Quote className="w-8 h-8 text-[#FAF9F6]/70 mx-auto mb-4" aria-hidden="true" />
+                <blockquote
+                  suppressHydrationWarning
+                  className="text-[#FAF9F6] text-lg sm:text-xl md:text-2xl font-heading font-medium leading-relaxed italic px-2 min-h-[72px] flex items-center justify-center"
+                >
+                  &ldquo;{currentThought.text}&rdquo;
+                </blockquote>
 
-                 <blockquote 
-                   style={{ color: '#F5F7F8' }}
-                   className="!text-[#F5F7F8] text-[#F5F7F8] text-lg sm:text-xl md:text-2xl font-heading font-medium leading-relaxed italic px-2 min-h-[72px] flex items-center justify-center drop-shadow-xs"
-                 >
-                   "{currentThoughtItem.quote}"
-                 </blockquote>
+                {currentThought.helplineNote && (
+                  <div className="mt-4 px-4 py-3 rounded-xl bg-white/10 border border-[#F8C988]/50 text-[#FAF9F6] text-xs font-sans leading-relaxed flex flex-col items-center gap-1.5">
+                    <span>{currentThought.helplineNote}</span>
+                    <a
+                      href="tel:14416"
+                      className="inline-flex items-center gap-1.5 font-bold text-[#F8C988] hover:text-white underline underline-offset-4"
+                    >
+                      <PhoneCall className="w-3.5 h-3.5" aria-hidden="true" />
+                      <span>Call Tele-MANAS 14416</span>
+                    </a>
+                  </div>
+                )}
 
-                 <div className="mt-4 text-sm text-[#FDFBF7] font-medium font-sans">
-                   — {currentThoughtItem.author}
-                   {currentThoughtItem.tradition && (
-                     <span className="text-[#FDFBF7]/80 text-xs block sm:inline sm:ml-1.5">
-                       • {currentThoughtItem.tradition}
-                     </span>
-                   )}
-                 </div>
+                <div
+                  suppressHydrationWarning
+                  className="mt-4 text-sm text-[#FAF9F6] font-semibold font-sans"
+                >
+                  — {currentThought.author}
+                  {currentThought.source && (
+                    <span className="block text-[#F5F0E6]/90 text-xs font-normal mt-0.5">
+                      {currentThought.source}
+                    </span>
+                  )}
+                </div>
 
-                 <div className="mt-3 inline-block text-[11px] font-sans uppercase tracking-widest text-[#FDFBF7] bg-[#FDFBF7]/15 border border-[#FDFBF7]/25 px-3 py-1 rounded-full font-semibold">
-                   {currentThoughtItem.theme}
-                 </div>
-               </div>
+                <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
+                  <span
+                    suppressHydrationWarning
+                    className="inline-block text-[11px] font-sans uppercase tracking-widest text-[#FAF9F6] bg-[#FAF9F6]/15 border border-[#FAF9F6]/25 px-3 py-1 rounded-full font-semibold"
+                  >
+                    {currentThought.theme}
+                  </span>
+                  {currentThought.linkTo && (
+                    <Link
+                      to={currentThought.linkTo}
+                      className="inline-flex items-center gap-1 text-xs font-sans font-semibold text-[#F8C988] hover:text-white underline underline-offset-4 transition-colors"
+                    >
+                      <span>Read more</span>
+                      <ArrowRight className="w-3 h-3" aria-hidden="true" />
+                    </Link>
+                  )}
+                </div>
+              </div>
 
-               <div className="mt-6 pt-4 border-t border-[#FDFBF7]/20 flex items-center justify-between text-xs text-[#FDFBF7]/85 font-sans">
-                 <span className="text-[#FDFBF7] font-medium">{currentThoughtItem.day} Reflection</span>
-                 <span className="text-[#FDFBF7]/85">{copiedThought ? "Copied to clipboard!" : "Ancient Wisdom & Secular Mindfulness"}</span>
-               </div>
-             </motion.div>
-           </div>
-         </div>
-       </section>
+              <div className="mt-6 pt-4 border-t border-[#FAF9F6]/20 flex flex-wrap items-center justify-between gap-2 text-xs text-[#FAF9F6]/90 font-sans">
+                <span suppressHydrationWarning className="text-[#FAF9F6] font-medium">
+                  {dailyThought.ist.weekday} Reflection
+                </span>
+                <Link
+                  to="/thought-of-the-day"
+                  className="text-[#F8C988] hover:text-white font-semibold underline underline-offset-4 transition-colors"
+                >
+                  All {dailyThought.ist.year} thoughts →
+                </Link>
+              </div>
+            </div>
+          </div>
 
+          <p className="text-center text-xs text-stone-700 max-w-3xl mx-auto mt-10 leading-relaxed">
+            {TELE_MANAS_NOTICE}
+          </p>
+        </div>
+      </section>
     </div>
   );
 }

@@ -2,21 +2,18 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 
 const quotes = [
-  "The present moment is the only time over which we have dominion. — Thích Nhất Hạnh",
-  "Between stimulus and response there is a space. In that space is our power to choose our response. — Viktor Frankl",
-  "Peace comes from within. Do not seek it without. — Buddha",
-  "Knowing yourself is the beginning of all wisdom. — Aristotle",
-  "Healing takes courage, and we all have courage, even if we have to dig a little to find it. — Tori Amos",
-  "Quiet the mind, and the soul will speak. — Ma Jaya Sati Bhagavati",
-  "You carry all the ingredients to turn your life into a nightmare—don't mix them! — Hafez",
-  "Every moment is a fresh beginning. — T.S. Eliot",
-  "We are not our thoughts; we are the observers of our thoughts.",
+  "You have power over your mind—not outside events; realize this, and you will find strength. — Marcus Aurelius",
+  "People are disturbed not by things, but by the principles and notions which they form concerning things. — Epictetus",
+  "The art of being wise is the art of knowing what to overlook. — William James",
+  "Go slowly, mind, go slowly; everything unfolds in its own appointed season. — Kabir",
+  "Do not forget to give yourself room to pause and breathe today. — Being You Path",
 ];
 
 export default function LoadingScreen() {
-  const [currentQuoteIndex, setCurrentQuoteIndex] = useState(() => Math.floor(Math.random() * quotes.length));
+  const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
 
   useEffect(() => {
+    setCurrentQuoteIndex(Math.floor(Math.random() * quotes.length));
     // Change quote every 2.5 seconds
     const quoteInterval = setInterval(() => {
       setCurrentQuoteIndex((prev) => (prev + 1) % quotes.length);

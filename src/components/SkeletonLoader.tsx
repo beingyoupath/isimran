@@ -61,3 +61,5 @@ export function SkeletonLoader({ className = "" }: SkeletonLoaderProps) {
     </div>
   );
 }
+
+export default SkeletonLoader;

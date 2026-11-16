@@ -104,7 +104,7 @@ export const GOOGLE_REVIEWS: GoogleReview[] = [
   {
     id: "sagar-patankar",
     author: "sagar patankar",
-    details: "Google Verified Reviewer",
+    details: "1 review",
     date: "Recent",
     rating: 5,
     highlight: "5-star rating for psychological guidance and clarity",

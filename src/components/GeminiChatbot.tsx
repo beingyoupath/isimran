@@ -1,79 +1,47 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { GoogleGenAI } from '@google/genai';
-import { 
-  MessageCircle, 
-  X, 
-  Send, 
-  User, 
-  Bot, 
-  Loader2, 
-  Maximize2, 
-  Minimize2, 
+import {
+  MessageCircle,
+  X,
+  Send,
+  User,
+  Bot,
+  Loader2,
+  Maximize2,
+  Minimize2,
   RotateCcw,
   Sparkles,
   ArrowRight,
   Phone,
   Mail,
   PhoneCall,
-  Heart
+  Heart,
+  AlertCircle,
+  RefreshCw,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { saveInquiry } from '../lib/inquiries';
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-
 const WHATSAPP_NUMBER_1 = '+91 7387772573';
-const WHATSAPP_LINK_1 = 'https://wa.me/917387772573?text=Hi%20Being%20You%20Path%2C%20I%20would%20like%20to%20consult%20with%20Imran%20%26%20Tejaswini%20for%20the%20rest%20of%20my%20healing%20journey';
+const WHATSAPP_LINK_1 =
+  'https://wa.me/917387772573?text=Hi%20Being%20You%20Path%2C%20I%20would%20like%20to%20consult%20with%20Imran%20%26%20Tejaswini%20for%20the%20rest%20of%20my%20healing%20journey';
 const CALL_NUMBER = '+91 7387779238';
 const CALL_LINK = 'tel:+917387779238';
-const EMAIL_ADDRESS = 'hello@beingyoupath.com';
-const EMAIL_LINK = 'mailto:hello@beingyoupath.com?subject=1-on-1%20Session%20Inquiry%20-%20Being%20You%20Path';
+const EMAIL_LINK =
+  'mailto:hello@beingyoupath.com?subject=1-on-1%20Session%20Inquiry%20-%20Being%20You%20Path';
 
-const SYSTEM_INSTRUCTION = `You are the AI Wellness Guide for Being You Path (co-founded by Imran Hussain and Tejaswini in Pune, India).
+const CALENDLY_BOOKING_URL = 'https://calendly.com/beingyoupathappointment';
+const CHAT_HISTORY_KEY = 'being_you_path_guide_history_v5';
+const VISITOR_KEY = 'being_you_visitor';
 
-CORE MANDATE:
-Every single response MUST be WARM, ULTRA-CONCISE, TO THE POINT, and DEEPLY MEANINGFUL.
-Target length: Strictly 40 to 55 words total. Strictly 3 concise sentences.
-NEVER write lengthy paragraphs, essays, repetitive soothing words, or generic filler.
+const WELCOME_MESSAGE_TEXT =
+  "Hi, I'm Path Guide, an AI assistant for general wellbeing tips and help with booking. I can't give diagnosis or therapy, and I'm not for emergencies. In a crisis, call Tele-MANAS 14416.";
 
-STRICT 3-PART BLUEPRINT (Every single response):
-Sentence 1 (Warmth & Validation):
-Warmly acknowledge their feelings with deep empathy so they feel instantly heard and safe (max 15 words).
+const CRISIS_PATTERN =
+  /\b(suicid(?:e|al)?|self[- ]?harm(?:ing)?|hurt(?:ing)?\s+myself|kill(?:ing)?\s+myself|end(?:ing)?\s+(?:my\s+life|it\s+all)|want\s+to\s+die|don'?t\s+want\s+to\s+live|cutting\s+myself|overdos(?:e|ing)|hang(?:ing)?\s+myself)\b/i;
 
-Sentence 2 (High Solution - The First Half):
-Give ONE high-impact, practical somatic or psychological tool they can do immediately. MUST start with "**Immediate relief:**" (max 20 words).
-
-Sentence 3 (Psychological Curiosity Hook & CTA - The Other Half):
-Explain that this soothes the immediate surface feeling, but discovering the subconscious root trigger is the second half of the story. Invite them to connect with Imran Hussain & Tejaswini below to complete the picture (max 20 words).
-
-NEGATIVE CONSTRAINTS (Strictly Enforced):
-- Total response MUST be UNDER 60 words.
-- Do NOT type out phone numbers, emails, or links in the text (clickable buttons exist directly underneath).
-- Always include the invisible metadata block at the very end:
-<!--DATA: {"topic": "...", "sentiment": "...", "readiness": "high|medium|low"}-->
-
-FEW-SHOT EXAMPLES:
-
-User: "I feel like I am not enough."
-Assistant:
-I hear how heavy that feels, and please know you are not broken for feeling this way.
-
-**Immediate relief:** Place one hand firmly on your heart, take two deep inhales through your nose, and let out a slow sigh through your mouth to calm your nervous system right now.
-
-While this relieves the immediate bodily alarm, uncovering the subconscious root trigger is the other half of your story. Connect with Imran & Tejaswini below to complete the picture.
-<!--DATA: {"topic": "Self-Worth", "sentiment": "pain", "readiness": "high"}-->
-
-User: "I can't stop overthinking at night."
-Assistant:
-Racing thoughts can be exhausting, and your mind is simply in overdrive trying to protect you.
-
-**Immediate relief:** Press both feet flat on the ground and name 3 physical textures you can feel right now to pull blood flow out of the overstimulated brain.
-
-While this interrupts the spiral, discovering why your subconscious refuses to rest is the second half of the puzzle. Reach out to Imran & Tejaswini below to uncover the root.
-<!--DATA: {"topic": "Overthinking", "sentiment": "anxiety", "readiness": "high"}-->`;
-
-const FALLBACK_MODELS = ['gemini-flash-latest', 'gemini-3.1-flash-lite', 'gemini-3-flash-preview', 'gemini-3.8-flash'];
+const CRISIS_MESSAGE_TEXT =
+  "Because you mentioned self-harm or suicide, I've stopped general wellbeing tips so you can connect directly with human support right away.\n\nPlease call India's free 24/7 crisis helpline Tele-MANAS on 14416 (or 1800-891-4416) immediately. If you also want to arrange outpatient follow-up care, use the booking link below.";
 
 interface VisitorDetails {
   name: string;
@@ -85,18 +53,29 @@ type Message = {
   id: string;
   role: 'user' | 'model';
   text: string;
+  isError?: boolean;
+  isCrisis?: boolean;
+  retryPrompt?: string;
 };
+
+function createWelcomeMessage(): Message {
+  return {
+    id: 'welcome',
+    role: 'model',
+    text: WELCOME_MESSAGE_TEXT,
+  };
+}
 
 export default function GeminiChatbot() {
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [hasManuallyToggled, setHasManuallyToggled] = useState(false);
-  
+
   // Visitor intake state
   const [visitor, setVisitor] = useState<VisitorDetails | null>(() => {
     try {
-      const saved = localStorage.getItem('being_you_visitor');
+      const saved = localStorage.getItem(VISITOR_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
         if (parsed?.name && parsed?.email && parsed?.whatsapp) {
@@ -104,7 +83,7 @@ export default function GeminiChatbot() {
         }
       }
     } catch (e) {
-      console.error("Could not parse saved visitor details", e);
+      console.error('Could not parse saved visitor details', e);
     }
     return null;
   });
@@ -121,32 +100,57 @@ export default function GeminiChatbot() {
       if (!formName && user.displayName) setFormName(user.displayName);
       if (!formEmail && user.email) setFormEmail(user.email);
     }
-  }, [user]);
+  }, [user, formName, formEmail]);
 
   const [messages, setMessages] = useState<Message[]>(() => {
-    // Purge any legacy unformatted chat histories from all previous versions
     try {
+      // Purge legacy keys from earlier iterations
       localStorage.removeItem('being_you_chat_history');
       localStorage.removeItem('being_you_chat_history_v2');
       localStorage.removeItem('being_you_chat_history_v3');
-    } catch {}
+      localStorage.removeItem('being_you_chat_history_v4');
+
+      const saved = localStorage.getItem(CHAT_HISTORY_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          return parsed.filter(
+            (m): m is Message =>
+              Boolean(m) &&
+              typeof m.id === 'string' &&
+              (m.role === 'user' || m.role === 'model') &&
+              typeof m.text === 'string' &&
+              !m.isError
+          );
+        }
+      }
+    } catch {
+      // Ignore storage parse error
+    }
     return [];
   });
 
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  // Warm, deeply welcoming initial greeting
+  const hasCrisisTriggered = messages.some((m) => m.isCrisis);
+
+  // Persist messages cleanly
+  useEffect(() => {
+    try {
+      const clean = messages.filter((m) => !m.isError).slice(-40);
+      localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(clean));
+    } catch {
+      // Ignore storage quota errors
+    }
+  }, [messages]);
+
+  // Initial Path Guide greeting
   useEffect(() => {
     if (visitor && messages.length === 0) {
-      setMessages([
-        {
-          id: 'welcome',
-          role: 'model',
-          text: `Warm greetings, ${visitor.name}. You are in a safe, gentle space.\n\nTake a slow breath. What is feeling heavy or asking for care in your life right now?`
-        }
-      ]);
+      setMessages([createWelcomeMessage()]);
     }
   }, [visitor, messages.length]);
 
@@ -154,7 +158,38 @@ export default function GeminiChatbot() {
     if (messages.length > 4 && !isExpanded && !hasManuallyToggled) {
       setIsExpanded(true);
     }
-  }, [messages.length]);
+  }, [messages.length, isExpanded, hasManuallyToggled]);
+
+  // Close on Escape key & focus input when opened
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    const timer = setTimeout(() => {
+      inputRef.current?.focus();
+    }, 120);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      clearTimeout(timer);
+    };
+  }, [isOpen, visitor]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      scrollToBottom();
+    }
+  }, [messages, isLoading, isOpen]);
 
   const handleStartChat = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -169,7 +204,7 @@ export default function GeminiChatbot() {
       return;
     }
 
-    if (!trimmedEmail.includes('@') || !trimmedEmail.includes('.')) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
       setFormError('Please enter a valid email address.');
       return;
     }
@@ -188,124 +223,52 @@ export default function GeminiChatbot() {
     };
 
     try {
-      localStorage.setItem('being_you_visitor', JSON.stringify(newVisitor));
-      setVisitor(newVisitor);
+      localStorage.setItem(VISITOR_KEY, JSON.stringify(newVisitor));
+    } catch {
+      // Ignore storage error
+    }
 
-      // Save initial connection into Firestore database for the practice
-      await saveInquiry({
+    setVisitor(newVisitor);
+    setMessages([createWelcomeMessage()]);
+    setIsStartingChat(false);
+
+    // Record initial connection into Firestore & email relay asynchronously so network latency never blocks the UI
+    saveInquiry(
+      {
         name: trimmedName,
         email: trimmedEmail,
         whatsapp: trimmedWhatsapp,
-        question: "Visitor initiated wellness chat session",
+        question: 'Visitor initiated Path Guide chat session',
         userId: user?.uid,
-      });
-
-      // Warm personal greeting
-      const initialGreeting: Message = {
-        id: 'welcome',
-        role: 'model',
-        text: `Warm greetings, ${trimmedName}. You are in a safe, gentle space.\n\nTake a slow breath. What is feeling heavy or asking for care in your life right now?`
-      };
-      setMessages([initialGreeting]);
-    } catch (error) {
-      console.error("Error registering visitor:", error);
-      setVisitor(newVisitor);
-    } finally {
-      setIsStartingChat(false);
-    }
+      },
+      {
+        source: 'Path Guide Intake',
+        readiness: 'medium',
+      }
+    ).catch((error) => {
+      console.error('Error registering visitor inquiry:', error);
+    });
   };
 
   const handleClearHistory = () => {
     try {
-      localStorage.removeItem('being_you_chat_history');
-      localStorage.removeItem('being_you_chat_history_v2');
-      localStorage.removeItem('being_you_chat_history_v3');
-    } catch {}
+      localStorage.removeItem(CHAT_HISTORY_KEY);
+    } catch {
+      // Ignore
+    }
 
     if (visitor) {
-      setMessages([
-        { 
-          id: 'welcome', 
-          role: 'model', 
-          text: `Warm greetings, ${visitor.name}. You are in a safe, quiet space. What is feeling heavy or asking for care in your life right now?` 
-        }
-      ]);
+      setMessages([createWelcomeMessage()]);
     } else {
       setMessages([]);
     }
   };
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  useEffect(() => {
-    if (isOpen) {
-      scrollToBottom();
-    }
-  }, [messages, isOpen]);
-
-  // Formatting function ensuring every response adheres strictly to the 3-part blueprint
-  const formatWellnessResponse = (rawText: string, userQuery: string): string => {
-    let text = rawText.replace(/<!--DATA:.*?-->/gs, '').trim();
-
-    const words = text.split(/\s+/).filter(Boolean);
-    const hasRelief = text.toLowerCase().includes('immediate relief:');
-    const hasHook = text.toLowerCase().includes('second half') || text.toLowerCase().includes('other half') || text.toLowerCase().includes('picture') || text.toLowerCase().includes('root');
-    const hasContactDump = text.includes('738777') || text.includes('@gmail') || text.includes('weight of those three words');
-
-    // If the model produced a concise, compliant 3-part response without phone dumps:
-    if (words.length <= 60 && hasRelief && hasHook && !hasContactDump) {
-      return text;
-    }
-
-    // If the model returned text containing immediate relief but slightly long, trim to the concise core:
-    if (hasRelief && !hasContactDump && words.length < 110) {
-      const parts = text.split(/(?=\*\*Immediate relief:\*\*)/i);
-      const warmthPart = parts[0]?.trim().replace(/\n+/g, ' ').split(/[.!?]\s+/)[0]?.trim() || "I hear how deeply this has been weighing on you, and you are not broken.";
-      const remaining = parts[1] || "";
-      const reliefMatch = remaining.match(/\*\*Immediate relief:\*\*\s*([^.\n\r]+[.!?])/i);
-      const reliefText = reliefMatch ? reliefMatch[1].trim() : "Place one hand gently on your heart, take two deep nasal inhales, and let out a slow sigh through your mouth to regulate your nervous system.";
-
-      return `${warmthPart.endsWith('.') ? warmthPart : warmthPart + '.'}\n\n**Immediate relief:** ${reliefText}\n\nWhile this calms the immediate bodily alarm, discovering the subconscious root trigger is the second half of the story. Reach out to Imran & Tejaswini below to complete the picture.`;
-    }
-
-    // Contextual fallback strictly following the 3-part formula
-    const q = userQuery.toLowerCase();
-    let warmth = "I hear how heavy that feels for you right now, and please know you are not alone.";
-    let relief = "Place one hand gently on your heart, take two quick inhales through your nose, and one slow sigh out through your mouth to settle your heart rate.";
-
-    if (q.includes('not enough') || q.includes('worth') || q.includes('failure') || q.includes('confidence') || q.includes('imposter')) {
-      warmth = "I hear that deep ache, and please remember that you do not need to earn your right to peace.";
-      relief = "Place both hands flat over your chest, feel the physical warmth of your palms, and breathe out with a soft audible sigh.";
-    } else if (q.includes('overthink') || q.includes('racing') || q.includes('mind') || q.includes('spiral')) {
-      warmth = "Racing thoughts can be exhausting, and your mind is simply in overdrive trying to protect you.";
-      relief = "Press both feet flat on the ground and name 3 physical textures you can feel right now to pull blood flow out of the overstimulated brain.";
-    } else if (q.includes('sleep') || q.includes('night') || q.includes('insomnia') || q.includes('tired')) {
-      warmth = "Restless nights are deeply draining, and your nervous system is currently stuck on high alert.";
-      relief = "Drop your jaw open slightly, consciously unclench your teeth, and make your exhales twice as long as your inhales.";
-    } else if (q.includes('work') || q.includes('burnout') || q.includes('career') || q.includes('stress') || q.includes('deadline')) {
-      warmth = "Managing continuous deadlines and workplace expectations without emotional recovery is unsustainable.";
-      relief = "Step away from all screens for two minutes, close your eyes, and drop your shoulders down by 10%.";
-    } else if (q.includes('relationship') || q.includes('family') || q.includes('argument') || q.includes('lonely')) {
-      warmth = "Relational friction hurts deeply because connection is our brain's primary source of safety.";
-      relief = "Place your feet flat on the floor, wrap your arms around yourself in a gentle self-hug, and take three steady breaths.";
-    }
-
-    return `${warmth}\n\n**Immediate relief:** ${relief}\n\nThis calms the immediate bodily alarm, but uncovering the subconscious root trigger is the second half of the story. Connect with Imran & Tejaswini below to complete the picture.`;
-  };
-
-  // Enhanced message renderer: Strips invisible data tags, sanitizes any runaway text, and formats CTA links
+  // Clean markdown/link renderer preserving full AI guidance
   const renderMessageText = (rawText: string) => {
-    // Strip invisible data block
-    let text = rawText.replace(/<!--DATA:.*?-->/gs, '').trim();
-
-    // Guardrail: Enforce warm, short, to-the-point solution + curiosity hook format
-    if (text.length > 250 || text.includes('weight of those three words') || (!text.includes('**Immediate relief:**') && text.length > 120)) {
-      text = `I hear how heavy that feels for you right now, and please know you are not alone.\n\n**Immediate relief:** Place one hand gently over your heart, take two sharp inhales through your nose, and one slow sigh out through your mouth to immediately settle your nervous system.\n\nThis calms the immediate bodily alarm, but uncovering the subconscious root trigger is the second half of the story. Connect with Imran & Tejaswini below to complete the picture.`;
-    }
-
-    const combinedRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)|(\+91\s?\d{10}|\+91\s?\d{5}\s?\d{5})/g;
+    const text = rawText.replace(/<!--DATA:.*?-->/gs, '').trim();
+    const combinedRegex =
+      /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)|(\+91\s?\d{10}|\+91\s?\d{5}\s?\d{5})/g;
     const paragraphs = text.split('\n');
 
     return (
@@ -330,7 +293,7 @@ export default function GeminiChatbot() {
                 boldParts.push(subText.slice(boldLastIdx, bMatch.index));
               }
               boldParts.push(
-                <strong key={bMatch.index} className="font-semibold text-gray-900">
+                <strong key={bMatch.index} className="font-semibold">
                   {bMatch[1]}
                 </strong>
               );
@@ -342,6 +305,7 @@ export default function GeminiChatbot() {
             return boldParts.length > 0 ? boldParts : [subText];
           };
 
+          combinedRegex.lastIndex = 0;
           while ((match = combinedRegex.exec(line)) !== null) {
             if (match.index > lastIndex) {
               parts.push(...parseBold(line.slice(lastIndex, match.index)));
@@ -349,10 +313,9 @@ export default function GeminiChatbot() {
 
             const matchText = match[0];
             if (match[1]) {
-              // Email
               parts.push(
-                <a 
-                  key={match.index} 
+                <a
+                  key={match.index}
                   href={`mailto:${matchText}`}
                   className="underline font-semibold text-[#1A5F5F] hover:text-[#0B3A42] transition-colors"
                 >
@@ -360,11 +323,10 @@ export default function GeminiChatbot() {
                 </a>
               );
             } else if (match[2]) {
-              // Phone / WhatsApp
               const cleanNum = matchText.replace(/[^0-9]/g, '');
               parts.push(
-                <a 
-                  key={match.index} 
+                <a
+                  key={match.index}
                   href={`https://wa.me/${cleanNum}`}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -382,10 +344,15 @@ export default function GeminiChatbot() {
             parts.push(...parseBold(line.slice(lastIndex)));
           }
 
-          const isBullet = line.trim().startsWith('•') || line.trim().startsWith('-') || /^\d+\./.test(line.trim());
+          const trimmed = line.trim();
+          const isBullet =
+            trimmed.startsWith('•') ||
+            trimmed.startsWith('- ') ||
+            trimmed.startsWith('* ') ||
+            /^\d+\./.test(trimmed);
 
           return (
-            <p key={lineIdx} className={`${isBullet ? 'pl-2 text-gray-700' : ''} leading-relaxed`}>
+            <p key={lineIdx} className={`${isBullet ? 'pl-2' : ''} leading-relaxed`}>
               {parts.length > 0 ? parts : parseBold(line)}
             </p>
           );
@@ -394,122 +361,177 @@ export default function GeminiChatbot() {
     );
   };
 
-  const handleSendPrompt = (promptText: string) => {
-    setInput(promptText);
-  };
+  const sendMessage = async (rawMessageText: string, options?: { isRetry?: boolean }) => {
+    const userText = rawMessageText.trim();
+    if (!userText || isLoading) return;
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim() || isLoading) return;
+    // Build history from existing clean messages before appending the new turn
+    const historySnapshot = messages
+      .filter((m) => m.id !== 'welcome' && !m.isError)
+      .slice(-8)
+      .map((m) => ({
+        role: m.role,
+        text: m.text.replace(/<!--DATA:.*?-->/gs, '').trim().slice(0, 600),
+      }));
 
-    const userText = input.trim();
-    const userMessage: Message = { id: Date.now().toString() + Math.random(), role: 'user', text: userText };
-    setMessages(prev => [...prev, userMessage]);
-    setInput('');
+    if (options?.isRetry) {
+      // Remove previous error bubble before retrying
+      setMessages((prev) => prev.filter((m) => !m.isError));
+    } else {
+      const userMessage: Message = {
+        id: `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+        role: 'user',
+        text: userText,
+      };
+      setMessages((prev) => [...prev.filter((m) => !m.isError), userMessage]);
+      setInput('');
+    }
+
+    // Immediate self-harm / suicide crisis intercept: show Tele-MANAS 14416 & booking link at once and stop giving tips
+    if (CRISIS_PATTERN.test(userText) || hasCrisisTriggered) {
+      const crisisMessage: Message = {
+        id: `${Date.now()}_crisis_${Math.random().toString(36).slice(2, 6)}`,
+        role: 'model',
+        text: CRISIS_MESSAGE_TEXT,
+        isCrisis: true,
+      };
+      setMessages((prev) => [...prev, crisisMessage]);
+
+      if (visitor && !options?.isRetry) {
+        saveInquiry(
+          {
+            name: visitor.name,
+            email: visitor.email,
+            whatsapp: visitor.whatsapp,
+            question: `${userText} [Urgent Crisis Resource Shown]`,
+            userId: user?.uid,
+          },
+          {
+            source: 'Path Guide Crisis Intercept',
+            topic: 'Crisis Support',
+            sentiment: 'crisis',
+            readiness: 'high',
+          }
+        ).catch((err) => console.error('Auto-recording crisis inquiry:', err));
+      }
+      setTimeout(() => inputRef.current?.focus(), 50);
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      // Build conversation context for multi-turn awareness (last 4 messages)
-      const conversationContents = messages
-        .filter(m => m.id !== 'welcome')
-        .slice(-4)
-        .map(m => ({
-          role: m.role,
-          parts: [{ text: m.text.replace(/<!--DATA:.*?-->/gs, '').trim().slice(0, 300) }]
-        }));
-
-      conversationContents.push({
-        role: 'user',
-        parts: [{ text: userText }]
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: userText,
+          history: historySnapshot,
+          visitorName: visitor?.name,
+        }),
       });
 
-      let rawResponseText = '';
-      for (const modelName of FALLBACK_MODELS) {
-        try {
-          const response = await ai.models.generateContent({
-            model: modelName,
-            contents: conversationContents,
-            config: {
-              temperature: 0.2,
-              maxOutputTokens: 120,
-              systemInstruction: SYSTEM_INSTRUCTION,
-            }
-          });
-          if (response?.text) {
-            rawResponseText = response.text;
-            break;
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok || !data?.reply) {
+        const errorText =
+          typeof data?.error === 'string' && data.error.trim()
+            ? data.error
+            : 'Unable to reach Path Guide right now. Please try again or reach us directly via WhatsApp or Call below.';
+        throw new Error(errorText);
+      }
+
+      const extractedTopic =
+        typeof data.topic === 'string' && data.topic.trim() ? ` [Topic: ${data.topic.trim()}]` : '';
+
+      // Persist inquiry & question to Firestore and trigger server email notification
+      if (visitor && !options?.isRetry) {
+        saveInquiry(
+          {
+            name: visitor.name,
+            email: visitor.email,
+            whatsapp: visitor.whatsapp,
+            question: `${userText}${extractedTopic}`,
+            userId: user?.uid,
+          },
+          {
+            source: 'Path Guide Chat',
+            topic: typeof data.topic === 'string' ? data.topic : undefined,
+            sentiment: typeof data.sentiment === 'string' ? data.sentiment : undefined,
+            readiness: typeof data.readiness === 'string' ? data.readiness : undefined,
           }
-        } catch (err) {
-          console.warn(`Model ${modelName} unavailable, falling back to next:`, err);
-        }
+        ).catch((err) => console.error('Auto-recording inquiry:', err));
       }
 
-      // Format response strictly through our wellness response formatter
-      const formattedResponse = formatWellnessResponse(rawResponseText, userText);
-      
-      // Check for hidden DATA block to seamlessly capture inquiry details
-      const dataMatch = (rawResponseText || '').match(/<!--DATA:\s*(\{.*?\})\s*-->/s);
-      let extractedTopic = '';
-      if (dataMatch && dataMatch[1]) {
-        try {
-          const parsedData = JSON.parse(dataMatch[1]);
-          if (parsedData?.topic) extractedTopic = ` [Topic: ${parsedData.topic}]`;
-        } catch {
-          // ignore parsing error
-        }
-      }
-
-      // Persist inquiry & question seamlessly to Firestore with visitor details
-      if (visitor) {
-        saveInquiry({
-          name: visitor.name,
-          email: visitor.email,
-          whatsapp: visitor.whatsapp,
-          question: `${userText}${extractedTopic}`,
-          userId: user?.uid,
-        }).catch(err => console.error("Auto-recording inquiry:", err));
-      }
-
-      const modelMessage: Message = { 
-        id: Date.now().toString() + Math.random(), 
-        role: 'model', 
-        text: formattedResponse 
+      const modelMessage: Message = {
+        id: `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+        role: 'model',
+        text: data.isCrisis ? CRISIS_MESSAGE_TEXT : data.reply,
+        isCrisis: Boolean(data.isCrisis),
       };
-      setMessages(prev => [...prev, modelMessage]);
-    } catch (error: any) {
-      console.error("Chat Error:", error);
-      const fallbackResponse = formatWellnessResponse('', userText);
-      setMessages(prev => [...prev, { id: Date.now().toString() + Math.random(), role: 'model', text: fallbackResponse }]);
+      setMessages((prev) => [...prev, modelMessage]);
+    } catch (error) {
+      console.error('Chat Error:', error);
+      const errMsg =
+        error instanceof Error && error.message
+          ? error.message
+          : 'Something interrupted our connection. Please retry or message us directly via WhatsApp or Call below.';
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `${Date.now()}_err`,
+          role: 'model',
+          text: errMsg,
+          isError: true,
+          retryPrompt: userText,
+        },
+      ]);
     } finally {
       setIsLoading(false);
+      setTimeout(() => inputRef.current?.focus(), 50);
     }
+  };
+
+  const handleSendPrompt = (promptText: string) => {
+    sendMessage(promptText);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    sendMessage(input);
   };
 
   return (
     <>
       {/* Floating Chat Bubble Button */}
       <motion.button
+        type="button"
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-[160px] right-6 z-50 flex items-center justify-center group ${isOpen ? 'hidden' : 'block'}`}
-        aria-label="Open Wellness Guide"
+        className={`fixed bottom-[132px] right-3.5 sm:bottom-[172px] sm:right-6 z-40 items-center justify-center group ${
+          isOpen ? 'hidden' : 'flex'
+        }`}
+        aria-label="Chat with Path Guide (AI)"
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.6 }}
       >
-        <span className="absolute inline-flex h-full w-full rounded-full bg-[#1A5F5F] opacity-30 animate-ping" style={{ animationDuration: '2s', animationDelay: '0.4s' }}></span>
-        
-        {/* Call to action tooltip */}
-        <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-white text-[#1A5F5F] font-medium text-[13px] px-4 py-2.5 rounded-2xl rounded-br-sm shadow-[0_4px_12px_rgba(0,0,0,0.08)] whitespace-nowrap border border-gray-100 flex items-center gap-2 opacity-0 group-hover:opacity-100 md:opacity-100 transition-opacity duration-300 pointer-events-none origin-right">
-          <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-          Chat with Wellness Guide ✨
+        <span
+          className="absolute inline-flex h-full w-full rounded-full bg-[#1A5F5F] opacity-25 animate-ping"
+          style={{ animationDuration: '2s', animationDelay: '0.4s' }}
+        />
+
+        {/* Call to action tooltip (shown only on hover/focus so it never covers page content at rest) */}
+        <div className="hidden sm:flex absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-white text-[#0B3A42] font-semibold text-[13px] px-4 py-2.5 rounded-2xl rounded-br-sm shadow-[0_4px_12px_rgba(0,0,0,0.08)] whitespace-nowrap border border-gray-200 items-center gap-2 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-200 pointer-events-none origin-right">
+          <span className="w-2 h-2 rounded-full bg-emerald-600" />
+          Chat with Path Guide (AI)
         </div>
 
-        <motion.div 
-          className="relative bg-[#1A5F5F] text-white p-4 rounded-full shadow-xl hover:shadow-2xl transition-shadow cursor-pointer"
-          whileHover={{ scale: 1.1, rotate: [-5, 5, -5, 0] }}
-          transition={{ rotate: { duration: 0.4 } }}
+        <motion.div
+          className="relative bg-[#0B3A42] text-white p-2.5 sm:p-4 rounded-full shadow-xl hover:shadow-2xl transition-shadow cursor-pointer min-w-[44px] min-h-[44px] sm:min-w-[48px] sm:min-h-[48px] flex items-center justify-center"
+          whileHover={{ scale: 1.08 }}
         >
-          <MessageCircle className="w-7 h-7" />
+          <MessageCircle className="w-5 h-5 sm:w-7 sm:h-7" />
         </motion.div>
       </motion.button>
 
@@ -521,52 +543,58 @@ export default function GeminiChatbot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className={`fixed z-50 bg-white shadow-2xl flex flex-col overflow-hidden border border-gray-100 transition-all duration-300 ${
-              isExpanded 
-                ? "inset-0 md:inset-4 md:rounded-2xl rounded-none w-auto h-auto max-h-none" 
-                : "bottom-[80px] sm:bottom-[100px] right-3 sm:right-6 w-[calc(100vw-24px)] sm:w-[420px] max-w-[420px] h-[550px] max-h-[82vh] rounded-2xl"
+            className={`fixed z-50 bg-white shadow-2xl flex flex-col overflow-hidden border border-gray-200 transition-all duration-300 ${
+              isExpanded
+                ? 'inset-0 md:inset-4 md:rounded-2xl rounded-none w-auto h-auto max-h-none'
+                : 'bottom-[80px] sm:bottom-[100px] right-3 sm:right-6 w-[calc(100vw-24px)] sm:w-[420px] max-w-[420px] h-[550px] max-h-[82vh] rounded-2xl'
             }`}
           >
             {/* Header */}
-            <div className="bg-[#1A5F5F] text-white p-4 flex justify-between items-center relative overflow-hidden">
-              <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] pointer-events-none"></div>
-              
-              <div className="flex items-center gap-3 relative z-10">
-                <div className="bg-white/20 p-2 rounded-full backdrop-blur-sm">
-                   <Bot className="w-5 h-5 text-white" />
+            <div className="section-dark bg-[#0B3A42] text-[#FAF9F6] p-4 flex justify-between items-center relative overflow-hidden shrink-0">
+              <div className="flex items-center gap-3 relative z-10 min-w-0">
+                <div className="bg-white/20 p-2 rounded-full backdrop-blur-sm shrink-0">
+                  <Bot className="w-5 h-5 text-[#FAF9F6]" />
                 </div>
-                <div>
-                  <h3 className="font-heading font-bold tracking-wide text-[15px]">Being You Guide</h3>
-                  <p className="text-[11px] opacity-85 flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-400 inline-block"></span> 
-                    Online • Mindful Concierge
+                <div className="min-w-0">
+                  <h3 className="card-title font-heading font-bold tracking-wide text-[14px] text-[#FAF9F6] leading-snug">
+                    Path Guide · AI assistant, not a clinician
+                  </h3>
+                  <p className="text-[11px] text-[#F5F0E6] flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
+                    General wellbeing tips &amp; booking help
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-1.5 relative z-10">
+              <div className="flex items-center gap-1 relative z-10 shrink-0">
                 {visitor && (
-                  <button 
+                  <button
+                    type="button"
                     onClick={handleClearHistory}
-                    className="text-white/80 hover:text-white transition-colors p-1.5 rounded-full hover:bg-white/10"
+                    className="text-[#FAF9F6] hover:text-white transition-colors p-1.5 rounded-full hover:bg-white/10 cursor-pointer"
                     title="Reset Chat"
+                    aria-label="Reset Chat"
                   >
                     <RotateCcw className="w-4 h-4" />
                   </button>
                 )}
-                <button 
+                <button
+                  type="button"
                   onClick={() => {
                     setIsExpanded(!isExpanded);
                     setHasManuallyToggled(true);
-                  }} 
-                  className="text-white/80 hover:text-white transition-colors p-1.5 rounded-full hover:bg-white/10"
-                  title={isExpanded ? "Minimize" : "Expand"}
+                  }}
+                  className="text-[#FAF9F6] hover:text-white transition-colors p-1.5 rounded-full hover:bg-white/10 cursor-pointer"
+                  title={isExpanded ? 'Minimize' : 'Expand'}
+                  aria-label={isExpanded ? 'Minimize Chat' : 'Expand Chat'}
                 >
                   {isExpanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
                 </button>
-                <button 
-                  onClick={() => setIsOpen(false)} 
-                  className="text-white/80 hover:text-white transition-colors p-1.5 rounded-full hover:bg-white/10"
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                  className="text-[#FAF9F6] hover:text-white transition-colors p-1.5 rounded-full hover:bg-white/10 cursor-pointer"
+                  aria-label="Close Chat"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -576,73 +604,73 @@ export default function GeminiChatbot() {
             {/* Content: Gate if visitor details not provided */}
             {!visitor ? (
               <div className="flex-1 overflow-y-auto p-6 bg-[#FDFBF7] flex flex-col justify-center">
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
+                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 space-y-4">
                   <div className="text-center space-y-1.5 pb-2 border-b border-gray-100">
-                    <div className="w-12 h-12 mx-auto bg-[#1A5F5F]/10 rounded-full flex items-center justify-center text-[#1A5F5F] mb-2">
-                      <Heart className="w-6 h-6 text-[#C85C3E]" />
+                    <div className="w-12 h-12 mx-auto bg-[#0B3A42]/10 rounded-full flex items-center justify-center text-[#0B3A42] mb-2">
+                      <Heart className="w-6 h-6 text-[#A43F23]" />
                     </div>
-                    <h4 className="font-heading font-semibold text-gray-800 text-base">
-                      Welcome to Being You Path
+                    <h4 className="font-heading font-semibold text-[#0B3A42] text-base">
+                      Chat with Path Guide (AI)
                     </h4>
-                    <p className="text-xs text-gray-500 leading-relaxed max-w-xs mx-auto">
-                      Please introduce yourself below to begin your conversation with our wellness guide.
+                    <p className="text-xs text-gray-700 leading-relaxed max-w-xs mx-auto">
+                      Enter your details below to start chatting. <strong>AI assistant, not a clinician</strong> — in a crisis, call Tele-MANAS <strong>14416</strong>.
                     </p>
                   </div>
 
                   <form onSubmit={handleStartChat} className="space-y-3 pt-1">
                     {formError && (
-                      <div className="p-2.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs">
+                      <div className="p-2.5 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs">
                         {formError}
                       </div>
                     )}
 
                     <div>
-                      <label className="block text-[11.5px] font-medium text-gray-700 mb-1">
-                        Full Name <span className="text-red-500">*</span>
+                      <label className="block text-[11.5px] font-medium text-gray-800 mb-1">
+                        Full Name <span className="text-red-700">*</span>
                       </label>
                       <div className="relative">
-                        <User className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                        <User className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-600" />
                         <input
                           type="text"
                           required
                           value={formName}
                           onChange={(e) => setFormName(e.target.value)}
                           placeholder="Your full name"
-                          className="w-full bg-[#FDFBF7] border border-gray-200 rounded-xl pl-9 pr-3 py-2 text-xs text-gray-800 focus:outline-none focus:border-[#1A5F5F] focus:bg-white transition-all"
+                          className="w-full bg-[#FDFBF7] border border-gray-300 rounded-xl pl-9 pr-3 py-2 text-xs text-gray-900 placeholder:text-gray-600 focus:outline-none focus:border-[#0B3A42] focus:bg-white transition-all"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-[11.5px] font-medium text-gray-700 mb-1">
-                        Email Address <span className="text-red-500">*</span>
+                      <label className="block text-[11.5px] font-medium text-gray-800 mb-1">
+                        Email Address <span className="text-red-700">*</span>
                       </label>
                       <div className="relative">
-                        <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                        <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-600" />
                         <input
                           type="email"
                           required
                           value={formEmail}
                           onChange={(e) => setFormEmail(e.target.value)}
                           placeholder="name@example.com"
-                          className="w-full bg-[#FDFBF7] border border-gray-200 rounded-xl pl-9 pr-3 py-2 text-xs text-gray-800 focus:outline-none focus:border-[#1A5F5F] focus:bg-white transition-all"
+                          className="w-full bg-[#FDFBF7] border border-gray-300 rounded-xl pl-9 pr-3 py-2 text-xs text-gray-900 placeholder:text-gray-600 focus:outline-none focus:border-[#0B3A42] focus:bg-white transition-all"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-[11.5px] font-medium text-gray-700 mb-1">
-                        WhatsApp Number <span className="text-red-500">*</span>
+                      <label className="block text-[11.5px] font-medium text-gray-800 mb-1">
+                        WhatsApp Number <span className="text-red-700">*</span>
                       </label>
                       <div className="relative">
-                        <Phone className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                        <Phone className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-600" />
                         <input
                           type="tel"
                           required
                           value={formWhatsapp}
                           onChange={(e) => setFormWhatsapp(e.target.value)}
                           placeholder="e.g. +91 98765 43210"
-                          className="w-full bg-[#FDFBF7] border border-gray-200 rounded-xl pl-9 pr-3 py-2 text-xs text-gray-800 focus:outline-none focus:border-[#1A5F5F] focus:bg-white transition-all"
+                          className="w-full bg-[#FDFBF7] border border-gray-300 rounded-xl pl-9 pr-3 py-2 text-xs text-gray-900 placeholder:text-gray-600 focus:outline-none focus:border-[#0B3A42] focus:bg-white transition-all"
                         />
                       </div>
                     </div>
@@ -651,7 +679,7 @@ export default function GeminiChatbot() {
                       <button
                         type="submit"
                         disabled={isStartingChat}
-                        className="w-full py-2.5 px-4 rounded-xl bg-[#1A5F5F] hover:bg-[#07252A] text-white text-xs font-semibold shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                        className="w-full py-2.5 px-4 rounded-xl bg-[#0B3A42] hover:bg-[#07252A] text-white text-xs font-semibold shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                       >
                         {isStartingChat ? (
                           <Loader2 className="w-4 h-4 animate-spin" />
@@ -668,62 +696,120 @@ export default function GeminiChatbot() {
               </div>
             ) : (
               <>
+                <div className="px-4 py-1.5 bg-[#FDFBF7] border-b border-stone-200 text-[11px] font-medium text-[#0B3A42] text-center shrink-0">
+                  Path Guide · AI assistant, not a clinician · In a crisis call Tele-MANAS 14416
+                </div>
                 {/* Messages Screen */}
                 <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[#FDFBF7]/50">
                   {messages.map((msg) => (
-                    <motion.div 
+                    <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      key={msg.id} 
-                      className={`flex items-start gap-2 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
+                      key={msg.id}
+                      className={`flex items-start gap-2 ${
+                        msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'
+                      }`}
                     >
-                      <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center shadow-sm ${msg.role === 'user' ? 'bg-[#C85C3E]/20 text-[#C85C3E]' : 'bg-[#1A5F5F]/10 text-[#1A5F5F]'}`}>
+                      <div
+                        className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center shadow-sm ${
+                          msg.role === 'user'
+                            ? 'bg-[#A43F23]/15 text-[#A43F23]'
+                            : msg.isCrisis || msg.isError
+                              ? 'bg-red-100 text-red-800'
+                              : 'bg-[#0B3A42]/10 text-[#0B3A42]'
+                        }`}
+                      >
                         {msg.role === 'user' ? (
                           user?.photoURL ? (
-                            <img src={user.photoURL} alt={user.displayName || "User"} className="w-8 h-8 rounded-full object-cover" />
+                            <img
+                              src={user.photoURL}
+                              alt={user.displayName || 'User'}
+                              className="w-8 h-8 rounded-full object-cover"
+                            />
                           ) : (
                             <User className="w-4 h-4" />
                           )
+                        ) : msg.isCrisis || msg.isError ? (
+                          <AlertCircle className="w-4 h-4" />
                         ) : (
                           <Bot className="w-4 h-4" />
                         )}
                       </div>
-                      <div className={`max-w-[85%] rounded-2xl p-3.5 text-[13.5px] leading-relaxed relative ${
-                        msg.role === 'user' 
-                          ? 'bg-[#C85C3E] text-white rounded-tr-sm shadow-[0_2px_10px_-4px_rgba(200,92,62,0.4)]' 
-                          : 'bg-white text-gray-800 rounded-tl-sm border border-gray-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]'
-                      }`}>
+                      <div
+                        className={`max-w-[85%] rounded-2xl p-3.5 text-[13.5px] leading-relaxed relative ${
+                          msg.role === 'user'
+                            ? 'bg-[#A43F23] text-white rounded-tr-sm shadow-[0_2px_10px_-4px_rgba(164,63,35,0.4)]'
+                            : msg.isCrisis
+                              ? 'bg-rose-50 text-rose-950 rounded-tl-sm border-2 border-rose-300 shadow-xs'
+                              : msg.isError
+                                ? 'bg-red-50/90 text-red-900 rounded-tl-sm border border-red-200/80 shadow-xs'
+                                : 'bg-white text-gray-800 rounded-tl-sm border border-gray-200 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]'
+                        }`}
+                      >
                         <div>{renderMessageText(msg.text)}</div>
 
-                        {/* Interactive Direct CTA Redirection Bar for deeper guidance */}
-                        {msg.role === 'model' && (
+                        {msg.isCrisis && (
+                          <div className="mt-3 pt-3 border-t border-rose-200 flex flex-col gap-2">
+                            <a
+                              href="tel:14416"
+                              className="inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-rose-800 hover:bg-rose-900 text-white text-xs font-bold transition-colors"
+                            >
+                              <PhoneCall className="w-4 h-4" />
+                              <span>Call Tele-MANAS 14416 (24/7 Free Crisis Helpline)</span>
+                            </a>
+                            <a
+                              href={CALENDLY_BOOKING_URL}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-[#0B3A42] hover:bg-[#07252A] text-white text-xs font-bold transition-colors"
+                            >
+                              <span>Book a Consultation with a Psychologist</span>
+                              <ArrowRight className="w-3.5 h-3.5" />
+                            </a>
+                          </div>
+                        )}
+
+                        {msg.isError && msg.retryPrompt && (
+                          <button
+                            type="button"
+                            onClick={() => sendMessage(msg.retryPrompt!, { isRetry: true })}
+                            disabled={isLoading}
+                            className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white hover:bg-red-100 text-red-800 border border-red-200 text-[11px] font-semibold transition-colors cursor-pointer"
+                          >
+                            <RefreshCw className="w-3 h-3" />
+                            <span>Try Again</span>
+                          </button>
+                        )}
+
+                        {/* Direct booking & contact links (non-crisis turns) */}
+                        {msg.role === 'model' && !msg.isCrisis && (
                           <div className="mt-3.5 pt-2.5 border-t border-gray-100">
-                            <p className="text-[11px] font-medium text-gray-500 mb-2 flex items-center gap-1.5">
-                              <Sparkles className="w-3.5 h-3.5 text-[#C85C3E]" />
-                              <span>Ready for the second half & personalized healing?</span>
+                            <p className="text-[11px] font-medium text-gray-700 mb-2 flex items-center gap-1.5">
+                              <Sparkles className="w-3.5 h-3.5 text-[#A43F23]" />
+                              <span>Ready for 1-on-1 personalized guidance?</span>
                             </p>
                             <div className="flex flex-wrap items-center gap-1.5">
                               <a
                                 href={WHATSAPP_LINK_1}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200/80 text-[11px] font-medium transition-colors"
+                                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200/80 text-[11px] font-medium transition-colors"
                               >
-                                <Phone className="w-3 h-3 text-emerald-600" />
+                                <Phone className="w-3 h-3 text-emerald-800" />
                                 WhatsApp ({WHATSAPP_NUMBER_1})
                               </a>
                               <a
                                 href={CALL_LINK}
-                                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200/80 text-[11px] font-medium transition-colors"
+                                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-200/80 text-[11px] font-medium transition-colors"
                               >
-                                <PhoneCall className="w-3 h-3 text-blue-600" />
+                                <PhoneCall className="w-3 h-3 text-blue-800" />
                                 Call ({CALL_NUMBER})
                               </a>
                               <a
                                 href={EMAIL_LINK}
-                                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/80 text-[11px] font-medium transition-colors"
+                                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-200/80 text-[11px] font-medium transition-colors"
                               >
-                                <Mail className="w-3 h-3 text-amber-700" />
+                                <Mail className="w-3 h-3 text-amber-800" />
                                 Email Us
                               </a>
                             </div>
@@ -735,55 +821,79 @@ export default function GeminiChatbot() {
 
                   {isLoading && (
                     <div className="flex items-start gap-2">
-                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#1A5F5F]/10 text-[#1A5F5F] flex items-center justify-center">
+                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#0B3A42]/10 text-[#0B3A42] flex items-center justify-center">
                         <Bot className="w-4 h-4" />
                       </div>
-                      <div className="bg-white border border-gray-100 rounded-2xl rounded-tl-sm p-4 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]">
-                        <Loader2 className="w-4 h-4 animate-spin text-[#C85C3E]" />
+                      <div className="bg-white border border-gray-200 rounded-2xl rounded-tl-sm px-4 py-3 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex items-center gap-2 text-xs text-gray-700">
+                        <Loader2 className="w-4 h-4 animate-spin text-[#A43F23]" />
+                        <span>Thinking calmly...</span>
                       </div>
                     </div>
                   )}
                   <div ref={messagesEndRef} />
                 </div>
 
-                {/* Quick Suggestion Chips */}
-                <div className="px-3 py-1.5 bg-[#FDFBF7] border-t border-gray-100 flex items-center gap-1.5 overflow-x-auto no-scrollbar">
-                  <span className="text-[10.5px] text-gray-400 font-medium whitespace-nowrap">Suggested:</span>
-                  <button
-                    onClick={() => handleSendPrompt("I feel overwhelmed and anxious lately. Can you help me understand what is happening?")}
-                    className="text-[11px] px-2.5 py-1 rounded-full bg-white border border-gray-200 text-gray-600 hover:text-[#1A5F5F] hover:border-[#1A5F5F] whitespace-nowrap transition-colors"
-                  >
-                    Feeling Overwhelmed
-                  </button>
-                  <button
-                    onClick={() => handleSendPrompt("My mind won't stop overthinking at night. Why does my brain do this?")}
-                    className="text-[11px] px-2.5 py-1 rounded-full bg-white border border-gray-200 text-gray-600 hover:text-[#1A5F5F] hover:border-[#1A5F5F] whitespace-nowrap transition-colors"
-                  >
-                    Overthinking at Night
-                  </button>
-                  <button
-                    onClick={() => handleSendPrompt("How can I explore 1-on-1 personalized sessions with Imran & Tejaswini?")}
-                    className="text-[11px] px-2.5 py-1 rounded-full bg-white border border-gray-200 text-gray-600 hover:text-[#1A5F5F] hover:border-[#1A5F5F] whitespace-nowrap transition-colors"
-                  >
-                    1-on-1 Sessions
-                  </button>
-                </div>
+                {/* Quick Suggestion Chips (stopped once crisis protocol activates) */}
+                {!hasCrisisTriggered && (
+                  <div className="px-3 py-2 bg-[#FDFBF7] border-t border-gray-100 flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0">
+                    <span className="text-[10.5px] text-gray-700 font-medium whitespace-nowrap">
+                      Suggested:
+                    </span>
+                    <button
+                      type="button"
+                      disabled={isLoading}
+                      onClick={() =>
+                        handleSendPrompt(
+                          'I feel overwhelmed and anxious lately. Can you help me understand what is happening?'
+                        )
+                      }
+                      className="text-[11px] px-2.5 py-1 rounded-full bg-white border border-gray-300 text-gray-700 hover:text-[#0B3A42] hover:border-[#0B3A42] whitespace-nowrap transition-colors cursor-pointer disabled:opacity-50"
+                    >
+                      Feeling Overwhelmed
+                    </button>
+                    <button
+                      type="button"
+                      disabled={isLoading}
+                      onClick={() =>
+                        handleSendPrompt(
+                          "My mind won't stop overthinking at night. Why does my brain do this?"
+                        )
+                      }
+                      className="text-[11px] px-2.5 py-1 rounded-full bg-white border border-gray-300 text-gray-700 hover:text-[#0B3A42] hover:border-[#0B3A42] whitespace-nowrap transition-colors cursor-pointer disabled:opacity-50"
+                    >
+                      Overthinking at Night
+                    </button>
+                    <button
+                      type="button"
+                      disabled={isLoading}
+                      onClick={() =>
+                        handleSendPrompt(
+                          'How can I explore 1-on-1 personalized sessions with Imran & Tejaswini?'
+                        )
+                      }
+                      className="text-[11px] px-2.5 py-1 rounded-full bg-white border border-gray-300 text-gray-700 hover:text-[#0B3A42] hover:border-[#0B3A42] whitespace-nowrap transition-colors cursor-pointer disabled:opacity-50"
+                    >
+                      1-on-1 Sessions
+                    </button>
+                  </div>
+                )}
 
                 {/* Input Form */}
-                <div className="p-3 bg-white border-t border-gray-100 relative">
+                <div className="p-3 bg-white border-t border-gray-100 relative shrink-0">
                   <form onSubmit={handleSubmit} className="flex gap-2">
                     <input
+                      ref={inputRef}
                       type="text"
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
                       placeholder="Share what is on your mind..."
-                      className="flex-1 bg-gray-50 border border-gray-200 rounded-full px-4 text-[13.5px] text-gray-800 focus:outline-none focus:border-[#1A5F5F] focus:ring-1 focus:ring-[#1A5F5F] transition-all duration-300 placeholder:text-gray-400"
+                      className="flex-1 bg-gray-50 border border-gray-300 rounded-full px-4 py-2 text-[13.5px] text-gray-900 focus:outline-none focus:border-[#0B3A42] focus:ring-1 focus:ring-[#0B3A42] transition-all duration-300 placeholder:text-gray-600"
                       disabled={isLoading}
                     />
                     <button
                       type="submit"
                       disabled={isLoading || !input.trim()}
-                      className="bg-[#1A5F5F] text-white w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 shadow-md hover:bg-[#07252A] transition-colors disabled:opacity-50 disabled:cursor-not-allowed group"
+                      className="bg-[#0B3A42] text-white w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 shadow-md hover:bg-[#07252A] transition-colors disabled:opacity-50 disabled:cursor-not-allowed group cursor-pointer"
                       aria-label="Send message"
                     >
                       <Send className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
