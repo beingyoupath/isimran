@@ -31,7 +31,7 @@ export default function DepressionCounsellingPune() {
               "We explore persistent self-blame, helplessness, and heavy internal narratives safely",
               "We make unhurried room for grief, disappointment, or unmet emotional needs",
               "We use CBT thought evaluation tailored carefully for low-energy depressive spirals",
-              "We practice compassion-based framing to loosen deep shame around struggling",
+              "We practice kinder self-talk to loosen deep shame around struggling",
             ],
           },
           {
@@ -102,6 +102,8 @@ export default function DepressionCounsellingPune() {
           { label: "Online Therapy in India", to: "/services/online-therapy-india" },
         ],
         bookingServiceName: "Depression & Low Mood Counselling",
+        importantNotice:
+          "For severe symptoms or risk of harm we refer to a psychiatrist; in a crisis call Tele-MANAS 14416.",
       }}
     />
   );

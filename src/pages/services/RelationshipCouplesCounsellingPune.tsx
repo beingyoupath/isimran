@@ -45,7 +45,7 @@ export default function RelationshipCouplesCounsellingPune() {
           },
         ],
         howSessionsWorkIntro:
-          "Our relationship work draws on Emotionally Focused frameworks, Nonviolent Communication, and deep respect for cultural family realities in India.",
+          "Our relationship work is grounded in impartial counselling dialogue, active listening, and deep respect for cultural family realities in India.",
         howSessionsWorkSteps: [
           {
             title: "Equal, balanced listening",

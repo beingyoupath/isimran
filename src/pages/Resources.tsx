@@ -115,13 +115,18 @@ export default function Resources() {
                 className={idx === currentSlide ? "block" : "hidden"}
               >
                 {idx === 0 ? (
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-heading text-[#FAF9F6] tracking-tight leading-tight mb-4">
-                    {slide.title}
-                  </h1>
+                  <>
+                    <h1 className="text-xs sm:text-sm font-bold tracking-widest uppercase text-amber-200 mb-3 font-sans">
+                      Psychology Articles &amp; Guides
+                    </h1>
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-heading text-[#FAF9F6] tracking-tight leading-tight mb-4">
+                      {slide.title}
+                    </h2>
+                  </>
                 ) : (
-                  <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-heading text-[#FAF9F6] tracking-tight leading-tight mb-4">
+                  <p className="text-3xl sm:text-4xl md:text-5xl font-bold font-heading text-[#FAF9F6] tracking-tight leading-tight mb-4">
                     {slide.title}
-                  </h2>
+                  </p>
                 )}
                 <p className="text-lg text-amber-100 font-medium mb-3">
                   {slide.subtitle}
@@ -299,15 +304,28 @@ export default function Resources() {
                         <p className="flex items-center gap-1.5">
                           <UserCheck className="w-3.5 h-3.5 text-[#A43F23] shrink-0" aria-hidden="true" />
                           <span>
-                            By <strong className="text-[#0B3A42]">{meta.author}</strong> &middot; Reviewed by <strong className="text-[#0B3A42]">{meta.reviewedBy}</strong>
+                            By <strong className="text-[#0B3A42]">{meta.author}</strong>
+                            {meta.reviewedBy ? (
+                              <>
+                                {" "}
+                                &middot; Reviewed by <strong className="text-[#0B3A42]">{meta.reviewedBy}</strong>
+                              </>
+                            ) : null}
                           </span>
                         </p>
-                        <p className="flex items-center gap-1.5 text-stone-600">
-                          <Calendar className="w-3.5 h-3.5 text-[#A43F23] shrink-0" aria-hidden="true" />
-                          <span>
-                            Published: {meta.datePublished} &middot; Last reviewed: {meta.lastReviewed}
-                          </span>
-                        </p>
+                        {(meta.datePublished || meta.lastReviewed) && (
+                          <p className="flex items-center gap-1.5 text-stone-600">
+                            <Calendar className="w-3.5 h-3.5 text-[#A43F23] shrink-0" aria-hidden="true" />
+                            <span>
+                              {[
+                                meta.datePublished ? `Published: ${meta.datePublished}` : null,
+                                meta.lastReviewed ? `Last reviewed: ${meta.lastReviewed}` : null,
+                              ]
+                                .filter(Boolean)
+                                .join(" · ")}
+                            </span>
+                          </p>
+                        )}
                       </div>
 
                       <div className="pt-3 border-t border-stone-100 flex items-center justify-between text-xs font-semibold text-[#0B3A42] group-hover:text-[#A43F23]">

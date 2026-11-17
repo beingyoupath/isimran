@@ -167,12 +167,12 @@ export default function ConsentAndCrisisModal({ isOpen, onClose, defaultTab = "c
 
                     <h5 className="font-bold text-[#0B3A42]">2. Voluntary Informed Consent</h5>
                     <p className="text-xs leading-relaxed">
-                      Therapy is a collaborative, self-determined process. Clients possess the autonomous right to inquire about modalities (CBT, REBT, somatic grounding), understand treatment goals, decline specific interventions, and terminate therapy at any point without penalty.
+                      Therapy is a collaborative, self-determined process. Clients possess the autonomous right to inquire about modalities (CBT, counselling approaches, mindfulness grounding), understand treatment goals, decline specific interventions, and terminate therapy at any point without penalty.
                     </p>
 
                     <h5 className="font-bold text-[#0B3A42]">3. Non-Pharmacological Scope of Practice</h5>
                     <p className="text-xs leading-relaxed">
-                      Psychologists at Being You Path hold postgraduate clinical and counseling degrees (e.g., M.A. Clinical Psychology from NIMHANS-trained faculty, LSE Certified, Jnana Prabodhini) and provide psychotherapy and psychological counseling. We do not prescribe allopathic or psychiatric medications. If pharmacological evaluation is warranted, we provide ethical referrals to licensed psychiatrists in Pune.
+                      Psychologists at Being You Path hold postgraduate clinical and counseling degrees (e.g., M.A. Clinical Psychology and clinical training at NIMHANS, LSE Certified, Jnana Prabodhini) and provide psychotherapy and psychological counseling. We do not prescribe allopathic or psychiatric medications. If pharmacological evaluation is warranted, we provide ethical referrals to licensed psychiatrists in Pune.
                     </p>
 
                     <h5 className="font-bold text-[#0B3A42]">4. Digital Data Security (Telehealth)</h5>

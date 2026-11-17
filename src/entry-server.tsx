@@ -13,6 +13,7 @@ export interface RenderResult {
   html: string;
   headTags: string;
   headData: CollectedHeadData | null;
+  isNotFound: boolean;
 }
 
 export function render(url: string): RenderResult {
@@ -32,6 +33,9 @@ export function render(url: string): RenderResult {
     </HeadCollectorProvider>
   );
 
+  const resolvedHead: CollectedHeadData | null = collectedHead;
+  const isNotFound = !resolvedHead || resolvedHead.robots.startsWith("noindex");
+
   // React 19 renderToString prepends <link rel="preload" .../> hints when rendering a subtree.
   // Strip them from #root so SSR root children match client hydrateRoot 1:1.
   const floatedLinks: string[] = [];
@@ -39,8 +43,7 @@ export function render(url: string): RenderResult {
     const matches = match.match(/<link\b[^>]*\/?>/gi);
     if (matches) {
       for (const linkTag of matches) {
-        // index.html already preloads /images/hero-path.webp
-        if (!linkTag.includes("/images/hero-path.webp")) {
+        if (!resolvedHead?.lcpImage || !linkTag.includes(resolvedHead.lcpImage)) {
           floatedLinks.push(linkTag);
         }
       }
@@ -48,8 +51,8 @@ export function render(url: string): RenderResult {
     return "";
   });
 
-  const baseHeadTags = collectedHead
-    ? serializeHeadDataToHtml(collectedHead)
+  const baseHeadTags = resolvedHead
+    ? serializeHeadDataToHtml(resolvedHead)
     : `<title>Psychologist &amp; Counselling in Pune | Being You Path</title>`;
 
   const headTags =
@@ -60,6 +63,7 @@ export function render(url: string): RenderResult {
   return {
     html,
     headTags,
-    headData: collectedHead,
+    headData: resolvedHead,
+    isNotFound,
   };
 }

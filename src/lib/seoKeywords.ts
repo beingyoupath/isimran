@@ -11,7 +11,7 @@ export const CORE_PUNE_TOPICS = [
   "cbt therapy pune",
   "evidence-based psychotherapy pune",
   "counselling psychologist in pune",
-  "clinical psychologist in pune",
+  "psychologist and cbt practitioner in pune",
 ];
 
 export const PUNE_LOCALITIES = [

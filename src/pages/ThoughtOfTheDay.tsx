@@ -16,33 +16,16 @@ import {
   ArchiveMonthGroup,
   DailyThoughtResult,
   buildCopyThoughtText,
-  buildISTDatePartsFromYMD,
   buildWhatsAppThoughtShareUrl,
   getDailyThoughtIST,
-  getDefaultThought,
-  getDefaultWeekdayPractice,
-  getSeasonFromMonth,
   getYearArchiveUntilISTToday,
   msUntilNextISTMidnight,
 } from "../lib/thoughts";
 
 export default function ThoughtOfTheDay() {
   const [copiedId, setCopiedId] = useState<string | null>(null);
-
-  const [daily, setDaily] = useState<DailyThoughtResult>(() => {
-    const defaultIst = buildISTDatePartsFromYMD(2026, 1, 5);
-    return {
-      thought: getDefaultThought(),
-      practice: getDefaultWeekdayPractice(),
-      ist: defaultIst,
-      season: getSeasonFromMonth(defaultIst.month),
-      matchKind: "fallback",
-    };
-  });
-
-  const [archiveMonths, setArchiveMonths] = useState<ArchiveMonthGroup[]>(() =>
-    getYearArchiveUntilISTToday(buildISTDatePartsFromYMD(2026, 1, 5))
-  );
+  const [daily, setDaily] = useState<DailyThoughtResult | null>(null);
+  const [archiveMonths, setArchiveMonths] = useState<ArchiveMonthGroup[]>([]);
 
   useEffect(() => {
     let midnightTimer: ReturnType<typeof setTimeout> | undefined;
@@ -73,7 +56,9 @@ export default function ThoughtOfTheDay() {
     }
   };
 
-  const { thought, practice, ist } = daily;
+  const thought = daily?.thought || null;
+  const practice = daily?.practice || null;
+  const ist = daily?.ist || null;
 
   return (
     <div className="bg-soft-sand min-h-screen pb-24">
@@ -114,9 +99,9 @@ export default function ThoughtOfTheDay() {
                   className="inline-flex items-center gap-1.5 text-xs font-bold tracking-wider text-[#FAF9F6] uppercase bg-white/15 px-3.5 py-1.5 rounded-full border border-[#FAF9F6]/20"
                 >
                   <Calendar className="w-3.5 h-3.5 text-[#F8C988]" aria-hidden="true" />
-                  {ist.formattedDate} (IST)
+                  {ist ? `${ist.formattedDate} (IST)` : "Today · India Standard Time (IST)"}
                 </span>
-                {thought.occasion && (
+                {thought?.occasion && (
                   <span
                     suppressHydrationWarning
                     className="inline-flex items-center text-xs font-bold tracking-wide text-[#F8C988] bg-[#E6A157]/20 border border-[#E6A157]/45 px-3 py-1 rounded-full"
@@ -126,35 +111,37 @@ export default function ThoughtOfTheDay() {
                 )}
               </div>
 
-              <div className="flex flex-wrap items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => handleCopy("hero", buildCopyThoughtText(thought))}
-                  className="px-3.5 py-2 min-h-[40px] rounded-full bg-white/10 hover:bg-white/20 text-[#FAF9F6] hover:text-white transition-colors cursor-pointer inline-flex items-center gap-1.5 text-xs font-semibold border border-[#FAF9F6]/25"
-                >
-                  {copiedId === "hero" ? (
-                    <>
-                      <Check className="w-3.5 h-3.5 text-[#F8C988]" />
-                      <span className="text-[#F8C988]">Copied!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-3.5 h-3.5" aria-hidden="true" />
-                      <span>Copy</span>
-                    </>
-                  )}
-                </button>
+              {thought && (
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleCopy("hero", buildCopyThoughtText(thought))}
+                    className="px-3.5 py-2 min-h-[40px] rounded-full bg-white/10 hover:bg-white/20 text-[#FAF9F6] hover:text-white transition-colors cursor-pointer inline-flex items-center gap-1.5 text-xs font-semibold border border-[#FAF9F6]/25"
+                  >
+                    {copiedId === "hero" ? (
+                      <>
+                        <Check className="w-3.5 h-3.5 text-[#F8C988]" />
+                        <span className="text-[#F8C988]">Copied!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-3.5 h-3.5" aria-hidden="true" />
+                        <span>Copy</span>
+                      </>
+                    )}
+                  </button>
 
-                <a
-                  href={buildWhatsAppThoughtShareUrl(thought)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-3.5 py-2 min-h-[40px] rounded-full bg-white/10 hover:bg-white/20 text-[#FAF9F6] hover:text-white transition-colors inline-flex items-center gap-1.5 text-xs font-semibold border border-[#FAF9F6]/25"
-                >
-                  <Share2 className="w-3.5 h-3.5 text-[#F8C988]" aria-hidden="true" />
-                  <span>Share on WhatsApp</span>
-                </a>
-              </div>
+                  <a
+                    href={buildWhatsAppThoughtShareUrl(thought)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3.5 py-2 min-h-[40px] rounded-full bg-white/10 hover:bg-white/20 text-[#FAF9F6] hover:text-white transition-colors inline-flex items-center gap-1.5 text-xs font-semibold border border-[#FAF9F6]/25"
+                  >
+                    <Share2 className="w-3.5 h-3.5 text-[#F8C988]" aria-hidden="true" />
+                    <span>Share on WhatsApp</span>
+                  </a>
+                </div>
+              )}
             </div>
 
             <Quote className="w-10 h-10 text-[#FAF9F6]/60 mb-4" aria-hidden="true" />
@@ -162,10 +149,12 @@ export default function ThoughtOfTheDay() {
               suppressHydrationWarning
               className="text-2xl sm:text-3xl md:text-4xl font-heading font-medium text-[#FAF9F6] leading-snug italic mb-6"
             >
-              &ldquo;{thought.text}&rdquo;
+              {thought
+                ? `“${thought.text}”`
+                : "Today's grounded reflection is selected automatically for the current date in India Standard Time (IST)."}
             </blockquote>
 
-            {thought.helplineNote && (
+            {thought?.helplineNote && (
               <div className="mb-6 px-5 py-4 rounded-2xl bg-white/10 border border-[#F8C988]/50 text-[#FAF9F6] text-sm leading-relaxed flex flex-wrap items-center justify-between gap-3">
                 <span>{thought.helplineNote}</span>
                 <a
@@ -181,30 +170,34 @@ export default function ThoughtOfTheDay() {
             <div className="flex flex-wrap items-center justify-between gap-4 pt-5 border-t border-[#FAF9F6]/20">
               <div>
                 <p suppressHydrationWarning className="text-base font-semibold text-[#FAF9F6]">
-                  — {thought.author}
+                  {thought ? `— ${thought.author}` : "Being You Path · Daily Reflection Library"}
                 </p>
-                <p suppressHydrationWarning className="text-xs text-[#F5F0E6]/90 mt-0.5">
-                  {thought.source}
-                </p>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-3">
-                <span
-                  suppressHydrationWarning
-                  className="inline-block text-[11px] uppercase tracking-widest text-[#FAF9F6] bg-[#FAF9F6]/15 border border-[#FAF9F6]/25 px-3 py-1 rounded-full font-semibold"
-                >
-                  {thought.theme}
-                </span>
-                {thought.linkTo && (
-                  <Link
-                    to={thought.linkTo}
-                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#F8C988] hover:text-white underline underline-offset-4 transition-colors"
-                  >
-                    <span>Read more</span>
-                    <ArrowRight className="w-4 h-4" aria-hidden="true" />
-                  </Link>
+                {thought?.source && (
+                  <p suppressHydrationWarning className="text-xs text-[#F5F0E6]/90 mt-0.5">
+                    {thought.source}
+                  </p>
                 )}
               </div>
+
+              {thought && (
+                <div className="flex flex-wrap items-center gap-3">
+                  <span
+                    suppressHydrationWarning
+                    className="inline-block text-[11px] uppercase tracking-widest text-[#FAF9F6] bg-[#FAF9F6]/15 border border-[#FAF9F6]/25 px-3 py-1 rounded-full font-semibold"
+                  >
+                    {thought.theme}
+                  </span>
+                  {thought.linkTo && (
+                    <Link
+                      to={thought.linkTo}
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#F8C988] hover:text-white underline underline-offset-4 transition-colors"
+                    >
+                      <span>Read more</span>
+                      <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                    </Link>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
@@ -215,7 +208,9 @@ export default function ThoughtOfTheDay() {
                 suppressHydrationWarning
                 className="text-xs font-bold uppercase tracking-wider text-terracotta"
               >
-                {practice.weekday} Micro-Practice · {practice.duration}
+                {practice
+                  ? `${practice.weekday} Micro-Practice · ${practice.duration}`
+                  : "Daily Micro-Practice · Brief Guided Prompt"}
               </span>
               <span className="text-xs font-semibold text-deep-teal bg-soft-sand px-3 py-1 rounded-full">
                 Resets Daily at Midnight IST
@@ -225,13 +220,17 @@ export default function ThoughtOfTheDay() {
               suppressHydrationWarning
               className="text-2xl font-bold font-heading text-deep-teal mb-3"
             >
-              {practice.emoji} {practice.title}
+              {practice
+                ? `${practice.emoji} ${practice.title}`
+                : "Grounded Pause & Check-In"}
             </h2>
             <p
               suppressHydrationWarning
               className="text-charcoal-warm text-base md:text-lg leading-relaxed"
             >
-              {practice.body}
+              {practice
+                ? practice.body
+                : "A short weekday somatic or cognitive practice appears here automatically based on the current day in India Standard Time."}
             </p>
           </div>
         </div>
@@ -245,24 +244,29 @@ export default function ThoughtOfTheDay() {
               suppressHydrationWarning
               className="text-2xl md:text-3xl font-bold font-heading text-deep-teal mb-2"
             >
-              {ist.year} Daily Archive (Jan 1 – Today IST)
+              {ist ? `${ist.year} Daily Archive (Jan 1 – Today IST)` : "Daily Thought Archive (IST)"}
             </h2>
             <p className="text-charcoal-warm text-sm md:text-base">
-              Browse every thought published so far this calendar year, grouped by month.
+              Browse thoughts published across the current calendar year up to today in India Standard Time, grouped by month.
             </p>
           </div>
 
-          <div className="space-y-10">
-            {archiveMonths.map((group) => (
-              <div key={group.month} className="space-y-4">
-                <div className="flex items-center justify-between border-b border-stone-300/70 pb-2">
-                  <h3 className="text-xl font-bold font-heading text-deep-teal">
-                    {group.monthName} {ist.year}
-                  </h3>
-                  <span className="text-xs font-semibold text-stone-700">
-                    {group.items.length} {group.items.length === 1 ? "day" : "days"}
-                  </span>
-                </div>
+          {archiveMonths.length === 0 ? (
+            <div className="bg-white rounded-2xl p-8 border border-stone-200 text-center text-sm text-charcoal-warm">
+              The monthly archive loads automatically for the current India Standard Time calendar year.
+            </div>
+          ) : (
+            <div className="space-y-10">
+              {archiveMonths.map((group) => (
+                <div key={group.month} className="space-y-4">
+                  <div className="flex items-center justify-between border-b border-stone-300/70 pb-2">
+                    <h3 className="text-xl font-bold font-heading text-deep-teal">
+                      {group.monthName} {ist?.year}
+                    </h3>
+                    <span className="text-xs font-semibold text-stone-700">
+                      {group.items.length} {group.items.length === 1 ? "day" : "days"}
+                    </span>
+                  </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {group.items.map((item) => (
@@ -339,7 +343,8 @@ export default function ThoughtOfTheDay() {
                 </div>
               </div>
             ))}
-          </div>
+            </div>
+          )}
 
           <p className="text-center text-xs text-stone-700 max-w-3xl mx-auto mt-12 leading-relaxed">
             {TELE_MANAS_NOTICE}

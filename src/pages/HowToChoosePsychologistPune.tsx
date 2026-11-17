@@ -48,14 +48,13 @@ export default function HowToChoosePsychologistPune() {
     { name: "How to Choose a Psychologist in Pune", url: canonicalPath },
   ];
 
+  // TODO: [I will supply] Add real datePublished / dateModified once confirmed.
   const articleSchema = buildArticleSchema({
     title: "How to Choose a Psychologist or Counsellor in Pune",
     description:
       "Practical guide to choosing a qualified psychologist or counsellor in Pune—what credentials mean, CBT vs talk therapy, red flags to watch out for, and fees.",
     path: canonicalPath,
     authorName: "Imran Hussain",
-    datePublished: "2026-04-10",
-    dateModified: "2026-11-16",
   });
 
   return (
@@ -68,8 +67,6 @@ export default function HowToChoosePsychologistPune() {
         schema={[LOCAL_BUSINESS_SCHEMA, articleSchema]}
         faqs={PILLAR_FAQS}
         articleMeta={{
-          publishedTime: "2026-04-10",
-          modifiedTime: "2026-11-16",
           author: "Imran Hussain",
         }}
       />
@@ -97,16 +94,11 @@ export default function HowToChoosePsychologistPune() {
       {/* Main Content */}
       <article className="py-12 md:py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 text-stone-800 leading-relaxed text-sm sm:text-base">
-          {/* Author & Review Bar */}
+          {/* Author Bar */}
           <div className="bg-white p-4 rounded-2xl border border-stone-200 text-xs text-stone-700 flex flex-wrap gap-x-6 gap-y-2">
             <span>
-              Author: <strong className="text-[#0B3A42]">Imran Hussain</strong> (Clinical Psychologist &amp; CBT Practitioner, M.A.)
+              Author: <strong className="text-[#0B3A42]">Imran Hussain</strong> (Psychologist and CBT practitioner, M.A.)
             </span>
-            <span>
-              Reviewed by: <strong className="text-[#0B3A42]">Tejaswini Joshi</strong> (Counselling Psychologist, M.A.)
-            </span>
-            <span>Published: 2026-04-10</span>
-            <span>Last reviewed: 2026-11-16</span>
           </div>
 
           {/* Section 1: Understanding Qualifications in India */}

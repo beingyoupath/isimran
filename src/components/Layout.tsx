@@ -49,12 +49,11 @@ import {
   ThoughtEntry,
   buildCopyThoughtText,
   getDailyThoughtIST,
-  getDefaultThought,
   msUntilNextISTMidnight,
 } from "../lib/thoughts";
 
 export const useThoughtOfTheDay = () => {
-  const [thought, setThought] = useState<ThoughtEntry>(() => getDefaultThought());
+  const [thought, setThought] = useState<ThoughtEntry | null>(null);
 
   useEffect(() => {
     let midnightTimer: ReturnType<typeof setTimeout> | undefined;
@@ -73,7 +72,9 @@ export const useThoughtOfTheDay = () => {
   }, []);
 
   return {
-    message: thought.short || thought.text,
+    message: thought
+      ? thought.short || thought.text
+      : "Daily grounded reflection — updates at midnight IST",
     color: "bg-[#0B3A42]",
     thought,
   };
@@ -428,6 +429,7 @@ export default function Layout() {
   };
 
   const copyThoughtToClipboard = () => {
+    if (!thoughtState.thought) return;
     const textToCopy = buildCopyThoughtText(thoughtState.thought);
     if (navigator?.clipboard?.writeText) {
       navigator.clipboard.writeText(textToCopy);
@@ -526,18 +528,28 @@ export default function Layout() {
                 type="button"
                 onClick={copyThoughtToClipboard}
                 className="font-serif italic tracking-wide hover:text-[#E6A157] transition-colors cursor-pointer inline-flex items-center gap-1.5 text-left"
-                title="Copy full Thought of the Day"
+                title={
+                  thoughtState.thought
+                    ? "Copy full Thought of the Day"
+                    : "Updates automatically for today in IST"
+                }
               >
-                <span suppressHydrationWarning>&ldquo;{thoughtState.message}&rdquo;</span>
-                <span className="text-[10px] text-[#FDFBF7]/85 font-sans not-italic">
-                  {quoteCopied ? (
-                    <span className="text-[#E6A157] font-semibold inline-flex items-center gap-0.5">
-                      <Check className="w-3 h-3 inline" /> Copied!
-                    </span>
-                  ) : (
-                    <Copy className="w-3 h-3 inline opacity-80" aria-hidden="true" />
-                  )}
+                <span suppressHydrationWarning>
+                  {thoughtState.thought
+                    ? `“${thoughtState.message}”`
+                    : thoughtState.message}
                 </span>
+                {thoughtState.thought && (
+                  <span className="text-[10px] text-[#FDFBF7]/85 font-sans not-italic">
+                    {quoteCopied ? (
+                      <span className="text-[#E6A157] font-semibold inline-flex items-center gap-0.5">
+                        <Check className="w-3 h-3 inline" /> Copied!
+                      </span>
+                    ) : (
+                      <Copy className="w-3 h-3 inline opacity-80" aria-hidden="true" />
+                    )}
+                  </span>
+                )}
               </button>
             </div>
 
@@ -698,194 +710,183 @@ export default function Layout() {
             </div>
           </div>
 
-          {/* Desktop Mega-Menu for Services */}
-          <AnimatePresence>
-            {isServiceMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: 12, scale: 0.99 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 8, scale: 0.99 }}
-                transition={{ duration: 0.22, ease: "easeOut" }}
-                onMouseEnter={handleServiceMouseEnter}
-                onMouseLeave={handleServiceMouseLeave}
-                className="absolute top-full left-0 right-0 bg-[#FAF9F6]/98 backdrop-blur-xl border-b border-stone-200/90 shadow-2xl z-40 overflow-hidden"
-              >
-                <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 lg:px-[60px] py-7">
-                  {/* Category Tabs Header */}
-                  <div className="flex flex-wrap items-center justify-between pb-4 border-b border-stone-200/70 gap-3">
-                    <div className="flex items-center gap-1.5 p-1 bg-stone-200/50 rounded-xl">
-                      {SERVICE_CATEGORIES.map((category, index) => {
-                        const isTabActive = activeCategoryIndex === index;
-                        return (
-                          <button
-                            key={category.id}
-                            type="button"
-                            onClick={() => setActiveCategoryIndex(index)}
-                            onMouseEnter={() => setActiveCategoryIndex(index)}
-                            className={`relative px-4 py-2 rounded-lg text-xs font-semibold tracking-wide transition-all cursor-pointer ${
-                              isTabActive
-                                ? "text-[#0B3A42]"
-                                : "text-stone-700 hover:text-stone-900"
-                            }`}
-                          >
-                            {isTabActive && (
-                              <motion.div
-                                layoutId="megaMenuTabIndicator"
-                                className="absolute inset-0 bg-white rounded-lg shadow-xs"
-                                transition={{
-                                  type: "spring",
-                                  bounce: 0.15,
-                                  duration: 0.4,
-                                }}
-                              />
-                            )}
-                            <span className="relative z-10">{category.name}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
+          {/* Desktop Mega-Menu for Services (always mounted in HTML for crawlers, toggled visually) */}
+          <div
+            onMouseEnter={handleServiceMouseEnter}
+            onMouseLeave={handleServiceMouseLeave}
+            aria-hidden={!isServiceMenuOpen}
+            className={`hidden lg:block absolute top-full left-0 right-0 bg-[#FAF9F6]/98 backdrop-blur-xl border-b border-stone-200/90 shadow-2xl z-40 overflow-hidden transition-all duration-200 ease-out ${
+              isServiceMenuOpen
+                ? "opacity-100 visible translate-y-0 pointer-events-auto"
+                : "opacity-0 invisible -translate-y-2 pointer-events-none"
+            }`}
+          >
+            <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 lg:px-[60px] py-7">
+              {/* Category Tabs Header */}
+              <div className="flex flex-wrap items-center justify-between pb-4 border-b border-stone-200/70 gap-3">
+                <div className="flex items-center gap-1.5 p-1 bg-stone-200/50 rounded-xl">
+                  {SERVICE_CATEGORIES.map((category, index) => {
+                    const isTabActive = activeCategoryIndex === index;
+                    return (
+                      <button
+                        key={category.id}
+                        type="button"
+                        onClick={() => setActiveCategoryIndex(index)}
+                        onMouseEnter={() => setActiveCategoryIndex(index)}
+                        className={`relative px-4 py-2 rounded-lg text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+                          isTabActive
+                            ? "text-[#0B3A42] bg-white shadow-xs"
+                            : "text-stone-700 hover:text-stone-900"
+                        }`}
+                      >
+                        <span className="relative z-10">{category.name}</span>
+                      </button>
+                    );
+                  })}
+                </div>
 
-                    <Link
-                      to="/services"
-                      onClick={() => setIsServiceMenuOpen(false)}
-                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#A43F23] hover:text-[#0B3A42] transition-colors"
-                    >
-                      <span>Explore All Services Overview</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </Link>
+                <Link
+                  to="/services"
+                  onClick={() => setIsServiceMenuOpen(false)}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#A43F23] hover:text-[#0B3A42] transition-colors"
+                >
+                  <span>Explore All Services Overview</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+
+              {/* Mega-Menu Body (all categories rendered in HTML; inactive tabs hidden visually) */}
+              <div className="pt-6 grid grid-cols-12 gap-8 items-stretch">
+                <div className="col-span-8 flex flex-col justify-between">
+                  <div>
+                    {SERVICE_CATEGORIES.map((category, catIndex) => {
+                      const isCatActive = catIndex === activeCategoryIndex;
+                      return (
+                        <div
+                          key={category.id}
+                          className={isCatActive ? "block" : "hidden"}
+                        >
+                          <div className="mb-4">
+                            <span className="text-[11px] font-bold uppercase tracking-widest text-[#A43F23]">
+                              {category.badge}
+                            </span>
+                            <h4 className="text-xl font-bold font-heading text-[#0B3A42] mt-0.5">
+                              {category.headline}
+                            </h4>
+                            <p className="text-xs text-stone-700 mt-1 max-w-2xl leading-relaxed">
+                              {category.description}
+                            </p>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-3.5 mt-5">
+                            {category.items.map((item) => {
+                              const IconComponent = item.icon;
+                              return (
+                                <Link
+                                  key={item.title}
+                                  to={item.path}
+                                  onClick={() => setIsServiceMenuOpen(false)}
+                                  className="group p-3.5 rounded-xl bg-white hover:bg-white/90 border border-stone-200/70 hover:border-[#A43F23]/40 hover:shadow-sm transition-all flex flex-col justify-between relative overflow-hidden"
+                                >
+                                  <div>
+                                    <div className="flex items-center justify-between mb-2">
+                                      <div className="w-8 h-8 rounded-lg bg-[#0B3A42]/5 text-[#0B3A42] group-hover:bg-[#A43F23]/10 group-hover:text-[#A43F23] flex items-center justify-center transition-colors">
+                                        <IconComponent className="w-4 h-4" />
+                                      </div>
+                                      <span className="text-[10px] font-medium text-stone-700 bg-stone-100 px-2 py-0.5 rounded-md">
+                                        {item.tag}
+                                      </span>
+                                    </div>
+                                    <h5 className="text-[13.5px] font-bold text-[#0B3A42] group-hover:text-[#A43F23] transition-colors leading-snug">
+                                      {item.title}
+                                    </h5>
+                                    <p className="text-[11.5px] text-stone-700 mt-1 line-clamp-2 leading-relaxed">
+                                      {item.subtitle}
+                                    </p>
+                                  </div>
+
+                                  <div className="mt-3 flex items-center text-[11px] font-semibold text-[#0B3A42] group-hover:text-[#A43F23] transition-colors pt-2 border-t border-stone-100">
+                                    <span>Learn More</span>
+                                    <ArrowUpRight className="w-3 h-3 ml-1 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                                  </div>
+                                </Link>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
 
-                  {/* Mega-Menu Body */}
-                  <div className="pt-6 grid grid-cols-12 gap-8 items-stretch">
-                    <div className="col-span-8 flex flex-col justify-between">
-                      <div>
-                        <div className="mb-4">
-                          <span className="text-[11px] font-bold uppercase tracking-widest text-[#A43F23]">
-                            {currentCategory.badge}
-                          </span>
-                          <h4 className="text-xl font-bold font-heading text-[#0B3A42] mt-0.5">
-                            {currentCategory.headline}
-                          </h4>
-                          <p className="text-xs text-stone-700 mt-1 max-w-2xl leading-relaxed">
-                            {currentCategory.description}
-                          </p>
-                        </div>
+                  <div className="mt-6 pt-4 border-t border-stone-200/60 flex items-center justify-between text-xs text-stone-700">
+                    <div className="flex items-center gap-2">
+                      <MapPin className="w-3.5 h-3.5 text-[#A43F23]" />
+                      <span>{CLINIC_ADDRESS}</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-[#0B3A42] font-medium">
+                        Pan-India Online Video
+                      </span>
+                    </div>
+                  </div>
+                </div>
 
-                        <div className="grid grid-cols-2 gap-3.5 mt-5">
-                          {currentCategory.items.map((item) => {
-                            const IconComponent = item.icon;
-                            return (
-                              <Link
-                                key={item.title}
-                                to={item.path}
-                                onClick={() => setIsServiceMenuOpen(false)}
-                                className="group p-3.5 rounded-xl bg-white hover:bg-white/90 border border-stone-200/70 hover:border-[#A43F23]/40 hover:shadow-sm transition-all flex flex-col justify-between relative overflow-hidden"
-                              >
-                                <div>
-                                  <div className="flex items-center justify-between mb-2">
-                                    <div className="w-8 h-8 rounded-lg bg-[#0B3A42]/5 text-[#0B3A42] group-hover:bg-[#A43F23]/10 group-hover:text-[#A43F23] flex items-center justify-center transition-colors">
-                                      <IconComponent className="w-4 h-4" />
-                                    </div>
-                                    <span className="text-[10px] font-medium text-stone-700 bg-stone-100 px-2 py-0.5 rounded-md">
-                                      {item.tag}
-                                    </span>
-                                  </div>
-                                  <h5 className="text-[13.5px] font-bold text-[#0B3A42] group-hover:text-[#A43F23] transition-colors leading-snug">
-                                    {item.title}
-                                  </h5>
-                                  <p className="text-[11.5px] text-stone-700 mt-1 line-clamp-2 leading-relaxed">
-                                    {item.subtitle}
-                                  </p>
-                                </div>
-
-                                <div className="mt-3 flex items-center text-[11px] font-semibold text-[#0B3A42] group-hover:text-[#A43F23] transition-colors pt-2 border-t border-stone-100">
-                                  <span>Learn More</span>
-                                  <ArrowUpRight className="w-3 h-3 ml-1 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                                </div>
-                              </Link>
-                            );
-                          })}
-                        </div>
-                      </div>
-
-                      <div className="mt-6 pt-4 border-t border-stone-200/60 flex items-center justify-between text-xs text-stone-700">
-                        <div className="flex items-center gap-2">
-                          <MapPin className="w-3.5 h-3.5 text-[#A43F23]" />
-                          <span>{CLINIC_ADDRESS}</span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <span className="text-[#0B3A42] font-medium">
-                            Pan-India Online Video
-                          </span>
-                        </div>
+                <div className="col-span-4">
+                  <div className="h-full rounded-2xl bg-white border border-stone-200/80 p-5 flex flex-col justify-between shadow-xs relative overflow-hidden">
+                    <div className="relative rounded-xl overflow-hidden aspect-[16/10] bg-stone-900 mb-4 shadow-2xs">
+                      <img
+                        src={currentCategory.image}
+                        alt={currentCategory.headline}
+                        width={800}
+                        height={500}
+                        loading="lazy"
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/55 to-black/25" />
+                      <div className="section-dark absolute bottom-3 left-3 right-3 text-[#FAF9F6]">
+                        <span className="text-[10px] uppercase font-bold tracking-wider text-[#F8C988] block mb-0.5 drop-shadow">
+                          Deccan Gymkhana, Pune &amp; Online
+                        </span>
+                        <span className="card-title text-xs font-semibold text-[#FAF9F6] drop-shadow-md">
+                          Warm, Confidential Therapeutic Space
+                        </span>
                       </div>
                     </div>
 
-                    <div className="col-span-4">
-                      <div className="h-full rounded-2xl bg-white border border-stone-200/80 p-5 flex flex-col justify-between shadow-xs relative overflow-hidden">
-                        <div className="relative rounded-xl overflow-hidden aspect-[16/10] bg-stone-900 mb-4 shadow-2xs">
-                          <AnimatePresence mode="wait">
-                            <motion.img
-                              key={currentCategory.image}
-                              src={currentCategory.image}
-                              alt={currentCategory.headline}
-                              width={800}
-                              height={500}
-                              loading="lazy"
-                              initial={{ opacity: 0, scale: 1.05 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              exit={{ opacity: 0, scale: 1.05 }}
-                              transition={{ duration: 0.35, ease: "easeOut" }}
-                              className="w-full h-full object-cover"
-                            />
-                          </AnimatePresence>
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/55 to-black/25" />
-                          <div className="section-dark absolute bottom-3 left-3 right-3 text-[#FAF9F6]">
-                            <span className="text-[10px] uppercase font-bold tracking-wider text-[#F8C988] block mb-0.5 drop-shadow">
-                              Deccan Gymkhana, Pune &amp; Online
-                            </span>
-                            <span className="card-title text-xs font-semibold text-[#FAF9F6] drop-shadow-md">
-                              Warm, Confidential Therapeutic Space
-                            </span>
-                          </div>
-                        </div>
+                    <div>
+                      <div className="text-xs text-stone-600 mb-4 leading-relaxed">
+                        Looking for dedicated 1-on-1 clarity? Speak directly with psychologists Imran Hussain or Tejaswini Joshi.
+                      </div>
 
-                        <div>
-                          <div className="text-xs text-stone-600 mb-4 leading-relaxed">
-                            Looking for dedicated 1-on-1 clarity? Speak directly with psychologists Imran Hussain or Tejaswini Joshi.
-                          </div>
+                      <div className="space-y-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setIsServiceMenuOpen(false);
+                            setIsConsultationModalOpen(true);
+                          }}
+                          className="w-full py-2.5 px-4 rounded-xl bg-[#0B3A42] hover:bg-[#07252A] text-white text-xs font-semibold tracking-wide transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer"
+                        >
+                          <Calendar className="w-3.5 h-3.5" />
+                          <span>Book Free 15-Min Clarity Call</span>
+                        </button>
 
-                          <div className="space-y-2">
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setIsServiceMenuOpen(false);
-                                setIsConsultationModalOpen(true);
-                              }}
-                              className="w-full py-2.5 px-4 rounded-xl bg-[#0B3A42] hover:bg-[#07252A] text-white text-xs font-semibold tracking-wide transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer"
-                            >
-                              <Calendar className="w-3.5 h-3.5" />
-                              <span>Book Free 15-Min Clarity Call</span>
-                            </button>
-
-                            <a
-                              href={WHATSAPP_URL}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="w-full py-2.5 px-4 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold tracking-wide transition-all border border-emerald-200/60 flex items-center justify-center gap-2 cursor-pointer"
-                            >
-                              <Phone className="w-3.5 h-3.5 text-emerald-700" />
-                              <span>WhatsApp Rapid Booking</span>
-                            </a>
-                          </div>
-                        </div>
+                        <a
+                          href={WHATSAPP_URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full py-2.5 px-4 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold tracking-wide transition-all border border-emerald-200/60 flex items-center justify-center gap-2 cursor-pointer"
+                        >
+                          <Phone className="w-3.5 h-3.5 text-emerald-700" />
+                          <span>WhatsApp Rapid Booking</span>
+                        </a>
                       </div>
                     </div>
                   </div>
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+              </div>
+            </div>
+          </div>
 
           {/* Animated Mobile Menu Drawer */}
           <AnimatePresence>

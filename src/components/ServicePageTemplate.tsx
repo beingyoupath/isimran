@@ -108,6 +108,7 @@ export interface ServicePageConfig {
   faqs: ServiceFAQ[];
   relatedLinks: { label: string; to: string }[];
   bookingServiceName: string;
+  importantNotice?: string;
 }
 
 export default function ServicePageTemplate({
@@ -411,6 +412,11 @@ export default function ServicePageTemplate({
           </div>
 
           {/* Ethical & Crisis Support Disclaimer */}
+          {config.importantNotice && (
+            <div className="bg-rose-50/90 border-2 border-[#A43F23]/40 rounded-2xl p-4 sm:p-5 text-sm font-semibold text-[#0B3A42] leading-relaxed">
+              {config.importantNotice}
+            </div>
+          )}
           <div className="bg-amber-50/70 border border-amber-200 rounded-2xl p-4 sm:p-5 text-xs text-stone-700 leading-relaxed">
             <strong className="text-[#0B3A42]">{labels.crisisPrefix}</strong>{" "}
             {TELE_MANAS_NOTICE}

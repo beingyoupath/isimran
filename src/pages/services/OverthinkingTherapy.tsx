@@ -29,7 +29,7 @@ export default function OverthinkingTherapy() {
             heading: "Interrupting Rumination Loops",
             items: [
               "We help separate useful planning from circular rumination that solves nothing",
-              "We use structured worry containers and cognitive defusion so thoughts lose grip",
+              "We use structured worry containers and CBT thought-distancing skills so thoughts lose grip",
               "We soften perfectionism around minor daily choices and social impressions",
               "We address fear of mistakes or judgment that keeps repetitive mental review running",
             ],
@@ -83,7 +83,7 @@ export default function OverthinkingTherapy() {
           {
             question: "Wait—isn't overthinking simply part of my natural personality?",
             answer:
-              "No. Rumination is a conditioned mental habit, not permanent DNA. When we combine CBT cognitive defusion with attention training, your mind learns to disengage smoothly from unproductive loops.",
+              "No. Rumination is a conditioned mental habit, not permanent DNA. When we combine structured CBT tools with attention training, your mind learns to disengage smoothly from unproductive loops.",
           },
           {
             question: "Why does overthinking hit hardest right before sleep?",

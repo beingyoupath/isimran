@@ -192,6 +192,7 @@ export default function Contact() {
         title="Book a Psychologist in Pune | Contact Being You Path"
         description="Free 15-minute clarity call. Visit us at Deccan Gymkhana, Pune, call, WhatsApp or email. Replies within 24 hours."
         url="/contact"
+        lcpImage="/images/contact-hero-1.webp"
         breadcrumbs={breadcrumbs}
         schema={[LOCAL_BUSINESS_SCHEMA]}
       />
@@ -238,13 +239,18 @@ export default function Contact() {
                 <div className="w-full lg:w-7/12 p-8 md:p-12 lg:p-16 pb-20 md:pb-24 lg:pb-16 flex flex-col items-center lg:items-start text-center lg:text-left justify-center relative z-20">
                   <div className="w-full max-w-2xl mx-auto lg:mx-0">
                     {idx === 0 ? (
-                      <h1 className="text-3xl md:text-[40px] lg:text-[48px] leading-tight font-bold text-deep-teal mb-6 font-heading tracking-tight">
-                        {slide.title}
-                      </h1>
+                      <>
+                        <h1 className="text-xs sm:text-sm font-bold tracking-widest uppercase text-terracotta mb-3 font-sans">
+                          Book a Psychologist in Pune
+                        </h1>
+                        <h2 className="text-3xl md:text-[40px] lg:text-[48px] leading-tight font-bold text-deep-teal mb-6 font-heading tracking-tight">
+                          {slide.title}
+                        </h2>
+                      </>
                     ) : (
-                      <h2 className="text-3xl md:text-[40px] lg:text-[48px] leading-tight font-bold text-deep-teal mb-6 font-heading tracking-tight">
+                      <p className="text-3xl md:text-[40px] lg:text-[48px] leading-tight font-bold text-deep-teal mb-6 font-heading tracking-tight">
                         {slide.title}
-                      </h2>
+                      </p>
                     )}
                     <p className="text-xl md:text-[24px] md:leading-[32px] text-terracotta mb-6 font-semibold font-heading">
                       {slide.subtitle}
@@ -659,15 +665,11 @@ export default function Contact() {
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-2 text-xs text-gray-600 font-medium">
-                      <span>{rev.date}</span>
-                      {rev.location && (
-                        <>
-                          <span>•</span>
-                          <span className="text-deep-teal font-semibold">{rev.location}</span>
-                        </>
-                      )}
-                    </div>
+                    {rev.date && (
+                      <div className="flex items-center gap-2 text-xs text-gray-600 font-medium">
+                        <span>{rev.date}</span>
+                      </div>
+                    )}
                   </div>
 
                   <p className="text-charcoal-warm leading-relaxed mb-8 text-[15px] md:text-[17px] font-normal whitespace-pre-line">
@@ -680,17 +682,9 @@ export default function Contact() {
                         {rev.author.charAt(0).toUpperCase()}
                       </div>
                       <div>
-                        <h3 className="text-deep-teal font-heading font-semibold text-base md:text-lg flex items-center gap-1.5">
+                        <p className="text-deep-teal font-heading font-semibold text-base md:text-lg m-0">
                           {rev.author}
-                          {rev.badge && (
-                            <span className="text-[10px] font-semibold bg-amber-100 text-amber-950 px-2 py-0.5 rounded-full border border-amber-300">
-                              {rev.badge}
-                            </span>
-                          )}
-                        </h3>
-                        <span className="text-xs text-gray-700 font-medium">
-                          {rev.details} · {rev.date}
-                        </span>
+                        </p>
                       </div>
                     </div>
 

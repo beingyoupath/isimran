@@ -29,6 +29,7 @@ export interface CollectedHeadData {
   ogType: "website" | "article";
   ogImage: string;
   ogImageAlt: string;
+  lcpImage?: string;
   alternates?: HreflangAlternate[];
   articleMeta?: {
     publishedTime?: string;
@@ -67,6 +68,7 @@ interface SEOProps {
   locale?: string;
   alternates?: HreflangAlternate[];
   ogImageAlt?: string;
+  lcpImage?: string;
   breadcrumbs?: BreadcrumbItem[];
   schema?: Record<string, any> | Record<string, any>[];
   faqs?: FAQItem[];
@@ -92,11 +94,28 @@ function escapeText(value: string): string {
     .replace(/>/g, "&gt;");
 }
 
+function buildJsonLdGraph(schemas: Record<string, any>[]) {
+  return {
+    "@context": "https://schema.org",
+    "@graph": schemas.map((node) => {
+      const { "@context": _ctx, ...rest } = node;
+      return rest;
+    }),
+  };
+}
+
 export function serializeHeadDataToHtml(head: CollectedHeadData): string {
   const tags: string[] = [
     `<title>${escapeText(head.title)}</title>`,
     `<meta data-seo-managed="true" name="description" content="${escapeAttr(head.description)}" />`,
     `<meta data-seo-managed="true" name="robots" content="${escapeAttr(head.robots)}" />`,
+    ...(head.lcpImage
+      ? [
+          `<link data-seo-managed="true" rel="preload" as="image" href="${escapeAttr(head.lcpImage)}"${
+            head.lcpImage.endsWith(".webp") ? ' type="image/webp"' : ""
+          } />`,
+        ]
+      : []),
     `<link data-seo-managed="true" rel="canonical" href="${escapeAttr(head.canonicalUrl)}" />`,
     `<meta data-seo-managed="true" property="og:type" content="${escapeAttr(head.ogType)}" />`,
     `<meta data-seo-managed="true" property="og:url" content="${escapeAttr(head.canonicalUrl)}" />`,
@@ -138,8 +157,9 @@ export function serializeHeadDataToHtml(head: CollectedHeadData): string {
     );
   }
 
-  for (const s of head.schemas) {
-    const safeJson = JSON.stringify(s).replace(/</g, "\\u003c");
+  if (head.schemas.length > 0) {
+    const graphPayload = buildJsonLdGraph(head.schemas);
+    const safeJson = JSON.stringify(graphPayload).replace(/</g, "\\u003c");
     tags.push(`<script data-seo-managed="true" type="application/ld+json">${safeJson}</script>`);
   }
 
@@ -167,6 +187,7 @@ export function SEO({
   locale = "en_IN",
   alternates,
   ogImageAlt = "Being You Path psychological counselling clinic in Deccan Gymkhana, Pune",
+  lcpImage,
   breadcrumbs,
   schema,
   faqs,
@@ -249,6 +270,7 @@ export function SEO({
       ogType: articleMeta ? "article" : "website",
       ogImage: OG_IMAGE_URL,
       ogImageAlt,
+      lcpImage,
       articleMeta,
       schemas: allSchemas,
     });
@@ -262,6 +284,7 @@ export function SEO({
     locale,
     alternates,
     ogImageAlt,
+    lcpImage,
     articleMeta,
     allSchemas,
   });
@@ -278,6 +301,18 @@ export function SEO({
 
     appendManagedMeta(headEl, "name", "description", description);
     appendManagedMeta(headEl, "name", "robots", robots);
+
+    if (lcpImage) {
+      const preloadEl = document.createElement("link");
+      preloadEl.setAttribute("data-seo-managed", "true");
+      preloadEl.setAttribute("rel", "preload");
+      preloadEl.setAttribute("as", "image");
+      preloadEl.setAttribute("href", lcpImage);
+      if (lcpImage.endsWith(".webp")) {
+        preloadEl.setAttribute("type", "image/webp");
+      }
+      headEl.appendChild(preloadEl);
+    }
 
     const canonicalEl = document.createElement("link");
     canonicalEl.setAttribute("data-seo-managed", "true");
@@ -325,11 +360,11 @@ export function SEO({
       appendManagedMeta(headEl, "property", "article:author", articleMeta.author);
     }
 
-    for (const schemaObj of allSchemas) {
+    if (allSchemas.length > 0) {
       const scriptEl = document.createElement("script");
       scriptEl.setAttribute("data-seo-managed", "true");
       scriptEl.setAttribute("type", "application/ld+json");
-      scriptEl.textContent = JSON.stringify(schemaObj);
+      scriptEl.textContent = JSON.stringify(buildJsonLdGraph(allSchemas));
       headEl.appendChild(scriptEl);
     }
   }, [headSnapshot]);

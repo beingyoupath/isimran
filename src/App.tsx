@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import Layout from "./components/Layout";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -87,34 +87,12 @@ export function AppRoutes() {
 
           {/* Pillar Guide Route */}
           <Route path="guides/how-to-choose-a-psychologist-pune" element={<HowToChoosePsychologistPune />} />
-          <Route path="how-to-choose-a-psychologist-in-pune" element={<Navigate to="/guides/how-to-choose-a-psychologist-pune" replace />} />
 
           {/* Hindi (hi-IN) Translated Routes */}
           <Route path="hi" element={<HomeHi />} />
           <Route path="hi/services/cbt-therapy-pune" element={<CbtTherapyHi />} />
           <Route path="hi/services/stress-anxiety-counselling-pune" element={<AnxietyCounsellingHi />} />
           <Route path="hi/services/burnout-counselling-pune" element={<BurnoutCounsellingHi />} />
-
-          {/* Legacy & Alternate Path Redirects */}
-          <Route path="services/anxiety-counselling-pune" element={<Navigate to="/services/stress-anxiety-counselling-pune" replace />} />
-          <Route path="services/burnout-work-stress-counselling-pune" element={<Navigate to="/services/burnout-counselling-pune" replace />} />
-          <Route path="services/burnout-and-work-stress-counselling-pune" element={<Navigate to="/services/burnout-counselling-pune" replace />} />
-          <Route path="services/psychologist-prabhat-road-pune" element={<Navigate to="/services/counselling-prabhat-road-pune" replace />} />
-          <Route path="services/relationship-and-couples-counselling-pune" element={<Navigate to="/services/relationship-couples-counselling-pune" replace />} />
-          <Route path="counselling-prabhat-road-deccan-gymkhana" element={<Navigate to="/services/counselling-prabhat-road-pune" replace />} />
-          <Route path="prabhat-road-counselling-pune" element={<Navigate to="/services/counselling-prabhat-road-pune" replace />} />
-          <Route path="psychologist-prabhat-road-pune" element={<Navigate to="/services/counselling-prabhat-road-pune" replace />} />
-          <Route path="counselling-prabhat-road-pune" element={<Navigate to="/services/counselling-prabhat-road-pune" replace />} />
-          <Route path="blog" element={<Navigate to="/resources" replace />} />
-          <Route path="blog/*" element={<Navigate to="/resources" replace />} />
-          <Route path="blogs" element={<Navigate to="/resources" replace />} />
-          <Route path="guides/*" element={<Navigate to="/guides/how-to-choose-a-psychologist-pune" replace />} />
-          <Route path="cbt-therapy-pune" element={<Navigate to="/services/cbt-therapy-pune" replace />} />
-          <Route path="depression-counseling-pune" element={<Navigate to="/services/depression-counselling-pune" replace />} />
-          <Route path="online-therapy-india" element={<Navigate to="/services/online-therapy-india" replace />} />
-          <Route path="psychologist-in-pune" element={<Navigate to="/contact" replace />} />
-          <Route path="about/*" element={<Navigate to="/about" replace />} />
-          <Route path="services/*" element={<Navigate to="/services" replace />} />
 
           {/* 404 Catch-All */}
           <Route path="*" element={<NotFound />} />

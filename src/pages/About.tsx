@@ -59,7 +59,9 @@ const IMRAN_BOOKS = [
     title: "1. Healing Journey through chakras",
     desc: "Explore traditional perspectives on inner energy centres paired with practical reflective methods for emotional grounding and calm in daily life.",
     price: "₹499",
-    img: "https://drive.google.com/thumbnail?id=14Na8ysaUXG8UnlS9X48Mcvq3PMh5mTj2&sz=w600",
+    img: "/images/book-chakras.webp",
+    width: 600,
+    height: 901,
     alt: "Book cover: Healing Journey through chakras by Imran Hussain",
     waName: "Healing Journey through chakras",
   },
@@ -67,7 +69,9 @@ const IMRAN_BOOKS = [
     title: "2. The essence of Wellness (Mind, Body, Spirit)",
     desc: "An accessible roadmap to integrative everyday well-being, connecting physical vitality, mental clarity, and thoughtful daily habits.",
     price: "₹499",
-    img: "https://drive.google.com/thumbnail?id=1jrQuEeXPUkF1LsxgO46CCr1uqrGKzVCm&sz=w600",
+    img: "/images/book-essence-of-wellness.webp",
+    width: 600,
+    height: 901,
     alt: "Book cover: The essence of Wellness by Imran Hussain",
     waName: "The essence of Wellness (Mind, Body, Spirit)",
   },
@@ -75,7 +79,9 @@ const IMRAN_BOOKS = [
     title: "3. The power of mindful thoughts",
     desc: "Learn to notice the space between stimulus and thought, breaking overthinking loops using practical cognitive awareness and mindfulness exercises.",
     price: "₹499",
-    img: "https://drive.google.com/thumbnail?id=160i1TW3o7ZDaUTxzesxuu-FE5T9KT1p8&sz=w600",
+    img: "/images/book-mindful-thoughts.webp",
+    width: 600,
+    height: 900,
     alt: "Book cover: The power of mindful thoughts by Imran Hussain",
     waName: "The power of mindful thoughts",
   },
@@ -126,7 +132,7 @@ export default function About() {
     "M.A. Clinical Psychology (Imran Hussain)",
     "M.A. Counselling Psychology (Tejaswini Joshi)",
     "LSE Certification — Managing People (Tejaswini Joshi)",
-    "NIMHANS-trained clinical experience (Imran Hussain)",
+    "Clinical training at NIMHANS (Imran Hussain)",
     "CBT & Secular Mindfulness Practitioner Training",
   ];
 
@@ -136,6 +142,7 @@ export default function About() {
         title="Our Psychologists | Being You Path, Pune"
         description="Meet Imran Hussain and Tejaswini Joshi, their training, approach and credentials."
         url="/about"
+        lcpImage="/images/about-hero-1.webp"
         breadcrumbs={breadcrumbs}
         schema={[LOCAL_BUSINESS_SCHEMA, IMRAN_PERSON_SCHEMA, TEJASWINI_PERSON_SCHEMA]}
         faqs={ABOUT_FAQS}
@@ -173,13 +180,18 @@ export default function About() {
                 <div className="w-full lg:w-7/12 p-8 md:p-12 lg:p-16 pb-20 md:pb-24 lg:pb-16 flex flex-col items-center lg:items-start text-center lg:text-left justify-center relative z-20">
                   <div className="w-full max-w-2xl mx-auto lg:mx-0">
                     {idx === 0 ? (
-                      <h1 className="text-3xl md:text-[40px] lg:text-[48px] leading-tight font-bold text-deep-teal mb-6 font-heading tracking-tight">
-                        {slide.title}
-                      </h1>
+                      <>
+                        <h1 className="text-xs sm:text-sm font-bold tracking-widest uppercase text-terracotta mb-3 font-sans">
+                          Our Psychologists in Pune
+                        </h1>
+                        <h2 className="text-3xl md:text-[40px] lg:text-[48px] leading-tight font-bold text-deep-teal mb-6 font-heading tracking-tight">
+                          {slide.title}
+                        </h2>
+                      </>
                     ) : (
-                      <h2 className="text-3xl md:text-[40px] lg:text-[48px] leading-tight font-bold text-deep-teal mb-6 font-heading tracking-tight">
+                      <p className="text-3xl md:text-[40px] lg:text-[48px] leading-tight font-bold text-deep-teal mb-6 font-heading tracking-tight">
                         {slide.title}
-                      </h2>
+                      </p>
                     )}
                     <p className="text-xl md:text-[24px] md:leading-[32px] text-terracotta mb-6 font-semibold font-heading">
                       {slide.subtitle}
@@ -387,7 +399,7 @@ export default function About() {
                 Secular Mindfulness
               </h3>
               <p className="text-charcoal-warm">
-                Evidence-based attention training without dogma—present-moment awareness, cognitive defusion, and self-compassion.
+                Evidence-based attention training without dogma—present-moment awareness, stepping back from unhelpful thought loops, and everyday steadiness.
               </p>
             </div>
             <div className="flex flex-col items-center text-center">
@@ -424,13 +436,12 @@ export default function About() {
                 <div className="aspect-[4/5] w-full rounded-[24px] bg-white p-3 shadow-md border border-gray-100/50 group relative">
                   <div className="w-full h-full rounded-[14px] overflow-hidden relative bg-gray-100">
                     <img
-                      src="https://drive.google.com/thumbnail?id=1iTW_XmU7hqQSNtJIKRC3ApQjW2yyZnne&sz=w1000"
-                      alt="Imran Hussain, Co-Founder and Clinical Psychologist at Being You Path, Pune"
-                      width={600}
-                      height={750}
+                      src="/images/imran-hussain.webp"
+                      alt="Imran Hussain, Co-Founder, Psychologist and CBT practitioner at Being You Path, Pune"
+                      width={1000}
+                      height={1000}
                       loading="lazy"
                       className="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out"
-                      referrerPolicy="no-referrer"
                     />
                   </div>
                 </div>
@@ -443,7 +454,7 @@ export default function About() {
                   M.A. Clinical Psychology | CBT Practitioner | Mindfulness Facilitator
                 </p>
                 <p className="text-charcoal-warm mb-8 leading-relaxed">
-                  NIMHANS-trained clinical psychologist and CBT practitioner with clinical experience across NIMHANS, Mannah Wellness, and Mantra Care. Specialising in Cognitive Behavioural Therapy (CBT), anxiety and stress management, burnout recovery, and secular mindfulness, Imran sees clients in person near Prabhat Road, Deccan Gymkhana, Pune and online across India.
+                  Psychologist with clinical training at NIMHANS and CBT practitioner with clinical experience across NIMHANS, Mannah Wellness, and Mantra Care. Specialising in Cognitive Behavioural Therapy (CBT), anxiety and stress management, burnout recovery, and secular mindfulness, Imran sees clients in person near Prabhat Road, Deccan Gymkhana, Pune and online across India.
                 </p>
                 <div className="flex flex-wrap gap-2 mt-auto">
                   {[
@@ -471,13 +482,12 @@ export default function About() {
                 <div className="aspect-[4/5] w-full rounded-[24px] bg-white p-3 shadow-md border border-gray-100/50 group relative">
                   <div className="w-full h-full rounded-[14px] overflow-hidden relative bg-gray-100">
                     <img
-                      src="https://drive.google.com/thumbnail?id=1gmpGHtsb2iJ0tP-_yuMI-PnArP-KnZV2&sz=w1000"
+                      src="/images/tejaswini-joshi.webp"
                       alt="Tejaswini Joshi, Co-Founder and Counselling Psychologist at Being You Path, Pune"
-                      width={600}
-                      height={750}
+                      width={864}
+                      height={1222}
                       loading="lazy"
                       className="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out"
-                      referrerPolicy="no-referrer"
                     />
                   </div>
                 </div>
@@ -558,11 +568,10 @@ export default function About() {
                   <img
                     src={book.img}
                     alt={book.alt}
-                    width={240}
-                    height={320}
+                    width={book.width}
+                    height={book.height}
                     loading="lazy"
                     className="w-full h-full object-cover rounded-[5px] drop-shadow-sm group-hover:scale-[1.03] transition-transform duration-500 ease-out"
-                    referrerPolicy="no-referrer"
                   />
                 </div>
                 <div className="flex-1 flex flex-col">

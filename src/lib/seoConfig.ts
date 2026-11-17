@@ -27,6 +27,8 @@ export const CLINIC_HOURS_LABEL = "Monday – Sunday: 10:00 AM – 9:00 PM";
 export const CALENDLY_URL = "https://calendly.com/beingyoupathappointment";
 export const WHATSAPP_URL = "https://wa.me/917387772573";
 export const GBP_URL = "https://share.google/bQZJdmxPTbKo8iwKM";
+export const GOOGLE_MAPS_URL =
+  "https://www.google.com/maps/place/Being+You+Path/@18.5142273,73.8309474,17z/data=!3m1!4b1!4m6!3m5!1s0x3bc2bf009a76793f:0xe544b78e3d109854!8m2!3d18.5142273!4d73.8309474";
 export const OG_IMAGE_URL = `${SITE_URL}/images/being-you-path-og.jpg`;
 export const LOGO_URL = `${SITE_URL}/assets/aistudio/being_you_logo_b4a82e75.png`;
 
@@ -41,9 +43,9 @@ export const SOCIAL_PROFILES = [
   "https://www.linkedin.com/company/beingyou-path-9965b1389/",
   "https://www.facebook.com/profile.php?id=61590091544601",
   "https://www.reddit.com/u/Beingyoupath/s/PcquEhRTpM",
-  "https://youtube.com/@beingyoupath",
+  "https://www.youtube.com/@beingyoupath",
   "https://x.com/BeingyouP84126",
-  GBP_URL,
+  GOOGLE_MAPS_URL,
 ];
 
 export const TELE_MANAS_NOTICE =
@@ -102,14 +104,16 @@ export const ORGANIZATION_SCHEMA = {
       telephone: PHONE_PRIMARY,
       contactType: "customer service",
       areaServed: "IN",
-      availableLanguage: ["English", "Hindi", "Marathi"],
+      // TODO: [my languages] Add additional confirmed spoken/session languages once supplied.
+      availableLanguage: ["English"],
     },
     {
       "@type": "ContactPoint",
       telephone: PHONE_SECONDARY,
       contactType: "customer service",
       areaServed: "IN",
-      availableLanguage: ["English", "Hindi", "Marathi"],
+      // TODO: [my languages] Add additional confirmed spoken/session languages once supplied.
+      availableLanguage: ["English"],
     },
   ],
   founder: [
@@ -163,7 +167,7 @@ export const LOCAL_BUSINESS_SCHEMA = {
     },
   ],
   areaServed: AREAS_SERVED_STRUCTURED,
-  hasMap: GBP_URL,
+  hasMap: GOOGLE_MAPS_URL,
   sameAs: SOCIAL_PROFILES,
 };
 
@@ -172,9 +176,10 @@ export const IMRAN_PERSON_SCHEMA = {
   "@type": "Person",
   "@id": `${SITE_URL}/about#imran-hussain`,
   name: "Imran Hussain",
-  jobTitle: "Co-Founder & Clinical Psychologist",
+  jobTitle: "Co-Founder, Psychologist and CBT practitioner",
   description:
-    "NIMHANS-trained clinical psychologist and CBT practitioner offering evidence-based counselling, mindfulness-based stress reduction, and anxiety support in Pune and online.",
+    "Psychologist with clinical training at NIMHANS and CBT practitioner offering evidence-based counselling, mindfulness-based stress reduction, and anxiety support in Pune and online.",
+  image: `${SITE_URL}/images/imran-hussain.webp`,
   url: `${SITE_URL}/about`,
   worksFor: { "@id": `${SITE_URL}/#organization` },
   alumniOf: {
@@ -198,6 +203,7 @@ export const TEJASWINI_PERSON_SCHEMA = {
   jobTitle: "Co-Founder & Counselling Psychologist",
   description:
     "Counselling psychologist, LSE-certified Learning & Development specialist supporting self-esteem, emotional intelligence, workplace stress, and career clarity.",
+  image: `${SITE_URL}/images/tejaswini-joshi.webp`,
   url: `${SITE_URL}/about`,
   worksFor: { "@id": `${SITE_URL}/#organization` },
   alumniOf: [
@@ -270,8 +276,8 @@ export function buildArticleSchema({
   description: string;
   path: string;
   authorName: string;
-  datePublished: string;
-  dateModified: string;
+  datePublished?: string;
+  dateModified?: string;
 }) {
   return {
     "@context": "https://schema.org",
@@ -292,8 +298,8 @@ export function buildArticleSchema({
     publisher: {
       "@id": `${SITE_URL}/#organization`,
     },
-    datePublished,
-    dateModified,
+    ...(datePublished ? { datePublished } : {}),
+    ...(dateModified ? { dateModified } : {}),
     inLanguage: "en-IN",
   };
 }

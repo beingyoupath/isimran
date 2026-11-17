@@ -109,7 +109,7 @@ export default function Workshops() {
       title: "Habit Science for Behaviour Change",
       desc: "Applied behavioural psychology for teams or individuals.",
       icon: <Sprout className="w-8 h-8 text-terracotta mb-4" aria-hidden="true" />,
-      image: "/images/service-burnout.webp",
+      image: "/images/service-cbt.webp",
     },
   ];
 
@@ -411,6 +411,7 @@ export default function Workshops() {
         title="Corporate Wellness Workshops in Pune | Being You Path"
         description="Structured stress, burnout and communication workshops for organisations, schools and communities. Enquire online."
         url="/workshops"
+        lcpImage="/images/workshop-hero-1.webp"
         breadcrumbs={breadcrumbs}
         schema={[LOCAL_BUSINESS_SCHEMA, workshopServiceSchema]}
       />
@@ -449,13 +450,18 @@ export default function Workshops() {
                   <div className="w-full lg:w-7/12 p-8 md:p-12 lg:p-16 pb-20 md:pb-24 lg:pb-16 flex flex-col items-center lg:items-start text-center lg:text-left justify-center relative z-20">
                     <div className="w-full max-w-2xl mx-auto lg:mx-0">
                       {idx === 0 ? (
-                        <h1 className="text-3xl md:text-[40px] lg:text-[46px] leading-tight font-bold text-deep-teal mb-6 font-heading tracking-tight">
-                          {slide.title}
-                        </h1>
+                        <>
+                          <h1 className="text-xs sm:text-sm font-bold tracking-widest uppercase text-[#A43F23] mb-3 font-sans">
+                            Corporate Wellness &amp; Stress Management Workshops in Pune
+                          </h1>
+                          <h2 className="text-3xl md:text-[40px] lg:text-[46px] leading-tight font-bold text-deep-teal mb-6 font-heading tracking-tight">
+                            {slide.title}
+                          </h2>
+                        </>
                       ) : (
-                        <h2 className="text-3xl md:text-[40px] lg:text-[46px] leading-tight font-bold text-deep-teal mb-6 font-heading tracking-tight">
+                        <p className="text-3xl md:text-[40px] lg:text-[46px] leading-tight font-bold text-deep-teal mb-6 font-heading tracking-tight">
                           {slide.title}
-                        </h2>
+                        </p>
                       )}
                       <p className="text-xl md:text-[24px] md:leading-[32px] text-[#A43F23] mb-6 font-semibold font-heading">
                         {slide.subtitle}
@@ -700,6 +706,7 @@ export default function Workshops() {
             {[...workshopFormats, ...workshopFormats].map((format, idx) => (
               <div
                 key={idx}
+                aria-hidden={idx >= workshopFormats.length ? true : undefined}
                 className="bg-soft-sand border border-gray-100 shadow-sm px-8 py-8 rounded-[24px] w-[300px] md:w-[320px] whitespace-normal flex flex-col items-center text-center mx-3 hover:shadow-md hover:-translate-y-1 transition-all duration-300 outline-none flex-shrink-0"
               >
                 <h3 className="text-lg font-semibold text-deep-teal font-heading mb-3">

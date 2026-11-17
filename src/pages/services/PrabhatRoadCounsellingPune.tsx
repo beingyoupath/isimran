@@ -66,7 +66,7 @@ export default function PrabhatRoadCounsellingPune() {
         firstSessionIntro:
           "When you walk into our consulting room, expect quiet warmth and unhurried listening—never rushed forms or clinical stiffness.",
         firstSessionPoints: [
-          "We hold 50–60 minute individual conversations comfortably in English, Hindi, or Marathi.",
+          "We hold 50–60 minute individual conversations comfortably in a calm, unhurried setting.",
           "Together, we map immediate stressors and clarify practical expectations from therapy.",
           "We protect client privacy strictly from your first message through every follow-up.",
         ],

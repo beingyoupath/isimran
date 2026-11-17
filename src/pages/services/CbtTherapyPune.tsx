@@ -39,7 +39,7 @@ export default function CbtTherapyPune() {
             items: [
               "We spot automatic negative thoughts and all-or-nothing filters early",
               "We test catastrophic 'what-if' worries gently against balanced evidence",
-              "We build cognitive defusion skills so worrying feels like background noise",
+              "We build practical thought-distancing skills so worrying feels like background noise",
               "We replace relentless self-criticism with realistic self-talk",
             ],
           },
@@ -54,7 +54,7 @@ export default function CbtTherapyPune() {
           },
         ],
         howSessionsWorkIntro:
-          "Our CBT work is led by NIMHANS-trained psychologist Imran Hussain and counselling psychologist Tejaswini Joshi, keeping every stage transparent and collaborative.",
+          "Our CBT work is led by Imran Hussain, a psychologist with clinical training at NIMHANS, and counselling psychologist Tejaswini Joshi, keeping every stage transparent and collaborative.",
         howSessionsWorkSteps: [
           {
             title: "Shared assessment and pattern mapping",

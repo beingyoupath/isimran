@@ -102,6 +102,8 @@ export default function TraumaCounsellingPune() {
           { label: "Guide: Understanding Chronic People-Pleasing", to: "/resources/overcoming-chronic-people-pleasing" },
         ],
         bookingServiceName: "Trauma-Informed Counselling",
+        importantNotice:
+          "For severe symptoms or risk of harm we refer to a psychiatrist; in a crisis call Tele-MANAS 14416.",
       }}
     />
   );

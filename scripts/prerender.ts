@@ -123,6 +123,7 @@ Sitemap: ${SITE_URL}/sitemap.xml
   console.log(
     `Prerendered ${routesToPrerender.length} HTML routes and generated sitemap.xml (${allSitemapRoutes.length} URLs) + robots.txt.`
   );
+  process.exit(0);
 }
 
 runPrerender().catch((err) => {

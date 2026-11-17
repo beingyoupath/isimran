@@ -148,7 +148,7 @@
       "seasons": [
         "winter"
       ],
-      "linkTo": "/about",
+      "linkTo": "/services/self-esteem-therapy-pune",
       "verified": false
     },
     {
@@ -292,7 +292,7 @@
       "seasons": [
         "monsoon"
       ],
-      "linkTo": "/about",
+      "linkTo": "/services/student-adolescent-counselling-pune",
       "verified": false
     },
     {
@@ -309,7 +309,7 @@
       "seasons": [
         "monsoon"
       ],
-      "linkTo": "/contact",
+      "linkTo": "/services/depression-counselling-pune",
       "verified": false
     },
     {
@@ -373,7 +373,7 @@
       "seasons": [
         "festive"
       ],
-      "linkTo": "/contact",
+      "linkTo": "/services/burnout-counselling-pune",
       "verified": false
     },
     {
@@ -453,7 +453,7 @@
       "seasons": [
         "winter"
       ],
-      "linkTo": "/about",
+      "linkTo": "/resources/realistic-morning-routine-no-ice-baths",
       "verified": false
     },
     {
@@ -469,7 +469,7 @@
       "seasons": [
         "winter"
       ],
-      "linkTo": "/privacy-policy",
+      "linkTo": "/services/self-esteem-therapy-pune",
       "verified": false
     },
     {
@@ -780,7 +780,8 @@
       "seasons": [
         "winter"
       ],
-      "verified": false
+      "verified": false,
+      "linkTo": "/services/relationship-couples-counselling-pune"
     },
     "fest-holi": {
       "id": "fest-holi",
@@ -810,7 +811,8 @@
         "winter",
         "summer"
       ],
-      "verified": false
+      "verified": false,
+      "linkTo": "/services/burnout-counselling-pune"
     },
     "fest-mahavir": {
       "id": "fest-mahavir",
@@ -824,7 +826,8 @@
       "seasons": [
         "summer"
       ],
-      "verified": false
+      "verified": false,
+      "linkTo": "/services/self-esteem-therapy-pune"
     },
     "fest-baisakhi": {
       "id": "fest-baisakhi",
@@ -838,7 +841,8 @@
       "seasons": [
         "summer"
       ],
-      "verified": false
+      "verified": false,
+      "linkTo": "/resources/nervous-system-down-regulation-guide"
     },
     "fest-buddha": {
       "id": "fest-buddha",
@@ -852,7 +856,8 @@
       "seasons": [
         "summer"
       ],
-      "verified": false
+      "verified": false,
+      "linkTo": "/services/stress-anxiety-counselling-pune"
     },
     "fest-eid-adha": {
       "id": "fest-eid-adha",
@@ -866,7 +871,8 @@
       "seasons": [
         "summer"
       ],
-      "verified": false
+      "verified": false,
+      "linkTo": "/services/burnout-counselling-pune"
     },
     "fest-rakhi": {
       "id": "fest-rakhi",
@@ -895,7 +901,8 @@
       "seasons": [
         "monsoon"
       ],
-      "verified": false
+      "verified": false,
+      "linkTo": "/services/burnout-counselling-pune"
     },
     "fest-ganesh": {
       "id": "fest-ganesh",
@@ -909,7 +916,8 @@
       "seasons": [
         "monsoon"
       ],
-      "verified": false
+      "verified": false,
+      "linkTo": "/resources/nervous-system-down-regulation-guide"
     },
     "fest-navratri": {
       "id": "fest-navratri",
@@ -924,7 +932,8 @@
         "monsoon",
         "festive"
       ],
-      "verified": false
+      "verified": false,
+      "linkTo": "/resources/sleep-anxiety-nighttime-spiral"
     },
     "fest-dussehra": {
       "id": "fest-dussehra",
@@ -939,7 +948,8 @@
         "monsoon",
         "festive"
       ],
-      "verified": false
+      "verified": false,
+      "linkTo": "/resources/realistic-morning-routine-no-ice-baths"
     },
     "fest-diwali": {
       "id": "fest-diwali",
@@ -953,7 +963,8 @@
       "seasons": [
         "festive"
       ],
-      "verified": false
+      "verified": false,
+      "linkTo": "/services/burnout-counselling-pune"
     },
     "fest-gurunanak": {
       "id": "fest-gurunanak",
@@ -967,7 +978,8 @@
       "seasons": [
         "festive"
       ],
-      "verified": false
+      "verified": false,
+      "linkTo": "/services/career-counselling-pune"
     },
     "fest-christmas": {
       "id": "fest-christmas",
@@ -981,7 +993,8 @@
       "seasons": [
         "winter"
       ],
-      "verified": false
+      "verified": false,
+      "linkTo": "/services/burnout-counselling-pune"
     }
   },
   "pool": [
@@ -1273,7 +1286,7 @@
       "source": "Apology, 38a (quoting Socrates, Jowett trans.)",
       "type": "quote",
       "theme": "meaning",
-      "linkTo": "/about",
+      "linkTo": "/services/student-adolescent-counselling-pune",
       "verified": false,
       "seasons": [
         "winter"
@@ -1861,7 +1874,7 @@
       "source": "Discourses, Book II, Ch. 17 (Long trans.)",
       "type": "quote",
       "theme": "growth",
-      "linkTo": "/about",
+      "linkTo": "/services/student-adolescent-counselling-pune",
       "verified": false,
       "seasons": [
         "winter"
@@ -1987,7 +2000,7 @@
       "source": "Being You Path Clinical Practice",
       "type": "original",
       "theme": "growth",
-      "linkTo": "/about",
+      "linkTo": "/resources/nervous-system-down-regulation-guide",
       "verified": false,
       "seasons": [
         "winter"
@@ -2603,7 +2616,7 @@
       "source": "Stray Birds (1916), §196",
       "type": "quote",
       "theme": "gratitude",
-      "linkTo": "/about",
+      "linkTo": "/resources/realistic-morning-routine-no-ice-baths",
       "verified": false,
       "seasons": [
         "winter"
@@ -2617,7 +2630,7 @@
       "source": "Being You Path Clinical Practice",
       "type": "original",
       "theme": "growth",
-      "linkTo": "/about",
+      "linkTo": "/resources/nervous-system-down-regulation-guide",
       "verified": false,
       "seasons": [
         "winter"
@@ -2659,7 +2672,7 @@
       "source": "Mencius, Book IV, Part B, Ch. 12 (Legge trans.)",
       "type": "quote",
       "theme": "meaning",
-      "linkTo": "/about",
+      "linkTo": "/resources/why-youre-tired-in-ways-sleep-cant-fix",
       "verified": false,
       "seasons": [
         "winter"
@@ -3051,7 +3064,7 @@
       "source": "Vulnerability & Shame Resilience Research",
       "type": "adapted",
       "theme": "relationships",
-      "linkTo": "/contact",
+      "linkTo": "/services/burnout-counselling-pune",
       "verified": false,
       "seasons": [
         "summer"
@@ -3135,7 +3148,7 @@
       "source": "Being You Path Clinical Practice",
       "type": "original",
       "theme": "growth",
-      "linkTo": "/contact",
+      "linkTo": "/services/relationship-couples-counselling-pune",
       "verified": false,
       "seasons": [
         "summer"
@@ -3177,7 +3190,7 @@
       "source": "Moralia, 'On Tranquility of Mind' (469d)",
       "type": "quote",
       "theme": "gratitude",
-      "linkTo": "/about",
+      "linkTo": "/services/burnout-counselling-pune",
       "verified": false,
       "seasons": [
         "summer"
@@ -3317,7 +3330,7 @@
       "source": "Essays: First Series, 'Self-Reliance' (1841)",
       "type": "quote",
       "theme": "self-compassion",
-      "linkTo": "/about",
+      "linkTo": "/services/self-esteem-therapy-pune",
       "verified": false,
       "seasons": [
         "summer"
@@ -3345,7 +3358,7 @@
       "source": "Being You Path Clinical Practice",
       "type": "original",
       "theme": "relationships",
-      "linkTo": "/about",
+      "linkTo": "/services/relationship-couples-counselling-pune",
       "verified": false,
       "seasons": [
         "summer"
@@ -3555,7 +3568,7 @@
       "source": "Being You Path Clinical Practice",
       "type": "original",
       "theme": "gratitude",
-      "linkTo": "/about",
+      "linkTo": "/resources/nervous-system-down-regulation-guide",
       "verified": false,
       "seasons": [
         "summer"
@@ -3569,7 +3582,7 @@
       "source": "Modern Man in Search of a Soul (1933), 'Problems of Modern Psychotherapy'",
       "type": "quote",
       "theme": "relationships",
-      "linkTo": "/about",
+      "linkTo": "/services/relationship-couples-counselling-pune",
       "verified": false,
       "seasons": [
         "summer"
@@ -4031,7 +4044,7 @@
       "source": "Nicomachean Ethics, Book VIII, Ch. 1",
       "type": "quote",
       "theme": "relationships",
-      "linkTo": "/contact",
+      "linkTo": "/resources/nervous-system-down-regulation-guide",
       "verified": false,
       "seasons": [
         "summer"
@@ -4241,7 +4254,7 @@
       "source": "On Becoming a Person (Person-Centred Therapy)",
       "type": "adapted",
       "theme": "growth",
-      "linkTo": "/about",
+      "linkTo": "/resources/environment-design-over-willpower",
       "verified": false,
       "seasons": [
         "monsoon"
@@ -4297,7 +4310,7 @@
       "source": "Analects, Book II, Ch. 17 (Legge trans.)",
       "type": "quote",
       "theme": "growth",
-      "linkTo": "/about",
+      "linkTo": "/resources/environment-design-over-willpower",
       "verified": false,
       "seasons": [
         "monsoon"
@@ -4437,7 +4450,7 @@
       "source": "Complete Works, Vol. IV / Reminiscences",
       "type": "quote",
       "theme": "calm",
-      "linkTo": "/about",
+      "linkTo": "/services/career-counselling-pune",
       "verified": false,
       "seasons": [
         "monsoon"
@@ -4745,7 +4758,7 @@
       "source": "Being You Path Clinical Practice",
       "type": "original",
       "theme": "gratitude",
-      "linkTo": "/about",
+      "linkTo": "/resources/realistic-morning-routine-no-ice-baths",
       "verified": false,
       "seasons": [
         "monsoon"
@@ -5291,7 +5304,7 @@
       "source": "Awe & Everyday Well-Being Research",
       "type": "adapted",
       "theme": "gratitude",
-      "linkTo": "/about",
+      "linkTo": "/services/depression-counselling-pune",
       "verified": false,
       "seasons": [
         "monsoon"
@@ -5403,7 +5416,7 @@
       "source": "Democracy and Education (1916), Ch. 1",
       "type": "quote",
       "theme": "relationships",
-      "linkTo": "/contact",
+      "linkTo": "/services/relationship-couples-counselling-pune",
       "verified": false,
       "seasons": [
         "monsoon"
@@ -5445,7 +5458,7 @@
       "source": "Being You Path Clinical Practice",
       "type": "original",
       "theme": "gratitude",
-      "linkTo": "/about",
+      "linkTo": "/services/career-counselling-pune",
       "verified": false,
       "seasons": [
         "monsoon"
@@ -5473,7 +5486,7 @@
       "source": "Being You Path Clinical Practice",
       "type": "original",
       "theme": "resilience",
-      "linkTo": "/contact",
+      "linkTo": "/resources/sleep-anxiety-nighttime-spiral",
       "verified": false,
       "seasons": [
         "monsoon"
@@ -5683,7 +5696,7 @@
       "source": "Tirukkural, Couplet 411 (Kelvi)",
       "type": "quote",
       "theme": "relationships",
-      "linkTo": "/about",
+      "linkTo": "/services/relationship-couples-counselling-pune",
       "verified": false,
       "seasons": [
         "monsoon"
@@ -5935,7 +5948,7 @@
       "source": "Being You Path Clinical Practice",
       "type": "original",
       "theme": "gratitude",
-      "linkTo": "/about",
+      "linkTo": "/resources/realistic-morning-routine-no-ice-baths",
       "verified": false,
       "seasons": [
         "festive"
@@ -6523,7 +6536,7 @@
       "source": "Mencius, Book IV, Part A, Ch. 11 (Legge trans.)",
       "type": "quote",
       "theme": "meaning",
-      "linkTo": "/about",
+      "linkTo": "/resources/why-youre-tired-in-ways-sleep-cant-fix",
       "verified": false,
       "seasons": [
         "festive"
@@ -6635,7 +6648,7 @@
       "source": "Journal / Letter to Harrison Blake (1856)",
       "type": "quote",
       "theme": "gratitude",
-      "linkTo": "/about",
+      "linkTo": "/resources/realistic-morning-routine-no-ice-baths",
       "verified": false,
       "seasons": [
         "festive"

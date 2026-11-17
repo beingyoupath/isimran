@@ -32,8 +32,7 @@ export default function BlogPostPage() {
       "name": "Being You Path",
       "url": "https://www.beingyoupath.com"
     },
-    "datePublished": post.datePublished || "2026-11-01",
-    "dateModified": post.datePublished || "2026-11-03"
+    ...(post.datePublished ? { datePublished: post.datePublished, dateModified: post.datePublished } : {}),
   };
 
   return (

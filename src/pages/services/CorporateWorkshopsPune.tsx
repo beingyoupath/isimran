@@ -23,7 +23,7 @@ export default function CorporateWorkshopsPune() {
           "Schools, colleges, and parent communities building student resilience and calmer family dialogue",
         ],
         whatWeWorkOnIntro:
-          "Our programmes are co-led by Organizational Learning & Development specialist Tejaswini Joshi and clinical psychologist Imran Hussain—blending applied workplace insight with grounded psychological tools.",
+          "Our programmes are co-led by Organizational Learning & Development specialist Tejaswini Joshi and psychologist and CBT practitioner Imran Hussain—blending applied workplace insight with grounded psychological tools.",
         whatWeWorkOnGroups: [
           {
             heading: "Team & Leadership Modules",

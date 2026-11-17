@@ -54,7 +54,7 @@ export default function AnxietyCounsellingPune() {
           },
         ],
         howSessionsWorkIntro:
-          "We blend Cognitive Behavioral Therapy (CBT), Acceptance and Commitment tools, and somatic nervous-system grounding in clear, plain language free from heavy clinical jargon.",
+          "We blend Cognitive Behavioral Therapy (CBT), counselling dialogue, and nervous-system grounding in clear, plain language free from heavy clinical jargon.",
         howSessionsWorkSteps: [
           {
             title: "Map triggers and physical warning signals",

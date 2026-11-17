@@ -67,12 +67,12 @@ export default function OnlineTherapyIndia() {
           "To make your first online session feel calm and unhurried, we recommend choosing a quiet spot where nobody can overhear your conversation.",
         firstSessionPoints: [
           "We skip commutes and waiting rooms—you connect comfortably straight from home or a private room.",
-          "We let you share at your own natural pace in English, Hindi, or Marathi.",
+          "We let you share comfortably at your own natural pace.",
           "We make it easy to alternate between online video and Deccan Gymkhana clinic visits whenever you are in Pune.",
         ],
         formatDurationDetails: {
           sessionLength: "50–60 minutes (individual) or 75 minutes (couples video sessions).",
-          mode: "Encrypted 1-on-1 video consultations in English, Hindi, or Marathi.",
+          mode: "Encrypted 1-on-1 video consultations (primarily in English; please ask about additional languages during your clarity call).",
           frequency: "Weekly or fortnightly cadence with evening and Sunday slots available.",
           feesNote:
             "We share session fees and convenient payment methods (UPI, cards, bank transfer) clearly during your clarity call.",
@@ -93,7 +93,7 @@ export default function OnlineTherapyIndia() {
           {
             question: "Which languages do our psychologists offer sessions in?",
             answer:
-              "We conduct counselling sessions smoothly in English, Hindi, and Marathi.",
+              "Sessions are conducted primarily in English. Please ask during your free 15-minute clarity call if you would like to check availability for additional languages.",
           },
           {
             question: "What happens if Wi-Fi or mobile internet drops mid-session?",

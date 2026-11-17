@@ -25,7 +25,7 @@ CORE GUIDELINES:
    - Sentence 3: Mention that they can book a consultation with Imran Hussain & Tejaswini Joshi via https://calendly.com/beingyoupathappointment or the WhatsApp/Call/Email buttons below.
 
 2. IF THE USER ASKS PRACTICAL QUESTIONS ABOUT SESSIONS, CLINIC LOCATION, OR SERVICES:
-   - Practitioners: Imran Hussain (Clinical Psychologist, CBT & mindfulness) and Tejaswini Joshi (Counselling Psychologist).
+   - Practitioners: Imran Hussain (Psychologist and CBT practitioner) and Tejaswini Joshi (Counselling Psychologist).
    - Formats: In-person 1-on-1 sessions (60 min) at Deccan Gymkhana near Prabhat Road, Pune (Mon–Sun, 10 AM–9 PM), or confidential video sessions across India.
    - Getting started: Free 15-minute clarity call or full consultation via https://calendly.com/beingyoupathappointment or the contact buttons below.
 
@@ -191,6 +191,24 @@ async function sendEmailViaProvider(payload: EmailPayload): Promise<EmailSendOut
 
 async function startServer() {
   const app = express();
+  app.disable('x-powered-by');
+
+  // Ensure Accept-CH / Critical-CH / client-hint headers are never sent
+  app.use((_req, res, next) => {
+    res.removeHeader('Accept-CH');
+    res.removeHeader('Critical-CH');
+    res.removeHeader('Accept-CH-Lifetime');
+    const originalSetHeader = res.setHeader.bind(res);
+    res.setHeader = ((name: string, value: number | string | readonly string[]) => {
+      const lower = name.toLowerCase();
+      if (lower === 'accept-ch' || lower === 'critical-ch' || lower === 'accept-ch-lifetime') {
+        return res;
+      }
+      return originalSetHeader(name, value);
+    }) as typeof res.setHeader;
+    next();
+  });
+
   app.use(express.json({ limit: '1mb' }));
 
   app.get('/api/health', (_req, res) => {
@@ -516,60 +534,6 @@ async function startServer() {
     }
   });
 
-  // Production canonical domain & HTTPS enforcement (www.beingyoupath.com)
-  const LEGACY_REDIRECTS: Record<string, string> = {
-    '/services/anxiety-counselling-pune': '/services/stress-anxiety-counselling-pune',
-    '/services/burnout-work-stress-counselling-pune': '/services/burnout-counselling-pune',
-    '/services/burnout-and-work-stress-counselling-pune': '/services/burnout-counselling-pune',
-    '/services/psychologist-prabhat-road-pune': '/services/counselling-prabhat-road-pune',
-    '/services/relationship-and-couples-counselling-pune': '/services/relationship-couples-counselling-pune',
-    '/counselling-prabhat-road-deccan-gymkhana': '/services/counselling-prabhat-road-pune',
-    '/prabhat-road-counselling-pune': '/services/counselling-prabhat-road-pune',
-    '/psychologist-prabhat-road-pune': '/services/counselling-prabhat-road-pune',
-    '/counselling-prabhat-road-pune': '/services/counselling-prabhat-road-pune',
-    '/cbt-therapy-pune': '/services/cbt-therapy-pune',
-    '/depression-counseling-pune': '/services/depression-counselling-pune',
-    '/online-therapy-india': '/services/online-therapy-india',
-    '/psychologist-in-pune': '/contact',
-    '/blog': '/resources',
-    '/blogs': '/resources',
-  };
-
-  app.use((req, res, next) => {
-    if (req.path.startsWith('/api/')) {
-      return next();
-    }
-
-    const hostHeader = (req.headers['x-forwarded-host'] || req.headers.host || '').toString().split(',')[0].trim();
-    const hostname = hostHeader.split(':')[0].toLowerCase();
-    const proto = (req.headers['x-forwarded-proto'] || req.protocol || 'https').toString().split(',')[0].trim().toLowerCase();
-
-    // Redirect non-www or http on custom production domain to https://www.beingyoupath.com
-    if (
-      (hostname === 'beingyoupath.com') ||
-      (hostname === 'www.beingyoupath.com' && proto === 'http')
-    ) {
-      return res.redirect(301, `https://www.beingyoupath.com${req.originalUrl}`);
-    }
-
-    const cleanPath = req.path.length > 1 ? req.path.replace(/\/+$/, '') : req.path;
-
-    // Redirect trailing slashes on non-root HTML routes
-    if (req.path.length > 1 && req.path.endsWith('/') && req.method === 'GET') {
-      const qs = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
-      return res.redirect(301, `${cleanPath}${qs}`);
-    }
-
-    if (LEGACY_REDIRECTS[cleanPath]) {
-      return res.redirect(301, LEGACY_REDIRECTS[cleanPath]);
-    }
-    if (cleanPath.startsWith('/blog/') || cleanPath.startsWith('/guides/')) {
-      return res.redirect(301, '/resources');
-    }
-
-    return next();
-  });
-
   if (!isProduction) {
     const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
@@ -586,12 +550,19 @@ async function startServer() {
         const rawTemplate = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
         const transformedTemplate = await vite.transformIndexHtml(req.originalUrl, rawTemplate);
         const { render } = await vite.ssrLoadModule('/src/entry-server.tsx');
-        const { html, headTags } = render(req.originalUrl);
-        const finalHtml = transformedTemplate
+        const { html, headTags, isNotFound } = render(req.originalUrl);
+        let finalHtml = transformedTemplate
           .replace('<!--HEAD_TAGS-->', headTags)
           .replace('<!--APP_HTML-->', html);
 
-        res.status(200).set({ 'Content-Type': 'text/html' }).end(finalHtml);
+        if (req.path === '/hi' || req.path.startsWith('/hi/')) {
+          finalHtml = finalHtml.replace('<html lang="en-IN">', '<html lang="hi-IN">');
+        }
+
+        res
+          .status(isNotFound ? 404 : 200)
+          .set({ 'Content-Type': 'text/html; charset=utf-8' })
+          .end(finalHtml);
       } catch (err) {
         vite.ssrFixStacktrace(err as Error);
         next(err);
@@ -599,16 +570,20 @@ async function startServer() {
     });
   } else {
     const distPath = path.resolve(__dirname, 'dist');
-    app.use(express.static(distPath, { index: false }));
+    app.use(express.static(distPath, { index: false, redirect: false }));
 
     app.get('*', (req, res) => {
       const cleanPath = req.path.length > 1 ? req.path.replace(/\/+$/, '') : req.path;
       const targetHtml =
         cleanPath === '/'
           ? path.join(distPath, 'index.html')
-          : path.join(distPath, cleanPath.replace(/^\/+/, ''), 'index.html');
+          : path.resolve(distPath, cleanPath.replace(/^\/+/, ''), 'index.html');
 
-      if (fs.existsSync(targetHtml)) {
+      if (
+        (targetHtml === path.join(distPath, 'index.html') ||
+          targetHtml.startsWith(distPath + path.sep)) &&
+        fs.existsSync(targetHtml)
+      ) {
         return res.status(200).sendFile(targetHtml);
       }
 
@@ -617,7 +592,7 @@ async function startServer() {
         return res.status(404).sendFile(notFoundHtml);
       }
 
-      return res.status(404).sendFile(path.join(distPath, 'index.html'));
+      return res.status(404).send('Not Found');
     });
   }
 

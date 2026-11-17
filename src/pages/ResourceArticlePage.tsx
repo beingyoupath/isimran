@@ -65,8 +65,8 @@ export default function ResourceArticlePage() {
         breadcrumbs={breadcrumbs}
         schema={articleSchema}
         articleMeta={{
-          publishedTime: meta.datePublished,
-          modifiedTime: meta.lastReviewed,
+          ...(meta.datePublished ? { publishedTime: meta.datePublished } : {}),
+          ...(meta.lastReviewed ? { modifiedTime: meta.lastReviewed } : {}),
           author: meta.author,
         }}
       />
@@ -105,11 +105,13 @@ export default function ResourceArticlePage() {
                   Author: <strong className="text-[#0B3A42]">{meta.author}</strong> ({meta.authorRole})
                 </span>
               </span>
-              <span>
-                Reviewed by: <strong className="text-[#0B3A42]">{meta.reviewedBy}</strong>
-              </span>
-              <span>Published: {meta.datePublished}</span>
-              <span>Last reviewed: {meta.lastReviewed}</span>
+              {meta.reviewedBy && (
+                <span>
+                  Reviewed by: <strong className="text-[#0B3A42]">{meta.reviewedBy}</strong>
+                </span>
+              )}
+              {meta.datePublished && <span>Published: {meta.datePublished}</span>}
+              {meta.lastReviewed && <span>Last reviewed: {meta.lastReviewed}</span>}
             </div>
 
             {article.keywords && article.keywords.length > 0 && (

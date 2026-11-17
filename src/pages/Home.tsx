@@ -41,12 +41,8 @@ import {
 import {
   DailyThoughtResult,
   buildCopyThoughtText,
-  buildISTDatePartsFromYMD,
   buildWhatsAppThoughtShareUrl,
   getDailyThoughtIST,
-  getDefaultThought,
-  getDefaultWeekdayPractice,
-  getSeasonFromMonth,
   msUntilNextISTMidnight,
 } from "../lib/thoughts";
 
@@ -74,7 +70,7 @@ export const HOME_FAQS = [
   {
     question: "Is everything I share completely confidential?",
     answer:
-      "Yes. Your personal details, intake notes, and everything discussed in sessions are kept strictly confidential. We never share information with employers, family members, or partners without your explicit consent—the only legal exceptions are immediate risk of serious harm to yourself or someone else.",
+      "Your information is confidential. Exceptions are limited and set by law, for example serious risk of harm, a legal duty to report abuse, or a court order.",
   },
 ];
 
@@ -130,16 +126,7 @@ export default function Home() {
   const [activeReviewIndex, setActiveReviewIndex] = useState(0);
   const [copiedQuote, setCopiedQuote] = useState(false);
 
-  const [dailyThought, setDailyThought] = useState<DailyThoughtResult>(() => {
-    const defaultIst = buildISTDatePartsFromYMD(2026, 1, 5); // Monday fallback for SSR/no-JS
-    return {
-      thought: getDefaultThought(),
-      practice: getDefaultWeekdayPractice(),
-      ist: defaultIst,
-      season: getSeasonFromMonth(defaultIst.month),
-      matchKind: "fallback",
-    };
-  });
+  const [dailyThought, setDailyThought] = useState<DailyThoughtResult | null>(null);
 
   const reviews = GOOGLE_REVIEWS;
 
@@ -173,10 +160,11 @@ export default function Home() {
     return () => clearInterval(timer);
   }, [isPillarPaused]);
 
-  const currentPractice = dailyThought.practice;
-  const currentThought = dailyThought.thought;
+  const currentPractice = dailyThought?.practice || null;
+  const currentThought = dailyThought?.thought || null;
 
   const handleCopyQuote = () => {
+    if (!currentThought) return;
     const text = buildCopyThoughtText(currentThought);
     if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
       navigator.clipboard
@@ -240,10 +228,10 @@ export default function Home() {
       path: "/services/student-adolescent-counselling-pune",
     },
     {
-      icon: Users,
-      title: "Parenting & Family Well-Being",
-      desc: "Raising humans while being human",
-      path: "/services/relationship-couples-counselling-pune",
+      icon: ShieldCheck,
+      title: "Stress & Anxiety Counselling",
+      desc: "Calm chronic worry, panic, and tension",
+      path: "/services/stress-anxiety-counselling-pune",
     },
     {
       icon: HeartHandshake,
@@ -263,8 +251,9 @@ export default function Home() {
     <div className="bg-soft-sand">
       <SEO
         title="Psychologist & Counselling in Pune | Being You Path"
-        description="CBT and evidence-based counselling in Pune and online across India, with a NIMHANS-trained psychologist. Book a free 15-minute clarity call."
+        description="CBT and evidence-based counselling in Pune and online across India, led by a psychologist with clinical training at NIMHANS. Book a free 15-minute clarity call."
         url="/"
+        lcpImage="/images/hero-path.webp"
         locale="en_IN"
         alternates={[
           { hreflang: "en-IN", href: "/" },
@@ -706,15 +695,11 @@ export default function Home() {
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-2 text-xs text-gray-600 font-medium">
-                      <span>{rev.date}</span>
-                      {rev.location && (
-                        <>
-                          <span>•</span>
-                          <span className="text-deep-teal font-semibold">{rev.location}</span>
-                        </>
-                      )}
-                    </div>
+                    {rev.date && (
+                      <div className="flex items-center gap-2 text-xs text-gray-600 font-medium">
+                        <span>{rev.date}</span>
+                      </div>
+                    )}
                   </div>
 
                   <p className="text-charcoal-warm leading-relaxed mb-8 text-[15px] md:text-[17px] font-normal whitespace-pre-line">
@@ -727,17 +712,9 @@ export default function Home() {
                         {rev.author.charAt(0).toUpperCase()}
                       </div>
                       <div>
-                        <h3 className="text-deep-teal font-heading font-semibold text-base md:text-lg flex items-center gap-1.5">
+                        <p className="text-deep-teal font-heading font-semibold text-base md:text-lg m-0">
                           {rev.author}
-                          {rev.badge && (
-                            <span className="text-[10px] font-semibold bg-amber-100 text-amber-950 px-2 py-0.5 rounded-full border border-amber-300">
-                              {rev.badge}
-                            </span>
-                          )}
-                        </h3>
-                        <span className="text-xs text-gray-700 font-medium">
-                          {rev.details} · {rev.date}
-                        </span>
+                        </p>
                       </div>
                     </div>
 
@@ -821,7 +798,7 @@ export default function Home() {
               </span>
               <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-white border border-gray-200 text-gray-700 shadow-2xs">
                 <ShieldCheck className="w-3.5 h-3.5 text-terracotta" aria-hidden="true" />
-                NIMHANS-Trained Clinical Lead
+                Clinical Training at NIMHANS
               </span>
             </div>
 
@@ -1058,19 +1035,25 @@ export default function Home() {
                 suppressHydrationWarning
                 className="text-xs sm:text-sm font-bold tracking-wider text-terracotta uppercase mb-4"
               >
-                {currentPractice.weekday} Micro-Practice · {currentPractice.duration}
+                {currentPractice
+                  ? `${currentPractice.weekday} Micro-Practice · ${currentPractice.duration}`
+                  : "Daily Micro-Practice · Updates at Midnight IST"}
               </div>
               <h3
                 suppressHydrationWarning
                 className="text-[24px] font-medium text-deep-teal mb-4 font-heading"
               >
-                {currentPractice.emoji} {currentPractice.title}
+                {currentPractice
+                  ? `${currentPractice.emoji} ${currentPractice.title}`
+                  : "Grounded Pause & Check-In"}
               </h3>
               <p
                 suppressHydrationWarning
                 className="text-charcoal-warm text-lg leading-relaxed"
               >
-                {currentPractice.body}
+                {currentPractice
+                  ? currentPractice.body
+                  : "A brief weekday somatic or cognitive practice loads here for today's date in India Standard Time."}
               </p>
             </div>
 
@@ -1082,7 +1065,7 @@ export default function Home() {
                       <Sparkles className="w-3.5 h-3.5 text-[#F8C988]" aria-hidden="true" />
                       <span>Thought of the Day</span>
                     </div>
-                    {currentThought.occasion && (
+                    {currentThought?.occasion && (
                       <span
                         suppressHydrationWarning
                         className="inline-flex items-center text-[11px] font-bold tracking-wide text-[#F8C988] bg-[#E6A157]/20 border border-[#E6A157]/45 px-2.5 py-1 rounded-full font-sans"
@@ -1092,44 +1075,46 @@ export default function Home() {
                     )}
                   </div>
 
-                  <div className="flex items-center gap-1.5 ml-auto">
-                    <button
-                      type="button"
-                      onClick={handleCopyQuote}
-                      className="px-3 py-1.5 min-h-[38px] rounded-full bg-white/10 hover:bg-white/20 text-[#FAF9F6] hover:text-white transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-sans border border-[#FAF9F6]/25"
-                      title={copiedQuote ? "Copied to clipboard!" : "Copy thought"}
-                      aria-label="Copy thought"
-                    >
-                      {copiedQuote ? (
-                        <>
-                          <Check className="w-3.5 h-3.5 text-[#F8C988]" />
-                          <span className="text-[11px] text-[#F8C988] font-semibold">
-                            Copied!
-                          </span>
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-3.5 h-3.5 text-[#FAF9F6]" aria-hidden="true" />
-                          <span className="text-[11px] text-[#FAF9F6] font-medium">
-                            Copy
-                          </span>
-                        </>
-                      )}
-                    </button>
+                  {currentThought && (
+                    <div className="flex items-center gap-1.5 ml-auto">
+                      <button
+                        type="button"
+                        onClick={handleCopyQuote}
+                        className="px-3 py-1.5 min-h-[38px] rounded-full bg-white/10 hover:bg-white/20 text-[#FAF9F6] hover:text-white transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-sans border border-[#FAF9F6]/25"
+                        title={copiedQuote ? "Copied to clipboard!" : "Copy thought"}
+                        aria-label="Copy thought"
+                      >
+                        {copiedQuote ? (
+                          <>
+                            <Check className="w-3.5 h-3.5 text-[#F8C988]" />
+                            <span className="text-[11px] text-[#F8C988] font-semibold">
+                              Copied!
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3.5 h-3.5 text-[#FAF9F6]" aria-hidden="true" />
+                            <span className="text-[11px] text-[#FAF9F6] font-medium">
+                              Copy
+                            </span>
+                          </>
+                        )}
+                      </button>
 
-                    <a
-                      href={buildWhatsAppThoughtShareUrl(currentThought)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-3 py-1.5 min-h-[38px] rounded-full bg-white/10 hover:bg-white/20 text-[#FAF9F6] hover:text-white transition-colors inline-flex items-center gap-1.5 text-xs font-sans border border-[#FAF9F6]/25"
-                      aria-label="Share on WhatsApp"
-                    >
-                      <Share2 className="w-3.5 h-3.5 text-[#F8C988]" aria-hidden="true" />
-                      <span className="text-[11px] text-[#FAF9F6] font-medium">
-                        Share on WhatsApp
-                      </span>
-                    </a>
-                  </div>
+                      <a
+                        href={buildWhatsAppThoughtShareUrl(currentThought)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3 py-1.5 min-h-[38px] rounded-full bg-white/10 hover:bg-white/20 text-[#FAF9F6] hover:text-white transition-colors inline-flex items-center gap-1.5 text-xs font-sans border border-[#FAF9F6]/25"
+                        aria-label="Share on WhatsApp"
+                      >
+                        <Share2 className="w-3.5 h-3.5 text-[#F8C988]" aria-hidden="true" />
+                        <span className="text-[11px] text-[#FAF9F6] font-medium">
+                          Share on WhatsApp
+                        </span>
+                      </a>
+                    </div>
+                  )}
                 </div>
 
                 <Quote className="w-8 h-8 text-[#FAF9F6]/70 mx-auto mb-4" aria-hidden="true" />
@@ -1137,10 +1122,12 @@ export default function Home() {
                   suppressHydrationWarning
                   className="text-[#FAF9F6] text-lg sm:text-xl md:text-2xl font-heading font-medium leading-relaxed italic px-2 min-h-[72px] flex items-center justify-center"
                 >
-                  &ldquo;{currentThought.text}&rdquo;
+                  {currentThought
+                    ? `“${currentThought.text}”`
+                    : "Today's grounded reflection is loaded for India Standard Time."}
                 </blockquote>
 
-                {currentThought.helplineNote && (
+                {currentThought?.helplineNote && (
                   <div className="mt-4 px-4 py-3 rounded-xl bg-white/10 border border-[#F8C988]/50 text-[#FAF9F6] text-xs font-sans leading-relaxed flex flex-col items-center gap-1.5">
                     <span>{currentThought.helplineNote}</span>
                     <a
@@ -1157,42 +1144,54 @@ export default function Home() {
                   suppressHydrationWarning
                   className="mt-4 text-sm text-[#FAF9F6] font-semibold font-sans"
                 >
-                  — {currentThought.author}
-                  {currentThought.source && (
-                    <span className="block text-[#F5F0E6]/90 text-xs font-normal mt-0.5">
-                      {currentThought.source}
-                    </span>
+                  {currentThought ? (
+                    <>
+                      — {currentThought.author}
+                      {currentThought.source && (
+                        <span className="block text-[#F5F0E6]/90 text-xs font-normal mt-0.5">
+                          {currentThought.source}
+                        </span>
+                      )}
+                    </>
+                  ) : (
+                    <span>Being You Path · Daily Reflection</span>
                   )}
                 </div>
 
-                <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
-                  <span
-                    suppressHydrationWarning
-                    className="inline-block text-[11px] font-sans uppercase tracking-widest text-[#FAF9F6] bg-[#FAF9F6]/15 border border-[#FAF9F6]/25 px-3 py-1 rounded-full font-semibold"
-                  >
-                    {currentThought.theme}
-                  </span>
-                  {currentThought.linkTo && (
-                    <Link
-                      to={currentThought.linkTo}
-                      className="inline-flex items-center gap-1 text-xs font-sans font-semibold text-[#F8C988] hover:text-white underline underline-offset-4 transition-colors"
+                {currentThought && (
+                  <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
+                    <span
+                      suppressHydrationWarning
+                      className="inline-block text-[11px] font-sans uppercase tracking-widest text-[#FAF9F6] bg-[#FAF9F6]/15 border border-[#FAF9F6]/25 px-3 py-1 rounded-full font-semibold"
                     >
-                      <span>Read more</span>
-                      <ArrowRight className="w-3 h-3" aria-hidden="true" />
-                    </Link>
-                  )}
-                </div>
+                      {currentThought.theme}
+                    </span>
+                    {currentThought.linkTo && (
+                      <Link
+                        to={currentThought.linkTo}
+                        className="inline-flex items-center gap-1 text-xs font-sans font-semibold text-[#F8C988] hover:text-white underline underline-offset-4 transition-colors"
+                      >
+                        <span>Read more</span>
+                        <ArrowRight className="w-3 h-3" aria-hidden="true" />
+                      </Link>
+                    )}
+                  </div>
+                )}
               </div>
 
               <div className="mt-6 pt-4 border-t border-[#FAF9F6]/20 flex flex-wrap items-center justify-between gap-2 text-xs text-[#FAF9F6]/90 font-sans">
                 <span suppressHydrationWarning className="text-[#FAF9F6] font-medium">
-                  {dailyThought.ist.weekday} Reflection
+                  {dailyThought
+                    ? `${dailyThought.ist.weekday} Reflection`
+                    : "Daily Reflection · IST"}
                 </span>
                 <Link
                   to="/thought-of-the-day"
                   className="text-[#F8C988] hover:text-white font-semibold underline underline-offset-4 transition-colors"
                 >
-                  All {dailyThought.ist.year} thoughts →
+                  {dailyThought
+                    ? `All ${dailyThought.ist.year} thoughts →`
+                    : "Daily Thought Archive →"}
                 </Link>
               </div>
             </div>

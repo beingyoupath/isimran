@@ -45,7 +45,7 @@ export default function SelfEsteemTherapyPune() {
           },
         ],
         howSessionsWorkIntro:
-          "Our approach combines structured Cognitive Behavioral Therapy (CBT), schema-informed dialogue, and realistic behavioral exercises built around your actual social and family relationships.",
+          "Our approach combines structured Cognitive Behavioral Therapy (CBT), collaborative counselling dialogue, and realistic behavioral exercises built around your actual social and family relationships.",
         howSessionsWorkSteps: [
           {
             title: "Understand where the inner critic learned its voice",
