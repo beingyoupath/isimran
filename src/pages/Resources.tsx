@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "motion/react";
 import {
   Search,
   Clock,
@@ -17,9 +18,11 @@ import {
   ChevronRight,
   Pause,
   Play,
+  BookOpen,
 } from "lucide-react";
 import { SEO } from "../components/SEO";
 import Breadcrumbs from "../components/Breadcrumbs";
+import resourcesHeroReadingImg from "../assets/images/resources_hero_reading_1794985548253.jpg";
 import {
   RESOURCE_CATEGORIES,
   RESOURCE_ARTICLES,
@@ -40,17 +43,20 @@ export default function Resources() {
 
   const heroSlides = [
     {
+      focusLabel: "01 · Overthinking & Emotional Clarity",
       title: "Practical Well-Being — Written for the Way People Actually Live",
       subtitle:
         "Evidence-informed psychological frameworks for everyday life in Pune and across India.",
       desc: "Explore actionable guides to address overthinking, workplace burnout, relationship friction, self-esteem, and nervous-system regulation.",
     },
     {
+      focusLabel: "02 · CBT & Behavioural Science",
       title: "Insights That Spark Concrete Behavioral Action",
       subtitle: "Move from getting by to intentional, grounded living.",
       desc: "Our clinical team distills behavioral science, Cognitive Behavioral Therapy (CBT), and secular mindfulness into practical tools you can use right away.",
     },
     {
+      focusLabel: "03 · Work, Study & Boundaries",
       title: "Mental Hygiene & Tools for Modern Work and Study",
       subtitle: "Sustainable emotional resilience built on daily habits.",
       desc: "From understanding work burnout to setting clear boundaries with family, explore structured psychoeducational reading curated by our psychologists.",
@@ -130,126 +136,262 @@ export default function Resources() {
         title="Psychology Articles & Guides | Being You Path"
         description="Evidence-based articles on stress, burnout, overthinking, relationships and everyday mental wellbeing."
         url="/resources"
+        lcpImage={resourcesHeroReadingImg}
         breadcrumbs={breadcrumbs}
       />
 
       <Breadcrumbs items={breadcrumbs} />
 
-      {/* Hero Header Carousel — All slides stay in raw HTML DOM; Slide 0 provides the single semantic <h1> */}
+      {/* Hero Header Carousel — All slides stay stacked in the raw HTML DOM; Slide 0 provides the single semantic <h1> */}
       <section
-        className="section-dark bg-[#0B3A42] text-[#FAF9F6] py-14 md:py-18 relative overflow-hidden"
+        className="section-dark bg-[#0B3A42] text-[#FAF9F6] py-12 md:py-16 relative overflow-hidden"
         onMouseEnter={() => setIsHoverPaused(true)}
         onMouseLeave={() => setIsHoverPaused(false)}
         onTouchStart={() => setIsTouchPaused(true)}
         onTouchEnd={() => setIsTouchPaused(false)}
       >
+        <div
+          className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-[#E6A157]/10 blur-3xl pointer-events-none"
+          aria-hidden="true"
+        />
+        <div
+          className="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#165763]/50 blur-3xl pointer-events-none"
+          aria-hidden="true"
+        />
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-xs font-semibold uppercase tracking-wider text-amber-200 mb-4 border border-white/10">
-              <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
-              <span>Clinical &amp; Psychoeducational Resource Library</span>
-            </div>
-
-            {heroSlides.map((slide, idx) => (
-              <div
-                key={idx}
-                className={idx === currentSlide ? "block" : "hidden"}
-              >
-                {idx === 0 ? (
-                  <>
-                    <h1 className="text-xs sm:text-sm font-bold tracking-widest uppercase text-amber-200 mb-3 font-sans">
-                      Psychology Articles &amp; Guides
-                    </h1>
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-heading text-[#FAF9F6] tracking-tight leading-tight mb-4">
-                      {slide.title}
-                    </h2>
-                  </>
-                ) : (
-                  <p className="text-3xl sm:text-4xl md:text-5xl font-bold font-heading text-[#FAF9F6] tracking-tight leading-tight mb-4">
-                    {slide.title}
-                  </p>
-                )}
-                <p className="text-lg text-amber-100 font-medium mb-3">
-                  {slide.subtitle}
-                </p>
-                <p className="text-sm sm:text-base text-white/90 leading-relaxed max-w-2xl">
-                  {slide.desc}
-                </p>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            <div className="lg:col-span-7">
+              <div className="flex flex-wrap items-center gap-3 mb-4">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-xs font-semibold uppercase tracking-wider text-amber-200 border border-white/10">
+                  <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
+                  <span>Clinical &amp; Psychoeducational Resource Library</span>
+                </div>
+                <span className="text-xs font-semibold tracking-wider text-white/75 tabular-nums">
+                  {String(currentSlide + 1).padStart(2, "0")} of{" "}
+                  {String(heroSlides.length).padStart(2, "0")}
+                </span>
               </div>
-            ))}
 
-            <div className="flex flex-wrap items-center gap-3 mt-8">
-              <div
-                className="flex items-center gap-2"
-                onFocusCapture={() => setIsFocusPaused(true)}
-                onBlurCapture={(e) => {
-                  if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
-                    setIsFocusPaused(false);
-                  }
-                }}
-              >
-                <button
-                  type="button"
-                  onClick={() =>
-                    setCurrentSlide((prev) =>
-                      prev === 0 ? heroSlides.length - 1 : prev - 1
-                    )
-                  }
-                  className="min-w-[40px] min-h-[40px] w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-[#FAF9F6] border border-white/25 flex items-center justify-center transition-colors cursor-pointer"
-                  aria-label="Previous slide"
-                >
-                  <ChevronLeft className="w-4 h-4" aria-hidden="true" />
-                </button>
-
-                <div className="flex items-center gap-2 px-1">
-                  {heroSlides.map((_, idx) => (
-                    <button
+              <div className="grid">
+                {heroSlides.map((slide, idx) => {
+                  const isActive = idx === currentSlide;
+                  return (
+                    <motion.div
                       key={idx}
-                      type="button"
-                      onClick={() => setCurrentSlide(idx)}
-                      className={`min-h-[24px] rounded-full transition-all cursor-pointer ${
-                        currentSlide === idx
-                          ? "w-8 h-3 bg-[#E6A157]"
-                          : "w-3 h-3 bg-white/50 hover:bg-white/80"
+                      initial={false}
+                      animate={
+                        prefersReducedMotion
+                          ? { opacity: isActive ? 1 : 0, y: 0 }
+                          : {
+                              opacity: isActive ? 1 : 0,
+                              y: isActive ? 0 : 12,
+                            }
+                      }
+                      transition={{
+                        duration: prefersReducedMotion ? 0 : 0.42,
+                        ease: [0.22, 1, 0.36, 1],
+                      }}
+                      aria-hidden={!isActive}
+                      className={`col-start-1 row-start-1 ${
+                        isActive
+                          ? "pointer-events-auto relative z-10"
+                          : "pointer-events-none select-none z-0"
                       }`}
-                      aria-label={`View slide ${idx + 1}`}
-                      aria-current={currentSlide === idx ? "true" : undefined}
-                    />
-                  ))}
+                    >
+                      {idx === 0 ? (
+                        <>
+                          <h1 className="text-xs sm:text-sm font-bold tracking-widest uppercase text-amber-200 mb-3 font-sans">
+                            Psychology Articles &amp; Guides
+                          </h1>
+                          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-heading text-[#FAF9F6] tracking-tight leading-tight mb-4">
+                            {slide.title}
+                          </h2>
+                        </>
+                      ) : (
+                        <>
+                          <p className="text-xs sm:text-sm font-bold tracking-widest uppercase text-amber-200 mb-3 font-sans">
+                            {slide.focusLabel}
+                          </p>
+                          <p className="text-3xl sm:text-4xl md:text-5xl font-bold font-heading text-[#FAF9F6] tracking-tight leading-tight mb-4">
+                            {slide.title}
+                          </p>
+                        </>
+                      )}
+                      <p className="text-lg text-amber-100 font-medium mb-3">
+                        {slide.subtitle}
+                      </p>
+                      <p className="text-sm sm:text-base text-white/90 leading-relaxed max-w-2xl">
+                        {slide.desc}
+                      </p>
+                    </motion.div>
+                  );
+                })}
+              </div>
+
+              <div className="flex flex-wrap items-center gap-3 mt-7">
+                <div
+                  className="flex items-center gap-1.5"
+                  onFocusCapture={() => setIsFocusPaused(true)}
+                  onBlurCapture={(e) => {
+                    if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+                      setIsFocusPaused(false);
+                    }
+                  }}
+                >
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setCurrentSlide((prev) =>
+                        prev === 0 ? heroSlides.length - 1 : prev - 1
+                      )
+                    }
+                    className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-[#FAF9F6] border border-white/25 flex items-center justify-center transition-colors cursor-pointer"
+                    aria-label="Previous slide"
+                  >
+                    <ChevronLeft className="w-4 h-4" aria-hidden="true" />
+                  </button>
+
+                  <div
+                    className="flex items-center gap-1 px-1.5"
+                    role="tablist"
+                    aria-label="Resource header slides"
+                  >
+                    {heroSlides.map((_, idx) => {
+                      const isActive = currentSlide === idx;
+                      return (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={() => setCurrentSlide(idx)}
+                          className="group min-w-[24px] min-h-[40px] flex items-center justify-center px-1 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E6A157] rounded-md"
+                          aria-label={`View slide ${idx + 1}`}
+                          aria-current={isActive ? "true" : undefined}
+                        >
+                          <span
+                            className={`relative block h-2.5 rounded-full overflow-hidden transition-all duration-300 ${
+                              isActive
+                                ? "w-9 bg-white/25"
+                                : "w-2.5 bg-white/45 group-hover:bg-white/80"
+                            }`}
+                          >
+                            {isActive && (
+                              <motion.span
+                                key={`pill-progress-${currentSlide}-${isCarouselPaused ? "paused" : "play"}`}
+                                initial={{
+                                  scaleX: isCarouselPaused ? 1 : 0,
+                                }}
+                                animate={{ scaleX: 1 }}
+                                transition={{
+                                  duration: isCarouselPaused ? 0 : 6,
+                                  ease: "linear",
+                                }}
+                                style={{ transformOrigin: "left center" }}
+                                className="absolute inset-0 bg-[#E6A157] rounded-full block"
+                              />
+                            )}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
+                    }
+                    className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-[#FAF9F6] border border-white/25 flex items-center justify-center transition-colors cursor-pointer"
+                    aria-label="Next slide"
+                  >
+                    <ChevronRight className="w-4 h-4" aria-hidden="true" />
+                  </button>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() =>
-                    setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
-                  }
-                  className="min-w-[40px] min-h-[40px] w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-[#FAF9F6] border border-white/25 flex items-center justify-center transition-colors cursor-pointer"
-                  aria-label="Next slide"
-                >
-                  <ChevronRight className="w-4 h-4" aria-hidden="true" />
-                </button>
+                {!prefersReducedMotion && (
+                  <button
+                    type="button"
+                    onClick={() => setIsUserPaused((prev) => !prev)}
+                    aria-pressed={isUserPaused}
+                    className="min-h-[40px] px-3.5 py-2 rounded-full bg-white/10 hover:bg-white/20 text-[#FAF9F6] border border-white/25 text-xs font-semibold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                  >
+                    {isUserPaused ? (
+                      <>
+                        <Play className="w-3.5 h-3.5 text-[#E6A157]" aria-hidden="true" />
+                        <span>Play</span>
+                      </>
+                    ) : (
+                      <>
+                        <Pause className="w-3.5 h-3.5 text-[#E6A157]" aria-hidden="true" />
+                        <span>Pause</span>
+                      </>
+                    )}
+                  </button>
+                )}
               </div>
+            </div>
 
-              {!prefersReducedMotion && (
-                <button
-                  type="button"
-                  onClick={() => setIsUserPaused((prev) => !prev)}
-                  aria-pressed={isUserPaused}
-                  className="min-h-[40px] px-3.5 py-2 rounded-full bg-white/10 hover:bg-white/20 text-[#FAF9F6] border border-white/25 text-xs font-semibold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+            {/* Curated Reading Hero Visual with subtle animated cadence */}
+            <div className="lg:col-span-5">
+              <div className="relative rounded-3xl overflow-hidden border border-white/15 bg-[#072B31] shadow-2xl aspect-[16/10] lg:aspect-[4/3]">
+                <motion.img
+                  src={resourcesHeroReadingImg}
+                  alt="Hardcover psychology books, reading notebook, glasses, and chamomile tea by a sunlit window"
+                  width={960}
+                  height={540}
+                  referrerPolicy="no-referrer"
+                  initial={false}
+                  animate={
+                    prefersReducedMotion
+                      ? { scale: 1 }
+                      : { scale: currentSlide % 2 === 0 ? 1.04 : 1 }
+                  }
+                  transition={{ duration: 6, ease: "easeOut" }}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#07252A]/95 via-[#07252A]/25 to-transparent" />
+
+                <div className="absolute bottom-4 left-4 right-4 z-10">
+                  <motion.div
+                    key={`visual-caption-${currentSlide}`}
+                    initial={prefersReducedMotion ? false : { opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
+                    className="bg-[#0B3A42]/90 backdrop-blur-sm border border-white/15 rounded-2xl p-3.5 flex items-center justify-between gap-3"
+                  >
+                    <div className="min-w-0">
+                      <p className="text-[11px] font-bold uppercase tracking-wider text-[#F8C988] truncate">
+                        {heroSlides[currentSlide].focusLabel}
+                      </p>
+                      <p className="text-xs text-white/90 truncate mt-0.5">
+                        {RESOURCE_ARTICLES.length} evidence-informed psychology guides
+                      </p>
+                    </div>
+                    <BookOpen
+                      className="w-5 h-5 text-[#E6A157] shrink-0"
+                      aria-hidden="true"
+                    />
+                  </motion.div>
+                </div>
+
+                {/* Self-advancing bottom cadence progress bar */}
+                <div
+                  className="absolute bottom-0 left-0 right-0 h-1 bg-white/15 overflow-hidden"
+                  aria-hidden="true"
                 >
-                  {isUserPaused ? (
-                    <>
-                      <Play className="w-3.5 h-3.5 text-[#E6A157]" aria-hidden="true" />
-                      <span>Play</span>
-                    </>
-                  ) : (
-                    <>
-                      <Pause className="w-3.5 h-3.5 text-[#E6A157]" aria-hidden="true" />
-                      <span>Pause</span>
-                    </>
-                  )}
-                </button>
-              )}
+                  <motion.div
+                    key={`bar-progress-${currentSlide}-${isCarouselPaused ? "paused" : "play"}`}
+                    initial={{ scaleX: isCarouselPaused ? 1 : 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{
+                      duration: isCarouselPaused ? 0 : 6,
+                      ease: "linear",
+                    }}
+                    style={{ transformOrigin: "left center" }}
+                    className="h-full w-full bg-[#E6A157]"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import SEO from "../components/SEO";
 import Breadcrumbs from "../components/Breadcrumbs";
 import { recordInquiry } from "../lib/inquiries";
+import serviceTalkTherapyImg from "../assets/images/service_talk_therapy_1794985546244.jpg";
+import serviceOverthinkingImg from "../assets/images/service_overthinking_1794985546784.jpg";
+import serviceHabitCoachingImg from "../assets/images/service_habit_coaching_1794985548900.jpg";
+import serviceGenZWorkplaceImg from "../assets/images/service_genz_workplace_1794985547582.jpg";
 import {
   CALENDLY_URL,
   CLINIC_ADDRESS,
@@ -106,7 +110,7 @@ const ALL_SERVICES: ServiceItem[] = [
       "Perfectionists delayed by analysis paralysis",
     ],
     format: "1:1 Sessions | 50–60 minutes | Pune or Online Across India",
-    image: "/images/about-hero-1.webp",
+    image: serviceOverthinkingImg,
     organicPath: "/services/overthinking-therapy",
     tag: "Rumination & Clarity",
     clinicalMethods: [
@@ -201,7 +205,7 @@ const ALL_SERVICES: ServiceItem[] = [
       "First-time therapy clients exploring counselling gently",
     ],
     format: "1:1 Sessions | 50–60 minutes | Deccan Gymkhana, Pune or Online",
-    image: "/images/hero-path.webp",
+    image: serviceTalkTherapyImg,
     organicPath: "/services/talk-therapy-pune",
     tag: "Reflective Counselling",
     clinicalMethods: [
@@ -340,7 +344,7 @@ const ALL_SERVICES: ServiceItem[] = [
       "Clients turning therapy insights into dependable daily action",
     ],
     format: "1:1 Sessions | 50–60 minutes | Pune or Online Across India",
-    image: "/images/about-hero-2.webp",
+    image: serviceHabitCoachingImg,
     organicPath: "/services/behavioural-change-habit-coaching-pune",
     tag: "Habit Architecture",
     clinicalMethods: [
@@ -386,7 +390,7 @@ const ALL_SERVICES: ServiceItem[] = [
       "Multi-generational teams improving feedback clarity",
     ],
     format: "90-Min, Half-Day or Multi-Session Workshop | Pune & Virtual India",
-    image: "/images/team-hr.webp",
+    image: serviceGenZWorkplaceImg,
     organicPath: "/workshops/gen-z-in-the-workplace-pune",
     tag: "HR & Manager Workshop",
     clinicalMethods: [
@@ -852,7 +856,10 @@ export default function Services() {
                         width={800}
                         height={450}
                         loading="lazy"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                        referrerPolicy="no-referrer"
+                        className={`w-full h-full object-cover ${
+                          service.id === "online" ? "object-[center_20%]" : "object-center"
+                        } group-hover:scale-105 transition-transform duration-500 ease-out`}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/25" />
                       <div className="absolute top-4 left-4 right-4 flex items-center justify-between">

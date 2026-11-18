@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "motion/react";
 import SEO from "../components/SEO";
 import { GOOGLE_REVIEWS } from "../data/testimonials";
+import serviceGenZWorkplaceImg from "../assets/images/service_genz_workplace_1794985547582.jpg";
 import {
   CLINIC_ADDRESS,
   CLINIC_HOURS_LABEL,
@@ -203,7 +204,7 @@ export default function Home() {
       icon: HeartHandshake,
       title: "HR / Team Lead or Manager",
       desc: "Knows culture and well-being matter, and wants evidence-based, practical solutions for their team — not wellness fluff.",
-      image: "/images/team-hr.webp",
+      image: serviceGenZWorkplaceImg,
       alt: "Workplace team collaborating in a supportive wellness workshop",
     },
   ];
