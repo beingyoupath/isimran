@@ -104,16 +104,14 @@ export const ORGANIZATION_SCHEMA = {
       telephone: PHONE_PRIMARY,
       contactType: "customer service",
       areaServed: "IN",
-      // TODO: [my languages] Add additional confirmed spoken/session languages once supplied.
-      availableLanguage: ["English"],
+      availableLanguage: ["Hindi", "Marathi", "English"],
     },
     {
       "@type": "ContactPoint",
       telephone: PHONE_SECONDARY,
       contactType: "customer service",
       areaServed: "IN",
-      // TODO: [my languages] Add additional confirmed spoken/session languages once supplied.
-      availableLanguage: ["English"],
+      availableLanguage: ["Hindi", "Marathi", "English"],
     },
   ],
   founder: [

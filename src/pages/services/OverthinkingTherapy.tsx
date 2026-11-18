@@ -35,7 +35,7 @@ export default function OverthinkingTherapy() {
             ],
           },
           {
-            heading: "Nighttime & Somatic Anchoring",
+            heading: "Nighttime & Nervous-System Anchoring",
             items: [
               "We teach simple sunset 'brain-dump' routines before lights out to protect sleep",
               "We practice secular mindfulness attention-shifting rather than forcing an empty mind",
@@ -60,7 +60,7 @@ export default function OverthinkingTherapy() {
           {
             title: "Anchor attention back into living and rest",
             detail:
-              "Step by step, we replace endless mental rehearsal with calm decision limits, somatic grounding, and reliable evening wind-down habits.",
+              "Step by step, we replace endless mental rehearsal with calm decision limits, nervous-system grounding, and reliable evening wind-down habits.",
           },
         ],
         firstSessionIntro:

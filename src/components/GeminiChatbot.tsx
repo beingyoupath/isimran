@@ -38,10 +38,10 @@ const WELCOME_MESSAGE_TEXT =
   "Hi, I'm Path Guide, an AI assistant for general wellbeing tips and help with booking. I can't give diagnosis or therapy, and I'm not for emergencies. In a crisis, call Tele-MANAS 14416.";
 
 const CRISIS_PATTERN =
-  /\b(suicid(?:e|al)?|self[- ]?harm(?:ing)?|hurt(?:ing)?\s+myself|kill(?:ing)?\s+myself|end(?:ing)?\s+(?:my\s+life|it\s+all)|want\s+to\s+die|don'?t\s+want\s+to\s+live|cutting\s+myself|overdos(?:e|ing)|hang(?:ing)?\s+myself)\b/i;
+  /\b(suicid(?:e|al)?|self[- ]?harm(?:ing)?|hurt(?:ing)?\s+(?:myself|someone|others|him|her|them)|kill(?:ing)?\s+(?:myself|someone|him|her|them)|harm(?:ing)?\s+(?:someone|others|my\s+(?:partner|child|family))|end(?:ing)?\s+(?:my\s+life|it\s+all)|want\s+to\s+die|don'?t\s+want\s+to\s+live|cutting\s+myself|overdos(?:e|ing)|hang(?:ing)?\s+myself|being\s+abused\s+right\s+now|domestic\s+violence\s+now|emergency\s+crisis)\b/i;
 
 const CRISIS_MESSAGE_TEXT =
-  "Because you mentioned self-harm or suicide, I've stopped general wellbeing tips so you can connect directly with human support right away.\n\nPlease call India's free 24/7 crisis helpline Tele-MANAS on 14416 (or 1800-891-4416) immediately. If you also want to arrange outpatient follow-up care, use the booking link below.";
+  "I'm really glad you spoke up, and I've paused general wellbeing tips so you can connect directly with human support right now. Please contact someone nearby you trust and call India's free 24/7 Tele-MANAS helpline on 14416 (or 1800-891-4416), or emergency number 112.\n\nIf you want non-emergency outpatient follow-up later, you can also call our clinic (+91 7387772573 / +91 7387779238) or use the booking link below.";
 
 interface VisitorDetails {
   name: string;
@@ -755,7 +755,14 @@ export default function GeminiChatbot() {
                               className="inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-rose-800 hover:bg-rose-900 text-white text-xs font-bold transition-colors"
                             >
                               <PhoneCall className="w-4 h-4" />
-                              <span>Call Tele-MANAS 14416 (24/7 Free Crisis Helpline)</span>
+                              <span>Call Tele-MANAS 14416 (or 1800-891-4416)</span>
+                            </a>
+                            <a
+                              href="tel:112"
+                              className="inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-rose-950 hover:bg-black text-white text-xs font-bold transition-colors"
+                            >
+                              <AlertCircle className="w-4 h-4" />
+                              <span>Call Emergency Helpline 112</span>
                             </a>
                             <a
                               href={CALENDLY_BOOKING_URL}
@@ -836,45 +843,63 @@ export default function GeminiChatbot() {
                 {/* Quick Suggestion Chips (stopped once crisis protocol activates) */}
                 {!hasCrisisTriggered && (
                   <div className="px-3 py-2 bg-[#FDFBF7] border-t border-gray-100 flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0">
-                    <span className="text-[10.5px] text-gray-700 font-medium whitespace-nowrap">
-                      Suggested:
-                    </span>
                     <button
                       type="button"
                       disabled={isLoading}
                       onClick={() =>
                         handleSendPrompt(
-                          'I feel overwhelmed and anxious lately. Can you help me understand what is happening?'
+                          'How do I book the free 15-minute clarity call?'
                         )
                       }
-                      className="text-[11px] px-2.5 py-1 rounded-full bg-white border border-gray-300 text-gray-700 hover:text-[#0B3A42] hover:border-[#0B3A42] whitespace-nowrap transition-colors cursor-pointer disabled:opacity-50"
+                      className="text-[11px] px-2.5 py-1.5 rounded-full bg-white border border-gray-300 text-gray-800 hover:text-[#0B3A42] hover:border-[#0B3A42] whitespace-nowrap transition-colors cursor-pointer disabled:opacity-50"
                     >
-                      Feeling Overwhelmed
+                      Book free 15-min call
                     </button>
                     <button
                       type="button"
                       disabled={isLoading}
                       onClick={() =>
                         handleSendPrompt(
-                          "My mind won't stop overthinking at night. Why does my brain do this?"
+                          'What psychological counselling services and workshops do you offer?'
                         )
                       }
-                      className="text-[11px] px-2.5 py-1 rounded-full bg-white border border-gray-300 text-gray-700 hover:text-[#0B3A42] hover:border-[#0B3A42] whitespace-nowrap transition-colors cursor-pointer disabled:opacity-50"
+                      className="text-[11px] px-2.5 py-1.5 rounded-full bg-white border border-gray-300 text-gray-800 hover:text-[#0B3A42] hover:border-[#0B3A42] whitespace-nowrap transition-colors cursor-pointer disabled:opacity-50"
                     >
-                      Overthinking at Night
+                      Our services
                     </button>
                     <button
                       type="button"
                       disabled={isLoading}
                       onClick={() =>
                         handleSendPrompt(
-                          'How can I explore 1-on-1 personalized sessions with Imran & Tejaswini?'
+                          'What is your Pune clinic location, phone numbers, and opening hours?'
                         )
                       }
-                      className="text-[11px] px-2.5 py-1 rounded-full bg-white border border-gray-300 text-gray-700 hover:text-[#0B3A42] hover:border-[#0B3A42] whitespace-nowrap transition-colors cursor-pointer disabled:opacity-50"
+                      className="text-[11px] px-2.5 py-1.5 rounded-full bg-white border border-gray-300 text-gray-800 hover:text-[#0B3A42] hover:border-[#0B3A42] whitespace-nowrap transition-colors cursor-pointer disabled:opacity-50"
                     >
-                      1-on-1 Sessions
+                      Location &amp; hours
                     </button>
+                    <button
+                      type="button"
+                      disabled={isLoading}
+                      onClick={() =>
+                        handleSendPrompt(
+                          'How do therapy sessions work, how long are they, and what languages are offered?'
+                        )
+                      }
+                      className="text-[11px] px-2.5 py-1.5 rounded-full bg-white border border-gray-300 text-gray-800 hover:text-[#0B3A42] hover:border-[#0B3A42] whitespace-nowrap transition-colors cursor-pointer disabled:opacity-50"
+                    >
+                      How sessions work
+                    </button>
+                    <a
+                      href={WHATSAPP_LINK_1}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[11px] px-2.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-300 text-emerald-900 hover:bg-emerald-100 whitespace-nowrap transition-colors font-medium inline-flex items-center gap-1"
+                    >
+                      <Phone className="w-3 h-3 text-emerald-800" aria-hidden="true" />
+                      <span>Talk to a human on WhatsApp</span>
+                    </a>
                   </div>
                 )}
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import SEO from "../components/SEO";
 import Breadcrumbs from "../components/Breadcrumbs";
@@ -8,6 +9,7 @@ import {
   PHONE_SECONDARY_HREF,
   LOCAL_BUSINESS_SCHEMA,
   buildServiceSchema,
+  CALENDLY_URL,
 } from "../lib/seoConfig";
 import {
   ChevronLeft,
@@ -26,6 +28,7 @@ import {
   CalendarDays,
   Building2,
   X,
+  ArrowRight,
 } from "lucide-react";
 
 interface WorkshopTheme {
@@ -45,6 +48,29 @@ export default function Workshops() {
     path: "/workshops",
     serviceType: "Corporate Wellness & Psychoeducational Workshops",
   });
+
+  const workshopFaqs = [
+    {
+      question: "How are corporate and school workshop fees structured?",
+      answer:
+        "Workshop fees depend on duration (90-minute, half-day, full-day, or multi-session series), group size, and whether delivery is in-person in Pune or virtual across India. Share your scope using the enquiry form above or during a free 15-minute clarity call and we send a transparent custom proposal.",
+    },
+    {
+      question: "Do you offer specialised workshops on Gen Z in the workplace?",
+      answer:
+        "Yes. We run a dedicated developmental psychology programme for HR leaders and people managers on early-career expectations, feedback clarity, and multi-generational retention—view our full Gen Z in the Workplace page for curriculum details.",
+    },
+    {
+      question: "Can sessions be delivered in person across Pune and online across India?",
+      answer:
+        "Yes. Imran Hussain and Tejaswini Joshi facilitate in-person workshops across Pune (including Deccan Gymkhana, Baner, Hinjewadi, Koregaon Park, and Viman Nagar) as well as interactive virtual cohorts via Zoom or Microsoft Teams across India.",
+    },
+    {
+      question: "Are corporate workshops a substitute for individual clinical therapy?",
+      answer:
+        "No. Organisational workshops are psychoeducational and skill-focused. Employees or students needing private 1-on-1 clinical support are always welcome to book confidential individual sessions separately.",
+    },
+  ];
 
   const slides = [
     {
@@ -120,7 +146,7 @@ export default function Workshops() {
     },
     {
       title: "HR & People Leadership",
-      desc: "Managers and L&D leaders building trauma-informed feedback cultures, psychological safety, and early burnout prevention.",
+      desc: "Managers and L&D leaders building psychologically safe feedback cultures, constructive communication, and early burnout prevention.",
     },
     {
       title: "Schools, Junior Colleges & Universities",
@@ -134,7 +160,7 @@ export default function Workshops() {
 
   const learningOutcomes = [
     "Recognise early nervous-system markers of chronic stress vs acute deadline pressure before burnout develops.",
-    "Apply structured CBT cognitive reframing and 60-second somatic down-regulation techniques during high-stakes workdays.",
+    "Apply structured CBT cognitive reframing and 60-second nervous-system settling techniques during high-stakes workdays.",
     "Practice clear, non-defensive boundary statements and feedback conversations that strengthen psychological safety.",
     "Leave with an actionable personal or team implementation checklist tailored to daily routines and meeting cadences.",
   ];
@@ -414,6 +440,7 @@ export default function Workshops() {
         lcpImage="/images/workshop-hero-1.webp"
         breadcrumbs={breadcrumbs}
         schema={[LOCAL_BUSINESS_SCHEMA, workshopServiceSchema]}
+        faqs={workshopFaqs}
       />
 
       <Breadcrumbs items={breadcrumbs} />
@@ -554,6 +581,16 @@ export default function Workshops() {
                   <p className="text-charcoal-warm text-[15px] leading-relaxed mt-auto relative z-10">
                     {theme.desc}
                   </p>
+                  {theme.title === "Gen Z in Your Organisation" && (
+                    <Link
+                      to="/workshops/gen-z-in-the-workplace-pune"
+                      onClick={(e) => e.stopPropagation()}
+                      className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-[#0B3A42] hover:text-[#A43F23] underline underline-offset-4 relative z-20"
+                    >
+                      <span>View Gen Z Workshop Details</span>
+                      <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+                    </Link>
+                  )}
                 </div>
               </div>
             ))}
@@ -971,6 +1008,53 @@ export default function Workshops() {
                 </div>
               </form>
             )}
+          </div>
+        </div>
+      </section>
+
+      {/* Workshop FAQs & Fee Clarity */}
+      <section className="py-12 md:py-16 bg-soft-sand border-t border-stone-200/70">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+          <div className="text-center">
+            <h2 className="text-2xl sm:text-3xl font-bold font-heading text-deep-teal mb-2">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-sm text-charcoal-warm">
+              Workshop scope, pricing clarity, and scheduling for teams, universities, and parent communities.
+            </p>
+          </div>
+          <div className="space-y-4">
+            {workshopFaqs.map((faq) => (
+              <div
+                key={faq.question}
+                className="bg-white rounded-2xl p-6 border border-stone-200 shadow-2xs"
+              >
+                <h3 className="text-base font-bold font-heading text-deep-teal mb-2">
+                  {faq.question}
+                </h3>
+                <p className="text-sm text-charcoal-warm leading-relaxed">
+                  {faq.answer}
+                </p>
+              </div>
+            ))}
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+            <a
+              href={CALENDLY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 min-h-[44px] rounded-full bg-deep-teal hover:bg-[#07252A] text-white text-xs font-bold uppercase tracking-wider transition-colors shadow-xs"
+            >
+              <span>Schedule a 15-Min Workshop Discovery Call</span>
+              <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+            </a>
+            <Link
+              to="/workshops/gen-z-in-the-workplace-pune"
+              className="inline-flex items-center gap-2 px-5 py-3 min-h-[44px] rounded-full bg-white hover:bg-stone-100 text-deep-teal border border-stone-300 text-xs font-semibold transition-colors"
+            >
+              <span>Explore Gen Z in the Workplace</span>
+              <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+            </Link>
           </div>
         </div>
       </section>

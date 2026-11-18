@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import SEO from "../components/SEO";
 import Breadcrumbs from "../components/Breadcrumbs";
+import SocialLinksRow from "../components/SocialLinksRow";
 import { GOOGLE_REVIEWS } from "../data/testimonials";
 import { recordInquiry } from "../lib/inquiries";
 import {
@@ -393,6 +394,18 @@ export default function Contact() {
                 </a>
               </div>
             </div>
+          </div>
+
+          <div className="max-w-3xl mx-auto bg-soft-sand rounded-[24px] border border-gray-200 px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="text-center sm:text-left">
+              <span className="text-xs font-bold uppercase tracking-widest text-terracotta block">
+                Official Social Channels
+              </span>
+              <p className="text-sm font-semibold text-deep-teal mt-0.5">
+                Follow Being You Path or view our verified Pune Google Profile
+              </p>
+            </div>
+            <SocialLinksRow variant="light" className="justify-center sm:justify-end" />
           </div>
         </div>
       </section>

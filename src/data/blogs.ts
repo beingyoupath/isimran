@@ -53,7 +53,7 @@ export const BLOG_CATEGORIES: BlogCategory[] = [
   },
   {
     id: "somatic",
-    title: "Somatic Grounding & Breathwork",
+    title: "Nervous System & Breathwork",
     desc: "Autonomic nervous system regulation, panic attack grounding, and physical resilience.",
     iconName: "Waves",
     articleCount: 4
@@ -78,10 +78,10 @@ export const BLOG_POSTS: BlogPost[] = [
     featured: true,
     author: "Being You Path Editorial Team",
     overview: "A comprehensive roadmap for understanding psychotherapy, talk therapy, and online counselling in Pune and across India without jargon or stigma.",
-    body: "Deciding to speak with a mental health professional is an act of clarity, not defeat. Across Pune and nationwide, individuals seeking counselling often share the same essential need: a safe, confidential space with a qualified practitioner who listens without judgment or hasty prescriptions. At Being You Path, we believe psychotherapy belongs to everyday people navigating real life hurdles—overcoming chronic rumination, managing career fatigue, and healing interpersonal relationships.\n\nOur clinical methodologies are anchored in evidence-based Cognitive Behavioural Therapy (CBT), acceptance frameworks, and somatic nervous system regulation. For professionals in high-intensity sectors, our sessions provide pragmatic tools to manage boundary erosion and chronic exhaustion. Simultaneously, we support students and families with academic stress relief and values-based career counselling.\n\nIn-person therapy takes place at our clinic at 119/17, Dr. Sripati Shastri Path, near Prabhat Road and Deccan Gymkhana in Pune. For individuals across India, our encrypted online therapy brings the exact same warmth and privacy directly to your home.",
+    body: "Deciding to speak with a mental health professional is an act of clarity, not defeat. Across Pune and nationwide, individuals seeking counselling often share the same essential need: a safe, confidential space with a qualified practitioner who listens without judgment or hasty prescriptions. At Being You Path, we believe psychotherapy belongs to everyday people navigating real life hurdles—overcoming chronic rumination, managing career fatigue, and healing interpersonal relationships.\n\nOur clinical methodologies are anchored in evidence-based Cognitive Behavioural Therapy (CBT), acceptance frameworks, and nervous system regulation. For professionals in high-intensity sectors, our sessions provide pragmatic tools to manage boundary erosion and chronic exhaustion. Simultaneously, we support students and families with academic stress relief and values-based career counselling.\n\nIn-person therapy takes place at our clinic at 119/17, Dr. Sripati Shastri Path, near Prabhat Road and Deccan Gymkhana in Pune. For individuals across India, our encrypted online therapy brings the exact same warmth and privacy directly to your home.",
     tips: [
       "Therapy is Preventative Care: Seeking counselling before reaching acute burnout helps preserve emotional stamina and mental clarity.",
-      "Evidence-Based Frameworks: Modalities like CBT address cognitive distortions, while somatic grounding helps calm physiological tension.",
+      "Evidence-Based Frameworks: Modalities like CBT address cognitive distortions, while nervous-system grounding helps calm physiological tension.",
       "Support for All Life Stages: From adolescent guidance to executive stress management, personalized care creates lasting change.",
       "In-Person and Online Accessibility: Attend face-to-face sessions on Prabhat Road or join confidential video sessions from anywhere in India."
     ],

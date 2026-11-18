@@ -230,7 +230,7 @@ export default function ThoughtOfTheDay() {
             >
               {practice
                 ? practice.body
-                : "A short weekday somatic or cognitive practice appears here automatically based on the current day in India Standard Time."}
+                : "A short weekday breath or cognitive practice appears here automatically based on the current day in India Standard Time."}
             </p>
           </div>
         </div>

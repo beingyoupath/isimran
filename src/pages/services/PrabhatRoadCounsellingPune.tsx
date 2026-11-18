@@ -31,7 +31,7 @@ export default function PrabhatRoadCounsellingPune() {
               "We offer Cognitive Behavioral Therapy (CBT) for worry, rumination, and panic episodes",
               "We provide compassionate support for depression, grief, and prolonged low mood",
               "We help rebuild steady self-esteem, assertiveness, and guilt-free family boundaries",
-              "We integrate trauma-informed pacing and somatic nervous-system grounding",
+              "We integrate gently paced reflection and practical nervous-system grounding",
             ],
           },
           {

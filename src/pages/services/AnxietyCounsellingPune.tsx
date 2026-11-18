@@ -47,7 +47,7 @@ export default function AnxietyCounsellingPune() {
             heading: "Body & Nervous-System Calming",
             items: [
               "We practice discreet diaphragmatic breathing and vagus-nerve settling cues",
-              "We teach quick somatic grounding techniques for sudden panic surges anywhere",
+              "We teach quick nervous-system grounding techniques for sudden panic surges anywhere",
               "We design practical evening wind-down routines to restore deep sleep quality",
               "We support gentle, stepped return to places or situations you have started avoiding",
             ],
@@ -98,7 +98,7 @@ export default function AnxietyCounsellingPune() {
           {
             question: "Can counselling reduce panic attacks without medication?",
             answer:
-              "Yes. Psychoeducation about adrenaline surges, paced exhalations, somatic grounding, and CBT reframing together reduce both how often panic hits and the fear of future spikes.",
+              "Yes. Psychoeducation about adrenaline surges, paced exhalations, nervous-system grounding, and CBT reframing together reduce both how often panic hits and the fear of future spikes.",
           },
           {
             question: "Do our psychologists prescribe anti-anxiety medication?",
@@ -115,8 +115,13 @@ export default function AnxietyCounsellingPune() {
           { label: "CBT Therapy in Pune", to: "/services/cbt-therapy-pune" },
           { label: "Overthinking Therapy", to: "/services/overthinking-therapy" },
           { label: "Burnout Counselling", to: "/services/burnout-counselling-pune" },
-          { label: "Online Therapy India", to: "/services/online-therapy-india" },
+          { label: "Mindfulness & Meditation", to: "/services/mindfulness-meditation-pune" },
         ],
+        calloutSection: {
+          heading: "Trauma-sensitive approach",
+          body: "Our anxiety and stress sessions are gentle, within the scope of counselling; severe or complex symptoms are referred to a psychiatrist or specialist.",
+          note: "We work strictly at your comfort pace, focusing on present-day emotional safety, grounding skills, and practical stability.",
+        },
         bookingServiceName: "Stress & Anxiety Counselling",
       }}
     />

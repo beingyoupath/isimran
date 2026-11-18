@@ -407,7 +407,7 @@ export default function About() {
                 <span className="text-terracotta font-bold text-2xl">3</span>
               </div>
               <h3 className="text-[20px] font-semibold text-deep-teal mb-4 font-heading">
-                Applied Behavioural &amp; Somatic Tools
+                Applied Behavioural &amp; Breath Tools
               </h3>
               <p className="text-charcoal-warm">
                 Circadian sleep routines, paced breathing for autonomic regulation, and reflective dialogue—used strictly where evidence supports.

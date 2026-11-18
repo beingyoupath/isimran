@@ -260,7 +260,7 @@ export default function HomeHi() {
             </p>
             <div className="pt-2 flex items-center gap-2 text-xs text-emerald-900 font-medium">
               <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" aria-hidden="true" />
-              <span>सेशंस मुख्यतः अंग्रेज़ी में उपलब्ध हैं (अतिरिक्त भाषा विकल्प कॉल पर पूछें)।</span>
+              <span>सेशंस हिंदी, मराठी और अंग्रेज़ी (Hindi, Marathi &amp; English) में उपलब्ध हैं।</span>
             </div>
           </div>
           <p className="text-xs text-stone-700 leading-relaxed">{TELE_MANAS_NOTICE}</p>

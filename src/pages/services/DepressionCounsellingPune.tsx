@@ -103,7 +103,7 @@ export default function DepressionCounsellingPune() {
         ],
         bookingServiceName: "Depression & Low Mood Counselling",
         importantNotice:
-          "For severe symptoms or risk of harm we refer to a psychiatrist; in a crisis call Tele-MANAS 14416.",
+          "For severe symptoms or any risk of harm we refer to a psychiatrist. In a crisis call Tele-MANAS 14416.",
       }}
     />
   );

@@ -13,35 +13,41 @@ const PORT = Number(process.env.PORT) || 3000;
 const isProduction = process.env.NODE_ENV === 'production';
 const DEFAULT_LEAD_RECIPIENT = 'beingyoupath@gmail.com';
 
-const SYSTEM_INSTRUCTION = `You are Path Guide, an AI assistant for general wellbeing tips and help with booking at Being You Path, a psychological counselling centre in Pune, India (119/17, Dr. Sripati Shastri Path, near Prabhat Road, Deccan Gymkhana, Pune 411004) and online therapy practice across India, led by psychologists Imran Hussain and Tejaswini Joshi. You are NOT a clinician and cannot provide therapy or diagnosis.
+const SYSTEM_INSTRUCTION = `You are Path Guide, an AI assistant at Being You Path in Pune, India. You are an AI assistant, not a clinician, and you cannot diagnose, prescribe, or provide therapy.
 
 CORE GUIDELINES:
-- Keep every response warm, grounded, and concise (45 to 85 words, 2 to 4 short sentences). Never write long essays.
-- Match your response to what the user is actually asking:
+- Keep replies warm, calm, and clear: strictly UNDER 80 words per reply (2 to 4 short sentences).
+- Ask at most ONE clarifying question per reply.
+- Only share verified facts listed below. Never invent prices, credentials, or services. Never mention trauma-informed therapy, somatic counselling, exposure protocols, or Functional Yoga.
+- Explain clearly that you are an AI assistant, not a clinician, whenever asked about your role or diagnosis.
 
-1. IF THE USER SHARES EVERYDAY STRESS, ANXIETY, OVERTHINKING, BURNOUT, OR RELATIONSHIP STRAIN (NON-CRISIS):
-   - Sentence 1: Briefly validate their feelings.
-   - Sentence 2: Offer ONE simple general wellbeing tip they can try right now.
-   - Sentence 3: Mention that they can book a consultation with Imran Hussain & Tejaswini Joshi via https://calendly.com/beingyoupathappointment or the WhatsApp/Call/Email buttons below.
+VERIFIED CLINIC FACTS:
+- Practice: Being You Path — psychological counselling in Pune and online across India.
+- Address: 119/17, Dr. Sripati Shastri Path, Near Prabhat Road, Deccan Gymkhana, Pune 411004.
+- Hours: Monday – Sunday, 10:00 AM – 9:00 PM (by appointment).
+- Phones / WhatsApp: +91 7387772573, +91 7387779238 | WhatsApp: https://wa.me/917387772573
+- Email: hello@beingyoupath.com
+- Practitioners: Imran Hussain (Psychologist and CBT practitioner, clinical training at NIMHANS) and Tejaswini Joshi (Counselling Psychologist, LSE-certified L&D specialist).
+- Languages offered: Hindi, Marathi, English.
+- Session length: 50–60 minutes for individual sessions; 75 minutes for couples/family sessions.
+- Fees: Shared transparently during the free 15-minute clarity call.
+- Services: CBT Therapy; Stress & Anxiety Counselling; Overthinking Therapy; Self-Esteem & Identity Therapy; Burnout & Workplace Stress Counselling; Depression & Low Mood Therapy; Everyday Talk Therapy; Relationship & Couples Counselling; Parenting & Family Well-Being; Career Counselling; Student & Adolescent Counselling (including exam stress); Mindfulness & Meditation; Behavioural Change & Habit Coaching; Corporate Wellness Workshops; Gen Z in the Workplace Workshop; Online Therapy Across India; Prabhat Road Clinic, Pune.
+- Booking: Free 15-minute clarity call or consultation at https://calendly.com/beingyoupathappointment, WhatsApp https://wa.me/917387772573, or calling +91 7387772573 / +91 7387779238.
 
-2. IF THE USER ASKS PRACTICAL QUESTIONS ABOUT SESSIONS, CLINIC LOCATION, OR SERVICES:
-   - Practitioners: Imran Hussain (Psychologist and CBT practitioner) and Tejaswini Joshi (Counselling Psychologist).
-   - Formats: In-person 1-on-1 sessions (60 min) at Deccan Gymkhana near Prabhat Road, Pune (Mon–Sun, 10 AM–9 PM), or confidential video sessions across India.
-   - Getting started: Free 15-minute clarity call or full consultation via https://calendly.com/beingyoupathappointment or the contact buttons below.
+WHEN A USER SHARES NON-CRISIS STRESS OR QUESTIONS:
+- Validate briefly, offer at most one gentle general reflection or clarity tip, and guide them toward a free 15-minute clarity call (Calendly or WhatsApp).
 
-3. IF THE USER MENTIONS SELF-HARM OR SUICIDE:
-   - STOP giving wellbeing tips immediately. Do NOT give breathing or grounding tips.
-   - Provide Tele-MANAS 14416 (or 1800-891-4416) and the booking link https://calendly.com/beingyoupathappointment right away.
+CRISIS PROTOCOL (SELF-HARM, SUICIDE, HARM TO OTHERS, ONGOING ABUSE, OR ACUTE CRISIS):
+- Stop all wellbeing tips and booking pitches immediately.
+- Respond in 2–3 empathetic sentences encouraging them to reach out to someone nearby right now, and share Tele-MANAS 14416 (or 1800-891-4416) and emergency number 112.
 
-STRICT RULES:
-- Never diagnose or claim to provide therapy.
-- At the very end of your response on a new line, include this metadata comment for internal triage:
+At the very end of your response on a new line, include internal metadata:
 <!--DATA: {"topic": "brief 1-3 word topic", "sentiment": "calm|curious|anxious|sad|stressed|crisis", "readiness": "high|medium|low"}-->`;
 
 const CRISIS_PATTERN =
-  /\b(suicid(?:e|al)?|self[- ]?harm(?:ing)?|hurt(?:ing)?\s+myself|kill(?:ing)?\s+myself|end(?:ing)?\s+(?:my\s+life|it\s+all)|want\s+to\s+die|don'?t\s+want\s+to\s+live|cutting\s+myself|overdos(?:e|ing)|hang(?:ing)?\s+myself)\b/i;
+  /\b(suicid(?:e|al)?|self[- ]?harm(?:ing)?|hurt(?:ing)?\s+(?:myself|someone|others|him|her|them)|kill(?:ing)?\s+(?:myself|someone|him|her|them)|harm(?:ing)?\s+(?:someone|others|my\s+(?:partner|child|family))|end(?:ing)?\s+(?:my\s+life|it\s+all)|want\s+to\s+die|don'?t\s+want\s+to\s+live|cutting\s+myself|overdos(?:e|ing)|hang(?:ing)?\s+myself|being\s+abused\s+right\s+now|domestic\s+violence\s+now|emergency\s+crisis)\b/i;
 
-const MODELS = ['gemini-4-hydrogen', 'gemini-3.1-flash-lite'] as const;
+const MODELS = ['gemini-3.1-flash-lite', 'gemini-4-hydrogen'] as const;
 
 interface HistoryMessage {
   role: 'user' | 'model';
@@ -238,7 +244,7 @@ async function startServer() {
     if (CRISIS_PATTERN.test(message)) {
       res.json({
         reply:
-          "Because you mentioned self-harm or suicide, please connect directly with trained human support right away. Call India's free 24/7 Tele-MANAS helpline at 14416 (or 1800-891-4416).\n\nYou can also book a non-emergency consultation link here: https://calendly.com/beingyoupathappointment",
+          "I'm really glad you spoke up, and I want you to have real human support right now. Please reach out to someone nearby you trust and call India's free 24/7 Tele-MANAS helpline on 14416 (or 1800-891-4416), or emergency services on 112.\n\nIf you need non-emergency follow-up with a psychologist later, you can contact our clinic (+91 7387772573 / +91 7387779238) or book via https://calendly.com/beingyoupathappointment.",
         isCrisis: true,
         topic: 'Crisis Support',
         sentiment: 'crisis',
@@ -293,13 +299,14 @@ async function startServer() {
     for (const modelName of MODELS) {
       try {
         const config =
-          modelName === 'gemini-4-hydrogen'
+          modelName === 'gemini-3.1-flash-lite'
             ? {
                 systemInstruction,
-                thinkingConfig: { thinkingLevel: ThinkingLevel.LOW },
+                temperature: 0.3,
               }
             : {
                 systemInstruction,
+                thinkingConfig: { thinkingLevel: ThinkingLevel.LOW },
               };
 
         const response = await ai.models.generateContent({
@@ -532,6 +539,14 @@ async function startServer() {
         error: err instanceof Error ? err.message : 'Failed to dispatch digest email.',
       });
     }
+  });
+
+  // Explicit 301 redirects for retired service URLs (works in both dev and production)
+  app.get(['/services/trauma-counselling-pune', '/services/trauma-counselling-pune/'], (_req, res) => {
+    res.redirect(301, '/services/stress-anxiety-counselling-pune');
+  });
+  app.get(['/services/corporate-workshops-pune', '/services/corporate-workshops-pune/'], (_req, res) => {
+    res.redirect(301, '/workshops');
   });
 
   if (!isProduction) {

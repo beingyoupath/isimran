@@ -44,7 +44,7 @@ export default function CbtTherapyPune() {
             ],
           },
           {
-            heading: "Habits & Somatic Calming",
+            heading: "Habits & Nervous-System Calming",
             items: [
               "We plan gradual steps out of avoidance instead of overwhelming leaps",
               "We pair cognitive tools with breath pacing and nervous-system settling",
@@ -69,7 +69,7 @@ export default function CbtTherapyPune() {
           {
             title: "Real-world practice and review",
             detail:
-              "Between visits you test one manageable step, and we refine what worked at our next session.",
+              "Between visits you test one manageable step in real work or family situations, and we refine what felt supportive at our next session so progress stays steady and sustainable.",
           },
         ],
         firstSessionIntro:
@@ -114,8 +114,8 @@ export default function CbtTherapyPune() {
         relatedLinks: [
           { label: "Stress & Anxiety Counselling", to: "/services/stress-anxiety-counselling-pune" },
           { label: "Overthinking Therapy", to: "/services/overthinking-therapy" },
-          { label: "Self-Esteem Therapy", to: "/services/self-esteem-therapy-pune" },
-          { label: "Meet Our Psychologists", to: "/about" },
+          { label: "Everyday Talk Therapy", to: "/services/talk-therapy-pune" },
+          { label: "Behavioural Change & Habit Coaching", to: "/services/behavioural-change-habit-coaching-pune" },
         ],
         bookingServiceName: "CBT Therapy",
       }}

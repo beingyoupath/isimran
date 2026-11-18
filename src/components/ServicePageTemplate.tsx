@@ -108,6 +108,11 @@ export interface ServicePageConfig {
   faqs: ServiceFAQ[];
   relatedLinks: { label: string; to: string }[];
   bookingServiceName: string;
+  calloutSection?: {
+    heading: string;
+    body: string;
+    note?: string;
+  };
   importantNotice?: string;
 }
 
@@ -268,6 +273,22 @@ export default function ServicePageTemplate({
               ))}
             </ol>
           </div>
+
+          {config.calloutSection && (
+            <div className="bg-[#FDFBF7] p-6 sm:p-8 rounded-3xl border border-[#A43F23]/25">
+              <h2 className="text-xl sm:text-2xl font-bold font-heading text-[#0B3A42] mb-2.5">
+                {config.calloutSection.heading}
+              </h2>
+              <p className="text-sm sm:text-base text-stone-800 leading-relaxed">
+                {config.calloutSection.body}
+              </p>
+              {config.calloutSection.note && (
+                <p className="text-xs text-stone-700 mt-2.5 leading-relaxed">
+                  {config.calloutSection.note}
+                </p>
+              )}
+            </div>
+          )}
 
           {/* H2 #4: What to expect in the first session */}
           <div className="bg-white p-6 sm:p-8 rounded-3xl border border-stone-200">

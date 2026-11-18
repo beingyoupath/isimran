@@ -96,10 +96,10 @@ const CORE_PILLARS = [
       "We translate timeless, profound historical insights into actionable modern frameworks. Because beyond fixing what's broken, true well-being is about finding deeper connection, purpose, and clarity in your everyday life.",
   },
   {
-    title: "Somatic Awareness",
-    subtitle: "Body-Mind Connection",
+    title: "Body-Mind Awareness",
+    subtitle: "Breath & Nervous System",
     description:
-      "Learning to listen to the physical sensations of emotion, understanding how your body stores stress, and using somatic techniques to release tension and actively restore physical and emotional equilibrium.",
+      "Learning to notice the physical sensations of emotion, understanding how stress shows up in the body, and using paced breathing and grounding techniques to restore physical and emotional equilibrium.",
   },
   {
     title: "Behavioral Integration",
@@ -897,7 +897,7 @@ export default function Home() {
                   <div className="flex items-start gap-2.5 text-sm text-[#F5F0E6]">
                     <Check className="w-4 h-4 text-[#F8C988] flex-shrink-0 mt-0.5" aria-hidden="true" />
                     <span>
-                      <strong className="text-white">Secular Mindfulness &amp; Somatics:</strong> Nervous-system regulation tools for busy workdays and academic schedules.
+                      <strong className="text-white">Secular Mindfulness &amp; Grounding:</strong> Nervous-system regulation tools for busy workdays and academic schedules.
                     </span>
                   </div>
                   <div className="flex items-start gap-2.5 text-sm text-[#F5F0E6]">
@@ -1053,7 +1053,7 @@ export default function Home() {
               >
                 {currentPractice
                   ? currentPractice.body
-                  : "A brief weekday somatic or cognitive practice loads here for today's date in India Standard Time."}
+                  : "A brief weekday breath or cognitive practice loads here for today's date in India Standard Time."}
               </p>
             </div>
 

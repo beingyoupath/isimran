@@ -29,8 +29,11 @@ import OnlineTherapyIndia from "./pages/services/OnlineTherapyIndia";
 import PrabhatRoadCounsellingPune from "./pages/services/PrabhatRoadCounsellingPune";
 import DepressionCounsellingPune from "./pages/services/DepressionCounsellingPune";
 import RelationshipCouplesCounsellingPune from "./pages/services/RelationshipCouplesCounsellingPune";
-import TraumaCounsellingPune from "./pages/services/TraumaCounsellingPune";
-import CorporateWorkshopsPune from "./pages/services/CorporateWorkshopsPune";
+import TalkTherapyPune from "./pages/services/TalkTherapyPune";
+import ParentingFamilyCounsellingPune from "./pages/services/ParentingFamilyCounsellingPune";
+import MindfulnessMeditationPune from "./pages/services/MindfulnessMeditationPune";
+import BehaviouralChangeHabitCoachingPune from "./pages/services/BehaviouralChangeHabitCoachingPune";
+import GenZWorkplaceWorkshopPune from "./pages/services/GenZWorkplaceWorkshopPune";
 import HowToChoosePsychologistPune from "./pages/HowToChoosePsychologistPune";
 
 // Hindi (hi-IN) Top Pages
@@ -82,8 +85,11 @@ export function AppRoutes() {
           <Route path="services/counselling-prabhat-road-pune" element={<PrabhatRoadCounsellingPune />} />
           <Route path="services/depression-counselling-pune" element={<DepressionCounsellingPune />} />
           <Route path="services/relationship-couples-counselling-pune" element={<RelationshipCouplesCounsellingPune />} />
-          <Route path="services/trauma-counselling-pune" element={<TraumaCounsellingPune />} />
-          <Route path="services/corporate-workshops-pune" element={<CorporateWorkshopsPune />} />
+          <Route path="services/talk-therapy-pune" element={<TalkTherapyPune />} />
+          <Route path="services/parenting-family-counselling-pune" element={<ParentingFamilyCounsellingPune />} />
+          <Route path="services/mindfulness-meditation-pune" element={<MindfulnessMeditationPune />} />
+          <Route path="services/behavioural-change-habit-coaching-pune" element={<BehaviouralChangeHabitCoachingPune />} />
+          <Route path="workshops/gen-z-in-the-workplace-pune" element={<GenZWorkplaceWorkshopPune />} />
 
           {/* Pillar Guide Route */}
           <Route path="guides/how-to-choose-a-psychologist-pune" element={<HowToChoosePsychologistPune />} />

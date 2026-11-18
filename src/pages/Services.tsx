@@ -40,6 +40,7 @@ interface ServiceItem {
   organicPath: string;
   tag: string;
   clinicalMethods: string[];
+  hasFullPage?: boolean;
 }
 
 const ALL_SERVICES: ServiceItem[] = [
@@ -60,20 +61,20 @@ const ALL_SERVICES: ServiceItem[] = [
     image: "/images/service-cbt.webp",
     organicPath: "/services/cbt-therapy-pune",
     tag: "Structured CBT",
-    // TODO: [I will supply] Update clinicalMethods to reflect only user-confirmed modalities.
     clinicalMethods: [
       "Cognitive Behavioural Therapy (CBT)",
       "Thought Records",
       "Behavioural Activation",
     ],
+    hasFullPage: true,
   },
   {
     id: "anxiety",
     title: "Stress & Anxiety Counselling",
     category: "clinical",
     categoryLabel: "Clinical & Emotional",
-    audience: "For Chronic Worry, Racing Thoughts & Somatic Tension",
-    desc: "We combine Cognitive Behavioural Therapy (CBT), somatic grounding, and nervous-system regulation tools to help you calm anticipatory dread, manage panic symptoms, and build steadier daily routines.",
+    audience: "For Chronic Worry, Racing Thoughts & Physical Tension",
+    desc: "We combine Cognitive Behavioural Therapy (CBT), paced breathing, and nervous-system grounding tools to help you calm anticipatory dread, manage panic symptoms, and build steadier daily routines.",
     whoItFor: [
       "Overthinkers stuck in repetitive 'what-if' loops",
       "Individuals experiencing sudden panic or restlessness",
@@ -90,29 +91,30 @@ const ALL_SERVICES: ServiceItem[] = [
       "Secular Mindfulness",
       "Nervous-System Grounding",
     ],
+    hasFullPage: true,
   },
   {
-    id: "burnout",
-    title: "Burnout & Workplace Stress Counselling",
-    category: "career",
-    categoryLabel: "Career & Workplace",
-    audience: "For High-Pressure Professionals Facing Exhaustion & Cynicism",
-    desc: "Burnout requires more than a weekend break—it calls for recalibrating workload demands, nervous-system recovery, and internal expectations. We equip you to rebuild sustainable energy and workplace boundaries.",
+    id: "overthinking",
+    title: "Overthinking Therapy & Counselling",
+    category: "mindfulness",
+    categoryLabel: "Mindfulness & Habits",
+    audience: "For Breaking Rumination Loops & Late-Night Overanalysis",
+    desc: "Learn how to distinguish constructive problem-solving from repetitive mental loops. Using cognitive techniques and attention training, you build practical habits for stepping out of rumination.",
     whoItFor: [
-      "Tech professionals, engineers, and corporate managers",
-      "Startup founders and leaders under chronic pressure",
-      "Professionals struggling with work-night sleep disruption",
-      "Employees feeling depleted or emotionally detached",
+      "Adults replaying conversations or second-guessing decisions",
+      "People lying awake caught in nocturnal worry",
+      "Perfectionists delayed by analysis paralysis",
     ],
-    format: "1:1 Sessions | 50–60 minutes | Deccan Gymkhana, Pune or Online Video",
-    image: "/images/service-burnout.webp",
-    organicPath: "/services/burnout-counselling-pune",
-    tag: "Burnout Recovery",
+    format: "1:1 Sessions | 50–60 minutes | Pune or Online Across India",
+    image: "/images/about-hero-1.webp",
+    organicPath: "/services/overthinking-therapy",
+    tag: "Rumination & Clarity",
     clinicalMethods: [
-      "Energy Audits",
-      "Boundary Architecture",
-      "Nervous-System Regulation",
+      "Cognitive Behavioural Therapy (CBT)",
+      "Secular Mindfulness",
+      "Worry Postponement",
     ],
+    hasFullPage: true,
   },
   {
     id: "self-esteem",
@@ -137,28 +139,123 @@ const ALL_SERVICES: ServiceItem[] = [
       "Boundary Practice",
       "Values Clarification",
     ],
+    hasFullPage: true,
   },
   {
-    id: "overthinking",
-    title: "Overthinking Therapy & Counselling",
-    category: "mindfulness",
-    categoryLabel: "Mindfulness & Habits",
-    audience: "For Breaking Rumination Loops & Late-Night Overanalysis",
-    desc: "Learn how to distinguish constructive problem-solving from repetitive mental loops. Using cognitive techniques and attention training, you build practical habits for stepping out of rumination.",
+    id: "burnout",
+    title: "Burnout & Workplace Stress Counselling",
+    category: "career",
+    categoryLabel: "Career & Workplace",
+    audience: "For High-Pressure Professionals Facing Exhaustion & Cynicism",
+    desc: "Burnout requires more than a weekend break—it calls for recalibrating workload demands, nervous-system recovery, and internal expectations. We equip you to rebuild sustainable energy and workplace boundaries.",
     whoItFor: [
-      "Adults replaying conversations or second-guessing decisions",
-      "People lying awake caught in nocturnal worry",
-      "Perfectionists delayed by analysis paralysis",
+      "Tech professionals, engineers, and corporate managers",
+      "Startup founders and leaders under chronic pressure",
+      "Professionals struggling with work-night sleep disruption",
+      "Employees feeling depleted or emotionally detached",
     ],
-    format: "1:1 Sessions | 50–60 minutes | Pune or Online Across India",
-    image: "/images/mindfulness-calm.webp",
-    organicPath: "/services/overthinking-therapy",
-    tag: "Rumination & Clarity",
+    format: "1:1 Sessions | 50–60 minutes | Deccan Gymkhana, Pune or Online Video",
+    image: "/images/service-burnout.webp",
+    organicPath: "/services/burnout-counselling-pune",
+    tag: "Burnout Recovery",
+    clinicalMethods: [
+      "Energy Audits",
+      "Boundary Architecture",
+      "Nervous-System Regulation",
+    ],
+    hasFullPage: true,
+  },
+  {
+    id: "depression",
+    title: "Depression & Low Mood Therapy",
+    category: "clinical",
+    categoryLabel: "Clinical & Emotional",
+    audience: "For Emotional Numbness, Persistent Fatigue & Low Motivation",
+    desc: "Paced, compassionate psychological work using Behavioural Activation and Cognitive Therapy to help restore momentum, sleep stability, and connection without forced positivity.",
+    whoItFor: [
+      "Individuals experiencing prolonged low mood or apathy",
+      "Those navigating grief, emotional exhaustion, or isolation",
+      "People noticing loss of interest in everyday activities",
+    ],
+    format: "1:1 Sessions | 50–60 minutes | Pune or Online",
+    image: "/images/service-depression.webp",
+    organicPath: "/services/depression-counselling-pune",
+    tag: "Behavioural Activation",
     clinicalMethods: [
       "Cognitive Behavioural Therapy (CBT)",
-      "Secular Mindfulness",
-      "Worry Postponement",
+      "Behavioural Activation",
+      "Routine Stabilization",
     ],
+    hasFullPage: true,
+  },
+  {
+    id: "talk-therapy",
+    title: "Everyday Talk Therapy",
+    category: "clinical",
+    categoryLabel: "Clinical & Emotional",
+    audience: "For Life Transitions, Unspoken Stress & Clear Perspective",
+    desc: "A warm, confidential space to talk through work strain, family shifts, grief, or everyday emotional weight at your own pace—without needing a formal label before reaching out.",
+    whoItFor: [
+      "Adults navigating quiet loneliness or life transitions",
+      "Individuals wanting an impartial, grounded space to think aloud",
+      "First-time therapy clients exploring counselling gently",
+    ],
+    format: "1:1 Sessions | 50–60 minutes | Deccan Gymkhana, Pune or Online",
+    image: "/images/hero-path.webp",
+    organicPath: "/services/talk-therapy-pune",
+    tag: "Reflective Counselling",
+    clinicalMethods: [
+      "Counselling Psychology",
+      "Cognitive Behavioural Therapy (CBT)",
+      "Values Clarification",
+    ],
+    hasFullPage: true,
+  },
+  {
+    id: "relationships",
+    title: "Relationship & Couples Counselling",
+    category: "relationships",
+    categoryLabel: "Relationships & Family",
+    audience: "Communication, Trust & Relational Dynamics",
+    desc: "A structured, impartial container for individuals and partners to identify recurring argument cycles, listen across defensive patterns, and strengthen emotional safety.",
+    whoItFor: [
+      "Partners caught in recurring miscommunication cycles",
+      "Premarital couples building shared foundations",
+      "Individuals working through heartbreak, trust strain, or attachment patterns",
+    ],
+    format: "Couples Sessions | 75 minutes | Individual | 50–60 minutes | Pune or Online",
+    image: "/images/service-relationships.webp",
+    organicPath: "/services/relationship-couples-counselling-pune",
+    tag: "Relationships & Communication",
+    clinicalMethods: [
+      "Counselling Psychology",
+      "Structured Dialogue",
+      "Repair Strategies",
+    ],
+    hasFullPage: true,
+  },
+  {
+    id: "parenting-family",
+    title: "Parenting & Family Well-Being",
+    category: "relationships",
+    categoryLabel: "Relationships & Family",
+    audience: "For Parent-Child Communication, Boundaries & Multi-Gen Homes",
+    desc: "Practical, culturally attuned support for Indian parents and families navigating teen emotions, screen limits, academic pressure, and peaceful dialogue across generations.",
+    whoItFor: [
+      "Parents of school-age children and adolescents",
+      "Joint and multi-generational families managing boundary friction",
+      "Parents supporting anxious, overwhelmed, or withdrawn teens",
+    ],
+    format: "Parent & Family Sessions | 50–75 minutes | Pune or Online",
+    image: "/images/family-parenting.webp",
+    organicPath: "/services/parenting-family-counselling-pune",
+    tag: "Family & Parenting",
+    clinicalMethods: [
+      "Emotional Coaching",
+      "Counselling Psychology",
+      "Collaborative Problem-Solving",
+    ],
+    hasFullPage: true,
   },
   {
     id: "career",
@@ -182,6 +279,7 @@ const ALL_SERVICES: ServiceItem[] = [
       "Values Inventory",
       "Decision Matrix Design",
     ],
+    hasFullPage: true,
   },
   {
     id: "student",
@@ -189,7 +287,7 @@ const ALL_SERVICES: ServiceItem[] = [
     category: "clinical",
     categoryLabel: "Clinical & Emotional",
     audience: "Exam Stress, Emotional Regulation & Teen Guidance",
-    desc: "Calm, non-judgmental support for school and university students managing academic pressure, focus blocks, and emotional overwhelm, with thoughtful parent alignment where helpful.",
+    desc: "Calm, non-judgmental support for school and university students managing academic pressure, exam stress, focus blocks, and emotional overwhelm, with thoughtful parent alignment where helpful.",
     whoItFor: [
       "Competitive exam aspirants and university students",
       "Adolescents balancing parental expectations and identity",
@@ -198,12 +296,105 @@ const ALL_SERVICES: ServiceItem[] = [
     format: "1:1 Sessions | 50–60 minutes | Deccan Gymkhana, Pune or Online",
     image: "/images/service-student.webp",
     organicPath: "/services/student-adolescent-counselling-pune",
-    tag: "Students & Teens",
+    tag: "Students & Exam Stress",
     clinicalMethods: [
       "Study Routine Calibration",
       "Emotional Regulation",
       "Parent-Teen Alignment",
     ],
+    hasFullPage: true,
+  },
+  {
+    id: "mindfulness",
+    title: "Mindfulness & Meditation",
+    category: "mindfulness",
+    categoryLabel: "Mindfulness & Habits",
+    audience: "Secular Attention Training & Daily Mental Steadiness",
+    desc: "Grounded, secular mindfulness and meditation guidance tailored for racing minds, high-stress schedules, and emotional reactivity—practical, evidence-informed, and never preachy.",
+    whoItFor: [
+      "People who feel their mind races too fast to meditate",
+      "Professionals looking for brief workday reset routines",
+      "Clients building calmer emotional responses alongside therapy",
+    ],
+    format: "1:1 Guided Training | 50–60 minutes | Pune or Online Across India",
+    image: "/images/mindfulness-calm.webp",
+    organicPath: "/services/mindfulness-meditation-pune",
+    tag: "Secular Mindfulness",
+    clinicalMethods: [
+      "Secular Mindfulness",
+      "Attention Anchoring",
+      "Paced Breathing",
+    ],
+    hasFullPage: true,
+  },
+  {
+    id: "habits",
+    title: "Behavioural Change & Habit Coaching",
+    category: "mindfulness",
+    categoryLabel: "Mindfulness & Habits",
+    audience: "For Breaking Procrastination, Scroll Loops & Stuck Routines",
+    desc: "Move past willpower battles with applied behavioural psychology: redesign environment cues, untangle emotional avoidance behind procrastination, and build routines that hold up on hard days.",
+    whoItFor: [
+      "Adults stuck in chronic procrastination and consistency gaps",
+      "Professionals resetting sleep, focus, and screen habits",
+      "Clients turning therapy insights into dependable daily action",
+    ],
+    format: "1:1 Sessions | 50–60 minutes | Pune or Online Across India",
+    image: "/images/about-hero-2.webp",
+    organicPath: "/services/behavioural-change-habit-coaching-pune",
+    tag: "Habit Architecture",
+    clinicalMethods: [
+      "Habit Loop Redesign",
+      "Cognitive Behavioural Therapy (CBT)",
+      "Implementation Intentions",
+    ],
+    hasFullPage: true,
+  },
+  {
+    id: "corporate",
+    title: "Corporate Wellness Workshops",
+    category: "career",
+    categoryLabel: "Career & Workplace",
+    audience: "Stress, Burnout & Communication Modules for Teams",
+    desc: "Interactive, evidence-informed workshops led by our psychologists for workplaces, universities, and leadership teams across Pune and India.",
+    whoItFor: [
+      "HR, People Operations, and L&D leaders",
+      "Engineering and product managers leading hybrid teams",
+      "Schools and universities supporting student wellbeing",
+    ],
+    format: "Workshops & Retreats | In-Person Pune or Virtual Pan-India",
+    image: "/images/workshop-corporate.webp",
+    organicPath: "/workshops",
+    tag: "Workshops & L&D",
+    clinicalMethods: [
+      "Burnout Prevention",
+      "Manager Communication",
+      "Psychological Safety",
+    ],
+    hasFullPage: true,
+  },
+  {
+    id: "gen-z-workplace",
+    title: "Gen Z in the Workplace",
+    category: "career",
+    categoryLabel: "Career & Workplace",
+    audience: "Organisational Workshop on Multigenerational Teams & Early-Career Retention",
+    desc: "Help managers, HR teams, and early-career professionals bridge expectations around feedback, autonomy, digital overload, and meaningful collaboration without generational stereotypes.",
+    whoItFor: [
+      "People managers leading early-career & Gen Z talent",
+      "HR & L&D teams designing onboarding and retention programmes",
+      "Multi-generational teams improving feedback clarity",
+    ],
+    format: "90-Min, Half-Day or Multi-Session Workshop | Pune & Virtual India",
+    image: "/images/team-hr.webp",
+    organicPath: "/workshops/gen-z-in-the-workplace-pune",
+    tag: "HR & Manager Workshop",
+    clinicalMethods: [
+      "Psychologically Safe Feedback",
+      "Generational Communication",
+      "L&D Facilitation",
+    ],
+    hasFullPage: true,
   },
   {
     id: "online",
@@ -226,94 +417,30 @@ const ALL_SERVICES: ServiceItem[] = [
       "Digital Reflection Tools",
       "Structured Follow-Ups",
     ],
+    hasFullPage: true,
   },
   {
-    id: "depression",
-    title: "Depression & Low Mood Therapy",
+    id: "prabhat-road",
+    title: "Prabhat Road Clinic, Pune",
     category: "clinical",
     categoryLabel: "Clinical & Emotional",
-    audience: "For Emotional Numbness, Persistent Fatigue & Low Motivation",
-    desc: "Paced, compassionate psychological work using Behavioural Activation and Cognitive Therapy to help restore momentum, sleep stability, and connection without forced positivity.",
+    audience: "Private In-Person Counselling Near Deccan Gymkhana, Pune",
+    desc: "Meet Imran Hussain or Tejaswini Joshi in person at our quiet, private consulting room at Dr. Sripati Shastri Path, near Prabhat Road, Deccan Gymkhana, Pune.",
     whoItFor: [
-      "Individuals experiencing prolonged low mood or apathy",
-      "Those navigating grief, emotional exhaustion, or isolation",
-      "People noticing loss of interest in everyday activities",
+      "Pune residents seeking quiet face-to-face therapy away from home",
+      "Clients across Deccan, Kothrud, Shivaji Nagar, Aundh & Baner",
+      "Individuals and couples preferring in-room sessions",
     ],
-    format: "1:1 Sessions | 50–60 minutes | Pune or Online",
-    image: "/images/service-depression.webp",
-    organicPath: "/services/depression-counselling-pune",
-    tag: "Behavioural Activation",
-    clinicalMethods: [
-      "Cognitive Behavioural Therapy (CBT)",
-      "Behavioural Activation",
-      "Routine Stabilization",
-    ],
-  },
-  {
-    id: "relationships",
-    title: "Relationship & Couples Counselling",
-    category: "relationships",
-    categoryLabel: "Relationships & Family",
-    audience: "Communication, Trust & Family Dynamics",
-    desc: "A structured, impartial container for individuals, partners, and families to identify recurring argument cycles, listen across defensive patterns, and strengthen emotional safety.",
-    whoItFor: [
-      "Partners caught in recurring miscommunication cycles",
-      "Premarital couples building shared foundations",
-      "Parents seeking calmer household communication",
-    ],
-    format: "Couples & Family Sessions | 75 minutes | Pune or Online",
-    image: "/images/service-relationships.webp",
-    organicPath: "/services/relationship-couples-counselling-pune",
-    tag: "Relationships & Communication",
-    clinicalMethods: [
-      "Counselling Psychology",
-      "Structured Dialogue",
-      "Repair Strategies",
-    ],
-  },
-  {
-    id: "trauma",
-    title: "Trauma-Informed & Somatic Counselling",
-    category: "mindfulness",
-    categoryLabel: "Mindfulness & Habits",
-    audience: "For Nervous-System Stabilization & Difficult Past Experiences",
-    desc: "Carefully paced counselling focused on safety, somatic awareness, and gradual processing so difficult past experiences are addressed without overwhelm.",
-    whoItFor: [
-      "Adults carrying relational or childhood emotional wounds",
-      "Individuals noticing chronic hypervigilance or shutdown",
-      "Clients seeking gentle nervous-system stabilization",
-    ],
-    format: "1:1 Sessions | 50–60 minutes | Deccan Gymkhana, Pune or Online",
+    format: "In-Person 1:1 & Couples | 50–75 minutes | Near Prabhat Road, Pune",
     image: "/images/deccan-gymkhana-clinic-pune.webp",
-    organicPath: "/services/trauma-counselling-pune",
-    tag: "Nervous-System Stabilization",
+    organicPath: "/services/counselling-prabhat-road-pune",
+    tag: "Deccan Gymkhana Clinic",
     clinicalMethods: [
+      "In-Person Psychotherapy",
+      "Cognitive Behavioural Therapy (CBT)",
       "Counselling Psychology",
-      "Secular Mindfulness",
-      "Somatic Grounding",
     ],
-  },
-  {
-    id: "corporate",
-    title: "Corporate & Institutional Workshops",
-    category: "career",
-    categoryLabel: "Career & Workplace",
-    audience: "Stress, Burnout & Communication Modules for Teams",
-    desc: "Interactive, evidence-informed workshops led by our psychologists for workplaces, universities, and leadership teams across Pune and India.",
-    whoItFor: [
-      "HR, People Operations, and L&D leaders",
-      "Engineering and product managers leading hybrid teams",
-      "Schools and universities supporting student wellbeing",
-    ],
-    format: "Workshops & Retreats | In-Person Pune or Virtual Pan-India",
-    image: "/images/workshop-corporate.webp",
-    organicPath: "/workshops",
-    tag: "Workshops & L&D",
-    clinicalMethods: [
-      "Burnout Prevention",
-      "Manager Communication",
-      "Psychological Safety",
-    ],
+    hasFullPage: true,
   },
 ];
 
@@ -486,13 +613,13 @@ export default function Services() {
       title: "Stress & Anxiety Counselling in Pune",
       path: "/services/stress-anxiety-counselling-pune",
       badge: "Prabhat Road & Online",
-      desc: "Evidence-based support for generalized stress, panic symptoms, and nervous-system regulation.",
+      desc: "Evidence-based support for generalized stress, panic symptoms, and nervous-system grounding.",
     },
     {
-      title: "Burnout Counselling in Pune",
-      path: "/services/burnout-counselling-pune",
-      badge: "Workplace & Fatigue",
-      desc: "Recover from work burnout with CBT, rest calibration, and boundary tools.",
+      title: "Overthinking Therapy & Counselling",
+      path: "/services/overthinking-therapy",
+      badge: "Rumination Loops",
+      desc: "Cognitive techniques for interrupting worry cycles and late-night mental loops.",
     },
     {
       title: "Self-Esteem Therapy in Pune",
@@ -501,10 +628,34 @@ export default function Services() {
       desc: "Build a steadier sense of self-worth and step out of habitual people-pleasing.",
     },
     {
-      title: "Overthinking Therapy & Counselling",
-      path: "/services/overthinking-therapy",
-      badge: "Rumination Loops",
-      desc: "Cognitive techniques for interrupting worry cycles and late-night mental loops.",
+      title: "Burnout Counselling in Pune",
+      path: "/services/burnout-counselling-pune",
+      badge: "Workplace & Fatigue",
+      desc: "Recover from work burnout with CBT, rest calibration, and boundary tools.",
+    },
+    {
+      title: "Depression & Low Mood Therapy",
+      path: "/services/depression-counselling-pune",
+      badge: "Prabhat Road & Online",
+      desc: "Paced Behavioural Activation and compassionate support for low energy and numbness.",
+    },
+    {
+      title: "Everyday Talk Therapy in Pune",
+      path: "/services/talk-therapy-pune",
+      badge: "Reflective Space",
+      desc: "Open, grounded counselling for life transitions, stress, and emotional clarity.",
+    },
+    {
+      title: "Relationship & Couples Counselling",
+      path: "/services/relationship-couples-counselling-pune",
+      badge: "Partners & Trust",
+      desc: "Practical dialogue tools for recurring conflict, trust, and attachment patterns.",
+    },
+    {
+      title: "Parenting & Family Well-Being",
+      path: "/services/parenting-family-counselling-pune",
+      badge: "Parents & Families",
+      desc: "Parent-child communication, calm household boundaries, and multi-generational support.",
     },
     {
       title: "Career Counselling in Pune",
@@ -515,8 +666,32 @@ export default function Services() {
     {
       title: "Student & Adolescent Counselling",
       path: "/services/student-adolescent-counselling-pune",
-      badge: "Teens & Exams",
+      badge: "Teens & Exam Stress",
       desc: "Support for exam stress, emotional regulation, and academic pressure with parent alignment.",
+    },
+    {
+      title: "Mindfulness & Meditation",
+      path: "/services/mindfulness-meditation-pune",
+      badge: "Attention & Steadiness",
+      desc: "Secular attention training and paced breathing tailored for busy minds.",
+    },
+    {
+      title: "Behavioural Change & Habit Coaching",
+      path: "/services/behavioural-change-habit-coaching-pune",
+      badge: "Daily Systems",
+      desc: "Applied habit architecture to replace procrastination and build sustainable routines.",
+    },
+    {
+      title: "Corporate Wellness Workshops",
+      path: "/workshops",
+      badge: "Organisations & Schools",
+      desc: "Structured stress, burnout, and workplace communication programs.",
+    },
+    {
+      title: "Gen Z in the Workplace",
+      path: "/workshops/gen-z-in-the-workplace-pune",
+      badge: "HR & Team Leadership",
+      desc: "Developmental psychology workshop on feedback, autonomy, and team retention.",
     },
     {
       title: "Online Therapy Across India",
@@ -529,24 +704,6 @@ export default function Services() {
       path: "/services/counselling-prabhat-road-pune",
       badge: "In-Person Pune",
       desc: `Visit our clinic at ${CLINIC_ADDRESS}.`,
-    },
-    {
-      title: "Corporate Wellness Workshops",
-      path: "/workshops",
-      badge: "Organisations & Schools",
-      desc: "Structured stress, burnout, and workplace communication programs.",
-    },
-    {
-      title: "Depression & Low Mood Therapy",
-      path: "/services/depression-counselling-pune",
-      badge: "Prabhat Road & Online",
-      desc: "Paced Behavioural Activation and compassionate support for low energy and numbness.",
-    },
-    {
-      title: "Relationship & Couples Counselling",
-      path: "/services/relationship-couples-counselling-pune",
-      badge: "Partners & Family",
-      desc: "Practical dialogue tools for recurring conflict, trust, and family dynamics.",
     },
   ];
 
@@ -759,13 +916,27 @@ export default function Services() {
                   </div>
 
                   <div className="p-6 pt-3 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-stone-100">
-                    <Link
-                      to={service.organicPath}
-                      className="w-full sm:w-auto text-xs font-bold text-[#0B3A42] hover:text-[#A43F23] transition-colors flex items-center justify-center gap-1.5 py-2.5 min-h-[44px]"
-                    >
-                      <span>View Service Details &amp; FAQs</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </Link>
+                    {service.hasFullPage !== false ? (
+                      <Link
+                        to={service.organicPath}
+                        className="w-full sm:w-auto text-xs font-bold text-[#0B3A42] hover:text-[#A43F23] transition-colors flex items-center justify-center gap-1.5 py-2.5 min-h-[44px]"
+                      >
+                        <span>View Service Details &amp; FAQs</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedServiceForInquiry(service);
+                          setInquirySubmittedSuccessfully(false);
+                        }}
+                        className="w-full sm:w-auto text-xs font-bold text-[#0B3A42] hover:text-[#A43F23] transition-colors flex items-center justify-center gap-1.5 py-2.5 min-h-[44px] cursor-pointer"
+                      >
+                        <span>Enquire</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    )}
 
                     <div className="flex items-center gap-2 w-full sm:w-auto">
                       <button
@@ -776,7 +947,7 @@ export default function Services() {
                         }}
                         className="flex-1 sm:flex-initial px-4 py-2.5 min-h-[44px] rounded-xl bg-stone-100 hover:bg-stone-200 text-[#0B3A42] text-xs font-semibold tracking-wide transition-colors cursor-pointer"
                       >
-                        Send Inquiry
+                        Enquire
                       </button>
                       <button
                         type="button"

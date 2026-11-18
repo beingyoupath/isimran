@@ -29,6 +29,7 @@ import {
 } from "lucide-react";
 import GeminiChatbot from "./GeminiChatbot";
 import AdminInquiriesModal from "./AdminInquiriesModal";
+import SocialLinksRow from "./SocialLinksRow";
 import { useAuth } from "../contexts/AuthContext";
 import {
   CALENDLY_URL,
@@ -214,7 +215,7 @@ export const SERVICE_CATEGORIES: ServiceMenuCategory[] = [
     badge: "Individual Therapy",
     headline: "Evidence-Based Counselling & Cognitive Care",
     description:
-      "Structured CBT, somatic regulation, and compassionate psychotherapy for anxiety, overthinking, low mood, and self-worth.",
+      "Structured CBT, nervous-system grounding, and compassionate psychotherapy for anxiety, overthinking, low mood, self-worth, and everyday talk therapy.",
     image: "/images/service-anxiety.webp",
     items: [
       {
@@ -242,7 +243,7 @@ export const SERVICE_CATEGORIES: ServiceMenuCategory[] = [
         icon: Compass,
       },
       {
-        title: "Self-Esteem Therapy in Pune",
+        title: "Self-Esteem & Identity Therapy",
         subtitle:
           "Soften the inner critic, build boundaries, and strengthen self-trust",
         path: "/services/self-esteem-therapy-pune",
@@ -254,36 +255,28 @@ export const SERVICE_CATEGORIES: ServiceMenuCategory[] = [
         subtitle:
           "Steady, compassionate support for emotional numbness and low vitality",
         path: "/services/depression-counselling-pune",
-        tag: "Behavioral Activation",
+        tag: "Behavioural Activation",
         icon: Shield,
       },
       {
-        title: "Trauma-Informed Counselling",
+        title: "Everyday Talk Therapy",
         subtitle:
-          "Paced nervous system stabilization and safe emotional processing",
-        path: "/services/trauma-counselling-pune",
-        tag: "Somatic Safety",
+          "Confidential, unhurried space for life transitions and daily emotional weight",
+        path: "/services/talk-therapy-pune",
+        tag: "Talk Therapy",
         icon: ShieldCheck,
       },
     ],
   },
   {
     id: "relationships",
-    name: "Couples, Students & Family",
-    badge: "Interpersonal & Youth Care",
-    headline: "Relationships, Student Resilience & Family Support",
+    name: "Couples, Parenting & Students",
+    badge: "Interpersonal & Family Care",
+    headline: "Relationships, Parenting, Youth & Clinic Support",
     description:
-      "Guided therapy for partners, school and college students facing exam stress, and families building calmer communication.",
+      "Guided therapy for partners, parents raising teens in India, school and college students managing exam stress, and in-person visits in Pune.",
     image: "/images/service-relationships.webp",
     items: [
-      {
-        title: "Student & Adolescent Counselling",
-        subtitle:
-          "Exam stress, emotional regulation, and clarity for teens and young adults",
-        path: "/services/student-adolescent-counselling-pune",
-        tag: "Teens & Students",
-        icon: GraduationCap,
-      },
       {
         title: "Relationship & Couples Counselling",
         subtitle:
@@ -291,6 +284,22 @@ export const SERVICE_CATEGORIES: ServiceMenuCategory[] = [
         path: "/services/relationship-couples-counselling-pune",
         tag: "Couples & Premarital",
         icon: Heart,
+      },
+      {
+        title: "Parenting & Family Well-Being",
+        subtitle:
+          "Parent-child connection, teen boundaries, and calmer multi-generational homes",
+        path: "/services/parenting-family-counselling-pune",
+        tag: "Parents & Family",
+        icon: Users,
+      },
+      {
+        title: "Student & Adolescent Counselling",
+        subtitle:
+          "Exam stress, emotional regulation, and clarity for teens and young adults",
+        path: "/services/student-adolescent-counselling-pune",
+        tag: "Teens & Exam Stress",
+        icon: GraduationCap,
       },
       {
         title: "Prabhat Road Clinic, Pune",
@@ -304,15 +313,15 @@ export const SERVICE_CATEGORIES: ServiceMenuCategory[] = [
   },
   {
     id: "career",
-    name: "Career & Burnout Care",
+    name: "Career, Workplace & Workshops",
     badge: "Work & Leadership",
     headline: "Career Clarity, Burnout Recovery & Team Workshops",
     description:
-      "Evidence-informed counselling for professionals, students, and workplaces navigating burnout, career transitions, and team wellbeing.",
+      "Evidence-informed counselling for professionals and workplaces navigating burnout, career transitions, and Gen Z workplace dynamics.",
     image: "/images/service-career.webp",
     items: [
       {
-        title: "Burnout Counselling in Pune",
+        title: "Burnout & Workplace Stress",
         subtitle:
           "Recover from workplace exhaustion with CBT and nervous-system regulation",
         path: "/services/burnout-counselling-pune",
@@ -331,23 +340,47 @@ export const SERVICE_CATEGORIES: ServiceMenuCategory[] = [
         title: "Corporate Wellness Workshops",
         subtitle:
           "Structured stress, burnout, and communication workshops for teams",
-        path: "/services/corporate-workshops-pune",
+        path: "/workshops",
         tag: "Organisations",
         icon: Users,
+      },
+      {
+        title: "Gen Z in the Workplace",
+        subtitle:
+          "Developmental psychology workshop for HR and managers leading early-career teams",
+        path: "/workshops/gen-z-in-the-workplace-pune",
+        tag: "HR & Leadership",
+        icon: Briefcase,
       },
     ],
   },
   {
-    id: "online",
-    name: "Online Therapy India",
-    badge: "Pan-India Video Sessions",
-    headline: "Confidential Online Counselling Across India",
+    id: "mindfulness",
+    name: "Mindfulness, Habits & Online",
+    badge: "Mindfulness & Access",
+    headline: "Secular Mindfulness, Habit Coaching & Online Therapy",
     description:
-      "Private video consultations with qualified psychologists available across India, including evening and weekend slots.",
-    image: "/images/service-online.webp",
+      "Practical attention training, behavioural habit design, and confidential pan-India online video sessions.",
+    image: "/images/mindfulness-calm.webp",
     items: [
       {
-        title: "Online Therapy in India",
+        title: "Mindfulness & Meditation",
+        subtitle:
+          "Secular attention anchoring and paced breathing tailored for busy minds",
+        path: "/services/mindfulness-meditation-pune",
+        tag: "Secular Mindfulness",
+        icon: Sparkles,
+      },
+      {
+        title: "Behavioural Change & Habit Coaching",
+        subtitle:
+          "Overcome procrastination and build sustainable routines with habit science",
+        path: "/services/behavioural-change-habit-coaching-pune",
+        tag: "Habit Coaching",
+        icon: Compass,
+      },
+      {
+        title: "Online Therapy Across India",
         subtitle:
           "Confidential 1-on-1 video counselling across Mumbai, Bengaluru, Delhi & nationwide",
         path: "/services/online-therapy-india",
@@ -461,7 +494,7 @@ export default function Layout() {
       path: "/services/burnout-counselling-pune",
     },
     {
-      name: "Self-Esteem Therapy in Pune",
+      name: "Self-Esteem & Identity Therapy",
       path: "/services/self-esteem-therapy-pune",
     },
     {
@@ -469,16 +502,24 @@ export default function Layout() {
       path: "/services/overthinking-therapy",
     },
     {
-      name: "Career Counselling in Pune",
-      path: "/services/career-counselling-pune",
+      name: "Depression & Low Mood",
+      path: "/services/depression-counselling-pune",
     },
     {
-      name: "Student & Adolescent Counselling",
-      path: "/services/student-adolescent-counselling-pune",
+      name: "Everyday Talk Therapy",
+      path: "/services/talk-therapy-pune",
     },
     {
-      name: "Online Therapy Across India",
-      path: "/services/online-therapy-india",
+      name: "Relationships & Couples",
+      path: "/services/relationship-couples-counselling-pune",
+    },
+    {
+      name: "Parenting & Family Well-Being",
+      path: "/services/parenting-family-counselling-pune",
+    },
+    {
+      name: "Mindfulness & Habit Coaching",
+      path: "/services/mindfulness-meditation-pune",
     },
   ];
 
@@ -1077,6 +1118,12 @@ export default function Layout() {
                 </Link>
                 .
               </p>
+              <div className="pt-2">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-[#F8C988] block mb-2.5">
+                  Connect &amp; Follow
+                </span>
+                <SocialLinksRow variant="dark" />
+              </div>
             </div>
 
             {/* Col 2: Specializations (Canonical URLs) */}
@@ -1125,6 +1172,27 @@ export default function Layout() {
                 <li>
                   <Link to="/workshops" className="hover:text-[#E6A157] transition-colors inline-block py-0.5">
                     Corporate Workshops
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/workshops/gen-z-in-the-workplace-pune"
+                    className="hover:text-[#E6A157] transition-colors inline-block py-0.5"
+                  >
+                    Gen Z in the Workplace
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/services/behavioural-change-habit-coaching-pune"
+                    className="hover:text-[#E6A157] transition-colors inline-block py-0.5"
+                  >
+                    Behavioural Change &amp; Habits
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/services/online-therapy-india" className="hover:text-[#E6A157] transition-colors inline-block py-0.5">
+                    Online Therapy Across India
                   </Link>
                 </li>
                 <li>

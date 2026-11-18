@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Search,
@@ -13,6 +13,10 @@ import {
   Waves,
   UserCheck,
   Calendar,
+  ChevronLeft,
+  ChevronRight,
+  Pause,
+  Play,
 } from "lucide-react";
 import { SEO } from "../components/SEO";
 import Breadcrumbs from "../components/Breadcrumbs";
@@ -26,6 +30,11 @@ export default function Resources() {
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isUserPaused, setIsUserPaused] = useState(false);
+  const [isHoverPaused, setIsHoverPaused] = useState(false);
+  const [isFocusPaused, setIsFocusPaused] = useState(false);
+  const [isTouchPaused, setIsTouchPaused] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   const breadcrumbs = [{ name: "Resources", url: "/resources" }];
 
@@ -47,6 +56,32 @@ export default function Resources() {
       desc: "From understanding work burnout to setting clear boundaries with family, explore structured psychoeducational reading curated by our psychologists.",
     },
   ];
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setPrefersReducedMotion(mediaQuery.matches);
+    const handleChange = (event: MediaQueryListEvent) => {
+      setPrefersReducedMotion(event.matches);
+    };
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
+
+  const isCarouselPaused =
+    isUserPaused ||
+    isHoverPaused ||
+    isFocusPaused ||
+    isTouchPaused ||
+    prefersReducedMotion;
+
+  useEffect(() => {
+    if (isCarouselPaused) return;
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [isCarouselPaused, heroSlides.length]);
 
   const filteredArticles = useMemo(() => {
     return RESOURCE_ARTICLES.filter((article) => {
@@ -101,11 +136,17 @@ export default function Resources() {
       <Breadcrumbs items={breadcrumbs} />
 
       {/* Hero Header Carousel — All slides stay in raw HTML DOM; Slide 0 provides the single semantic <h1> */}
-      <section className="section-dark bg-[#0B3A42] text-[#FAF9F6] py-14 md:py-18 relative overflow-hidden">
+      <section
+        className="section-dark bg-[#0B3A42] text-[#FAF9F6] py-14 md:py-18 relative overflow-hidden"
+        onMouseEnter={() => setIsHoverPaused(true)}
+        onMouseLeave={() => setIsHoverPaused(false)}
+        onTouchStart={() => setIsTouchPaused(true)}
+        onTouchEnd={() => setIsTouchPaused(false)}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-xs font-semibold uppercase tracking-wider text-amber-200 mb-4 border border-white/10">
-              <Sparkles className="w-3.5 h-3.5" />
+              <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
               <span>Clinical &amp; Psychoeducational Resource Library</span>
             </div>
 
@@ -137,20 +178,78 @@ export default function Resources() {
               </div>
             ))}
 
-            <div className="flex items-center gap-2 mt-8">
-              {heroSlides.map((_, idx) => (
+            <div className="flex flex-wrap items-center gap-3 mt-8">
+              <div
+                className="flex items-center gap-2"
+                onFocusCapture={() => setIsFocusPaused(true)}
+                onBlurCapture={(e) => {
+                  if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+                    setIsFocusPaused(false);
+                  }
+                }}
+              >
                 <button
-                  key={idx}
                   type="button"
-                  onClick={() => setCurrentSlide(idx)}
-                  className={`min-h-[24px] rounded-full transition-all cursor-pointer ${
-                    currentSlide === idx
-                      ? "w-8 h-3 bg-[#E6A157]"
-                      : "w-3 h-3 bg-white/50 hover:bg-white/80"
-                  }`}
-                  aria-label={`View slide ${idx + 1}`}
-                />
-              ))}
+                  onClick={() =>
+                    setCurrentSlide((prev) =>
+                      prev === 0 ? heroSlides.length - 1 : prev - 1
+                    )
+                  }
+                  className="min-w-[40px] min-h-[40px] w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-[#FAF9F6] border border-white/25 flex items-center justify-center transition-colors cursor-pointer"
+                  aria-label="Previous slide"
+                >
+                  <ChevronLeft className="w-4 h-4" aria-hidden="true" />
+                </button>
+
+                <div className="flex items-center gap-2 px-1">
+                  {heroSlides.map((_, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => setCurrentSlide(idx)}
+                      className={`min-h-[24px] rounded-full transition-all cursor-pointer ${
+                        currentSlide === idx
+                          ? "w-8 h-3 bg-[#E6A157]"
+                          : "w-3 h-3 bg-white/50 hover:bg-white/80"
+                      }`}
+                      aria-label={`View slide ${idx + 1}`}
+                      aria-current={currentSlide === idx ? "true" : undefined}
+                    />
+                  ))}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
+                  }
+                  className="min-w-[40px] min-h-[40px] w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-[#FAF9F6] border border-white/25 flex items-center justify-center transition-colors cursor-pointer"
+                  aria-label="Next slide"
+                >
+                  <ChevronRight className="w-4 h-4" aria-hidden="true" />
+                </button>
+              </div>
+
+              {!prefersReducedMotion && (
+                <button
+                  type="button"
+                  onClick={() => setIsUserPaused((prev) => !prev)}
+                  aria-pressed={isUserPaused}
+                  className="min-h-[40px] px-3.5 py-2 rounded-full bg-white/10 hover:bg-white/20 text-[#FAF9F6] border border-white/25 text-xs font-semibold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  {isUserPaused ? (
+                    <>
+                      <Play className="w-3.5 h-3.5 text-[#E6A157]" aria-hidden="true" />
+                      <span>Play</span>
+                    </>
+                  ) : (
+                    <>
+                      <Pause className="w-3.5 h-3.5 text-[#E6A157]" aria-hidden="true" />
+                      <span>Pause</span>
+                    </>
+                  )}
+                </button>
+              )}
             </div>
           </div>
         </div>

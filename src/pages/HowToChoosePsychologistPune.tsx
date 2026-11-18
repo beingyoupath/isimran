@@ -27,7 +27,7 @@ const PILLAR_FAQS = [
   {
     question: "How do I know if a therapist is the right fit during the first call?",
     answer:
-      "Notice whether you feel listened to rather than rushed or lectured, whether they explain their method (such as CBT or somatic work) clearly, and whether fees, session length, and confidentiality boundaries are shared openly upfront.",
+      "Notice whether you feel listened to rather than rushed or lectured, whether they explain their method (such as CBT or nervous-system grounding) clearly, and whether fees, session length, and confidentiality boundaries are shared openly upfront.",
   },
   {
     question: "Should I pick an in-person psychologist near Prabhat Road or online therapy?",
@@ -123,7 +123,7 @@ export default function HowToChoosePsychologistPune() {
                   Psychiatrists vs Life Coaches
                 </h3>
                 <p className="text-sm text-stone-700">
-                  Psychiatrists are medical doctors (MBBS, MD) licensed to diagnose medical conditions and prescribe psychiatric medication. Life coaches typically lack clinical mental health training and should not treat anxiety disorders, trauma, or depression.
+                  Psychiatrists are medical doctors (MBBS, MD) licensed to diagnose medical conditions and prescribe psychiatric medication. Life coaches typically lack clinical mental health training and should not treat anxiety disorders or depression.
                 </p>
               </div>
             </div>
