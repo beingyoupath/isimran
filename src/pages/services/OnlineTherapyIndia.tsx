@@ -106,6 +106,9 @@ export default function OnlineTherapyIndia() {
           { label: "Burnout Counselling", to: "/services/burnout-counselling-pune" },
           { label: "Stress & Anxiety Counselling", to: "/services/stress-anxiety-counselling-pune" },
           { label: "Meet Our Psychologists", to: "/about" },
+          { label: "Myth: Seeking Counselling Makes You Weak", to: "/resources/myth-seeking-counselling-makes-you-weak" },
+          { label: "Guide: Nervous-System Down-Regulation", to: "/resources/nervous-system-down-regulation-guide" },
+          { label: "Article: Decision Fatigue & Mental Clarity", to: "/resources/decision-fatigue-protecting-mental-clarity" },
         ],
         bookingServiceName: "Online Therapy",
       }}

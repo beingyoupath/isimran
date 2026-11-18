@@ -100,6 +100,8 @@ export default function PrabhatRoadCounsellingPune() {
           { label: "CBT Therapy in Pune & Online", to: "/services/cbt-therapy-pune" },
           { label: "All Pune Areas We Serve", to: "/areas-we-serve" },
           { label: "Contact & Directions", to: "/contact" },
+          { label: "Myth: Therapy Is Only for Rock Bottom", to: "/resources/myth-therapy-is-only-for-rock-bottom" },
+          { label: "Myth: Seeking Counselling Makes You Weak", to: "/resources/myth-seeking-counselling-makes-you-weak" },
         ],
         bookingServiceName: "Prabhat Road Pune Clinic Session",
       }}

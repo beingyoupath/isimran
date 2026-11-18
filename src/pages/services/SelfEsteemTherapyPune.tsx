@@ -100,6 +100,9 @@ export default function SelfEsteemTherapyPune() {
           { label: "CBT Therapy in Pune", to: "/services/cbt-therapy-pune" },
           { label: "Overthinking Therapy", to: "/services/overthinking-therapy" },
           { label: "Relationship & Couples Counselling", to: "/services/relationship-couples-counselling-pune" },
+          { label: "Article: Understanding the Fawn Response", to: "/resources/overcoming-chronic-people-pleasing" },
+          { label: "Article: Imposter Syndrome in Corporate Tech", to: "/resources/imposter-syndrome-corporate-tech" },
+          { label: "Myth: Toxic Positivity & Emotional Honesty", to: "/resources/myth-toxic-positivity-good-vibes-only" },
         ],
         bookingServiceName: "Self-Esteem Therapy",
       }}

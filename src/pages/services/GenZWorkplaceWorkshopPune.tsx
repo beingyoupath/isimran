@@ -113,7 +113,8 @@ export default function GenZWorkplaceWorkshopPune() {
           { label: "Corporate Wellness Workshops Overview", to: "/workshops" },
           { label: "Burnout Counselling in Pune", to: "/services/burnout-counselling-pune" },
           { label: "Career Counselling in Pune", to: "/services/career-counselling-pune" },
-          { label: "Services Overview", to: "/services" },
+          { label: "Article: Imposter Syndrome in Corporate Tech", to: "/resources/imposter-syndrome-corporate-tech" },
+          { label: "Article: Setting Boundaries When Ambitious", to: "/resources/setting-boundaries-when-ambitious" },
         ],
         bookingServiceName: "Gen Z in the Workplace Workshop",
       }}

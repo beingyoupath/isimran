@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import compression from 'compression';
 import fs from 'node:fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -11,7 +12,40 @@ const __dirname = path.dirname(__filename);
 
 const PORT = Number(process.env.PORT) || 3000;
 const isProduction = process.env.NODE_ENV === 'production';
+const SITE_ENV = (process.env.SITE_ENV || 'production').trim().toLowerCase();
+const INDEXNOW_KEY = (process.env.INDEXNOW_KEY || 'REPLACE_ME').trim();
+const CANONICAL_ORIGIN = 'https://www.beingyoupath.com';
 const DEFAULT_LEAD_RECIPIENT = 'beingyoupath@gmail.com';
+const RETIRED_REDIRECTS: Record<string, string> = {
+  '/services/trauma-counselling-pune': '/services/stress-anxiety-counselling-pune',
+  '/services/corporate-workshops-pune': '/workshops',
+};
+
+function getRequestMeta(req: express.Request) {
+  const rawProto = (
+    (req.headers['x-forwarded-proto'] as string) ||
+    req.protocol ||
+    'http'
+  )
+    .split(',')[0]
+    .trim()
+    .toLowerCase();
+  const rawHost = (
+    (req.headers['x-forwarded-host'] as string) ||
+    req.headers.host ||
+    ''
+  )
+    .split(',')[0]
+    .trim()
+    .toLowerCase();
+  const hostWithoutPort = rawHost.split(':')[0];
+  const isStaging =
+    SITE_ENV === 'staging' ||
+    hostWithoutPort.endsWith('.ai.studio') ||
+    hostWithoutPort.endsWith('.run.app') ||
+    hostWithoutPort.includes('.aistudio.');
+  return { rawProto, rawHost, hostWithoutPort, isStaging };
+}
 
 const SYSTEM_INSTRUCTION = `You are Path Guide, an AI assistant at Being You Path in Pune, India. You are an AI assistant, not a clinician, and you cannot diagnose, prescribe, or provide therapy.
 
@@ -197,10 +231,12 @@ async function sendEmailViaProvider(payload: EmailPayload): Promise<EmailSendOut
 
 async function startServer() {
   const app = express();
+  app.set('trust proxy', true);
   app.disable('x-powered-by');
+  app.use(compression({ threshold: 256 }));
 
-  // Ensure Accept-CH / Critical-CH / client-hint headers are never sent
-  app.use((_req, res, next) => {
+  // Ensure Accept-CH / Critical-CH / client-hint headers are never sent + apply HSTS & staging guard
+  app.use((req, res, next) => {
     res.removeHeader('Accept-CH');
     res.removeHeader('Critical-CH');
     res.removeHeader('Accept-CH-Lifetime');
@@ -212,10 +248,115 @@ async function startServer() {
       }
       return originalSetHeader(name, value);
     }) as typeof res.setHeader;
+
+    const { rawProto, hostWithoutPort, isStaging } = getRequestMeta(req);
+    if (rawProto === 'https' || hostWithoutPort === 'www.beingyoupath.com') {
+      res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+    }
+    if (isStaging) {
+      res.setHeader('X-Robots-Tag', 'noindex, nofollow');
+    }
+    next();
+  });
+
+  // Single-hop 301 canonical enforcement: https + www + lowercase + no trailing slash + retired redirects
+  app.use((req, res, next) => {
+    const reqPath = req.path || '/';
+    if (
+      reqPath.startsWith('/api/') ||
+      reqPath.startsWith('/@') ||
+      reqPath.startsWith('/src/') ||
+      reqPath.startsWith('/node_modules/')
+    ) {
+      return next();
+    }
+
+    const queryIndex = req.originalUrl.indexOf('?');
+    const search = queryIndex >= 0 ? req.originalUrl.slice(queryIndex) : '';
+    const { rawProto, hostWithoutPort } = getRequestMeta(req);
+    const isApexOrWwwProd =
+      hostWithoutPort === 'beingyoupath.com' || hostWithoutPort === 'www.beingyoupath.com';
+    const isFileLike =
+      reqPath === `/${INDEXNOW_KEY}.txt` || /\.[a-zA-Z0-9]+$/.test(reqPath);
+
+    let targetPath = reqPath;
+    if (!isFileLike) {
+      if (targetPath.length > 1 && targetPath.endsWith('/')) {
+        targetPath = targetPath.replace(/\/+$/, '') || '/';
+      }
+      targetPath = targetPath.toLowerCase();
+      if (RETIRED_REDIRECTS[targetPath]) {
+        targetPath = RETIRED_REDIRECTS[targetPath];
+      }
+    }
+
+    if (isApexOrWwwProd) {
+      if (
+        rawProto !== 'https' ||
+        hostWithoutPort === 'beingyoupath.com' ||
+        targetPath !== reqPath
+      ) {
+        return res.redirect(301, `${CANONICAL_ORIGIN}${targetPath}${search}`);
+      }
+    } else if (targetPath !== reqPath) {
+      return res.redirect(301, `${targetPath}${search}`);
+    }
+
+    if (reqPath.startsWith('/assets/') || reqPath.startsWith('/images/')) {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    }
+
     next();
   });
 
   app.use(express.json({ limit: '1mb' }));
+
+  app.use('/api', (_req, res, next) => {
+    res.setHeader('X-Robots-Tag', 'noindex, nofollow');
+    next();
+  });
+
+  app.get('/robots.txt', (req, res, next) => {
+    const { isStaging } = getRequestMeta(req);
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=300, must-revalidate');
+    if (isStaging) {
+      res.setHeader('X-Robots-Tag', 'noindex, nofollow');
+      return res.status(200).send('User-agent: *\nDisallow: /\n');
+    }
+
+    const candidates = isProduction
+      ? [path.resolve(__dirname, 'dist', 'robots.txt'), path.resolve(__dirname, 'public', 'robots.txt')]
+      : [path.resolve(__dirname, 'public', 'robots.txt'), path.resolve(__dirname, 'dist', 'robots.txt')];
+    const resolvedFile = candidates.find((p) => fs.existsSync(p));
+    if (!resolvedFile) return next();
+    return res.status(200).sendFile(resolvedFile);
+  });
+
+  app.get(['/sitemap.xml', '/llms.txt', '/resources/feed.xml'], (req, res, next) => {
+    const fileName = req.path.replace(/^\/+/, '');
+    const candidates = isProduction
+      ? [path.resolve(__dirname, 'dist', fileName), path.resolve(__dirname, 'public', fileName)]
+      : [path.resolve(__dirname, 'public', fileName), path.resolve(__dirname, 'dist', fileName)];
+    const resolvedFile = candidates.find((p) => fs.existsSync(p));
+    if (!resolvedFile) return next();
+
+    const contentType = fileName.endsWith('feed.xml')
+      ? 'application/rss+xml; charset=utf-8'
+      : fileName.endsWith('.xml')
+        ? 'application/xml; charset=utf-8'
+        : 'text/plain; charset=utf-8';
+
+    res.setHeader('Content-Type', contentType);
+    res.setHeader('Cache-Control', 'public, max-age=3600, must-revalidate');
+    return res.status(200).sendFile(resolvedFile);
+  });
+
+  app.get(`/${INDEXNOW_KEY}.txt`, (_req, res) => {
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+    return res.status(200).send(INDEXNOW_KEY);
+  });
 
   app.get('/api/health', (_req, res) => {
     const emailInfo = getEmailProviderInfo();
@@ -541,14 +682,6 @@ async function startServer() {
     }
   });
 
-  // Explicit 301 redirects for retired service URLs (works in both dev and production)
-  app.get(['/services/trauma-counselling-pune', '/services/trauma-counselling-pune/'], (_req, res) => {
-    res.redirect(301, '/services/stress-anxiety-counselling-pune');
-  });
-  app.get(['/services/corporate-workshops-pune', '/services/corporate-workshops-pune/'], (_req, res) => {
-    res.redirect(301, '/workshops');
-  });
-
   if (!isProduction) {
     const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
@@ -562,6 +695,7 @@ async function startServer() {
         return next();
       }
       try {
+        const { isStaging } = getRequestMeta(req);
         const rawTemplate = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
         const transformedTemplate = await vite.transformIndexHtml(req.originalUrl, rawTemplate);
         const { render } = await vite.ssrLoadModule('/src/entry-server.tsx');
@@ -573,11 +707,22 @@ async function startServer() {
         if (req.path === '/hi' || req.path.startsWith('/hi/')) {
           finalHtml = finalHtml.replace('<html lang="en-IN">', '<html lang="hi-IN">');
         }
+        if (isStaging) {
+          finalHtml = finalHtml.replace(
+            /(<meta[^>]*name=["']robots["'][^>]*content=["'])[^"']*(["'])/i,
+            '$1noindex, nofollow$2'
+          );
+        }
 
-        res
-          .status(isNotFound ? 404 : 200)
-          .set({ 'Content-Type': 'text/html; charset=utf-8' })
-          .end(finalHtml);
+        const headers: Record<string, string> = {
+          'Content-Type': 'text/html; charset=utf-8',
+          'Cache-Control': isNotFound ? 'no-cache' : 'public, max-age=300, must-revalidate',
+        };
+        if (isStaging || isNotFound) {
+          headers['X-Robots-Tag'] = 'noindex, nofollow';
+        }
+
+        res.status(isNotFound ? 404 : 200).set(headers).end(finalHtml);
       } catch (err) {
         vite.ssrFixStacktrace(err as Error);
         next(err);
@@ -585,9 +730,23 @@ async function startServer() {
     });
   } else {
     const distPath = path.resolve(__dirname, 'dist');
-    app.use(express.static(distPath, { index: false, redirect: false }));
+    app.use(
+      express.static(distPath, {
+        index: false,
+        redirect: false,
+        setHeaders: (res, filePath) => {
+          if (
+            filePath.includes(`${path.sep}assets${path.sep}`) ||
+            filePath.includes(`${path.sep}images${path.sep}`)
+          ) {
+            res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+          }
+        },
+      })
+    );
 
     app.get('*', (req, res) => {
+      const { isStaging } = getRequestMeta(req);
       const cleanPath = req.path.length > 1 ? req.path.replace(/\/+$/, '') : req.path;
       const targetHtml =
         cleanPath === '/'
@@ -599,10 +758,24 @@ async function startServer() {
           targetHtml.startsWith(distPath + path.sep)) &&
         fs.existsSync(targetHtml)
       ) {
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.setHeader('Cache-Control', 'public, max-age=300, must-revalidate');
+        if (isStaging) {
+          res.setHeader('X-Robots-Tag', 'noindex, nofollow');
+          const html = fs
+            .readFileSync(targetHtml, 'utf-8')
+            .replace(
+              /(<meta[^>]*name=["']robots["'][^>]*content=["'])[^"']*(["'])/i,
+              '$1noindex, nofollow$2'
+            );
+          return res.status(200).send(html);
+        }
         return res.status(200).sendFile(targetHtml);
       }
 
       const notFoundHtml = path.join(distPath, '404.html');
+      res.setHeader('X-Robots-Tag', 'noindex, nofollow');
+      res.setHeader('Cache-Control', 'no-cache');
       if (fs.existsSync(notFoundHtml)) {
         return res.status(404).sendFile(notFoundHtml);
       }

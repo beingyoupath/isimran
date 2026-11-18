@@ -252,7 +252,7 @@ export default function Home() {
     <div className="bg-soft-sand">
       <SEO
         title="Psychologist & Counselling in Pune | Being You Path"
-        description="CBT and evidence-based counselling in Pune and online across India, led by a psychologist with clinical training at NIMHANS. Book a free 15-minute clarity call."
+        description="CBT & counselling in Pune and online across India, led by a psychologist with clinical training at NIMHANS. Book a free 15-min clarity call."
         url="/"
         lcpImage="/images/hero-path.webp"
         locale="en_IN"
@@ -450,6 +450,49 @@ export default function Home() {
                 </span>
               </Link>
             ))}
+          </div>
+
+          <div className="mt-10 pt-8 border-t border-stone-200/80 text-center space-y-4">
+            <p className="text-xs font-bold uppercase tracking-widest text-deep-teal">
+              Explore All 17 Specialised Services &amp; Programmes
+            </p>
+            <div className="flex flex-wrap justify-center gap-2">
+              {[
+                { label: "Overthinking Therapy", to: "/services/overthinking-therapy" },
+                { label: "Self-Esteem & Identity", to: "/services/self-esteem-therapy-pune" },
+                { label: "Depression & Low Mood", to: "/services/depression-counselling-pune" },
+                { label: "Everyday Talk Therapy", to: "/services/talk-therapy-pune" },
+                { label: "Relationship & Couples", to: "/services/relationship-couples-counselling-pune" },
+                { label: "Parenting & Family", to: "/services/parenting-family-counselling-pune" },
+                { label: "Mindfulness & Meditation", to: "/services/mindfulness-meditation-pune" },
+                { label: "Habit & Behavioural Coaching", to: "/services/behavioural-change-habit-coaching-pune" },
+                { label: "Gen Z Workplace Workshop", to: "/workshops/gen-z-in-the-workplace-pune" },
+                { label: "Online Therapy Across India", to: "/services/online-therapy-india" },
+                { label: "Prabhat Road Clinic, Pune", to: "/services/counselling-prabhat-road-pune" },
+              ].map((item) => (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className="inline-flex items-center px-3.5 py-2 rounded-full bg-white hover:bg-stone-100 border border-stone-200 text-xs font-medium text-deep-teal hover:text-terracotta transition-colors"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-6 pt-2 text-xs font-semibold">
+              <Link
+                to="/services"
+                className="text-terracotta hover:text-deep-teal underline underline-offset-4"
+              >
+                Explore All 17 Services &rarr;
+              </Link>
+              <Link
+                to="/about"
+                className="text-deep-teal hover:text-terracotta underline underline-offset-4"
+              >
+                Meet Our Psychologists &rarr;
+              </Link>
+            </div>
           </div>
         </div>
       </section>

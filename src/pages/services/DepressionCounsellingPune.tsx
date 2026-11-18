@@ -100,6 +100,9 @@ export default function DepressionCounsellingPune() {
           { label: "CBT Therapy in Pune & Online", to: "/services/cbt-therapy-pune" },
           { label: "Burnout Counselling in Pune", to: "/services/burnout-counselling-pune" },
           { label: "Online Therapy in India", to: "/services/online-therapy-india" },
+          { label: "Article: Tired in Ways Sleep Can't Fix", to: "/resources/why-youre-tired-in-ways-sleep-cant-fix" },
+          { label: "Myth: Toxic Positivity vs Real Support", to: "/resources/myth-toxic-positivity-good-vibes-only" },
+          { label: "Article: Why Talk Therapy Needs the Body", to: "/resources/why-talk-therapy-needs-the-body" },
         ],
         bookingServiceName: "Depression & Low Mood Counselling",
         importantNotice:

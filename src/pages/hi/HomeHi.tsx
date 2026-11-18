@@ -58,7 +58,7 @@ export default function HomeHi() {
     <div className="w-full bg-soft-sand text-charcoal-warm">
       <SEO
         title="पुणे में मनोवैज्ञानिक एवं काउंसलिंग | Being You Path"
-        description="पुणे (डेक्कन जिमखाना) और पूरे भारत में ऑनलाइन CBT व काउंसलिंग। NIMHANS में क्लिनिकल प्रशिक्षण प्राप्त मनोवैज्ञानिक के साथ निःशुल्क 15-मिनट क्लैरिटी कॉल बुक करें।"
+        description="पुणे (डेक्कन जिमखाना) और पूरे भारत में ऑनलाइन CBT व काउंसलिंग। NIMHANS में क्लिनिकल प्रशिक्षण प्राप्त मनोवैज्ञानिक के साथ 15-मिनट कॉल बुक करें।"
         url="/hi"
         locale="hi_IN"
         alternates={[

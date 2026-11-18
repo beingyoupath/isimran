@@ -106,6 +106,10 @@ export default function TalkTherapyPune() {
           { label: "Self-Esteem Therapy", to: "/services/self-esteem-therapy-pune" },
           { label: "Mindfulness & Meditation", to: "/services/mindfulness-meditation-pune" },
           { label: "Prabhat Road Clinic, Pune", to: "/services/counselling-prabhat-road-pune" },
+          { label: "Myth: Therapy Is Only for Rock Bottom", to: "/resources/myth-therapy-is-only-for-rock-bottom" },
+          { label: "Myth: Seeking Counselling Makes You Weak", to: "/resources/myth-seeking-counselling-makes-you-weak" },
+          { label: "Article: Why Talk Therapy Needs the Body", to: "/resources/why-talk-therapy-needs-the-body" },
+          { label: "Article: Understanding the Fawn Response", to: "/resources/overcoming-chronic-people-pleasing" },
         ],
         bookingServiceName: "Everyday Talk Therapy",
       }}

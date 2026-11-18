@@ -105,6 +105,8 @@ export default function BehaviouralChangeHabitCoachingPune() {
           { label: "CBT Therapy in Pune & Online", to: "/services/cbt-therapy-pune" },
           { label: "Mindfulness & Meditation", to: "/services/mindfulness-meditation-pune" },
           { label: "Guide: Environment Design Over Willpower", to: "/resources/environment-design-over-willpower" },
+          { label: "Article: Digital Overstimulation & Focus", to: "/resources/digital-overstimulation-and-dopamine" },
+          { label: "Article: The Good Enough Morning Routine", to: "/resources/realistic-morning-routine-no-ice-baths" },
           { label: "Burnout Counselling", to: "/services/burnout-counselling-pune" },
         ],
         bookingServiceName: "Behavioural Change & Habit Coaching",

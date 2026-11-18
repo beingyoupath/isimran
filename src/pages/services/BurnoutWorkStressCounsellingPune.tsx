@@ -110,6 +110,10 @@ export default function BurnoutWorkStressCounsellingPune() {
           { label: "Career Counselling in Pune", to: "/services/career-counselling-pune" },
           { label: "Corporate Wellness Workshops", to: "/workshops" },
           { label: "Self-Esteem Therapy", to: "/services/self-esteem-therapy-pune" },
+          { label: "Article: Burnout vs a Bad Week", to: "/resources/burnout-vs-bad-week-signs" },
+          { label: "Article: Setting Boundaries When Ambitious", to: "/resources/setting-boundaries-when-ambitious" },
+          { label: "Article: Decision Fatigue & Mental Clarity", to: "/resources/decision-fatigue-protecting-mental-clarity" },
+          { label: "Article: Imposter Syndrome in Corporate Tech", to: "/resources/imposter-syndrome-corporate-tech" },
         ],
         bookingServiceName: "Burnout Counselling",
       }}

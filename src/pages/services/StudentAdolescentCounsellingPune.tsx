@@ -100,6 +100,9 @@ export default function StudentAdolescentCounsellingPune() {
           { label: "Career Counselling in Pune", to: "/services/career-counselling-pune" },
           { label: "Stress & Anxiety Counselling", to: "/services/stress-anxiety-counselling-pune" },
           { label: "Overthinking Therapy", to: "/services/overthinking-therapy" },
+          { label: "Article: Digital Overstimulation & Focus", to: "/resources/digital-overstimulation-and-dopamine" },
+          { label: "Myth: Overthinking Is My Personality", to: "/resources/myth-overthinking-is-my-personality" },
+          { label: "Article: Sleep Anxiety & Nighttime Spirals", to: "/resources/sleep-anxiety-nighttime-spiral" },
         ],
         bookingServiceName: "Student & Adolescent Counselling",
       }}

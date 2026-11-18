@@ -24,15 +24,29 @@ export default function NotFound() {
           <p className="text-lg md:text-xl text-charcoal-warm mb-10 max-w-xl">
             It looks like the page you&apos;re looking for has been moved or no longer exists. Let&apos;s guide you back.
           </p>
-          <Link
-            to="/"
-            className="group relative inline-flex items-center justify-center px-8 py-4 min-h-[44px] bg-deep-teal text-white rounded-full text-[15px] font-medium overflow-hidden transition-all hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-deep-teal/50"
-          >
-            <span className="relative z-10 flex items-center gap-2">
-              Return Home
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </span>
-          </Link>
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <Link
+              to="/"
+              className="group relative inline-flex items-center justify-center px-8 py-4 min-h-[44px] bg-deep-teal text-white rounded-full text-[15px] font-medium overflow-hidden transition-all hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-deep-teal/50"
+            >
+              <span className="relative z-10 flex items-center gap-2">
+                Return Home
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </span>
+            </Link>
+            <Link
+              to="/services"
+              className="inline-flex items-center justify-center px-7 py-4 min-h-[44px] bg-white border border-stone-300 text-deep-teal hover:border-terracotta hover:text-terracotta rounded-full text-[15px] font-medium transition-all"
+            >
+              Explore Services
+            </Link>
+            <Link
+              to="/contact"
+              className="inline-flex items-center justify-center px-7 py-4 min-h-[44px] bg-white border border-stone-300 text-deep-teal hover:border-terracotta hover:text-terracotta rounded-full text-[15px] font-medium transition-all"
+            >
+              Contact Us
+            </Link>
+          </div>
         </div>
       </div>
     </>

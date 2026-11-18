@@ -116,6 +116,9 @@ export default function CbtTherapyPune() {
           { label: "Overthinking Therapy", to: "/services/overthinking-therapy" },
           { label: "Everyday Talk Therapy", to: "/services/talk-therapy-pune" },
           { label: "Behavioural Change & Habit Coaching", to: "/services/behavioural-change-habit-coaching-pune" },
+          { label: "Guide: 3 Types of Overthinking & CBT", to: "/resources/the-3-types-of-overthinking-and-cbt-tools" },
+          { label: "Article: High-Functioning Anxiety", to: "/resources/high-functioning-anxiety-in-professionals" },
+          { label: "Myth: Overthinking Is My Personality", to: "/resources/myth-overthinking-is-my-personality" },
         ],
         bookingServiceName: "CBT Therapy",
       }}

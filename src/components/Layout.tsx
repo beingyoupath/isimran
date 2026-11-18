@@ -518,6 +518,14 @@ export default function Layout() {
       path: "/services/parenting-family-counselling-pune",
     },
     {
+      name: "Career Counselling in Pune",
+      path: "/services/career-counselling-pune",
+    },
+    {
+      name: "Student & Adolescent Counselling",
+      path: "/services/student-adolescent-counselling-pune",
+    },
+    {
       name: "Mindfulness & Habit Coaching",
       path: "/services/mindfulness-meditation-pune",
     },

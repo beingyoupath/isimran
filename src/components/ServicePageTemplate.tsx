@@ -429,6 +429,13 @@ export default function ServicePageTemplate({
                 <span>{labels.pillarGuideText}</span>
                 <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
               </Link>
+              <Link
+                to="/services"
+                className="inline-flex items-center gap-1.5 min-h-[44px] px-4 py-2 rounded-full bg-white hover:bg-stone-100 border border-stone-300 text-xs font-semibold text-[#0B3A42] transition-colors"
+              >
+                <span>{labels.servicesCrumb}</span>
+                <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+              </Link>
             </div>
           </div>
 

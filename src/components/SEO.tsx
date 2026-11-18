@@ -201,9 +201,16 @@ export function SEO({
       ? `${SITE_URL}${window.location.pathname === "/" ? "/" : window.location.pathname.replace(/\/+$/, "")}`
       : `${SITE_URL}/`;
 
-  const robots = noindex
-    ? "noindex, nofollow"
-    : "index, follow, max-snippet:-1, max-image-preview:large";
+  const isClientStagingHost =
+    typeof window !== "undefined" &&
+    (window.location.hostname.endsWith(".ai.studio") ||
+      window.location.hostname.endsWith(".run.app") ||
+      window.location.hostname.includes(".aistudio."));
+
+  const robots =
+    noindex || isClientStagingHost
+      ? "noindex, nofollow"
+      : "index, follow, max-snippet:-1, max-image-preview:large";
 
   const faqSchema =
     faqs && faqs.length > 0

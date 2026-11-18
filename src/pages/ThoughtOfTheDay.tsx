@@ -63,8 +63,8 @@ export default function ThoughtOfTheDay() {
   return (
     <div className="bg-soft-sand min-h-screen pb-24">
       <SEO
-        title="Thought of the Day & Daily Reflection Archive | Being You Path"
-        description="Daily evidence-informed psychology reflections, classic philosophical insights, and quick weekday micro-practices updated at midnight India Standard Time (IST)."
+        title="Thought of the Day & Reflection Archive | Being You Path"
+        description="Daily evidence-informed psychology reflections, classic philosophical insights, and quick weekday micro-practices updated at midnight IST."
         url="/thought-of-the-day"
         breadcrumbs={[
           { name: "Thought of the Day", url: "/thought-of-the-day" },

@@ -116,6 +116,9 @@ export default function AnxietyCounsellingPune() {
           { label: "Overthinking Therapy", to: "/services/overthinking-therapy" },
           { label: "Burnout Counselling", to: "/services/burnout-counselling-pune" },
           { label: "Mindfulness & Meditation", to: "/services/mindfulness-meditation-pune" },
+          { label: "Article: High-Functioning Anxiety", to: "/resources/high-functioning-anxiety-in-professionals" },
+          { label: "Article: Sleep Anxiety & Nighttime Spirals", to: "/resources/sleep-anxiety-nighttime-spiral" },
+          { label: "Article: 4-Second Breath & Vagal Reset", to: "/resources/4-second-vagus-nerve-reset" },
         ],
         calloutSection: {
           heading: "Trauma-sensitive approach",

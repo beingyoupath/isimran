@@ -6,7 +6,7 @@ export default function MindfulnessMeditationPune() {
       config={{
         path: "/services/mindfulness-meditation-pune",
         breadcrumbName: "Mindfulness & Meditation",
-        seoTitle: "Mindfulness & Meditation Counselling in Pune | Being You Path",
+        seoTitle: "Mindfulness & Meditation Therapy in Pune | Being You Path",
         seoDescription:
           "Secular mindfulness, attention training, and guided meditation coaching in Pune and online across India. Practical calm without dogma.",
         serviceType: "Secular Mindfulness and Meditation Training",
@@ -105,7 +105,10 @@ export default function MindfulnessMeditationPune() {
           { label: "Overthinking Therapy", to: "/services/overthinking-therapy" },
           { label: "Stress & Anxiety Counselling", to: "/services/stress-anxiety-counselling-pune" },
           { label: "Behavioural Change & Habit Coaching", to: "/services/behavioural-change-habit-coaching-pune" },
-          { label: "Thought of the Day Archive", to: "/thought-of-the-day" },
+          { label: "Article: 4-Second Breath & Vagal Reset", to: "/resources/4-second-vagus-nerve-reset" },
+          { label: "Guide: Nervous-System Down-Regulation", to: "/resources/nervous-system-down-regulation-guide" },
+          { label: "Article: Sleep Anxiety & Nighttime Spirals", to: "/resources/sleep-anxiety-nighttime-spiral" },
+          { label: "Article: Sound & Emotional Release", to: "/resources/sound-frequencies-and-emotional-release" },
         ],
         bookingServiceName: "Mindfulness & Meditation",
       }}

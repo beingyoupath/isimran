@@ -1055,6 +1055,34 @@ export default function Workshops() {
               <span>Explore Gen Z in the Workplace</span>
               <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
             </Link>
+            <Link
+              to="/services/burnout-counselling-pune"
+              className="inline-flex items-center gap-2 px-5 py-3 min-h-[44px] rounded-full bg-white hover:bg-stone-100 text-deep-teal border border-stone-300 text-xs font-semibold transition-colors"
+            >
+              <span>1-on-1 Burnout Counselling</span>
+              <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+            </Link>
+            <Link
+              to="/resources/burnout-vs-bad-week-signs"
+              className="inline-flex items-center gap-2 px-5 py-3 min-h-[44px] rounded-full bg-white hover:bg-stone-100 text-deep-teal border border-stone-300 text-xs font-semibold transition-colors"
+            >
+              <span>Read: Burnout vs a Bad Week</span>
+              <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+            </Link>
+            <Link
+              to="/resources/setting-boundaries-when-ambitious"
+              className="inline-flex items-center gap-2 px-5 py-3 min-h-[44px] rounded-full bg-white hover:bg-stone-100 text-deep-teal border border-stone-300 text-xs font-semibold transition-colors"
+            >
+              <span>Read: Setting Boundaries When Ambitious</span>
+              <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+            </Link>
+            <Link
+              to="/services"
+              className="inline-flex items-center gap-2 px-5 py-3 min-h-[44px] rounded-full bg-white hover:bg-stone-100 text-[#A43F23] border border-[#A43F23]/30 text-xs font-semibold transition-colors"
+            >
+              <span>All Counselling Services</span>
+              <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+            </Link>
           </div>
         </div>
       </section>
